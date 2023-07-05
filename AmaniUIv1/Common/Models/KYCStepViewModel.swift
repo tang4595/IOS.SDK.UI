@@ -1,0 +1,159 @@
+//
+//  KYCStepViewModel.swift
+//  AmaniUIv1
+//
+//  Created by Deniz Can on 8.09.2022.
+//
+
+import UIKit
+import AmaniSDK
+import Foundation
+
+typealias StepCompletionCallback = (Result<KYCStepViewModel, KYCStepError>) -> Void
+typealias StepUploadCallback = (Bool?, [AmaniError]?) -> Void
+
+class KYCStepViewModel {
+  var id: String
+  var title: String
+  var mandatoryStepIDs: [String] = []
+  var status: DocumentStatus = DocumentStatus.NOT_UPLOADED
+  private var isphysicalContractEnabled: Bool!
+  var textColor: UIColor = ThemeColor.blackColor
+  var buttonColor: UIColor = ThemeColor.whiteColor
+  var sortOrder: Int
+  private var documentSelectionTitle: String = ""
+  private var documentSelectionDescription: String = ""
+  private var maxAttempt: Int
+  
+  var documents: [DocumentModel] = []
+  
+  private var documentHandler: DocumentHandlerHelper!
+  private var rule: KYCRuleModel!
+  var topViewController: UIViewController!
+  var stepConfig:StepConfig
+  
+  init(from stepConfig: StepConfig, initialRule: KYCRuleModel, topController onVC: UIViewController) {
+    self.stepConfig = stepConfig
+    id = stepConfig.id!
+    title = stepConfig.documents?.count ?? 0 > 1 ? (stepConfig.buttonText?.notUploaded ?? stepConfig.title! ): stepConfig.title!
+    mandatoryStepIDs = stepConfig.mandatoryStepIDs ?? []
+    isphysicalContractEnabled = stepConfig.phase != nil && stepConfig.phase! as Int == 0 ? true : false
+    maxAttempt = stepConfig.maxAttempt ?? 3
+    status = DocumentStatus(rawValue: initialRule.status ?? self.status.rawValue)!
+    sortOrder = initialRule.sortOrder ?? 0
+    rule = initialRule
+    
+    let (buttonColor, textColor) = getColorsForStatus(status: DocumentStatus(rawValue: initialRule.status!)!, stepConfig: stepConfig)
+    self.buttonColor = buttonColor
+    self.textColor = textColor
+    
+    self.documentSelectionTitle = stepConfig.documentSelectionTitle ?? ""
+    self.documentSelectionDescription = stepConfig.documentSelectionDescription ?? ""
+    
+    topViewController = onVC
+    documents = stepConfig.documents!
+    // Interesting note: You can actually use `self` on the init method, just needs to be initialized after all variables are initialized in the class in this case all required parameters are initialized on the KYCStepViewModel.
+    documentHandler = DocumentHandlerHelper(for: stepConfig.documents!, of: self)
+  }
+  
+  /// Updates the status of current rule
+  func updateStatus(status: DocumentStatus) {
+    self.status = status
+    let (buttonColor, textColor) = getColorsForStatus(status: status, stepConfig: stepConfig)
+    self.buttonColor = buttonColor
+    self.textColor = textColor
+  }
+  
+  func isPassedMaxAttempt() -> Bool {
+    let customer = Amani.sharedInstance.customerInfo().getCustomer()
+    if let customerRuleStatus = customer.rules?.first(where: { $0.id == id }) {
+      if(customerRuleStatus.attempt != nil && maxAttempt != 0 && customerRuleStatus.attempt! >= maxAttempt) {
+        return true
+      } else {
+        return false
+      }
+    } else {
+      print("Unkown Error")
+    }
+    return false
+  }
+  
+  func onStepPressed(completion: @escaping StepCompletionCallback) {
+    // Bind the callback to the runner.
+    let isSingleVersion = ((documents.first?.versions!.count == 1) && (documents.count == 1) ) ? true : false
+    if (isSingleVersion) {
+      documentHandler.bind(topVC: topViewController, callback: completion)
+      documentHandler.start(for: (documents.first?.id)!)
+    } else {
+      // Navigate to version select screen
+      let versionSelectScreen = VersionViewController(nibName: String(describing: VersionViewController.self), bundle: Bundle(for: VersionViewController.self))
+      versionSelectScreen.bind(runnerHelper: self.documentHandler,
+                               docTitle: self.documentSelectionTitle,
+                               docDescription: self.documentSelectionDescription,
+                               step: self)
+      documentHandler.bind(topVC: versionSelectScreen, callback: completion)
+      self.topViewController.navigationController?.pushViewController(versionSelectScreen, animated: true)
+    }
+  }
+  
+  func isEnabled() -> Bool {
+    let status = DocumentStatus(rawValue: rule.status!)
+    if (mandatoryStepIDs.isEmpty) {
+//      if (status != DocumentStatus.APPROVED || !isPassedMaxAttempt()) {
+      if (status != DocumentStatus.APPROVED) {
+
+        return true
+      }
+    } else {
+      let allSteps = Amani.sharedInstance.customerInfo().getCustomer().rules
+      // Filter rules by mandatory that approved and check the count
+      return allSteps!.filter {  stepElement in
+        if let elementid = stepElement.id, mandatoryStepIDs.contains(elementid){
+            return stepElement.status == DocumentStatus.APPROVED.rawValue || stepElement.status == DocumentStatus.PENDING_REVIEW.rawValue
+        }
+        return false
+      }.count == mandatoryStepIDs.count
+    }
+    return false
+  }
+  
+  func getRuleModel() -> KYCRuleModel {
+    return rule
+  }
+  
+  /// Get the status of current configuration
+  func getStatus() -> String? {
+    return status.rawValue
+  }
+  
+  func upload(completion: @escaping StepUploadCallback) {
+    documentHandler?.upload(completion: completion)
+  }
+  
+  func getColorsForStatus(status: DocumentStatus, stepConfig: StepConfig) -> (UIColor, UIColor) {
+    let defaultWhiteHex = ThemeColor.whiteColor.toHexString()
+    let defaultBlackHex = ThemeColor.blackColor.toHexString()
+    switch status {
+    case .NOT_UPLOADED:
+      return (UIColor(hexString: stepConfig.buttonColor?.notUploaded ?? defaultWhiteHex), UIColor(hexString: stepConfig.buttonTextColor?.notUploaded ?? defaultBlackHex))
+    case .PENDING_REVIEW:
+      return (UIColor(hexString: stepConfig.buttonColor?.pendingReview ?? defaultWhiteHex), UIColor(hexString: stepConfig.buttonTextColor?.pendingReview ?? defaultBlackHex))
+    case .PROCESSING:
+      return (UIColor(hexString: stepConfig.buttonColor?.processing ?? defaultWhiteHex), UIColor(hexString: stepConfig.buttonTextColor?.processing ?? defaultBlackHex))
+    case .REJECTED:
+      return (UIColor(hexString: stepConfig.buttonColor?.rejected ?? defaultWhiteHex), UIColor(hexString: stepConfig.buttonTextColor?.rejected ?? defaultBlackHex))
+    case .AUTOMATICALLY_REJECTED:
+      return (UIColor(hexString: stepConfig.buttonColor?.autoRejected ?? defaultWhiteHex), UIColor(hexString: stepConfig.buttonTextColor?.autoRejected ?? defaultBlackHex))
+    case .APPROVED:
+      return (UIColor(hexString: stepConfig.buttonColor?.approved ?? defaultWhiteHex), UIColor(hexString: stepConfig.buttonTextColor?.approved ?? defaultBlackHex))
+    @unknown default:
+      return (ThemeColor.whiteColor, ThemeColor.blackColor)
+    }
+  }
+  
+}
+
+enum KYCStepError: Error {
+  case configError
+  case moduleError
+}
