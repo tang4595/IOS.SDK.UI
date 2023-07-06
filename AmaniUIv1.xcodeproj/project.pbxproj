@@ -456,7 +456,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 489D406826BBE5DD0009AB39 /* Build configuration list for PBXProject "AmaniUISample" */;
+			buildConfigurationList = 489D406826BBE5DD0009AB39 /* Build configuration list for PBXProject "AmaniUIv1" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -736,7 +736,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		489D406826BBE5DD0009AB39 /* Build configuration list for PBXProject "AmaniUISample" */ = {
+		489D406826BBE5DD0009AB39 /* Build configuration list for PBXProject "AmaniUIv1" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				489D407F26BBE5DE0009AB39 /* Debug */,

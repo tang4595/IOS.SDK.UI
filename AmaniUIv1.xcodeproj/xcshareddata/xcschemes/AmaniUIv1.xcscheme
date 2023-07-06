@@ -17,7 +17,7 @@
                BlueprintIdentifier = "C544FEE228C2303700C0B406"
                BuildableName = "AmaniUIv1.framework"
                BlueprintName = "AmaniUIv1"
-               ReferencedContainer = "container:AmaniUISample.xcodeproj">
+               ReferencedContainer = "container:AmaniUIv1.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -52,7 +52,7 @@
             BlueprintIdentifier = "C544FEE228C2303700C0B406"
             BuildableName = "AmaniUIv1.framework"
             BlueprintName = "AmaniUIv1"
-            ReferencedContainer = "container:AmaniUISample.xcodeproj">
+            ReferencedContainer = "container:AmaniUIv1.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>
