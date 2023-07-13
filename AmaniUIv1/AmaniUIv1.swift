@@ -11,7 +11,7 @@ import CoreLocation
 private class AmaniBundleLocator {}
 
 public class AmaniUIv1 {
-public static let sharedInstance = AmaniUIv1()
+  public static let sharedInstance = AmaniUIv1()
   /// General Application Config
   /// This property represents the delegate methods.
   public weak var delegate: AmaniUIDelegate?
@@ -39,7 +39,8 @@ public static let sharedInstance = AmaniUIv1()
   var missingRules:[[String:String]]? = nil
   
   private var bundle: Bundle!
-
+  private var customerRespData: CustomerResponseModel? = nil
+  
   /**
    This method used to get SDK bundle
    - returns: Bundle
@@ -110,6 +111,9 @@ public static let sharedInstance = AmaniUIv1()
       } catch let error {
         print("Error while fetching app configuration \(error)")
       }
+      if let customerResponseModel = customerModel {
+        self.customerRespData = customerResponseModel
+      }
       completion(customerModel, error)
     }
     
@@ -147,15 +151,19 @@ public static let sharedInstance = AmaniUIv1()
     self.location = location
 
     sharedSDKInstance.initAmani(server: server, userName: userName, password: password, sharedSecret: sharedSecret, customer: customer, language: language,apiVersion: apiVersion) {(customerModel, error) in
-
-        Amani.sharedInstance.appConfig().fetchAppConfig(completion: { [weak self] config, error in
-          if error == nil {
-            self?.config = config
-
-          } else {
-            print("Error while fetching app configuration \(error)")
-          }
-        })
+      
+      Amani.sharedInstance.appConfig().fetchAppConfig(completion: { [weak self] config, error in
+        if error == nil {
+          self?.config = config
+          
+        } else {
+          print("Error while fetching app configuration \(error)")
+        }
+      })
+      
+      if let customerResponseModel = customerModel {
+        self.customerRespData = customerResponseModel
+      }
       completion(customerModel, error)
     }
   }
@@ -168,7 +176,7 @@ public static let sharedInstance = AmaniUIv1()
       guard let self else {return}
       DispatchQueue.main.async {
         self.initialVC = HomeViewController(nibName: String(describing: HomeViewController.self), bundle: Bundle(for: HomeViewController.self))
-        
+        self.initialVC!.bind(customerData: self.customerRespData!)
         self.sharedSDKInstance.setDelegate(delegate: self.initialVC!)
 
         
@@ -270,11 +278,11 @@ public static let sharedInstance = AmaniUIv1()
   
 }
 //extension AmaniUIv1:AmaniDelegate{
-//  
+//
 //  public func onProfileStatus(customerId:String, profile: AmaniSDK.wsProfileStatusModel) {
 //    print(profile)
 //  }
-//  
+//
 //  public func onStepModel(customerId:String, rules: [AmaniSDK.KYCRuleModel]?) {
 //    print(rules)
 //    guard let rules = rules else {return}
@@ -284,7 +292,7 @@ public static let sharedInstance = AmaniUIv1()
 //      .map { (rule) -> [String:String] in
 //      return [rule.title!:rule.status!]
 //  }
-//  
+//
 //  }
-//  
+//
 //}

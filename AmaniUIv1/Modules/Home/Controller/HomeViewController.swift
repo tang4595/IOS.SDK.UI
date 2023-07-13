@@ -11,6 +11,7 @@ class HomeViewController: BaseViewController {
   
   @IBOutlet weak var headView: UIView!
   var stepModels: [KYCStepViewModel]?
+  var customerData: CustomerResponseModel? = nil
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -90,7 +91,11 @@ class HomeViewController: BaseViewController {
   func setBackgroundColorOfTableView(color: UIColor) {
     self.kycStepTblView.backgroundColor = color
   }
-
+  
+  public func bind(customerData: CustomerResponseModel) {
+    self.customerData = customerData
+  }
+  
 }
 
 // MARK: - HomeViewDelegate methods
