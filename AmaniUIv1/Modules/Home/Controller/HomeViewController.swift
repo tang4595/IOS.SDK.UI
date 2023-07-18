@@ -29,11 +29,17 @@ class HomeViewController: BaseViewController {
   
   // MARK: - Initial setup methods
   private func initialSetUp() {
-    let customerInfo = Amani.sharedInstance.customerInfo().getCustomer()
+    var customerInfo = Amani.sharedInstance.customerInfo().getCustomer()
+    if (customerInfo.rules != nil && customerInfo.rules!.isEmpty) {
+      if let customerResp = self.customerData {
+        customerInfo = customerResp
+      }
+    }
     if(stepModels == nil) {
       guard let rules = customerInfo.rules else {
         return
       }
+      
       try? generateKYCStepViewModels(from: rules)
     }
     self.setCustomerInfo(model: customerInfo)
@@ -79,11 +85,11 @@ class HomeViewController: BaseViewController {
           stepModels?.remove(at: stepID)
           stepModels?.append(KYCStepViewModel(from: stepModel!, initialRule: ruleModel, topController: self))
         }
-  //      return KYCStepViewModel(from: stepModel!, initialRule: ruleModel, topController: self)
+        //      return KYCStepViewModel(from: stepModel!, initialRule: ruleModel, topController: self)
       }
       stepModels = stepModels?.sorted{ $0.sortOrder < $1.sortOrder }
     }
-
+    
     
     
   }
@@ -103,9 +109,9 @@ extension HomeViewController {
   
   /**
    This method renders the rules, and uploads the document.
-  */
+   */
   func setCustomerInfo(model: CustomerResponseModel) {
-
+    
     kycStepTblView.showKYCStep(stepModels: stepModels!, onSelectCallback: { kycStepTblViewModel in
       self.kycStepTblView.updateStatus(for: kycStepTblViewModel!, status: .PROCESSING)
       kycStepTblViewModel!.upload { (result, errors) in
