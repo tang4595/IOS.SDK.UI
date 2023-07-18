@@ -180,7 +180,7 @@ public class AmaniUIv1 {
       }
     } else if (token != nil){
       
-      Amani.sharedInstance.initAmani(server: server!, token: token!, sharedSecret: sharedSecret!, customer: customer!, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
+      Amani.sharedInstance.initAmani(server: server!, token: token!, sharedSecret: sharedSecret, customer: customer!, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
         guard let self = self else {return}
         do {
           self.config = try Amani.sharedInstance.appConfig().getApplicationConfig()
