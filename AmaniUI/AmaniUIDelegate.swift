@@ -10,5 +10,5 @@ import AmaniSDK
 public protocol AmaniUIDelegate: AnyObject {
     func onKYCSuccess(CustomerId:String)
     func onKYCFailed(CustomerId:String,Rules:[[String:String]]?)
-    func onError(type:String,Error:AmaniError)
+    func onError(type:String,Error:[AmaniError])
 }

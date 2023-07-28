@@ -55,7 +55,7 @@ class HomeViewController: BaseViewController {
    This method used to pop put the controller. For example back button pressed to exit the SDK screen.
    */
   override func popViewController() {
-    AmaniUIv1.sharedInstance.popViewController()
+    AmaniUI.sharedInstance.popViewController()
   }
   
   func checkStatus(model: CustomerResponseModel) -> Bool{
@@ -114,13 +114,13 @@ extension HomeViewController {
     
     kycStepTblView.showKYCStep(stepModels: stepModels!, onSelectCallback: { kycStepTblViewModel in
       self.kycStepTblView.updateStatus(for: kycStepTblViewModel!, status: .PROCESSING)
-      kycStepTblViewModel!.upload { (result, errors) in
-        if result == true {
-          print("upload success")
-        } else if let errors = errors {
-          
-          print(errors)
-        }
+      kycStepTblViewModel!.upload { (result) in
+//        if result == true {
+//          print("upload success")
+//        } else if let errors = errors {
+//          
+//          print(errors)
+//        }
       }
     })
   }
@@ -133,6 +133,10 @@ extension HomeViewController {
   }
 }
 extension HomeViewController:AmaniDelegate{
+  func onError(type: String, error: [AmaniSDK.AmaniError]) {
+    AmaniUI.sharedInstance.delegate?.onError(type: type, Error: error)
+  }
+  
   func onProfileStatus(customerId:String, profile: AmaniSDK.wsProfileStatusModel) {
     print(profile)
     if (profile.status?.uppercased() == ProfileStatus.PENDING_REVIEW.rawValue || profile.status?.uppercased() == ProfileStatus.APPROVED.rawValue) {

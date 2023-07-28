@@ -52,7 +52,7 @@ class ContainerViewController: BaseViewController {
       }
       var name = "\((animationName.lowercased()))_\(side)"
       
-      if ((AmaniUIv1.sharedInstance.getBundle().url(forResource: name, withExtension: "json")?.isFileURL) == nil) {
+      if ((AmaniUI.sharedInstance.getBundle().url(forResource: name, withExtension: "json")?.isFileURL) == nil) {
         name = "xx_id_0_\(side)"
       }
       lottieInit(name: name) {[weak self] _ in
@@ -105,7 +105,7 @@ class ContainerViewController: BaseViewController {
   }
 
   private func lottieInit(name:String = "xx_id_0_front", completion:@escaping(_ finishedAnimation:Int)->()) {
-    lottieAnimationView = .init(name: name,bundle: AmaniUIv1.sharedInstance.getBundle())
+    lottieAnimationView = .init(name: name,bundle: AmaniUI.sharedInstance.getBundle())
     lottieAnimationView!.frame = animationView.bounds
     lottieAnimationView!.backgroundColor = .clear
     animationView.addSubview(lottieAnimationView!)

@@ -70,14 +70,14 @@ class DocumentsHandler: NSObject, DocumentHandler{
     print(files)
     if let files = files {
       documentsModule.upload(
-        location: AmaniUIv1.sharedInstance.location,
+        location: AmaniUI.sharedInstance.location,
         files: files,
         completion: completion)
       self.files = nil
     }
     else {
       documentsModule.upload(
-        location: AmaniUIv1.sharedInstance.location,
+        location: AmaniUI.sharedInstance.location,
         completion: completion)
 
     }

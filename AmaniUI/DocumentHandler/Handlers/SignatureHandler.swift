@@ -66,7 +66,7 @@ class SignatureHandler: DocumentHandler {
   }
   
   func upload(completion: @escaping StepUploadCallback) {
-    SignatureModule.upload(location: AmaniUIv1.sharedInstance.location, completion: completion)
+    SignatureModule.upload(location: AmaniUI.sharedInstance.location, completion: completion)
   }
   
   private func startSignature(step: DocumentStepModel, version: DocumentVersion, workingStepIndex:Int = 0, completion: @escaping StepCompletionCallback) -> UIView?{

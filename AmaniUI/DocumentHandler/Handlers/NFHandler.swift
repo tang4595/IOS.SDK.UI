@@ -25,23 +25,18 @@ class NFHandler: DocumentHandler {
   func start(docStep: AmaniSDK.DocumentStepModel, version: AmaniSDK.DocumentVersion, workingStepIndex: Int = 0,completion: @escaping StepCompletionCallback) {
     nfcCaptureModule.setType(type: version.type!)
     
-    if AmaniUIv1.sharedInstance.getNvi() == nil {
-      stepView = nfcCaptureModule.start(idCardType: DocumentTypes.TurkishIdNew.rawValue) { (nfcreq, error) in
-        if let error = error {
-          print(error)
-          completion(.failure(.moduleError))
-          return
-        }
+    if AmaniUI.sharedInstance.getNvi() == nil {
+      stepView = nfcCaptureModule.start(idCardType: DocumentTypes.TurkishIdNew.rawValue) { (nfcreq) in
         completion(.success(self.stepViewModel))
       }
       
       self.showStepView(navbarHidden: false)
       return
     } else {
-      guard let nviData = AmaniUIv1.sharedInstance.getNvi() else { return }
+      guard let nviData = AmaniUI.sharedInstance.getNvi() else { return }
       
       do {
-        try nfcCaptureModule.start(nviData: nviData) { (nfcReq, err) in
+        try nfcCaptureModule.start(nviData: nviData) { (nfcReq) in
           completion(.success(self.stepViewModel))
         }
       } catch let err {
@@ -54,7 +49,7 @@ class NFHandler: DocumentHandler {
   }
   
   func upload(completion: @escaping StepUploadCallback) {
-    nfcCaptureModule.upload(location: AmaniUIv1.sharedInstance.location,
+    nfcCaptureModule.upload(location: AmaniUI.sharedInstance.location,
                             completion: completion)
   }
   

@@ -40,7 +40,7 @@ class SuccessViewController: BaseViewController {
   @IBAction func continueBtnAction(_ sender: UIButton) {
     let customer = Amani.sharedInstance.customerInfo().getCustomer()
     guard let customerId: String = customer.id else { return }
-    AmaniUIv1.sharedInstance.delegate?.onKYCSuccess(CustomerId: customerId)
+    AmaniUI.sharedInstance.delegate?.onKYCSuccess(CustomerId: customerId)
     navigationController?.dismiss(animated: true, completion: nil)
   }
 }

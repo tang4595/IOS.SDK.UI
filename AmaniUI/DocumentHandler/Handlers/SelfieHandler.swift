@@ -65,13 +65,13 @@ class SelfieHandler: DocumentHandler {
     guard let selfieModule = selfieModule else { return }
     
     if (selfieModule is Selfie) {
-      (selfieModule as! Selfie).upload( location: AmaniUIv1.sharedInstance.location,
+      (selfieModule as! Selfie).upload( location: AmaniUI.sharedInstance.location,
                                         completion: completion)
     } else if (selfieModule is AutoSelfie){
-      (selfieModule as! AutoSelfie).upload(location: AmaniUIv1.sharedInstance.location,
+      (selfieModule as! AutoSelfie).upload(location: AmaniUI.sharedInstance.location,
                                            completion: completion)
     } else if (selfieModule is PoseEstimation) {
-      (selfieModule as! PoseEstimation).upload(location: AmaniUIv1.sharedInstance.location,
+      (selfieModule as! PoseEstimation).upload(location: AmaniUI.sharedInstance.location,
                                                completion: completion)
     }
     

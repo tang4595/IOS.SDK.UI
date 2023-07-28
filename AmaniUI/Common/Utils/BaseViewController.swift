@@ -131,7 +131,7 @@ class BaseViewController: UIViewController {
    This method set up the theme color
    */
   func setThemeColor() {
-    let config = AmaniUIv1.sharedInstance.config
+    let config = AmaniUI.sharedInstance.config
     
     
     navBarFontColor = config?.generalconfigs?.topBarFontColor ?? "000000"
@@ -153,7 +153,7 @@ class BaseViewController: UIViewController {
   }
   
   func setToolBar() -> UIToolbar {
-    let config = AmaniUIv1.sharedInstance.config
+    let config = AmaniUI.sharedInstance.config
     
     let toolBar = UIToolbar()
     toolBar.barStyle = UIBarStyle.default

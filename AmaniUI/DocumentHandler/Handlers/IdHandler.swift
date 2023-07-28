@@ -96,7 +96,7 @@ class IdHandler: DocumentHandler {
     }
 
     func upload(completion: @escaping StepUploadCallback) {
-        idCaptureModule.upload(location: AmaniUIv1.sharedInstance.location,
+        idCaptureModule.upload(location: AmaniUI.sharedInstance.location,
                                completion: completion)
     }
 

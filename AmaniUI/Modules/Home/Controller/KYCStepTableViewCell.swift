@@ -13,8 +13,8 @@ class KYCStepTableViewCell: UITableViewCell {
     // MARK: - Life cycle methods
     override func awakeFromNib() {
         super.awakeFromNib()
-      outerView.addShadowWithBorder(shadowRadius: 4, shadowColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.25), shadowOpacity: 1, borderColor: .clear, borderWidth: 0, cornerRadious: CGFloat(AmaniUIv1.sharedInstance.config?.generalconfigs?.buttonRadius ?? 10))
-      if let bordercolor:String = AmaniUIv1.sharedInstance.config?.generalconfigs?.primaryButtonBorderColor {
+      outerView.addShadowWithBorder(shadowRadius: 4, shadowColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.25), shadowOpacity: 1, borderColor: .clear, borderWidth: 0, cornerRadious: CGFloat(AmaniUI.sharedInstance.config?.generalconfigs?.buttonRadius ?? 10))
+      if let bordercolor:String = AmaniUI.sharedInstance.config?.generalconfigs?.primaryButtonBorderColor {
             outerView.addBorder(borderWidth: 2, borderColor: UIColor(hexString: bordercolor).cgColor)
         }
     }

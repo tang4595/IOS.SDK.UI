@@ -10,8 +10,8 @@ import UIKit
 import CoreLocation
 private class AmaniBundleLocator {}
 
-public class AmaniUIv1 {
-  public static let sharedInstance = AmaniUIv1()
+public class AmaniUI {
+  public static let sharedInstance = AmaniUI()
   /// General Application Config
   /// This property represents the delegate methods.
   public weak var delegate: AmaniUIDelegate?

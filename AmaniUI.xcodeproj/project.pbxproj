@@ -51,8 +51,8 @@
 		C53C475728C9E2AF00FA10B6 /* KYCStepViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53C475628C9E2AF00FA10B6 /* KYCStepViewModel.swift */; };
 		C53C475928C9E2DD00FA10B6 /* ThemeColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53C475828C9E2DD00FA10B6 /* ThemeColor.swift */; };
 		C53DFE0228ED81F500AE7D32 /* DocConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53DFE0128ED81F500AE7D32 /* DocConfirmationViewController.swift */; };
-		C544FEE628C2303700C0B406 /* AmaniUIv1.h in Headers */ = {isa = PBXBuildFile; fileRef = C544FEE528C2303700C0B406 /* AmaniUIv1.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C544FEF228C24DE500C0B406 /* AmaniUIv1.swift in Sources */ = {isa = PBXBuildFile; fileRef = C544FEF128C24DE500C0B406 /* AmaniUIv1.swift */; };
+		C544FEE628C2303700C0B406 /* AmaniUI.h in Headers */ = {isa = PBXBuildFile; fileRef = C544FEE528C2303700C0B406 /* AmaniUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C544FEF228C24DE500C0B406 /* AmaniUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C544FEF128C24DE500C0B406 /* AmaniUI.swift */; };
 		C54B58A928C75279005DBAA9 /* KYCStepTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54B58A428C75279005DBAA9 /* KYCStepTableView.swift */; };
 		C54B58AA28C75279005DBAA9 /* HomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C54B58A528C75279005DBAA9 /* HomeViewController.xib */; };
 		C54B58AB28C75279005DBAA9 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54B58A628C75279005DBAA9 /* HomeViewController.swift */; };
@@ -98,9 +98,9 @@
 		C53C475628C9E2AF00FA10B6 /* KYCStepViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KYCStepViewModel.swift; sourceTree = "<group>"; };
 		C53C475828C9E2DD00FA10B6 /* ThemeColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeColor.swift; sourceTree = "<group>"; };
 		C53DFE0128ED81F500AE7D32 /* DocConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocConfirmationViewController.swift; sourceTree = "<group>"; };
-		C544FEE328C2303700C0B406 /* AmaniUIv1.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AmaniUIv1.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C544FEE528C2303700C0B406 /* AmaniUIv1.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AmaniUIv1.h; sourceTree = "<group>"; };
-		C544FEF128C24DE500C0B406 /* AmaniUIv1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmaniUIv1.swift; sourceTree = "<group>"; };
+		C544FEE328C2303700C0B406 /* AmaniUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AmaniUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C544FEE528C2303700C0B406 /* AmaniUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AmaniUI.h; sourceTree = "<group>"; };
+		C544FEF128C24DE500C0B406 /* AmaniUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmaniUI.swift; sourceTree = "<group>"; };
 		C544FF0328C5E2DA00C0B406 /* CoreNFC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreNFC.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/System/iOSSupport/System/Library/Frameworks/CoreNFC.framework; sourceTree = DEVELOPER_DIR; };
 		C544FF0528C5E2EB00C0B406 /* CryptoKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CryptoKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/System/Library/Frameworks/CryptoKit.framework; sourceTree = DEVELOPER_DIR; };
 		C544FF0628C5E2EB00C0B406 /* CryptoTokenKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CryptoTokenKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/System/Library/Frameworks/CryptoTokenKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -153,7 +153,7 @@
 		489D406426BBE5DD0009AB39 = {
 			isa = PBXGroup;
 			children = (
-				C544FEE428C2303700C0B406 /* AmaniUIv1 */,
+				C544FEE428C2303700C0B406 /* AmaniUI */,
 				489D41C526BC04F80009AB39 /* Frameworks */,
 				489D406E26BBE5DD0009AB39 /* Products */,
 			);
@@ -162,7 +162,7 @@
 		489D406E26BBE5DD0009AB39 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C544FEE328C2303700C0B406 /* AmaniUIv1.framework */,
+				C544FEE328C2303700C0B406 /* AmaniUI.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -268,7 +268,7 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
-		C544FEE428C2303700C0B406 /* AmaniUIv1 */ = {
+		C544FEE428C2303700C0B406 /* AmaniUI */ = {
 			isa = PBXGroup;
 			children = (
 				C5A06F6F29127C0C009520AF /* DocumentHandler */,
@@ -276,11 +276,11 @@
 				C54B58B228C761A1005DBAA9 /* Extensions */,
 				C544FEF428C2573F00C0B406 /* Common */,
 				C544FEF328C2573200C0B406 /* Modules */,
-				C544FEE528C2303700C0B406 /* AmaniUIv1.h */,
-				C544FEF128C24DE500C0B406 /* AmaniUIv1.swift */,
+				C544FEE528C2303700C0B406 /* AmaniUI.h */,
+				C544FEF128C24DE500C0B406 /* AmaniUI.swift */,
 				484E26F7295A3DC700839E54 /* AmaniUIDelegate.swift */,
 			);
-			path = AmaniUIv1;
+			path = AmaniUI;
 			sourceTree = "<group>";
 		};
 		C544FEF328C2573200C0B406 /* Modules */ = {
@@ -416,16 +416,16 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C544FEE628C2303700C0B406 /* AmaniUIv1.h in Headers */,
+				C544FEE628C2303700C0B406 /* AmaniUI.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		C544FEE228C2303700C0B406 /* AmaniUIv1 */ = {
+		C544FEE228C2303700C0B406 /* AmaniUI */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C544FEED28C2303700C0B406 /* Build configuration list for PBXNativeTarget "AmaniUIv1" */;
+			buildConfigurationList = C544FEED28C2303700C0B406 /* Build configuration list for PBXNativeTarget "AmaniUI" */;
 			buildPhases = (
 				C544FEDE28C2303700C0B406 /* Headers */,
 				C544FEDF28C2303700C0B406 /* Sources */,
@@ -436,9 +436,9 @@
 			);
 			dependencies = (
 			);
-			name = AmaniUIv1;
+			name = AmaniUI;
 			productName = AmaniUIv1;
-			productReference = C544FEE328C2303700C0B406 /* AmaniUIv1.framework */;
+			productReference = C544FEE328C2303700C0B406 /* AmaniUI.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -456,7 +456,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 489D406826BBE5DD0009AB39 /* Build configuration list for PBXProject "AmaniUIv1" */;
+			buildConfigurationList = 489D406826BBE5DD0009AB39 /* Build configuration list for PBXProject "AmaniUI" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -469,7 +469,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C544FEE228C2303700C0B406 /* AmaniUIv1 */,
+				C544FEE228C2303700C0B406 /* AmaniUI */,
 			);
 		};
 /* End PBXProject section */
@@ -523,7 +523,7 @@
 				4856111E29DC91CE00E70D77 /* DocumentsHandlerDelegate.swift in Sources */,
 				C58BD65428EEEE19009301EC /* OvalOverlayView.swift in Sources */,
 				C53DFE0228ED81F500AE7D32 /* DocConfirmationViewController.swift in Sources */,
-				C544FEF228C24DE500C0B406 /* AmaniUIv1.swift in Sources */,
+				C544FEF228C24DE500C0B406 /* AmaniUI.swift in Sources */,
 				C54B58A928C75279005DBAA9 /* KYCStepTableView.swift in Sources */,
 				C54B58AC28C75279005DBAA9 /* KYCStepTableViewCell.swift in Sources */,
 				C53C474F28C7718300FA10B6 /* UIViewExtensions.swift in Sources */,
@@ -736,7 +736,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		489D406826BBE5DD0009AB39 /* Build configuration list for PBXProject "AmaniUIv1" */ = {
+		489D406826BBE5DD0009AB39 /* Build configuration list for PBXProject "AmaniUI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				489D407F26BBE5DE0009AB39 /* Debug */,
@@ -745,7 +745,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C544FEED28C2303700C0B406 /* Build configuration list for PBXNativeTarget "AmaniUIv1" */ = {
+		C544FEED28C2303700C0B406 /* Build configuration list for PBXNativeTarget "AmaniUI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C544FEEB28C2303700C0B406 /* Debug */,
