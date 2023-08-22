@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		48100B972A55658A007DA156 /* AmaniSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4830904228900A3800B75529 /* AmaniSDK.xcframework */; };
 		48100B9A2A55658F007DA156 /* Lottie.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48B4720E27B147870089D42E /* Lottie.xcframework */; };
-		48100B9D2A556592007DA156 /* OpenSSL.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 484055E827AAA97800025328 /* OpenSSL.xcframework */; };
 		483D72BD296C8D28004AF421 /* tur_pa_0_front.json in Resources */ = {isa = PBXBuildFile; fileRef = C5B07D76290048E300243A5B /* tur_pa_0_front.json */; };
 		483D72BE296C8D28004AF421 /* tur_id_1_back.json in Resources */ = {isa = PBXBuildFile; fileRef = C5B07D7A290048E300243A5B /* tur_id_1_back.json */; };
 		483D72BF296C8D28004AF421 /* tur_id_1_front.json in Resources */ = {isa = PBXBuildFile; fileRef = C5B07D71290048E300243A5B /* tur_id_1_front.json */; };
@@ -67,11 +66,11 @@
 		C5A06F762913ED9E009520AF /* SelfieHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A06F752913ED9E009520AF /* SelfieHandler.swift */; };
 		C5B07D7C290048E300243A5B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5B07D6D290048E300243A5B /* Assets.xcassets */; };
 		C5BA62A42914006B004108B4 /* NFHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BA62A32914006B004108B4 /* NFHandler.swift */; };
+		C5D3B9402A9355B00023B66E /* OpenSSL.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5D3B93F2A9355B00023B66E /* OpenSSL.xcframework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		4830904228900A3800B75529 /* AmaniSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AmaniSDK.xcframework; path = Carthage/Build/AmaniSDK.xcframework; sourceTree = SOURCE_ROOT; };
-		484055E827AAA97800025328 /* OpenSSL.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = OpenSSL.xcframework; sourceTree = "<group>"; };
 		4842810D29D0F7DB00D48925 /* DocumentsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsHandler.swift; sourceTree = "<group>"; };
 		484E26F7295A3DC700839E54 /* AmaniUIDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmaniUIDelegate.swift; sourceTree = "<group>"; };
 		4856111D29DC91CE00E70D77 /* DocumentsHandlerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsHandlerDelegate.swift; sourceTree = "<group>"; };
@@ -131,6 +130,7 @@
 		C5B07D7A290048E300243A5B /* tur_id_1_back.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tur_id_1_back.json; sourceTree = "<group>"; };
 		C5B07D7B290048E300243A5B /* xx_id_0_back.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = xx_id_0_back.json; sourceTree = "<group>"; };
 		C5BA62A32914006B004108B4 /* NFHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFHandler.swift; sourceTree = "<group>"; };
+		C5D3B93F2A9355B00023B66E /* OpenSSL.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = OpenSSL.xcframework; path = Carthage/Build/OpenSSL.xcframework; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,7 +138,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				48100B9D2A556592007DA156 /* OpenSSL.xcframework in Frameworks */,
+				C5D3B9402A9355B00023B66E /* OpenSSL.xcframework in Frameworks */,
 				C5319C9528C63C0200153D50 /* CryptoTokenKit.framework in Frameworks */,
 				C5319C9328C63BEB00153D50 /* CoreNFC.framework in Frameworks */,
 				48100B9A2A55658F007DA156 /* Lottie.xcframework in Frameworks */,
@@ -170,12 +170,12 @@
 		489D41C526BC04F80009AB39 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C5D3B93F2A9355B00023B66E /* OpenSSL.xcframework */,
 				C544FF0528C5E2EB00C0B406 /* CryptoKit.framework */,
 				C544FF0628C5E2EB00C0B406 /* CryptoTokenKit.framework */,
 				C544FF0328C5E2DA00C0B406 /* CoreNFC.framework */,
 				4830904228900A3800B75529 /* AmaniSDK.xcframework */,
 				48B4720E27B147870089D42E /* Lottie.xcframework */,
-				484055E827AAA97800025328 /* OpenSSL.xcframework */,
 			);
 			path = Frameworks;
 			sourceTree = "<group>";

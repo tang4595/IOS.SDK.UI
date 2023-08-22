@@ -117,6 +117,7 @@ public class AmaniUI {
     self.country = country
     self.nviData = nviModel
     self.location = location
+    self.apiVersion = apiVersion
   }
   
   /**
@@ -154,6 +155,7 @@ public class AmaniUI {
     self.country = country
     self.nviData = nviModel
     self.location = location
+    self.apiVersion = apiVersion
   }
   
   public func showSDK(on parentViewController: UIViewController,
