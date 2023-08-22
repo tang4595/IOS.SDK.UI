@@ -73,17 +73,23 @@ class HomeViewController: BaseViewController {
       throw AppConstants.AmaniError.ConfigError
     }
     if stepModels == nil {
-      let viewModels = rules.map { ruleModel in
-        let stepModel = stepConfig.first { $0.id == ruleModel.id }
-        return KYCStepViewModel(from: stepModel!, initialRule: ruleModel, topController: self)
+      let viewModels: [KYCStepViewModel?] = rules.map { ruleModel in
+        if let stepModel = stepConfig.first(where: { $0.id == ruleModel.id }) {
+          return KYCStepViewModel(from: stepModel, initialRule: ruleModel, topController: self)
+        } else {
+          return nil
+        }
       }
-      stepModels = viewModels.sorted { $0.sortOrder < $1.sortOrder }
+      
+      let filteredViewModels = viewModels.filter { $0 != nil } as! [KYCStepViewModel]
+      stepModels = filteredViewModels.sorted { $0.sortOrder < $1.sortOrder }
     } else {
-      rules.map { ruleModel in
-        let stepModel = stepConfig.first { $0.id == ruleModel.id }
-        if let stepID = stepModels?.firstIndex{$0.id == ruleModel.id} {
-          stepModels?.remove(at: stepID)
-          stepModels?.append(KYCStepViewModel(from: stepModel!, initialRule: ruleModel, topController: self))
+      rules.forEach { ruleModel in
+        if let stepModel = stepConfig.first { $0.id == ruleModel.id } {
+          if let stepID = stepModels?.firstIndex(where: {$0.id == ruleModel.id}) {
+            stepModels?.remove(at: stepID)
+            stepModels?.append(KYCStepViewModel(from: stepModel, initialRule: ruleModel, topController: self))
+          }
         }
         //      return KYCStepViewModel(from: stepModel!, initialRule: ruleModel, topController: self)
       }
