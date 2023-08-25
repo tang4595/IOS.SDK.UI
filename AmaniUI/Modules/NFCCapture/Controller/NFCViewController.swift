@@ -17,7 +17,7 @@ class NFCViewController: BaseViewController {
   @IBOutlet var amaniLogo: UIImageView!
   
   override func viewWillAppear(_ animated: Bool) {
-    super.viewDidAppear(true)
+    super.viewWillAppear(true)
     initialSetup()
   }
   
@@ -76,6 +76,7 @@ class NFCViewController: BaseViewController {
       } else {
         DispatchQueue.main.async {
           self.continueButton.setTitle(tryAgainText ?? "Tekrar Dene", for: .normal)
+          self.continueButton.isEnabled = true
         }
       }
     }
