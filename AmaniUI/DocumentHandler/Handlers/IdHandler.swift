@@ -71,7 +71,7 @@ class IdHandler: DocumentHandler {
         idCaptureModule.setType(type: version.type!)
         var workingStep = workingStepIndex
         // FIXME: remove or increase manualcrop timeout
-        idCaptureModule.setManualCropTimeout(Timeout: 15)
+        idCaptureModule.setManualCropTimeout(Timeout: 30)
 
         do {
             showContainerVC(version: version, workingStep: workingStep) { _ in
@@ -96,8 +96,9 @@ class IdHandler: DocumentHandler {
     }
 
     func upload(completion: @escaping StepUploadCallback) {
-        idCaptureModule.upload(location: AmaniUI.sharedInstance.location,
-                               completion: completion)
+      idCaptureModule.upload(location: AmaniUI.sharedInstance.location){ result in
+        completion(result,nil)
+      }
     }
 
     private func startNFCCapture(docVer: DocumentVersion, completion: @escaping StepCompletionCallback) {

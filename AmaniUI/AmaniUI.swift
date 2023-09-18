@@ -30,7 +30,6 @@ public class AmaniUI {
   internal var config: AppConfigModel?
   internal let sharedSDKInstance = Amani.sharedInstance
   
-  internal var useGeolocation: Bool?
   
   var missingRules:[[String:String]]? = nil
   
@@ -91,7 +90,6 @@ public class AmaniUI {
    - parameter token:String
    - parameter sharedSecret:String
    - parameter customer: CustomerRequestModel
-   - parameter useGeoLocation:Bool
    - parameter language:String
    - parameter nviModel: NviModel? = nil
    - parameter country: String? = nil
@@ -102,7 +100,6 @@ public class AmaniUI {
     token: String,
     sharedSecret: String? = nil,
     customer: CustomerRequestModel,
-    useGeoLocation: Bool = true,
     language: String = "tr",
     nviModel: NviModel? = nil,
     country: String? = nil,
@@ -112,7 +109,6 @@ public class AmaniUI {
     self.server = server
     self.token = token
     self.sharedSecret = sharedSecret
-    self.useGeolocation = useGeoLocation
     self.customer = customer
     self.country = country
     self.nviData = nviModel
@@ -128,7 +124,6 @@ public class AmaniUI {
    - parameter password: String
    - parameter sharedSecret:String
    - parameter customer: CustomerRequestModel
-   - parameter useGeoLocation:Bool
    - parameter language:String
    - parameter nviModel: NviModel?
    - parameter country: NviModel?
@@ -140,7 +135,6 @@ public class AmaniUI {
     password: String,
     sharedSecret: String? = nil,
     customer: CustomerRequestModel,
-    useGeoLocation: Bool = true,
     language: String = "tr",
     nviModel: NviModel? = nil,
     country: String? = nil,
@@ -151,7 +145,6 @@ public class AmaniUI {
     self.userName = userName
     self.password = password
     self.sharedSecret = sharedSecret
-    self.useGeolocation = useGeoLocation
     self.customer = customer
     self.country = country
     self.nviData = nviModel

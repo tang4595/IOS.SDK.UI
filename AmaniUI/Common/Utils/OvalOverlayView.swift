@@ -54,6 +54,7 @@ internal class OvalOverlayView: UIView {
     layer.addSublayer(fillLayer)
     layer.addSublayer(ovalLayer)
   }
+  
   func changeColor(color:UIColor,callback:@escaping ()->()){
     self.color = color
     self.animationEndCB = callback

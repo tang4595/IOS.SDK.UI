@@ -120,7 +120,7 @@ extension HomeViewController {
     
     kycStepTblView.showKYCStep(stepModels: stepModels!, onSelectCallback: { kycStepTblViewModel in
       self.kycStepTblView.updateStatus(for: kycStepTblViewModel!, status: .PROCESSING)
-      kycStepTblViewModel!.upload { (result) in
+      kycStepTblViewModel!.upload { (result,args) in
 //        if result == true {
 //          print("upload success")
 //        } else if let errors = errors {

@@ -49,8 +49,9 @@ class NFHandler: DocumentHandler {
   }
   
   func upload(completion: @escaping StepUploadCallback) {
-    nfcCaptureModule.upload(location: AmaniUI.sharedInstance.location,
-                            completion: completion)
+    nfcCaptureModule.upload(location: AmaniUI.sharedInstance.location){ result in
+      completion(result,nil)
+    }
   }
   
   

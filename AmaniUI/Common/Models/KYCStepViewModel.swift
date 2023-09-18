@@ -10,7 +10,7 @@ import AmaniSDK
 import Foundation
 
 typealias StepCompletionCallback = (Result<KYCStepViewModel, KYCStepError>) -> Void
-typealias StepUploadCallback = (Bool?) -> Void
+typealias StepUploadCallback = (Bool?, [String : Any]?) -> Void
 
 class KYCStepViewModel {
   var id: String

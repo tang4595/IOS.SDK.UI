@@ -77,8 +77,9 @@ class DocumentsHandler: NSObject, DocumentHandler{
     }
     else {
       documentsModule.upload(
-        location: AmaniUI.sharedInstance.location,
-        completion: completion)
+        location: AmaniUI.sharedInstance.location){ result in
+          completion(result,nil)
+        }
 
     }
   }
