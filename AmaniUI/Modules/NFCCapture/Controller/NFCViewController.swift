@@ -66,21 +66,31 @@ class NFCViewController: BaseViewController {
     guard let cardType = documentVersion?.type else {
       print("idCard Type error")
       return}
-    idCaptureModule.startNFC(idCardType: cardType) { done in
-      if done {
-        DispatchQueue.main.async {
-          if let onFinishCallback = self.onFinishCallback {
-            onFinishCallback()
-          }
-        }
-      } else {
-        DispatchQueue.main.async {
-          self.continueButton.setTitle(tryAgainText ?? "Tekrar Dene", for: .normal)
-          self.continueButton.isEnabled = true
-        }
+    if let nvi:NviModel = AmaniUI.sharedInstance.nviData {
+      idCaptureModule.startNFC(nvi: nvi){ done in
+        doNext(done: done)
+      }
+    } else {
+      idCaptureModule.startNFC(idCardType: cardType) { done in
+        doNext(done: done)
       }
     }
     
+  }
+  
+  func doNext(done:Bool) {
+     if done {
+       DispatchQueue.main.async {
+         if let onFinishCallback = self.onFinishCallback {
+           onFinishCallback()
+         }
+       }
+     } else {
+       DispatchQueue.main.async {
+         self.continueButton.setTitle(tryAgainText ?? "Tekrar Dene", for: .normal)
+         self.continueButton.isEnabled = true
+       }
+     }
   }
   
 }
