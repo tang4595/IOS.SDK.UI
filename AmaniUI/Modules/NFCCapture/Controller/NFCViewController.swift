@@ -71,7 +71,7 @@ class NFCViewController: BaseViewController {
         self?.doNext(done: done)
       }
     } else {
-      idCaptureModule.startNFC(idCardType: cardType) {[weak self]  done in
+      idCaptureModule.startNFC() {[weak self]  done in
         self?.doNext(done: done)
       }
     }
