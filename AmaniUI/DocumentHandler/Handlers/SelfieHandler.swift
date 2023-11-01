@@ -115,6 +115,25 @@ class SelfieHandler: DocumentHandler {
       return nil
     }
     do {
+      var infoMessages:[autoSelfieInfoState:String] = [:]
+      var screenConfig:[autoSelfieConfigState:String] = [:]
+      if let generalConfig =  try Amani.sharedInstance.appConfig().getApplicationConfig().generalconfigs{
+
+        screenConfig[.primaryButtonBackgroundColor] = generalConfig.primaryButtonBackgroundColor
+        screenConfig[.appBackgroundColor] = generalConfig.appBackground
+        screenConfig[.appFontColor] = generalConfig.appFontColor
+      }
+      infoMessages[.faceTooSmall] = version.faceIsTooFarText
+      infoMessages[.notInArea] = version.faceNotInsideText
+      infoMessages[.captureDescription] = step.captureDescription
+      infoMessages[.completed] = ""
+      infoMessages[.faceIsOk] = ""
+
+      screenConfig[.ovalBorderColor] = version.ovalViewStartColor
+      screenConfig[.ovalBorderSuccessColor] = version.ovalViewSuccessColor
+      
+      currentSelfieModule.setScreenConfigs(screenConfig: screenConfig)
+      currentSelfieModule.setInfoMessages(infoMessages: infoMessages)
       stepView = try currentSelfieModule.start { image in
         self.stepView?.removeFromSuperview()
         self.startConfirmVC(image: image, docStep: step, docVer: version) { [weak self] () in
@@ -133,13 +152,53 @@ class SelfieHandler: DocumentHandler {
   private func runPoseEstimation(step: DocumentStepModel, version: DocumentVersion, completion: @escaping StepCompletionCallback)->UIView? {
     let poseCount = version.selfieType! + 1
     
-    selfieModule = Amani.sharedInstance.autoSelfie()
+    selfieModule = Amani.sharedInstance.poseEstimation()
     guard let currentSelfieModule = selfieModule as? PoseEstimation else {
       print("cant return")
       return nil
     }
     do {
-      stepView = try currentSelfieModule.start(stepId: poseCount) { image in
+      var infoMessages:[poseState:String] = [:]
+      var screenConfig:[poseConfigState:String] = [:]
+      if let generalConfig =  try Amani.sharedInstance.appConfig().getApplicationConfig().generalconfigs{
+        infoMessages[.next] = generalConfig.continueText
+        infoMessages[.confirm] = generalConfig.confirmText
+        infoMessages[.tryAgain] = generalConfig.tryAgainText
+        screenConfig[.buttonRadius] = String(generalConfig.buttonRadius!)
+        screenConfig[.primaryButtonBackgroundColor] = generalConfig.primaryButtonBackgroundColor
+        screenConfig[.primaryButtonTextColor] = generalConfig.primaryButtonTextColor
+        screenConfig[.appBackgroundColor] = generalConfig.appBackground
+        screenConfig[.appFontColor] = generalConfig.appFontColor
+      }
+     
+      infoMessages[.lookStraight] = version.keepStraightText
+      infoMessages[.wrongPose] = version.faceNotStraightText
+      infoMessages[.faceTooSmall] = version.faceIsTooFarText
+      infoMessages[.turnDown] = version.turnDownText
+      infoMessages[.turnUp] = version.turnUpText
+      infoMessages[.turnLeft] = version.turnLeftText
+      infoMessages[.turnRight] = version.turnRightText
+      infoMessages[.notInArea] = version.faceNotInsideText
+      infoMessages[.holdPhoneVertically] = version.holdStable
+      infoMessages[.informationScreenDesc1] = version.informationScreenDesc1
+      infoMessages[.informationScreenDesc2] = version.informationScreenDesc2
+      infoMessages[.informationScreenTitle] = version.informationScreenTitle
+      infoMessages[.captureDescription] = step.captureDescription
+      infoMessages[.descriptionHeader] = step.captureTitle
+      infoMessages[.errorTitle] = version.selfieAlertTitle
+      infoMessages[.errorMessage] = version.selfieAlertDescription
+      infoMessages[.closedEyes] = ""
+      infoMessages[.completed] = ""
+      infoMessages[.faceIsOk] = ""
+
+      screenConfig[.ovalBorderColor] = version.ovalViewStartColor
+      screenConfig[.ovalBorderSuccessColor] = version.ovalViewSuccessColor
+      screenConfig[.poseCount] = String(poseCount)
+      screenConfig[.secondaryGuideVisibility] = "\(version.showOnlyArrow ?? true)"
+      
+      currentSelfieModule.setInfoMessages(infoMessages: infoMessages)
+      currentSelfieModule.setScreenConfig(screenConfig: screenConfig)
+      stepView = try currentSelfieModule.start{ image in
         self.stepView?.removeFromSuperview()
         self.startConfirmVC(image: image, docStep: step, docVer: version) { [weak self] () in
           completion(.success(self!.stepViewModel))

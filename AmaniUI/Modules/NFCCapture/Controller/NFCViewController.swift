@@ -67,18 +67,20 @@ class NFCViewController: BaseViewController {
       print("idCard Type error")
       return}
     if let nvi:NviModel = AmaniUI.sharedInstance.nviData {
-      idCaptureModule.startNFC(nvi: nvi){ done in
-        doNext(done: done)
+      idCaptureModule.startNFC(nvi: nvi){[weak self] done in
+        self?.doNext(done: done)
       }
     } else {
-      idCaptureModule.startNFC(idCardType: cardType) { done in
-        doNext(done: done)
+      idCaptureModule.startNFC(idCardType: cardType) {[weak self]  done in
+        self?.doNext(done: done)
       }
     }
     
   }
   
   func doNext(done:Bool) {
+    let tryAgainText = try? Amani.sharedInstance.appConfig().getApplicationConfig().generalconfigs?.tryAgainText
+
      if done {
        DispatchQueue.main.async {
          if let onFinishCallback = self.onFinishCallback {
