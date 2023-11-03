@@ -63,9 +63,7 @@ class NFCViewController: BaseViewController {
   func scanNFC() {
     let tryAgainText = try? Amani.sharedInstance.appConfig().getApplicationConfig().generalconfigs?.tryAgainText
     let idCaptureModule = Amani.sharedInstance.IdCapture()
-    guard let cardType = documentVersion?.type else {
-      print("idCard Type error")
-      return}
+    
     if let nvi:NviModel = AmaniUI.sharedInstance.nviData {
       idCaptureModule.startNFC(nvi: nvi){[weak self] done in
         self?.doNext(done: done)

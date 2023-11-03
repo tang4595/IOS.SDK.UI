@@ -48,6 +48,11 @@ public class AmaniUI {
   public var nviData: NviModel? = nil
   public var location: CLLocation? = nil
   
+  public var idVideoRecord:Bool = false
+  public var idHologramDetection:Bool = false
+  public var poseEstimationRecord:Bool = false
+  
+  
   /**
    This method used to get SDK bundle
    - returns: Bundle
@@ -72,9 +77,9 @@ public class AmaniUI {
    
    */
   private func setBundle() {
-    if let bundle = Bundle(path: "AmaniUIv1.bundle") {
+    if let bundle = Bundle(path: "AmaniUI.bundle") {
       self.bundle = bundle
-    } else if let path = Bundle(for: AmaniBundleLocator.self).path(forResource: "AmaniUIv1", ofType: "bundle"),
+    } else if let path = Bundle(for: AmaniBundleLocator.self).path(forResource: "AmaniUI", ofType: "bundle"),
               let bundle = Bundle(path: path)  {
       self.bundle = bundle
     } else {
@@ -151,6 +156,18 @@ public class AmaniUI {
     self.location = location
     self.apiVersion = apiVersion
     self.language = language
+  }
+  
+  public func setIdVideoRecord(enable:Bool){
+    idVideoRecord = enable
+  }
+  
+  public func setIdHologramDetection(enable:Bool){
+    idHologramDetection = enable
+  }
+  
+  public func setPoseEstimationRecord(enable:Bool){
+    poseEstimationRecord = enable
   }
   
   public func showSDK(on parentViewController: UIViewController,
