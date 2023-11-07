@@ -81,7 +81,9 @@ class HomeViewController: BaseViewController {
         }
       }
       
+      
       let filteredViewModels = viewModels.filter { $0 != nil } as! [KYCStepViewModel]
+      filteredViewModels.first?.documents.first?.versions?.first?.isHidden
       stepModels = filteredViewModels.sorted { $0.sortOrder < $1.sortOrder }
     } else {
       rules.forEach { ruleModel in

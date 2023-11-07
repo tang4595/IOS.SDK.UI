@@ -30,8 +30,8 @@ class SignatureHandler: DocumentHandler {
         bundle: Bundle(for: SignatureViewController.self)
       )
       
-      SignatureVC.start( docStep: version.steps![steps.front.rawValue], version: version) {previewImage in
-        self.startConfirmVC(image: previewImage, docStep: docStep, docVer: version) { [weak self] () in
+      SignatureVC.start( docStep: version.steps![steps.front.rawValue], version: version) { [weak self] previewImage in
+        self?.startConfirmVC(image: previewImage, docStep: docStep, docVer: version) { [weak self] () in
           completion(.success(self!.stepViewModel))
           self?.topVC.navigationController?.popToViewController(ofClass: HomeViewController.self)
         }
@@ -66,21 +66,26 @@ class SignatureHandler: DocumentHandler {
   }
   
   func upload(completion: @escaping StepUploadCallback) {
-    SignatureModule.upload(location: AmaniUI.sharedInstance.location){ result in
+    SignatureModule.upload(location: AmaniUI.sharedInstance.location){ [weak self] result in
       completion(result,nil)
     }
   }
   
-  private func startSignature(step: DocumentStepModel, version: DocumentVersion, workingStepIndex:Int = 0, completion: @escaping StepCompletionCallback) -> UIView?{
+  private func startSignature(
+    step: DocumentStepModel,
+    version: DocumentVersion,
+    workingStepIndex:Int = 0,
+    completion: @escaping StepCompletionCallback) -> UIView?{
+      
     SignatureModule = Amani.sharedInstance.signature()
     var workingStep = workingStepIndex
 
     do {
       let allStepsDone = (version.steps?.count)! > workingStep
-      stepView = try SignatureModule.start { image in
-        self.stepView?.removeFromSuperview()
+      stepView = try SignatureModule.start { [weak self] image in
+        self?.stepView?.removeFromSuperview()
         
-        self.startConfirmVC(image: image, docStep: step, docVer: version) { [weak self] () in
+        self?.startConfirmVC(image: image, docStep: step, docVer: version) { [weak self] () in
           if allStepsDone {
             workingStep += 1
             

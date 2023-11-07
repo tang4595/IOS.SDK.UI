@@ -65,15 +65,15 @@ class SelfieHandler: DocumentHandler {
     guard let selfieModule = selfieModule else { return }
     
     if (selfieModule is Selfie) {
-      (selfieModule as! Selfie).upload( location: AmaniUI.sharedInstance.location) { result in
+      (selfieModule as! Selfie).upload( location: AmaniUI.sharedInstance.location) { [weak self] result in
         completion(result,nil)
       }
     } else if (selfieModule is AutoSelfie){
-      (selfieModule as! AutoSelfie).upload(location: AmaniUI.sharedInstance.location) { result in
+      (selfieModule as! AutoSelfie).upload(location: AmaniUI.sharedInstance.location) { [weak self]  result in
         completion(result,nil)
       }
     } else if (selfieModule is PoseEstimation) {
-      (selfieModule as! PoseEstimation).upload(location: AmaniUI.sharedInstance.location){ result in
+      (selfieModule as! PoseEstimation).upload(location: AmaniUI.sharedInstance.location){ [weak self] result in
         completion(result,nil)
       }
     }
@@ -89,9 +89,9 @@ class SelfieHandler: DocumentHandler {
     
     do {
       
-      stepView = try currentSelfieModule.start { image in
-        self.stepView?.removeFromSuperview()
-        self.startConfirmVC(image: image, docStep: step, docVer: version) { [weak self] () in
+      stepView = try currentSelfieModule.start { [weak self] image in
+        self?.stepView?.removeFromSuperview()
+        self?.startConfirmVC(image: image, docStep: step, docVer: version) { [weak self] () in
           completion(.success(self!.stepViewModel))
           self?.topVC.navigationController?.popToViewController(ofClass: HomeViewController.self)
         }
@@ -135,9 +135,9 @@ class SelfieHandler: DocumentHandler {
       currentSelfieModule.setScreenConfigs(screenConfig: screenConfig)
       currentSelfieModule.setInfoMessages(infoMessages: infoMessages)
       
-      stepView = try currentSelfieModule.start { image in
-        self.stepView?.removeFromSuperview()
-        self.startConfirmVC(image: image, docStep: step, docVer: version) { [weak self] () in
+      stepView = try currentSelfieModule.start { [weak self]  image in
+        self?.stepView?.removeFromSuperview()
+        self?.startConfirmVC(image: image, docStep: step, docVer: version) { [weak self] () in
           completion(.success(self!.stepViewModel))
           self?.topVC.navigationController?.popToViewController(ofClass: HomeViewController.self)
         }
@@ -200,9 +200,10 @@ class SelfieHandler: DocumentHandler {
       currentSelfieModule.setInfoMessages(infoMessages: infoMessages)
       currentSelfieModule.setScreenConfig(screenConfig: screenConfig)
       currentSelfieModule.setVideoRecording(enabled: AmaniUI.sharedInstance.poseEstimationRecord)
-      stepView = try currentSelfieModule.start{ image in
-        self.stepView?.removeFromSuperview()
-        self.startConfirmVC(image: image, docStep: step, docVer: version) { [weak self] () in
+      
+      stepView = try currentSelfieModule.start{ [weak self]  image in
+        self?.stepView?.removeFromSuperview()
+        self?.startConfirmVC(image: image, docStep: step, docVer: version) { [weak self] () in
           completion(.success(self!.stepViewModel))
           self?.topVC.navigationController?.popToViewController(ofClass: HomeViewController.self)
         }

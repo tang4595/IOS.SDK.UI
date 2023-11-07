@@ -52,7 +52,7 @@ class DocumentsHandler: NSObject, DocumentHandler{
       }
     }
     
-    ContainerVC.bind(animationName:nil, docStep: version.steps![steps.front.rawValue], step:steps.front) {[weak self] () in
+    ContainerVC.bind(animationName:nil, docStep: version.steps![steps.front.rawValue], step:steps.front) { [weak self] () in
       var documentView:UIView = UIView()
       guard let self else {return}
       documentView = self.runDocumentsScan(
@@ -67,7 +67,6 @@ class DocumentsHandler: NSObject, DocumentHandler{
   
   func upload(completion: @escaping StepUploadCallback) {
     guard let documentsModule = documentsModule else { return }
-    print(files)
     if let files = files {
       documentsModule.upload(
         location: AmaniUI.sharedInstance.location,
@@ -77,7 +76,7 @@ class DocumentsHandler: NSObject, DocumentHandler{
     }
     else {
       documentsModule.upload(
-        location: AmaniUI.sharedInstance.location){ result in
+        location: AmaniUI.sharedInstance.location){ [weak self] result in
           completion(result,nil)
         }
 
@@ -93,7 +92,7 @@ class DocumentsHandler: NSObject, DocumentHandler{
         return nil
       }
       documentsModule.setType(type: type )
-      stepView = try documentsModule.start {[weak self] image in
+      stepView = try documentsModule.start { [weak self] image in
         self?.stepView?.removeFromSuperview()
         completion(.success(self!.stepViewModel))
         self?.topVC.navigationController?.popToViewController(ofClass: HomeViewController.self)

@@ -50,7 +50,7 @@ class IdHandler: DocumentHandler {
 //            self?.stepView?.removeFromSuperview()
                     self?.frontView?.removeFromSuperview()
                     // Start the confirm vc for the front side
-                    self?.startConfirmVC(image: image, docStep: version.steps![workingStep], docVer: version) {
+                    self?.startConfirmVC(image: image, docStep: version.steps![workingStep], docVer: version) { [weak self] () in
                         // CONFIRM CALLBACK
                         // Add back id capture view to the subviews
 //                  self?.showStepView(navbarHidden: false)
@@ -76,18 +76,18 @@ class IdHandler: DocumentHandler {
         idCaptureModule.setManualCropTimeout(Timeout: 30)
 
         do {
-            showContainerVC(version: version, workingStep: workingStep) { _ in
+            showContainerVC(version: version, workingStep: workingStep) { [weak self] _ in
                 // CONFIRM CALLBACK
                 if version.steps!.count > workingStep+1 {
                     // Remove the current instance of confirm VC
 
                     // Run the back step
                     workingStep += 1
-                    self.showContainerVC(version: version, workingStep: workingStep) { _ in
-                        self.goNextStep(version: version, completion: completion)
+                  self?.showContainerVC(version: version, workingStep: workingStep) { [weak self] _ in
+                    self?.goNextStep(version: version, completion: completion)
                     }
                 } else {
-                    self.goNextStep(version: version, completion: completion)
+                  self?.goNextStep(version: version, completion: completion)
                 }
             }
 
@@ -98,7 +98,7 @@ class IdHandler: DocumentHandler {
     }
 
     func upload(completion: @escaping StepUploadCallback) {
-      idCaptureModule.upload(location: AmaniUI.sharedInstance.location){ result in
+      idCaptureModule.upload(location: AmaniUI.sharedInstance.location){ [weak self]  result in
         completion(result,nil)
       }
     }
