@@ -14,7 +14,7 @@ class IdHandler: DocumentHandler {
     var topVC: UIViewController
     var stepViewModel: KYCStepViewModel
     var docID: DocumentID
-    var backView, frontView: UIView?
+    var frontView: UIView?
 
     private let idCaptureModule = Amani.sharedInstance.IdCapture()
 
@@ -41,11 +41,15 @@ class IdHandler: DocumentHandler {
             nibName: String(describing: ContainerViewController.self),
             bundle: Bundle(for: ContainerViewController.self)
         )
+        // NOTE(ddnzcn): For future refactor consider removing this logic as this
+        // leads to repetition
+        containerVC.setDisappearCallback {
+          self.frontView?.removeFromSuperview()
+        }
 
         containerVC.bind(animationName: version.type!, docStep: version.steps![workingStep], step: steps(rawValue: workingStep) ?? steps.front) {
             print("Animation ended")
             self.frontView = try? self.idCaptureModule.start(stepId: workingStep)  { [weak self] image in
-
                 DispatchQueue.main.async {
 //            self?.stepView?.removeFromSuperview()
                     self?.frontView?.removeFromSuperview()
@@ -79,12 +83,13 @@ class IdHandler: DocumentHandler {
             showContainerVC(version: version, workingStep: workingStep) { [weak self] _ in
                 // CONFIRM CALLBACK
                 if version.steps!.count > workingStep+1 {
-                    // Remove the current instance of confirm VC
+                    // Remove the current instance of capture view
+                  self?.frontView?.removeFromSuperview()
 
                     // Run the back step
                     workingStep += 1
-                  self?.showContainerVC(version: version, workingStep: workingStep) { [weak self] _ in
-                    self?.goNextStep(version: version, completion: completion)
+                    self?.showContainerVC(version: version, workingStep: workingStep) { [weak self] _ in
+                      self?.goNextStep(version: version, completion: completion)
                     }
                 } else {
                   self?.goNextStep(version: version, completion: completion)

@@ -12,6 +12,7 @@ import AmaniSDK
 class ContainerViewController: BaseViewController {
   private var animationName : String?
   private var callback: VoidCallback?
+  private var disappearCallback: VoidCallback?
   private var docStep:DocumentStepModel?
   private var lottieAnimationView:LottieAnimationView?
   private var step:steps = .front
@@ -26,9 +27,11 @@ class ContainerViewController: BaseViewController {
     self.callback = callback
     self.step = step
     self.docStep = docStep
-    
   }
   
+  func setDisappearCallback(_ callback: @escaping VoidCallback) {
+    self.disappearCallback = callback
+  }
   
   @IBAction func ActBtnContinue(_ sender: Any) {
     lottieAnimationView?.stop()
@@ -72,6 +75,15 @@ class ContainerViewController: BaseViewController {
     let appBackground = try? Amani.sharedInstance.appConfig().getApplicationConfig().generalconfigs?.appBackground
     
     self.initialSetup()
+  }
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    // remove the sdk view on exiting by calling the callback
+    print("Container View disappear")
+    if let disappearCb = self.disappearCallback {
+      disappearCb()
+    }
+    super.viewWillDisappear(animated)
   }
   
   func initialSetup() {
