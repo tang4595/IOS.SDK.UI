@@ -74,7 +74,7 @@ class IdHandler: DocumentHandler {
     public func start(docStep: DocumentStepModel, version: DocumentVersion, workingStepIndex: Int = 0, completion: @escaping StepCompletionCallback) {
         idCaptureModule.setType(type: version.type!)
       idCaptureModule.setVideoRecording(enabled: AmaniUI.sharedInstance.idVideoRecord)
-//      idCaptureModule.setIdHologramDetection(enabled:AmaniUI.sharedInstance.idHologramDetection)
+      idCaptureModule.setIdHologramDetection(enabled:AmaniUI.sharedInstance.idHologramDetection)
         var workingStep = workingStepIndex
         // FIXME: remove or increase manualcrop timeout
         idCaptureModule.setManualCropTimeout(Timeout: 30)
