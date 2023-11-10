@@ -33,31 +33,38 @@ class SelfieHandler: DocumentHandler {
       bundle: Bundle(for: ContainerViewController.self)
     )
     self.topVC.navigationController?.pushViewController(animationVC, animated: true)
-    animationVC.bind(animationName: version.type!, docStep: version.steps![steps.front.rawValue], step:steps.front) {
-      var selfieView:UIView = UIView()
+    
+    animationVC.setDisappearCallback {
+      self.stepView?.removeFromSuperview()
+    }
+    
+    animationVC.bind(animationName: version.type!, docStep: version.steps![steps.front.rawValue], step:steps.front) {[weak self] () in
+      guard let self = self else {return}
       // Manual Selfie
       if selfieType == -1 {
-        selfieView = self.runManualSelfie(
+        self.stepView = self.runManualSelfie(
           step: docStep,
           version: version,
           completion: completion
         )!
       }
       else if selfieType == 0 {
-        selfieView = self.runAutoSelfie(
+        self.stepView = self.runAutoSelfie(
           step: docStep,
           version: version,
           completion: completion
         )!
       } else if selfieType >= 1 {
-        selfieView = self.runPoseEstimation(
+        self.stepView = self.runPoseEstimation(
           step: docStep,
           version: version,
           completion: completion
         )!
       }
-      animationVC.view.addSubview(selfieView)
-      animationVC.view.bringSubviewToFront(selfieView)
+      if let stepView = self.stepView {
+        animationVC.view.addSubview(stepView)
+        animationVC.view.bringSubviewToFront(stepView)
+      }
     }
   }
   

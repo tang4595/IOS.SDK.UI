@@ -52,16 +52,23 @@ class DocumentsHandler: NSObject, DocumentHandler{
       }
     }
     
+    ContainerVC.setDisappearCallback {
+      self.stepView?.removeFromSuperview()
+    }
+    
     ContainerVC.bind(animationName:nil, docStep: version.steps![steps.front.rawValue], step:steps.front) { [weak self] () in
-      var documentView:UIView = UIView()
       guard let self else {return}
-      documentView = self.runDocumentsScan(
+      self.stepView = self.runDocumentsScan(
         step: docStep,
         version: version,
         completion: completion
       )!
-      self.ContainerVC.view.addSubview(documentView)
-      self.ContainerVC.view.bringSubviewToFront(documentView)
+      
+      if let stepView = self.stepView {
+        self.ContainerVC.view.addSubview(stepView)
+        self.ContainerVC.view.bringSubviewToFront(stepView)
+      }
+      
     }
   }
   
