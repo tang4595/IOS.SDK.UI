@@ -77,11 +77,11 @@ class HomeViewController: BaseViewController {
       if let documents = stepConfig.documents {
         return !documents.contains { doc in
           if let versions = doc.versions {
-            return !versions.contains { version in
+            return versions.contains { version in
               return version.type == "XXX_OT"
             }
           }
-          return true
+          return false
         }
       }
       return true
