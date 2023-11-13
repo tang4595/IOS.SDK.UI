@@ -16,7 +16,8 @@ class ContainerViewController: BaseViewController {
   private var docStep:DocumentStepModel?
   private var lottieAnimationView:LottieAnimationView?
   private var step:steps = .front
-  
+    private var isDissapeared = false
+
   @IBOutlet weak var btnContinue: UIButton!
   @IBOutlet weak var animationView: UIView!
   func bind(animationName:String?,
@@ -39,6 +40,7 @@ class ContainerViewController: BaseViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+      isDissapeared = false
 
     if let animationName = animationName {
       var side:String = "front"
@@ -83,6 +85,7 @@ class ContainerViewController: BaseViewController {
     if let disappearCb = self.disappearCallback {
       disappearCb()
     }
+      isDissapeared = true
     super.viewWillDisappear(animated)
   }
   
@@ -122,10 +125,12 @@ class ContainerViewController: BaseViewController {
     lottieAnimationView!.backgroundColor = .clear
     animationView.addSubview(lottieAnimationView!)
     lottieAnimationView?.bringSubviewToFront(view)
-    lottieAnimationView!.play {[weak self] (_) in
-      self?.lottieAnimationView!.removeFromSuperview()
-      completion(steps.front.rawValue)
-    }
+      lottieAnimationView!.play {[weak self] (_) in
+          self?.lottieAnimationView!.removeFromSuperview()
+          if let isdp = self?.isDissapeared, !isdp{
+              completion(steps.front.rawValue)
+          }
+      }
     
   }
   
