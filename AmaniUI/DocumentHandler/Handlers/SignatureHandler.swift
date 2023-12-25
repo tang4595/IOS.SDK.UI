@@ -24,7 +24,7 @@ class SignatureHandler: DocumentHandler {
   
   func start(docStep: AmaniSDK.DocumentStepModel, version: AmaniSDK.DocumentVersion, workingStepIndex: Int, completion: @escaping StepCompletionCallback) {
     DispatchQueue.main.async {
-
+      
       let SignatureVC = SignatureViewController(
         nibName: String(describing: SignatureViewController.self),
         bundle: Bundle(for: SignatureViewController.self)
