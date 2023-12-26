@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 class CheckSMSViewController: KeyboardAvoidanceViewController {
-  let checkMailView = CheckMailView()
+  let checkSMSView = CheckSMSView()
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
@@ -17,21 +17,21 @@ class CheckSMSViewController: KeyboardAvoidanceViewController {
   }
   
   override func viewDidLoad() {
-    checkMailView.bind(withViewModel: CheckMailViewModel())
+    checkSMSView.bind(withViewModel: CheckSMSViewModel())
     addPoweredByIcon()
     view.backgroundColor = UIColor(hexString: "#EEF4FA")
-    contentView.addSubview(checkMailView)
-    checkMailView.translatesAutoresizingMaskIntoConstraints = false
+    contentView.addSubview(checkSMSView)
+    checkSMSView.translatesAutoresizingMaskIntoConstraints = false
     
     NSLayoutConstraint.activate([
-      checkMailView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-      checkMailView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20.0),
-      checkMailView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20.0),
+      checkSMSView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+      checkSMSView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20.0),
+      checkSMSView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20.0),
     ])
   }
   
   func setupCompletionHandler(_ handler: @escaping (() -> Void)) {
-    checkMailView.setCompletionHandler(handler)
+    checkSMSView.setCompletionHandler(handler)
   }
   
 }

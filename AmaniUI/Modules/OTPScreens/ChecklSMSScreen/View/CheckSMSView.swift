@@ -63,7 +63,7 @@ class CheckSMSView: UIView {
   
   private lazy var otpInput: RoundedTextInput = {
     let input = RoundedTextInput(
-      placeholderText: "",
+      placeholderText: "OTP Code",
       borderColor: UIColor(hexString: "#515166"),
       placeholderColor: UIColor(hexString: "#C0C0C0"),
       isPasswordToggleEnabled: false,
@@ -113,7 +113,7 @@ class CheckSMSView: UIView {
   
   let submitButton: RoundedButton = {
     let button = RoundedButton(
-      withTitle: "Verify Email",
+      withTitle: "Verify Phone",
       withColor: UIColor(hexString: "#EA3365")
     )
     return button

@@ -323,8 +323,9 @@ public class AmaniUI {
   internal func startOTPFlow() {
     let emailOTPEnabled = self.config?.generalconfigs?.emailOTPEnabled ?? false
     let phoneOTPEnabled = self.config?.generalconfigs?.phoneOTPEnabled ?? false
-    
-    guard !(emailOTPEnabled || phoneOTPEnabled) else { return }
+    print(emailOTPEnabled)
+    print(phoneOTPEnabled)
+    guard (emailOTPEnabled || phoneOTPEnabled) else { return }
     
     let otpVC = OTPViewController()
     otpVC.setup(emailEnabled: true, phoneEnabled: phoneOTPEnabled)
@@ -332,8 +333,6 @@ public class AmaniUI {
     DispatchQueue.main.async {
       self.sdkNavigationController?.pushViewController(otpVC, animated: false)
     }
-    
-    
   }
   
 }
