@@ -19,7 +19,14 @@ class OTPViewController: UIViewController {
     
     if (emailOTPEnabled) {
       startEmailFlow()
+    } else if (phoneOTPEnabled) {
+      startPhoneFlow()
     }
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    self.navigationItem.hidesBackButton = true
   }
   
   func setup(emailEnabled: Bool, phoneEnabled: Bool) {
@@ -45,7 +52,20 @@ class OTPViewController: UIViewController {
   }
   
   func startPhoneFlow() {
-    // TODO: Implement screens
+    let phoneOTPVC = PhoneOTPScreenViewController()
+    
+    phoneOTPVC.setCompletionHandler {
+      if (self.phoneOTPEnabled) {
+        self.startPhoneFlow()
+      } else {
+      // return to home.
+      self.navigationController?.popToViewController(ofClass: HomeViewController.self, animated: true)
+      }
+    }
+    
+    DispatchQueue.main.async {
+      self.navigationController?.pushViewController(phoneOTPVC, animated: false)
+    }
   }
   
 }

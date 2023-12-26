@@ -54,13 +54,17 @@ class RoundedButton: UIButton {
   }
   
   func showActivityIndicator() {
-    activityIndicator?.startAnimating()
-    isEnabled = false
+    DispatchQueue.main.async {
+      self.activityIndicator?.startAnimating()
+      self.isEnabled = false
+    }
   }
   
   func hideActivityIndicator() {
-    activityIndicator?.stopAnimating()
-    isEnabled = true
+    DispatchQueue.main.async {
+      self.activityIndicator?.stopAnimating()
+      self.isEnabled = true
+    }
   }
   
   @objc

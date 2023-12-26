@@ -6,6 +6,7 @@
 //
 import Foundation
 import UIKit
+import AmaniSDK
 
 class KeyboardAvoidanceViewController: BaseViewController {
   private lazy var scrollView: UIScrollView = {
@@ -117,6 +118,15 @@ class KeyboardAvoidanceViewController: BaseViewController {
       ),
       heightConstraint
     ])
+    // TODO: OTP Screen titles?
+    setupNavigationBackButton()
+  }
+  
+  func setupNavigationBackButton() {
+    let appConfig = try! Amani.sharedInstance.appConfig().getApplicationConfig()
+    let buttonRadious = CGFloat(appConfig.generalconfigs?.buttonRadius ?? 10)
+    
+    self.setNavigationLeftButton(TintColor: appConfig.generalconfigs?.topBarFontColor ?? "ffffff")
   }
   
   @objc private func keyboardFrameWillChange(_ notification: Notification) {

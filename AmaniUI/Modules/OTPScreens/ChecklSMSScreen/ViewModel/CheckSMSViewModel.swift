@@ -1,15 +1,15 @@
 //
-//  CheckMailViewModel.swift
-//  AmaniStudio
+//  CheckSMSViewModel.swift
+//  AmaniUI
 //
-//  Created by Deniz Can on 11.12.2023.
+//  Created by Deniz Can on 26.12.2023.
 //
 
 import Foundation
 import Combine
 import AmaniSDK
 
-class CheckMailViewModel {
+class CheckSMSViewModel {
   private let customerInfo = Amani.sharedInstance.customerInfo()
   
   enum ViewState {
@@ -43,8 +43,9 @@ class CheckMailViewModel {
   }
   
   func resendOTP() {
-    customerInfo.requestEmailOTPCode {_ in 
+    customerInfo.requestEmailOTPCode {_ in
       // NO-OP?
+      // error handling maybe?
     }
   }
   

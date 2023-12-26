@@ -31,6 +31,9 @@
 		48EAA84D29E37C98001A2A35 /* SignatureViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48B909FF29A264B700508E63 /* SignatureViewController.xib */; };
 		48EAA84E29E37C9B001A2A35 /* SignatureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B90A0129A2656100508E63 /* SignatureViewController.swift */; };
 		C50D99012B3A0B41002FF86F /* OTPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50D99002B3A0B41002FF86F /* OTPViewController.swift */; };
+		C523DEF72B3A740B00F68E32 /* CheckSMSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C523DEF62B3A740B00F68E32 /* CheckSMSViewController.swift */; };
+		C523DEFA2B3A745F00F68E32 /* CheckSMSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C523DEF92B3A745F00F68E32 /* CheckSMSView.swift */; };
+		C523DEFD2B3A747100F68E32 /* CheckSMSViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C523DEFC2B3A747100F68E32 /* CheckSMSViewModel.swift */; };
 		C52A985E28F5954300D43ABF /* DocConfirmationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C52A985D28F5954300D43ABF /* DocConfirmationViewController.xib */; };
 		C52F144D28F5AE3D00D7A5A6 /* VersionSelectTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C52F144928F5AE3D00D7A5A6 /* VersionSelectTableViewCell.xib */; };
 		C52F144E28F5AE3D00D7A5A6 /* VersionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C52F144A28F5AE3D00D7A5A6 /* VersionViewController.xib */; };
@@ -94,6 +97,9 @@
 		48DF760D29699A81000D519A /* ContainerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContainerViewController.xib; sourceTree = "<group>"; };
 		48DF760F29699A8F000D519A /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		C50D99002B3A0B41002FF86F /* OTPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTPViewController.swift; sourceTree = "<group>"; };
+		C523DEF62B3A740B00F68E32 /* CheckSMSViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckSMSViewController.swift; sourceTree = "<group>"; };
+		C523DEF92B3A745F00F68E32 /* CheckSMSView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckSMSView.swift; sourceTree = "<group>"; };
+		C523DEFC2B3A747100F68E32 /* CheckSMSViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckSMSViewModel.swift; sourceTree = "<group>"; };
 		C52A985D28F5954300D43ABF /* DocConfirmationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DocConfirmationViewController.xib; sourceTree = "<group>"; };
 		C52F144928F5AE3D00D7A5A6 /* VersionSelectTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VersionSelectTableViewCell.xib; sourceTree = "<group>"; };
 		C52F144A28F5AE3D00D7A5A6 /* VersionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VersionViewController.xib; sourceTree = "<group>"; };
@@ -222,6 +228,32 @@
 				48DF760F29699A8F000D519A /* ContainerViewController.swift */,
 			);
 			path = ContainerVC;
+			sourceTree = "<group>";
+		};
+		C523DEF52B3A73EC00F68E32 /* ChecklSMSScreen */ = {
+			isa = PBXGroup;
+			children = (
+				C523DEFB2B3A746300F68E32 /* ViewModel */,
+				C523DEF82B3A740F00F68E32 /* View */,
+				C523DEF62B3A740B00F68E32 /* CheckSMSViewController.swift */,
+			);
+			path = ChecklSMSScreen;
+			sourceTree = "<group>";
+		};
+		C523DEF82B3A740F00F68E32 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C523DEF92B3A745F00F68E32 /* CheckSMSView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		C523DEFB2B3A746300F68E32 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				C523DEFC2B3A747100F68E32 /* CheckSMSViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		C52F144728F5AE0400D7A5A6 /* VersionSelect */ = {
@@ -473,8 +505,9 @@
 		C5FD512F2B39BCA30057DB87 /* OTPScreens */ = {
 			isa = PBXGroup;
 			children = (
-				C5A4506A2B3A33580064AAA7 /* PhoneOTPScreen */,
 				C5BBD3422B39EBB500A856CC /* Utils */,
+				C523DEF52B3A73EC00F68E32 /* ChecklSMSScreen */,
+				C5A4506A2B3A33580064AAA7 /* PhoneOTPScreen */,
 				C5FD51422B39BF160057DB87 /* CheckMailScreen */,
 				C5FD51372B39BD8C0057DB87 /* EmailOTPScreen */,
 				C5FD51302B39BD2D0057DB87 /* Components */,
@@ -656,6 +689,8 @@
 				C53C475728C9E2AF00FA10B6 /* KYCStepViewModel.swift in Sources */,
 				C5FD51482B39BF240057DB87 /* CheckMailView.swift in Sources */,
 				C52F145928F9819100D7A5A6 /* NFCViewController.swift in Sources */,
+				C523DEFD2B3A747100F68E32 /* CheckSMSViewModel.swift in Sources */,
+				C523DEFA2B3A745F00F68E32 /* CheckSMSView.swift in Sources */,
 				C54B58B428C761BF005DBAA9 /* UIColorExtensions.swift in Sources */,
 				C5A4506F2B3A338F0064AAA7 /* PhoneOTPView.swift in Sources */,
 				C5BBD3442B39EBC400A856CC /* KeyboardAvoidenceViewController.swift in Sources */,
@@ -678,6 +713,7 @@
 				48EAA84E29E37C9B001A2A35 /* SignatureViewController.swift in Sources */,
 				C54B58B128C76160005DBAA9 /* BaseViewController.swift in Sources */,
 				C5FD514A2B39BF240057DB87 /* CheckMailViewModel.swift in Sources */,
+				C523DEF72B3A740B00F68E32 /* CheckSMSViewController.swift in Sources */,
 				C53C475128C7B39800FA10B6 /* Constants.swift in Sources */,
 				C5984DD728F9B35000DA64B3 /* UINavigationControllerExtensions.swift in Sources */,
 				C539A5C9290FE9F9003386F8 /* SuccessViewController.swift in Sources */,

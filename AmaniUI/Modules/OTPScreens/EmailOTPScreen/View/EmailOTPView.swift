@@ -18,7 +18,6 @@ class EmailOTPView: UIView {
     let label = UILabel()
     label.text = "Verify Email Address"
     label.font = UIFont.systemFont(ofSize: 20.0, weight: .bold)
-    label.textAlignment = .center
     label.textColor = UIColor(hexString: "#20202F")
     return label
   }()
@@ -28,7 +27,6 @@ class EmailOTPView: UIView {
     label.text = "We will send you a ‘one time PIN’ to reset your password"
     label.font = UIFont.systemFont(ofSize: 16.0, weight: .light)
     label.numberOfLines = 2
-    label.textAlignment = .center
     label.textColor = UIColor(hexString: "#20202F")
     
     return label
@@ -86,9 +84,9 @@ class EmailOTPView: UIView {
     stackView.distribution = .fill
     stackView.spacing = 0.0
     
-    stackView.setCustomSpacing(36.0, after: titleText)
-    stackView.setCustomSpacing(36.0, after: descriptionText)
-    stackView.setCustomSpacing(80.0, after: formView)
+    stackView.setCustomSpacing(16.0, after: titleText)
+    stackView.setCustomSpacing(80.0, after: descriptionText)
+    stackView.setCustomSpacing(150.0, after: formView)
     
     
     return stackView

@@ -1,43 +1,42 @@
 //
-//  CheckMailView.swift
-//  AmaniStudio
+//  CheckSMSView.swift
+//  AmaniUI
 //
-//  Created by Deniz Can on 11.12.2023.
+//  Created by Deniz Can on 26.12.2023.
 //
 
-import Combine
 import Foundation
 import UIKit
+import Combine
 
-class CheckMailView: UIView {
-  private var viewModel: CheckMailViewModel!
+class CheckSMSView: UIView {
+  private var viewModel: CheckSMSViewModel!
   private var cancellables = Set<AnyCancellable>()
   private var completionHandler: (() -> Void)!
   private var shouldShowError: Bool?
-
-  private var retryTime = 180 // 3 minutes
+  
+  private var retryTime = 120 // 2 minutes
   private var timer: Timer?
-
+  
   // MARK: Info Section
-
   private lazy var titleText: UILabel = {
     let label = UILabel()
     label.font = UIFont.systemFont(ofSize: 22.0, weight: .bold)
-    label.text = "Check your Email"
+    label.text = "Check your SMS"
     label.textColor = UIColor(hexString: "#20202F")
     return label
   }()
-
+  
   private lazy var titleDescription: UILabel = {
     let label = UILabel()
     label.font = UIFont.systemFont(ofSize: 16.0, weight: .light)
-    label.text = "Please check your inbox and enter the OTP (One Time PIN) you received"
+    label.text = "Please check your SMS messages and enter the OTP (One Time PIN) you received"
     label.numberOfLines = 2
     label.lineBreakMode = .byTruncatingMiddle
     label.textColor = UIColor(hexString: "#20202F")
     return label
   }()
-
+  
   private lazy var titleStackView: UIStackView = {
     let stackView = UIStackView(arrangedSubviews: [
       titleText,
@@ -49,19 +48,19 @@ class CheckMailView: UIView {
     stackView.spacing = 16.0
     return stackView
   }()
-
+  
   // MARK: Form Area
-
+  
   private lazy var otpLegendRow: UIStackView = {
     let label = UILabel()
     label.text = "OTP (One Time PIN)"
     label.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
     label.textColor = UIColor(hexString: "#20202F")
-
+    
     let stackView = UIStackView(arrangedSubviews: [label])
     return stackView
   }()
-
+  
   private lazy var otpInput: RoundedTextInput = {
     let input = RoundedTextInput(
       placeholderText: "",
@@ -72,22 +71,22 @@ class CheckMailView: UIView {
     )
     return input
   }()
-
+  
   // MARK: OTP Timer
-
+  
   private lazy var timerButton: UIButton = {
     let button = UIButton()
     button.isEnabled = false
     return button
   }()
-
+  
   private lazy var timerLabel: UILabel = {
     let label = UILabel()
     label.text = "in 03:00"
     label.font = .systemFont(ofSize: 15.0, weight: .regular)
     return label
   }()
-
+  
   private lazy var timerRow: UIStackView = {
     let stackView = UIStackView(arrangedSubviews: [timerButton, timerLabel])
     stackView.axis = .horizontal
@@ -96,22 +95,22 @@ class CheckMailView: UIView {
     stackView.spacing = 6.0
     return stackView
   }()
-
+  
   private lazy var formStackView: UIStackView = {
     let stackView = UIStackView(arrangedSubviews: [
       otpLegendRow,
       otpInput,
       timerRow,
     ])
-
+    
     stackView.axis = .vertical
     stackView.spacing = 6.0
     stackView.setCustomSpacing(32.0, after: otpInput)
     return stackView
   }()
-
+  
   // MARK: Form Buttons
-
+  
   let submitButton: RoundedButton = {
     let button = RoundedButton(
       withTitle: "Verify Email",
@@ -119,7 +118,7 @@ class CheckMailView: UIView {
     )
     return button
   }()
-
+  
   private lazy var mainStackView: UIStackView = {
     let stackView = UIStackView(arrangedSubviews: [
       titleStackView,
@@ -133,17 +132,17 @@ class CheckMailView: UIView {
     stackView.setCustomSpacing(84.0, after: formStackView)
     return stackView
   }()
-
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
     setupUI()
     startRetryTimer()
   }
-
+  
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-
+  
   func setupUI() {
     addSubview(mainStackView)
     mainStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -159,10 +158,10 @@ class CheckMailView: UIView {
   func startRetryTimer() {
     timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
   }
-
+  
   @objc func updateTimer() {
     retryTime -= 1
-
+    
     if retryTime < 0 {
       timer?.invalidate()
       timerButton.isEnabled = true
@@ -175,23 +174,23 @@ class CheckMailView: UIView {
       timerButton.setAttributedTitle(
         NSAttributedString(string: "Resend OTP", attributes: attr), for: .normal)
       timerButton.contentHorizontalAlignment = .center
-
+      
       timerLabel.isHidden = true
     }
-
+    
     let minutes = (retryTime / 60)
     let seconds = (retryTime % 60)
-
+    
     timerLabel.text = String(format: "in %02d:%02d", minutes, seconds)
   }
-
-  func bind(withViewModel viewModel: CheckMailViewModel) {
+  
+  func bind(withViewModel viewModel: CheckSMSViewModel) {
     otpInput.setDelegate(delegate: self)
-
+    
     otpInput.textPublisher
       .assign(to: \.otp, on: viewModel)
       .store(in: &cancellables)
-
+    
     viewModel.isOTPValidPublisher.sink(receiveValue: { [weak self] isValidOTP in
       if !isValidOTP && (self?.shouldShowError != nil) {
         self?.shouldShowError = true
@@ -200,7 +199,7 @@ class CheckMailView: UIView {
         self?.otpInput.hideError()
       }
     }).store(in: &cancellables)
-
+    
     viewModel.$state
       .sink { [weak self] state in
         switch state {
@@ -216,11 +215,11 @@ class CheckMailView: UIView {
         }
       }
       .store(in: &cancellables)
-
+    
     submitButton.bind {
       viewModel.submitOTP()
     }
-
+    
     self.viewModel = viewModel
   }
   
@@ -246,15 +245,14 @@ class CheckMailView: UIView {
     setTimerButtonDefaultStylings()
     startRetryTimer()
   }
-
+  
   func setCompletionHandler(_ handler: @escaping (() -> Void)) {
     completionHandler = handler
   }
 }
 
 // MARK: TextFieldDelegate
-
-extension CheckMailView: UITextFieldDelegate {
+extension CheckSMSView: UITextFieldDelegate {
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     viewModel.submitOTP()
     return true

@@ -1,14 +1,14 @@
 //
-//  CheckMailViewController.swift
-//  AmaniStudio
+//  CheckSMSViewController.swift
+//  AmaniUI
 //
-//  Created by Deniz Can on 11.12.2023.
+//  Created by Deniz Can on 26.12.2023.
 //
 
 import Foundation
 import UIKit
 
-class CheckMailViewController: KeyboardAvoidanceViewController {
+class CheckSMSViewController: KeyboardAvoidanceViewController {
   let checkMailView = CheckMailView()
   
   override func viewWillAppear(_ animated: Bool) {
