@@ -9,7 +9,16 @@ import Foundation
 import UIKit
 
 class CheckSMSViewController: KeyboardAvoidanceViewController {
-  let checkSMSView = CheckSMSView()
+  private var checkSMSView: CheckSMSView!
+  
+  override init() {
+    super.init()
+    checkSMSView = CheckSMSView()
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)

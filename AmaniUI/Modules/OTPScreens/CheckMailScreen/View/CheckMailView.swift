@@ -154,7 +154,7 @@ class CheckMailView: UIView {
       object: nil
     )
   }
-
+  
   // MARK: Setup UI
   func setupUI() {
     addSubview(mainStackView)
@@ -219,7 +219,9 @@ class CheckMailView: UIView {
         case .loading:
           self?.submitButton.showActivityIndicator()
         case .success:
-          self?.completionHandler()
+          DispatchQueue.main.async {
+            self?.completionHandler()
+          }
           self?.submitButton.hideActivityIndicator()
         case .failed:
           self?.submitButton.hideActivityIndicator()

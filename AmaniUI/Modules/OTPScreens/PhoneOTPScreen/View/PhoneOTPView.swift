@@ -13,6 +13,7 @@ class PhoneOTPView: UIView {
   
   private var cancellables = Set<AnyCancellable>()
   private var viewModel: PhoneOTPViewModel!
+  private var completion: (() -> Void)? = nil
   
   private lazy var titleText: UILabel = {
     let label = UILabel()
@@ -95,10 +96,19 @@ class PhoneOTPView: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
     setupUI()
+    setupErrorHandling()
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+  deinit {
+    NotificationCenter.default.removeObserver(
+      self,
+      name: NSNotification.Name("ai.amani.onError"),
+      object: nil
+    )
   }
   
   func setupUI() {
@@ -134,7 +144,11 @@ class PhoneOTPView: UIView {
         case .loading:
           self?.submitButton.showActivityIndicator()
         case .success:
-          // TODO: Navigate to CheckEmailScreen
+          DispatchQueue.main.async {
+            if let completion = self?.completion {
+              completion()
+            }
+          }
           self?.submitButton.hideActivityIndicator()
         case .failed:
           self?.submitButton.hideActivityIndicator()
@@ -151,9 +165,37 @@ class PhoneOTPView: UIView {
     self.viewModel = viewModel
   }
   
-  func setSubmitButtonHandler(handler: @escaping () -> Void) {
-    submitButton.bind {
-      handler()
+  func setCompletion(handler: @escaping () -> Void) {
+    self.completion = handler
+  }
+  
+  func setupErrorHandling() {
+    NotificationCenter.default.addObserver(self, selector: #selector(didReceiveError(_:)), name: Notification.Name("ai.amani.onError"), object: nil)
+  }
+  
+  @objc func didReceiveError(_ notification: Notification) {
+    //                                            type, errors
+    if let errorObjc = notification.object as? [String: Any] {
+      let type = errorObjc["type"] as! String
+      let errors = errorObjc["errors"] as! [[String: String]]
+      if (type == "customer_error") {
+        if let errorMessageJson = errors.first?["errorMessage"] {
+          if let detail = try? JSONDecoder()
+            .decode(
+              [String: String].self,
+              from: errorMessageJson.data(using: .utf8)!
+            ) {
+            let message = detail["detail"]
+            DispatchQueue.main.async {
+              self.phoneInput.showError(message: message!)
+            }
+          }
+        } else {
+          DispatchQueue.main.async {
+            self.phoneInput.showError(message: "There is a problem with this phone number")
+          }
+        }
+      }
     }
   }
   

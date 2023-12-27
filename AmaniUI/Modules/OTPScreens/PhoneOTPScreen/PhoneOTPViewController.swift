@@ -9,9 +9,17 @@ import Foundation
 import UIKit
 
 class PhoneOTPScreenViewController: KeyboardAvoidanceViewController {
-  let phoneOTPView = PhoneOTPView()
-  let phoneOTPViewModel = PhoneOTPViewModel()
+  private var phoneOTPView: PhoneOTPView!
   private var handler: (() -> Void)? = nil
+  
+  override init() {
+    super.init()
+    phoneOTPView = PhoneOTPView()
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
   
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
@@ -23,9 +31,9 @@ class PhoneOTPScreenViewController: KeyboardAvoidanceViewController {
   }
   
   override func viewDidLoad() {
-    phoneOTPView.bind(withViewModel: phoneOTPViewModel)
+    phoneOTPView.bind(withViewModel: PhoneOTPViewModel())
     
-    phoneOTPView.setSubmitButtonHandler {[weak self] in
+    phoneOTPView.setCompletion {[weak self] in
       let checkSMSViewController = CheckSMSViewController()
       
       checkSMSViewController.setupCompletionHandler {
