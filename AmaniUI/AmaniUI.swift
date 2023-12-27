@@ -328,10 +328,10 @@ public class AmaniUI {
     let customer = Amani.sharedInstance.customerInfo().getCustomer()
     let emailOTPCompleted = customer.emailVerified!
     let phoneOTPCompleted = customer.phoneVerified!
-    let goesToPhone = phoneOTPEnabled && phoneOTPCompleted
+    let goesToPhone = phoneOTPEnabled && !phoneOTPCompleted
     
     if (emailOTPEnabled && !emailOTPCompleted) {
-      startEmailFlow()
+      startEmailFlow(goesToPhone: goesToPhone)
       return
     } else if (phoneOTPEnabled && !phoneOTPCompleted) {
       startPhoneFlow()
