@@ -56,7 +56,7 @@ class CheckMailViewModel {
       return false
     }
     
-    return otp.count == 7
+    return true
   }
   
 }

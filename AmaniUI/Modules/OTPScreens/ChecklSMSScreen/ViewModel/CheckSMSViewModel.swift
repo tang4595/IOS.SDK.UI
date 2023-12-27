@@ -57,7 +57,7 @@ class CheckSMSViewModel {
       return false
     }
     
-    return otp.count == 7
+    return true
   }
   
 }
