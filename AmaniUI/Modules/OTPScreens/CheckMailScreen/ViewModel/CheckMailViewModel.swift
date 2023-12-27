@@ -29,7 +29,7 @@ class CheckMailViewModel {
   }
   
   func submitOTP() {
-    guard !self.isValidOTPCode() else { return }
+    guard self.isValidOTPCode() else { return }
     
     self.state = .loading
     customerInfo.submitEmailOTP(code: otp) {[weak self] success in

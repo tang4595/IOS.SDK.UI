@@ -13,6 +13,7 @@ class EmailOTPView: UIView {
   
   private var cancellables = Set<AnyCancellable>()
   private var viewModel: EmailOTPViewModel!
+  private var completionHandler: (() -> Void)? = nil
   
   private lazy var titleText: UILabel = {
     let label = UILabel()
@@ -134,7 +135,11 @@ class EmailOTPView: UIView {
         case .loading:
           self?.submitButton.showActivityIndicator()
         case .success:
-          // TODO: Navigate to CheckEmailScreen
+          DispatchQueue.main.async {
+            if let handler = self?.completionHandler {
+              handler()
+            }
+          }
           self?.submitButton.hideActivityIndicator()
         case .failed:
           self?.submitButton.hideActivityIndicator()
@@ -151,10 +156,8 @@ class EmailOTPView: UIView {
     self.viewModel = viewModel
   }
   
-  func setSubmitButtonHandler(handler: @escaping () -> Void) {
-    submitButton.bind {
-      handler()
-    }
+  func setCompletion(handler: @escaping () -> Void) {
+    self.completionHandler = handler
   }
   
 }

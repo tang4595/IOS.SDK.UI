@@ -31,14 +31,17 @@ class EmailOTPViewModel {
     state = .loading
     customerInfo.setEmail(email: email)
     customerInfo.upload(
-      location: AmaniUI.sharedInstance.location) { [weak self] _ in
-        guard let self = self else {return}
+      location: AmaniUI.sharedInstance.location) { [weak self] emailChanged in
         
-        self.customerInfo.requestEmailOTPCode { success in
-          if let success = success {
-            self.state = .success
+        if emailChanged == false {
+          self?.state = .failed
+        }
+        
+        self?.customerInfo.requestEmailOTPCode { success in
+          if success == true {
+            self?.state = .success
           } else {
-            self.state = .failed
+            self?.state = .failed
           }
         }
       }

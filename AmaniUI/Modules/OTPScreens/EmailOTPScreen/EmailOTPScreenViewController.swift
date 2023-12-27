@@ -25,7 +25,7 @@ class EmailOTPScreenViewController: KeyboardAvoidanceViewController {
   override func viewDidLoad() {
     emailOTPView.bind(withViewModel: emailOTPViewModel)
     
-    emailOTPView.setSubmitButtonHandler {[weak self] in
+    emailOTPView.setCompletion {[weak self] in
       let checkMailViewController = CheckMailViewController()
       
       checkMailViewController.setupCompletionHandler {

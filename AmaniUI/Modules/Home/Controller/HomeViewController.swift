@@ -156,6 +156,10 @@ extension HomeViewController {
 }
 extension HomeViewController:AmaniDelegate{
   func onError(type: String, error: [AmaniSDK.AmaniError]) {
+    // NOTE: This notification is used for internal error handling.
+    let errors = error.map { $0.toDictonary() }
+    let errorObject: [String: Any] = ["type": type, "errors": errors]
+    NotificationCenter.default.post(name: NSNotification.Name("ai.amani.onError"), object: errorObject)
     AmaniUI.sharedInstance.delegate?.onError(type: type, Error: error)
   }
   

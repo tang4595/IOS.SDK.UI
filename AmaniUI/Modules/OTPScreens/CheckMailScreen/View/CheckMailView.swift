@@ -8,6 +8,7 @@
 import Combine
 import Foundation
 import UIKit
+import AmaniSDK
 
 class CheckMailView: UIView {
   private var viewModel: CheckMailViewModel!
@@ -134,16 +135,27 @@ class CheckMailView: UIView {
     return stackView
   }()
 
+  // MARK: Initializers
   override init(frame: CGRect) {
     super.init(frame: frame)
     setupUI()
     startRetryTimer()
+    setupErrorHandling()
   }
-
+  
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+  
+  deinit {
+    NotificationCenter.default.removeObserver(
+      self,
+      name: NSNotification.Name("ai.amani.onError"),
+      object: nil
+    )
+  }
 
+  // MARK: Setup UI
   func setupUI() {
     addSubview(mainStackView)
     mainStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -193,7 +205,7 @@ class CheckMailView: UIView {
       .store(in: &cancellables)
 
     viewModel.isOTPValidPublisher.sink(receiveValue: { [weak self] isValidOTP in
-      if !isValidOTP && (self?.shouldShowError != nil) {
+      if !isValidOTP && (self?.shouldShowError != false) {
         self?.shouldShowError = true
         self?.otpInput.showError(message: "OTP Code is not valid")
       } else {
@@ -250,6 +262,37 @@ class CheckMailView: UIView {
   func setCompletionHandler(_ handler: @escaping (() -> Void)) {
     completionHandler = handler
   }
+  
+  func setupErrorHandling() {
+    NotificationCenter.default.addObserver(self, selector: #selector(didReceiveError(_:)), name: Notification.Name("ai.amani.onError"), object: nil)
+  }
+  
+  @objc func didReceiveError(_ notification: Notification) {
+  //                                            type, errors
+    if let errorObjc = notification.object as? [String: Any] {
+      let type = errorObjc["type"] as! String
+      let errors = errorObjc["errors"] as! [[String: String]]
+      if (type == "OTP_error") {
+        if let errorMessageJson = errors.first?["errorMessage"] {
+          if let detail = try? JSONDecoder()
+            .decode(
+              [String: String].self,
+              from: errorMessageJson.data(using: .utf8)!
+            ) {
+            let message = detail["detail"]
+            DispatchQueue.main.async {
+              self.otpInput.showError(message: message!)
+            }
+          }
+        } else {
+          DispatchQueue.main.async {
+            self.otpInput.showError(message: "There is a problem with OTP Code")
+          }
+        }
+      }
+    }
+  }
+  
 }
 
 // MARK: TextFieldDelegate

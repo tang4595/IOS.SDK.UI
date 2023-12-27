@@ -34,6 +34,7 @@
 		C523DEF72B3A740B00F68E32 /* CheckSMSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C523DEF62B3A740B00F68E32 /* CheckSMSViewController.swift */; };
 		C523DEFA2B3A745F00F68E32 /* CheckSMSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C523DEF92B3A745F00F68E32 /* CheckSMSView.swift */; };
 		C523DEFD2B3A747100F68E32 /* CheckSMSViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C523DEFC2B3A747100F68E32 /* CheckSMSViewModel.swift */; };
+		C523DF002B3BF75A00F68E32 /* AmaniErrorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C523DEFF2B3BF75900F68E32 /* AmaniErrorExtensions.swift */; };
 		C52A985E28F5954300D43ABF /* DocConfirmationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C52A985D28F5954300D43ABF /* DocConfirmationViewController.xib */; };
 		C52F144D28F5AE3D00D7A5A6 /* VersionSelectTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C52F144928F5AE3D00D7A5A6 /* VersionSelectTableViewCell.xib */; };
 		C52F144E28F5AE3D00D7A5A6 /* VersionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C52F144A28F5AE3D00D7A5A6 /* VersionViewController.xib */; };
@@ -100,6 +101,7 @@
 		C523DEF62B3A740B00F68E32 /* CheckSMSViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckSMSViewController.swift; sourceTree = "<group>"; };
 		C523DEF92B3A745F00F68E32 /* CheckSMSView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckSMSView.swift; sourceTree = "<group>"; };
 		C523DEFC2B3A747100F68E32 /* CheckSMSViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckSMSViewModel.swift; sourceTree = "<group>"; };
+		C523DEFF2B3BF75900F68E32 /* AmaniErrorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmaniErrorExtensions.swift; sourceTree = "<group>"; };
 		C52A985D28F5954300D43ABF /* DocConfirmationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DocConfirmationViewController.xib; sourceTree = "<group>"; };
 		C52F144928F5AE3D00D7A5A6 /* VersionSelectTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VersionSelectTableViewCell.xib; sourceTree = "<group>"; };
 		C52F144A28F5AE3D00D7A5A6 /* VersionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VersionViewController.xib; sourceTree = "<group>"; };
@@ -412,6 +414,7 @@
 				C54B58B328C761BF005DBAA9 /* UIColorExtensions.swift */,
 				C53C474E28C7718300FA10B6 /* UIViewExtensions.swift */,
 				C5984DD628F9B35000DA64B3 /* UINavigationControllerExtensions.swift */,
+				C523DEFF2B3BF75900F68E32 /* AmaniErrorExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -702,6 +705,7 @@
 				C54B58AC28C75279005DBAA9 /* KYCStepTableViewCell.swift in Sources */,
 				C53C474F28C7718300FA10B6 /* UIViewExtensions.swift in Sources */,
 				C539A5C329093DB4003386F8 /* AlertDialougeUtility.swift in Sources */,
+				C523DF002B3BF75A00F68E32 /* AmaniErrorExtensions.swift in Sources */,
 				C5FD51342B39BD2D0057DB87 /* RoundedTextInput.swift in Sources */,
 				C52F144F28F5AE3D00D7A5A6 /* VersionViewController.swift in Sources */,
 				C50D99012B3A0B41002FF86F /* OTPViewController.swift in Sources */,
