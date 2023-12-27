@@ -323,17 +323,54 @@ public class AmaniUI {
   internal func startOTPFlow() {
     let emailOTPEnabled = self.config?.generalconfigs?.emailOTPEnabled ?? false
     let phoneOTPEnabled = self.config?.generalconfigs?.phoneOTPEnabled ?? false
-    print(emailOTPEnabled)
-    print(phoneOTPEnabled)
     guard (emailOTPEnabled || phoneOTPEnabled) else { return }
     
-    let otpVC = OTPViewController()
-    otpVC.setup(emailEnabled: true, phoneEnabled: phoneOTPEnabled)
+    let customer = Amani.sharedInstance.customerInfo().getCustomer()
+    let emailOTPCompleted = customer.emailVerified!
+    let phoneOTPCompleted = customer.phoneVerified!
+    let goesToPhone = phoneOTPEnabled && phoneOTPCompleted
     
-    DispatchQueue.main.async {
-      self.sdkNavigationController?.pushViewController(otpVC, animated: false)
+    if (emailOTPEnabled && !emailOTPCompleted) {
+      startEmailFlow()
+      return
+    } else if (phoneOTPEnabled && !phoneOTPCompleted) {
+      startPhoneFlow()
+      return
     }
   }
+  
+  internal func startEmailFlow(goesToPhone: Bool = false) {
+    let emailOTPVC = EmailOTPScreenViewController()
+    
+    emailOTPVC.setCompletionHandler {[weak self] in
+      guard let self = self else { return }
+      
+      if (goesToPhone) {
+        self.startPhoneFlow()
+      } else {
+        self.sdkNavigationController?.popToViewController(ofClass: HomeViewController.self, animated: true)
+      }
+    }
+    
+    DispatchQueue.main.async {
+      self.sdkNavigationController?.pushViewController(emailOTPVC, animated: false)
+    }
+  }
+  
+  internal func startPhoneFlow() {
+    let phoneOTPVC = PhoneOTPScreenViewController()
+    
+    phoneOTPVC.setCompletionHandler {[weak self] in
+      // return to home.
+      self?.sdkNavigationController?.popToViewController(ofClass: HomeViewController.self, animated: true)
+    }
+    
+    DispatchQueue.main.async {
+      self.sdkNavigationController!.pushViewController(phoneOTPVC, animated: false)
+    }
+  }
+  
+  
   
 }
 //extension AmaniUIv1:AmaniDelegate{

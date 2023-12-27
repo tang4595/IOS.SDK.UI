@@ -35,6 +35,7 @@ class EmailOTPViewModel {
         
         if emailChanged == false {
           self?.state = .failed
+          return
         }
         
         self?.customerInfo.requestEmailOTPCode { success in

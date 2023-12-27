@@ -137,6 +137,7 @@ class CheckSMSView: UIView {
     super.init(frame: frame)
     setupUI()
     startRetryTimer()
+    setupErrorHandling()
   }
   
   required init?(coder: NSCoder) {
@@ -206,7 +207,9 @@ class CheckSMSView: UIView {
         case .loading:
           self?.submitButton.showActivityIndicator()
         case .success:
-          self?.completionHandler()
+          DispatchQueue.main.async {
+            self?.completionHandler()
+          }
           self?.submitButton.hideActivityIndicator()
         case .failed:
           self?.submitButton.hideActivityIndicator()
@@ -248,6 +251,36 @@ class CheckSMSView: UIView {
   
   func setCompletionHandler(_ handler: @escaping (() -> Void)) {
     completionHandler = handler
+  }
+  
+  func setupErrorHandling() {
+    NotificationCenter.default.addObserver(self, selector: #selector(didReceiveError(_:)), name: Notification.Name("ai.amani.onError"), object: nil)
+  }
+  
+  @objc func didReceiveError(_ notification: Notification) {
+    //                                            type, errors
+    if let errorObjc = notification.object as? [String: Any] {
+      let type = errorObjc["type"] as! String
+      let errors = errorObjc["errors"] as! [[String: String]]
+      if (type == "OTP_error") {
+        if let errorMessageJson = errors.first?["errorMessage"] {
+          if let detail = try? JSONDecoder()
+            .decode(
+              [String: String].self,
+              from: errorMessageJson.data(using: .utf8)!
+            ) {
+            let message = detail["detail"]
+            DispatchQueue.main.async {
+              self.otpInput.showError(message: message!)
+            }
+          }
+        } else {
+          DispatchQueue.main.async {
+            self.otpInput.showError(message: "There is a problem with OTP Code")
+          }
+        }
+      }
+    }
   }
 }
 

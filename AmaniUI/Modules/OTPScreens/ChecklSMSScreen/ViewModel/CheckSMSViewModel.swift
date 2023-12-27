@@ -29,21 +29,20 @@ class CheckSMSViewModel {
   }
   
   func submitOTP() {
-    guard !self.isValidOTPCode() else { return }
+    guard self.isValidOTPCode() else { return }
     
     self.state = .loading
-    customerInfo.submitEmailOTP(code: otp) {[weak self] success in
-      guard let self = self else { return }
+    customerInfo.submitPhoneOTP(code: otp) {[weak self] success in
       if let success = success, success {
-        self.state = .success
+        self?.state = .success
       } else {
-        self.state = .failed
+        self?.state = .failed
       }
     }
   }
   
   func resendOTP() {
-    customerInfo.requestEmailOTPCode {_ in
+    customerInfo.requestPhoneOTPCode() {_ in
       // NO-OP?
       // error handling maybe?
     }

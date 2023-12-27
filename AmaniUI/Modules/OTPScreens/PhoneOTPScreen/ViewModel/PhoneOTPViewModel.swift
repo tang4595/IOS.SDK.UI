@@ -31,14 +31,17 @@ class PhoneOTPViewModel {
     state = .loading
     customerInfo.setPhone(phone: phone)
     customerInfo.upload(
-      location: AmaniUI.sharedInstance.location) { [weak self] _ in
-        guard let self = self else {return}
+      location: AmaniUI.sharedInstance.location) { [weak self] phoneChanged in
         
-        self.customerInfo.requestPhoneOTPCode { success in
+        if (phoneChanged == false) {
+          self?.state = .failed
+        }
+        
+        self?.customerInfo.requestPhoneOTPCode { success in
           if let success = success {
-            self.state = .success
+            self?.state = .success
           } else {
-            self.state = .failed
+            self?.state = .failed
           }
         }
       }
