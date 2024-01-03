@@ -69,27 +69,14 @@ class HomeViewController: BaseViewController {
   }
   
   func generateKYCStepViewModels(from rules: [KYCRuleModel]) throws {
-    guard let unFilteredStepConfig = try? Amani.sharedInstance.appConfig().getApplicationConfig().stepConfig else {
+    guard let stepConfig = try? Amani.sharedInstance.appConfig().getApplicationConfig().stepConfig else {
       throw AppConstants.AmaniError.ConfigError
-    }
-
-    let stepConfig = unFilteredStepConfig.filter { stepConfig in
-      if let documents = stepConfig.documents {
-        return !documents.contains { doc in
-          if let versions = doc.versions {
-            return versions.contains { version in
-              return version.type == "XXX_OT"
-            }
-          }
-          return false
-        }
-      }
-      return true
     }
     
     if stepModels == nil {
       let viewModels: [KYCStepViewModel?] = rules.map { ruleModel in
-        if let stepModel = stepConfig.first(where: { $0.id == ruleModel.id }) {
+        if var stepModel = stepConfig.first(where: { $0.id == ruleModel.id }) {
+          stepModel.documents?.removeAll(where: { $0.id == "OT" })
           return KYCStepViewModel(from: stepModel, initialRule: ruleModel, topController: self)
         } else {
           return nil
