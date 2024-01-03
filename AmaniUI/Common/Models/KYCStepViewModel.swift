@@ -79,6 +79,12 @@ class KYCStepViewModel {
   }
   
   func onStepPressed(completion: @escaping StepCompletionCallback) {
+    // Return early if document status is Processing
+    if status == .PROCESSING {
+      print("Cannot start the process while document is processing.")
+      return
+    }
+    
     // Bind the callback to the runner.
     let isSingleVersion = ((documents.first?.versions!.count == 1) && (documents.count == 1) ) ? true : false
     if (isSingleVersion) {
