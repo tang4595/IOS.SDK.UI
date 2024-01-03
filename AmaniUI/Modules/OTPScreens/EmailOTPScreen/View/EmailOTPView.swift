@@ -133,6 +133,7 @@ class EmailOTPView: UIView {
       .sink(receiveValue: { [weak self] isValidEmail in
         if !isValidEmail {
           self?.emailInput.showError(message: "This email Address is wrong")
+          
         } else {
           self?.emailInput.hideError()
         }

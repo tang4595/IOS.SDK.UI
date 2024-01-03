@@ -234,6 +234,8 @@ class CheckMailView: UIView {
     submitButton.bind {
       viewModel.submitOTP()
     }
+    
+    timerButton.addTarget(self, action: #selector(didTapRetryButton), for: .touchUpInside)
 
     self.viewModel = viewModel
   }

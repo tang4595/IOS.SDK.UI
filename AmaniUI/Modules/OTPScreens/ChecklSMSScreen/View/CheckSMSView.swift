@@ -223,6 +223,8 @@ class CheckSMSView: UIView {
       viewModel.submitOTP()
     }
     
+    timerButton.addTarget(self, action: #selector(didTapRetryButton), for: .touchUpInside)
+    
     self.viewModel = viewModel
   }
   
