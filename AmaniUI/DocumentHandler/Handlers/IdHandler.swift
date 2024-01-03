@@ -7,6 +7,7 @@
 
 import AmaniSDK
 import UIKit
+import CoreNFC
 
 class IdHandler: DocumentHandler {
     var stepView: UIView?
@@ -27,7 +28,7 @@ class IdHandler: DocumentHandler {
     fileprivate func goNextStep(version: DocumentVersion, completion: @escaping StepCompletionCallback) {
         // Start the NFC Screen
         DispatchQueue.main.async {
-            if version.nfc == true {
+          if version.nfc == true && NFCNDEFReaderSession.readingAvailable {
                 self.startNFCCapture(docVer: version, completion: completion)
             } else {
                 self.topVC.navigationController?.popToViewController(ofClass: HomeViewController.self)
