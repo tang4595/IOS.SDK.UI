@@ -237,6 +237,7 @@ public class AmaniUI {
       if let newConfig = newConfig {
         if let self = self {
           self.config = newConfig
+          // This is kinda stupid btw...
           self.uptateSDKView()
         }
       } else {
@@ -252,7 +253,6 @@ public class AmaniUI {
       self.initialVC = HomeViewController(nibName: String(describing: HomeViewController.self), bundle: Bundle(for: HomeViewController.self))
       self.initialVC!.bind(customerData: self.customerRespData!)
       self.sharedSDKInstance.setDelegate(delegate: self.initialVC!)
-      
       
       self.sdkNavigationController = UINavigationController(rootViewController: self.initialVC!)
       self.sdkNavigationController?.modalPresentationStyle = .fullScreen
@@ -275,6 +275,11 @@ public class AmaniUI {
       
       // Show the SDK!
       self.parentVC?.present(self.sdkNavigationController!, animated: true)
+      
+      // Start OTP Flow if applicable (only available in v2)
+      if (self.apiVersion == .v2) {
+        self.startOTPFlow()
+      }
     }
   }
   
@@ -314,6 +319,58 @@ public class AmaniUI {
       onVC.setBackgroundColorOfTableView(color: UIColor(hexString: model.appBackground ?? "253C59"))
     }
   }
+  
+  internal func startOTPFlow() {
+    let emailOTPEnabled = self.config?.generalconfigs?.emailOTPEnabled ?? false
+    let phoneOTPEnabled = self.config?.generalconfigs?.phoneOTPEnabled ?? false
+    guard (emailOTPEnabled || phoneOTPEnabled) else { return }
+    
+    let customer = Amani.sharedInstance.customerInfo().getCustomer()
+    let emailOTPCompleted = customer.emailVerified!
+    let phoneOTPCompleted = customer.phoneVerified!
+    let goesToPhone = phoneOTPEnabled && !phoneOTPCompleted
+    
+    if (emailOTPEnabled && !emailOTPCompleted) {
+      startEmailFlow(goesToPhone: goesToPhone)
+      return
+    } else if (phoneOTPEnabled && !phoneOTPCompleted) {
+      startPhoneFlow()
+      return
+    }
+  }
+  
+  internal func startEmailFlow(goesToPhone: Bool = false) {
+    let emailOTPVC = EmailOTPScreenViewController()
+    
+    emailOTPVC.setCompletionHandler {[weak self] in
+      guard let self = self else { return }
+      
+      if (goesToPhone) {
+        self.startPhoneFlow()
+      } else {
+        self.sdkNavigationController?.popToViewController(ofClass: HomeViewController.self, animated: true)
+      }
+    }
+    
+    DispatchQueue.main.async {
+      self.sdkNavigationController?.pushViewController(emailOTPVC, animated: false)
+    }
+  }
+  
+  internal func startPhoneFlow() {
+    let phoneOTPVC = PhoneOTPScreenViewController()
+    
+    phoneOTPVC.setCompletionHandler {[weak self] in
+      // return to home.
+      self?.sdkNavigationController?.popToViewController(ofClass: HomeViewController.self, animated: true)
+    }
+    
+    DispatchQueue.main.async {
+      self.sdkNavigationController!.pushViewController(phoneOTPVC, animated: false)
+    }
+  }
+  
+  
   
 }
 //extension AmaniUIv1:AmaniDelegate{

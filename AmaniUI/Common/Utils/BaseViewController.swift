@@ -168,6 +168,17 @@ class BaseViewController: UIViewController {
     return toolBar
   }
   
+  func addPoweredByIcon() {
+    let imageView = UIImageView(image: UIImage(named: "ic_poweredBy"))
+    
+    imageView.translatesAutoresizingMaskIntoConstraints = false
+    view.addSubview(imageView)
+    NSLayoutConstraint.activate([
+      imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+      imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30)
+    ])
+  }
+  
   // MARK: - Actions
   /**
    This action used to pop out the controller on click of navigation back button

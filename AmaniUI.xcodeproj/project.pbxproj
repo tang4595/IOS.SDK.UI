@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -30,6 +30,10 @@
 		48DF761029699A8F000D519A /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DF760F29699A8F000D519A /* ContainerViewController.swift */; };
 		48EAA84D29E37C98001A2A35 /* SignatureViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48B909FF29A264B700508E63 /* SignatureViewController.xib */; };
 		48EAA84E29E37C9B001A2A35 /* SignatureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B90A0129A2656100508E63 /* SignatureViewController.swift */; };
+		C523DEF72B3A740B00F68E32 /* CheckSMSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C523DEF62B3A740B00F68E32 /* CheckSMSViewController.swift */; };
+		C523DEFA2B3A745F00F68E32 /* CheckSMSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C523DEF92B3A745F00F68E32 /* CheckSMSView.swift */; };
+		C523DEFD2B3A747100F68E32 /* CheckSMSViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C523DEFC2B3A747100F68E32 /* CheckSMSViewModel.swift */; };
+		C523DF002B3BF75A00F68E32 /* AmaniErrorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C523DEFF2B3BF75900F68E32 /* AmaniErrorExtensions.swift */; };
 		C52A985E28F5954300D43ABF /* DocConfirmationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C52A985D28F5954300D43ABF /* DocConfirmationViewController.xib */; };
 		C52F144D28F5AE3D00D7A5A6 /* VersionSelectTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C52F144928F5AE3D00D7A5A6 /* VersionSelectTableViewCell.xib */; };
 		C52F144E28F5AE3D00D7A5A6 /* VersionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C52F144A28F5AE3D00D7A5A6 /* VersionViewController.xib */; };
@@ -64,9 +68,21 @@
 		C5A06F7229127C47009520AF /* IdHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A06F7129127C47009520AF /* IdHandler.swift */; };
 		C5A06F7429127C55009520AF /* BaseDocumentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A06F7329127C55009520AF /* BaseDocumentHandler.swift */; };
 		C5A06F762913ED9E009520AF /* SelfieHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A06F752913ED9E009520AF /* SelfieHandler.swift */; };
+		C5A4506C2B3A33820064AAA7 /* PhoneOTPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A4506B2B3A33820064AAA7 /* PhoneOTPViewController.swift */; };
+		C5A4506F2B3A338F0064AAA7 /* PhoneOTPView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A4506E2B3A338F0064AAA7 /* PhoneOTPView.swift */; };
+		C5A450722B3A33AB0064AAA7 /* PhoneOTPViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A450712B3A33AB0064AAA7 /* PhoneOTPViewModel.swift */; };
 		C5B07D7C290048E300243A5B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5B07D6D290048E300243A5B /* Assets.xcassets */; };
 		C5BA62A42914006B004108B4 /* NFHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BA62A32914006B004108B4 /* NFHandler.swift */; };
+		C5BBD3442B39EBC400A856CC /* KeyboardAvoidenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BBD3432B39EBC400A856CC /* KeyboardAvoidenceViewController.swift */; };
 		C5D3B9402A9355B00023B66E /* OpenSSL.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5D3B93F2A9355B00023B66E /* OpenSSL.xcframework */; };
+		C5FD51342B39BD2D0057DB87 /* RoundedTextInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FD51312B39BD2D0057DB87 /* RoundedTextInput.swift */; };
+		C5FD51362B39BD2D0057DB87 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FD51332B39BD2D0057DB87 /* RoundedButton.swift */; };
+		C5FD513D2B39BD970057DB87 /* EmailOTPViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FD51392B39BD970057DB87 /* EmailOTPViewModel.swift */; };
+		C5FD513E2B39BD970057DB87 /* EmailOTPScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FD513A2B39BD970057DB87 /* EmailOTPScreenViewController.swift */; };
+		C5FD513F2B39BD970057DB87 /* EmailOTPView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FD513C2B39BD970057DB87 /* EmailOTPView.swift */; };
+		C5FD51482B39BF240057DB87 /* CheckMailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FD51442B39BF240057DB87 /* CheckMailView.swift */; };
+		C5FD51492B39BF240057DB87 /* CheckMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FD51452B39BF240057DB87 /* CheckMailViewController.swift */; };
+		C5FD514A2B39BF240057DB87 /* CheckMailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FD51472B39BF240057DB87 /* CheckMailViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -80,6 +96,10 @@
 		48B90A0329A278E700508E63 /* SignatureHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureHandler.swift; sourceTree = "<group>"; };
 		48DF760D29699A81000D519A /* ContainerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContainerViewController.xib; sourceTree = "<group>"; };
 		48DF760F29699A8F000D519A /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
+		C523DEF62B3A740B00F68E32 /* CheckSMSViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckSMSViewController.swift; sourceTree = "<group>"; };
+		C523DEF92B3A745F00F68E32 /* CheckSMSView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckSMSView.swift; sourceTree = "<group>"; };
+		C523DEFC2B3A747100F68E32 /* CheckSMSViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckSMSViewModel.swift; sourceTree = "<group>"; };
+		C523DEFF2B3BF75900F68E32 /* AmaniErrorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmaniErrorExtensions.swift; sourceTree = "<group>"; };
 		C52A985D28F5954300D43ABF /* DocConfirmationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DocConfirmationViewController.xib; sourceTree = "<group>"; };
 		C52F144928F5AE3D00D7A5A6 /* VersionSelectTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VersionSelectTableViewCell.xib; sourceTree = "<group>"; };
 		C52F144A28F5AE3D00D7A5A6 /* VersionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VersionViewController.xib; sourceTree = "<group>"; };
@@ -115,6 +135,9 @@
 		C5A06F7129127C47009520AF /* IdHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdHandler.swift; sourceTree = "<group>"; };
 		C5A06F7329127C55009520AF /* BaseDocumentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseDocumentHandler.swift; sourceTree = "<group>"; };
 		C5A06F752913ED9E009520AF /* SelfieHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfieHandler.swift; sourceTree = "<group>"; };
+		C5A4506B2B3A33820064AAA7 /* PhoneOTPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneOTPViewController.swift; sourceTree = "<group>"; };
+		C5A4506E2B3A338F0064AAA7 /* PhoneOTPView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneOTPView.swift; sourceTree = "<group>"; };
+		C5A450712B3A33AB0064AAA7 /* PhoneOTPViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneOTPViewModel.swift; sourceTree = "<group>"; };
 		C5B07D6D290048E300243A5B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C5B07D6F290048E300243A5B /* tur_dl_0_front.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tur_dl_0_front.json; sourceTree = "<group>"; };
 		C5B07D70290048E300243A5B /* face-recognition.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "face-recognition.json"; sourceTree = "<group>"; };
@@ -130,7 +153,16 @@
 		C5B07D7A290048E300243A5B /* tur_id_1_back.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tur_id_1_back.json; sourceTree = "<group>"; };
 		C5B07D7B290048E300243A5B /* xx_id_0_back.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = xx_id_0_back.json; sourceTree = "<group>"; };
 		C5BA62A32914006B004108B4 /* NFHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFHandler.swift; sourceTree = "<group>"; };
+		C5BBD3432B39EBC400A856CC /* KeyboardAvoidenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardAvoidenceViewController.swift; sourceTree = "<group>"; };
 		C5D3B93F2A9355B00023B66E /* OpenSSL.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = OpenSSL.xcframework; path = Carthage/Build/OpenSSL.xcframework; sourceTree = SOURCE_ROOT; };
+		C5FD51312B39BD2D0057DB87 /* RoundedTextInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedTextInput.swift; sourceTree = "<group>"; };
+		C5FD51332B39BD2D0057DB87 /* RoundedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
+		C5FD51392B39BD970057DB87 /* EmailOTPViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailOTPViewModel.swift; sourceTree = "<group>"; };
+		C5FD513A2B39BD970057DB87 /* EmailOTPScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailOTPScreenViewController.swift; sourceTree = "<group>"; };
+		C5FD513C2B39BD970057DB87 /* EmailOTPView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailOTPView.swift; sourceTree = "<group>"; };
+		C5FD51442B39BF240057DB87 /* CheckMailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckMailView.swift; sourceTree = "<group>"; };
+		C5FD51452B39BF240057DB87 /* CheckMailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckMailViewController.swift; sourceTree = "<group>"; };
+		C5FD51472B39BF240057DB87 /* CheckMailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckMailViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -196,6 +228,32 @@
 				48DF760F29699A8F000D519A /* ContainerViewController.swift */,
 			);
 			path = ContainerVC;
+			sourceTree = "<group>";
+		};
+		C523DEF52B3A73EC00F68E32 /* ChecklSMSScreen */ = {
+			isa = PBXGroup;
+			children = (
+				C523DEFB2B3A746300F68E32 /* ViewModel */,
+				C523DEF82B3A740F00F68E32 /* View */,
+				C523DEF62B3A740B00F68E32 /* CheckSMSViewController.swift */,
+			);
+			path = ChecklSMSScreen;
+			sourceTree = "<group>";
+		};
+		C523DEF82B3A740F00F68E32 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C523DEF92B3A745F00F68E32 /* CheckSMSView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		C523DEFB2B3A746300F68E32 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				C523DEFC2B3A747100F68E32 /* CheckSMSViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		C52F144728F5AE0400D7A5A6 /* VersionSelect */ = {
@@ -286,6 +344,7 @@
 		C544FEF328C2573200C0B406 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				C5FD512F2B39BCA30057DB87 /* OTPScreens */,
 				48B909FE29A2647900508E63 /* SignatureScreen */,
 				48DF760C29699A22000D519A /* ContainerVC */,
 				C539A5C4290FE9DF003386F8 /* SuccessScreen */,
@@ -353,6 +412,7 @@
 				C54B58B328C761BF005DBAA9 /* UIColorExtensions.swift */,
 				C53C474E28C7718300FA10B6 /* UIViewExtensions.swift */,
 				C5984DD628F9B35000DA64B3 /* UINavigationControllerExtensions.swift */,
+				C523DEFF2B3BF75900F68E32 /* AmaniErrorExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -378,6 +438,32 @@
 				C5BA62A32914006B004108B4 /* NFHandler.swift */,
 			);
 			path = Handlers;
+			sourceTree = "<group>";
+		};
+		C5A4506A2B3A33580064AAA7 /* PhoneOTPScreen */ = {
+			isa = PBXGroup;
+			children = (
+				C5A450702B3A33940064AAA7 /* ViewModel */,
+				C5A4506D2B3A33850064AAA7 /* View */,
+				C5A4506B2B3A33820064AAA7 /* PhoneOTPViewController.swift */,
+			);
+			path = PhoneOTPScreen;
+			sourceTree = "<group>";
+		};
+		C5A4506D2B3A33850064AAA7 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C5A4506E2B3A338F0064AAA7 /* PhoneOTPView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		C5A450702B3A33940064AAA7 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				C5A450712B3A33AB0064AAA7 /* PhoneOTPViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		C5B07D6C290048E300243A5B /* Assets */ = {
@@ -407,6 +493,88 @@
 				C5B07D7B290048E300243A5B /* xx_id_0_back.json */,
 			);
 			path = Animations;
+			sourceTree = "<group>";
+		};
+		C5BBD3422B39EBB500A856CC /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				C5BBD3432B39EBC400A856CC /* KeyboardAvoidenceViewController.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		C5FD512F2B39BCA30057DB87 /* OTPScreens */ = {
+			isa = PBXGroup;
+			children = (
+				C5BBD3422B39EBB500A856CC /* Utils */,
+				C523DEF52B3A73EC00F68E32 /* ChecklSMSScreen */,
+				C5A4506A2B3A33580064AAA7 /* PhoneOTPScreen */,
+				C5FD51422B39BF160057DB87 /* CheckMailScreen */,
+				C5FD51372B39BD8C0057DB87 /* EmailOTPScreen */,
+				C5FD51302B39BD2D0057DB87 /* Components */,
+			);
+			path = OTPScreens;
+			sourceTree = "<group>";
+		};
+		C5FD51302B39BD2D0057DB87 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				C5FD51312B39BD2D0057DB87 /* RoundedTextInput.swift */,
+				C5FD51332B39BD2D0057DB87 /* RoundedButton.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		C5FD51372B39BD8C0057DB87 /* EmailOTPScreen */ = {
+			isa = PBXGroup;
+			children = (
+				C5FD513A2B39BD970057DB87 /* EmailOTPScreenViewController.swift */,
+				C5FD513B2B39BD970057DB87 /* View */,
+				C5FD51382B39BD970057DB87 /* ViewModel */,
+			);
+			path = EmailOTPScreen;
+			sourceTree = "<group>";
+		};
+		C5FD51382B39BD970057DB87 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				C5FD51392B39BD970057DB87 /* EmailOTPViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		C5FD513B2B39BD970057DB87 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C5FD513C2B39BD970057DB87 /* EmailOTPView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		C5FD51422B39BF160057DB87 /* CheckMailScreen */ = {
+			isa = PBXGroup;
+			children = (
+				C5FD51452B39BF240057DB87 /* CheckMailViewController.swift */,
+				C5FD51432B39BF240057DB87 /* View */,
+				C5FD51462B39BF240057DB87 /* ViewModel */,
+			);
+			path = CheckMailScreen;
+			sourceTree = "<group>";
+		};
+		C5FD51432B39BF240057DB87 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C5FD51442B39BF240057DB87 /* CheckMailView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		C5FD51462B39BF240057DB87 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				C5FD51472B39BF240057DB87 /* CheckMailViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -512,14 +680,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5A450722B3A33AB0064AAA7 /* PhoneOTPViewModel.swift in Sources */,
 				484E26F8295A3DC700839E54 /* AmaniUIDelegate.swift in Sources */,
 				C5A06F7229127C47009520AF /* IdHandler.swift in Sources */,
 				C53C475928C9E2DD00FA10B6 /* ThemeColor.swift in Sources */,
 				48B90A0429A278E700508E63 /* SignatureHandler.swift in Sources */,
 				4842810E29D0F7DB00D48925 /* DocumentsHandler.swift in Sources */,
 				C53C475728C9E2AF00FA10B6 /* KYCStepViewModel.swift in Sources */,
+				C5FD51482B39BF240057DB87 /* CheckMailView.swift in Sources */,
 				C52F145928F9819100D7A5A6 /* NFCViewController.swift in Sources */,
+				C523DEFD2B3A747100F68E32 /* CheckSMSViewModel.swift in Sources */,
+				C523DEFA2B3A745F00F68E32 /* CheckSMSView.swift in Sources */,
 				C54B58B428C761BF005DBAA9 /* UIColorExtensions.swift in Sources */,
+				C5A4506F2B3A338F0064AAA7 /* PhoneOTPView.swift in Sources */,
+				C5BBD3442B39EBC400A856CC /* KeyboardAvoidenceViewController.swift in Sources */,
 				4856111E29DC91CE00E70D77 /* DocumentsHandlerDelegate.swift in Sources */,
 				C58BD65428EEEE19009301EC /* OvalOverlayView.swift in Sources */,
 				C53DFE0228ED81F500AE7D32 /* DocConfirmationViewController.swift in Sources */,
@@ -528,20 +702,30 @@
 				C54B58AC28C75279005DBAA9 /* KYCStepTableViewCell.swift in Sources */,
 				C53C474F28C7718300FA10B6 /* UIViewExtensions.swift in Sources */,
 				C539A5C329093DB4003386F8 /* AlertDialougeUtility.swift in Sources */,
+				C523DF002B3BF75A00F68E32 /* AmaniErrorExtensions.swift in Sources */,
+				C5FD51342B39BD2D0057DB87 /* RoundedTextInput.swift in Sources */,
 				C52F144F28F5AE3D00D7A5A6 /* VersionViewController.swift in Sources */,
 				C52F145028F5AE3D00D7A5A6 /* VersionSelectTableViewCell.swift in Sources */,
 				C54B58AB28C75279005DBAA9 /* HomeViewController.swift in Sources */,
 				C5A06F762913ED9E009520AF /* SelfieHandler.swift in Sources */,
+				C5FD513F2B39BD970057DB87 /* EmailOTPView.swift in Sources */,
 				C52F145228F5B70400D7A5A6 /* DocumentHandler.swift in Sources */,
 				48EAA84E29E37C9B001A2A35 /* SignatureViewController.swift in Sources */,
 				C54B58B128C76160005DBAA9 /* BaseViewController.swift in Sources */,
+				C5FD514A2B39BF240057DB87 /* CheckMailViewModel.swift in Sources */,
+				C523DEF72B3A740B00F68E32 /* CheckSMSViewController.swift in Sources */,
 				C53C475128C7B39800FA10B6 /* Constants.swift in Sources */,
 				C5984DD728F9B35000DA64B3 /* UINavigationControllerExtensions.swift in Sources */,
 				C539A5C9290FE9F9003386F8 /* SuccessViewController.swift in Sources */,
+				C5FD51362B39BD2D0057DB87 /* RoundedButton.swift in Sources */,
+				C5A4506C2B3A33820064AAA7 /* PhoneOTPViewController.swift in Sources */,
 				C5A06F7429127C55009520AF /* BaseDocumentHandler.swift in Sources */,
 				48DF761029699A8F000D519A /* ContainerViewController.swift in Sources */,
 				C53C475528C8D9C800FA10B6 /* UtilityModels.swift in Sources */,
 				C5BA62A42914006B004108B4 /* NFHandler.swift in Sources */,
+				C5FD513D2B39BD970057DB87 /* EmailOTPViewModel.swift in Sources */,
+				C5FD51492B39BF240057DB87 /* CheckMailViewController.swift in Sources */,
+				C5FD513E2B39BD970057DB87 /* EmailOTPScreenViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
