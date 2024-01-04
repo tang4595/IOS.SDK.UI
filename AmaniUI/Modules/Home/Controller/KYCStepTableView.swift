@@ -79,7 +79,7 @@ extension KYCStepTblView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
       let step = self.kycSteps[indexPath.row]
       guard let callback = callback else { return }
-      if (step.status != DocumentStatus.APPROVED && step.status != DocumentStatus.PROCESSING) {
+      if (step.status != DocumentStatus.APPROVED && step.status != DocumentStatus.PROCESSING && step.isEnabled()) {
         step.onStepPressed { result in
           switch result {
           case .failure(let error):
