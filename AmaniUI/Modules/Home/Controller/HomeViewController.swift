@@ -1,5 +1,7 @@
 import UIKit
 import AmaniSDK
+import CoreNFC
+
 /**
  The HomeViewController class is used to provide a user interface for home/main screen.
  */
@@ -76,7 +78,12 @@ class HomeViewController: BaseViewController {
     if stepModels == nil {
       let viewModels: [KYCStepViewModel?] = rules.map { ruleModel in
         if var stepModel = stepConfig.first(where: { $0.id == ruleModel.id }) {
+          // Remove the OT as this SDK doesn't have to do anything with it
           stepModel.documents?.removeAll(where: { $0.id == "OT" })
+          
+          if stepModel.documents?.contains(where: { $0.id == "NF" }) == true && !NFCNDEFReaderSession.readingAvailable {
+            return nil
+          }
           return KYCStepViewModel(from: stepModel, initialRule: ruleModel, topController: self)
         } else {
           return nil
