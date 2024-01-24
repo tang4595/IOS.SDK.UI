@@ -8,12 +8,14 @@
 import Foundation
 import UIKit
 import Combine
+import AmaniSDK
 
 class EmailOTPView: UIView {
   
   private var cancellables = Set<AnyCancellable>()
   private var viewModel: EmailOTPViewModel!
   private var completionHandler: (() -> Void)? = nil
+  private var emailValidationText: String = "This email Address is wrong"
   
   private lazy var titleText: UILabel = {
     let label = UILabel()
@@ -122,7 +124,10 @@ class EmailOTPView: UIView {
     ])
   }
   
-  func bind(withViewModel viewModel: EmailOTPViewModel) {
+  func bind(
+    withViewModel viewModel: EmailOTPViewModel,
+    withDocument document: DocumentVersion?
+  ) {
     emailInput.setDelegate(delegate: self)
     
     emailInput.textPublisher
@@ -132,7 +137,7 @@ class EmailOTPView: UIView {
     viewModel.isEmailValidPublisher
       .sink(receiveValue: { [weak self] isValidEmail in
         if !isValidEmail {
-          self?.emailInput.showError(message: "This email Address is wrong")
+          self?.emailInput.showError(message: self!.emailValidationText)
           
         } else {
           self?.emailInput.hideError()
@@ -164,6 +169,22 @@ class EmailOTPView: UIView {
     }
     
     self.viewModel = viewModel
+    
+    if let doc = document {
+      setTextsFrom(document: doc)
+    }
+  }
+  
+  private func setTextsFrom(document: DocumentVersion) {
+    // This view is single step, we need capture title and confirmation title for this specific screen
+    let step = document.steps!.first!
+    DispatchQueue.main.async {
+      self.titleText.text = step.captureTitle
+      self.descriptionText.text = step.captureDescription
+      self.emailLegend.text = document.emailTitle!
+      self.emailInput.updatePlaceHolder(text: document.emailHint!, color: UIColor(hexString: "#C0C0C0"))
+    }
+    
   }
   
   func setCompletion(handler: @escaping () -> Void) {
@@ -171,7 +192,14 @@ class EmailOTPView: UIView {
   }
   
   func setupErrorHandling() {
-    NotificationCenter.default.addObserver(self, selector: #selector(didReceiveError(_:)), name: Notification.Name("ai.amani.onError"), object: nil)
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(didReceiveError(_:)),
+      name: Notification.Name(
+        AppConstants.AmaniDelegateNotifications.onError.rawValue
+      ),
+      object: nil
+    )
   }
   
   @objc func didReceiveError(_ notification: Notification) {

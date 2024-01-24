@@ -16,4 +16,12 @@ extension UINavigationController {
     }
   }
   
+  func setupNavigationBarShadow() {
+    navigationBar.layer.shadowColor = UIColor.black.cgColor
+    navigationBar.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
+    navigationBar.layer.shadowRadius = 4.0
+    navigationBar.layer.shadowOpacity = 0.4
+    navigationBar.layer.masksToBounds = false
+  }
+  
 }

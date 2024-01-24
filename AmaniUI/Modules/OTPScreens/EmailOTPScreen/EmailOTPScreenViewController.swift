@@ -7,11 +7,13 @@
 
 import Foundation
 import UIKit
+import AmaniSDK
 
 class EmailOTPScreenViewController: KeyboardAvoidanceViewController {
   let emailOTPView = EmailOTPView()
   let emailOTPViewModel = EmailOTPViewModel()
   private var handler: (() -> Void)? = nil
+  private var docVersion: DocumentVersion?
   
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
@@ -23,7 +25,7 @@ class EmailOTPScreenViewController: KeyboardAvoidanceViewController {
   }
   
   override func viewDidLoad() {
-    emailOTPView.bind(withViewModel: emailOTPViewModel)
+    emailOTPView.bind(withViewModel: emailOTPViewModel, withDocument: docVersion)
     
     emailOTPView.setCompletion {[weak self] in
       let checkMailViewController = CheckMailViewController()
@@ -54,6 +56,10 @@ class EmailOTPScreenViewController: KeyboardAvoidanceViewController {
   
   func setCompletionHandler(_ handler: @escaping (() -> Void)) {
     self.handler = handler
+  }
+  
+  func bind(docVersion: DocumentVersion?) {
+    self.docVersion = docVersion
   }
   
 }

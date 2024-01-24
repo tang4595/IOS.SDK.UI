@@ -344,6 +344,7 @@
 		C544FEF328C2573200C0B406 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				C57E47202B4FF36D006FA4E6 /* ProfileInfo */,
 				C5FD512F2B39BCA30057DB87 /* OTPScreens */,
 				48B909FE29A2647900508E63 /* SignatureScreen */,
 				48DF760C29699A22000D519A /* ContainerVC */,
@@ -359,6 +360,7 @@
 		C544FEF428C2573F00C0B406 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				C5FD51302B39BD2D0057DB87 /* Components */,
 				C54B58AF28C76148005DBAA9 /* Utils */,
 				C544FEF628C2574D00C0B406 /* Models */,
 			);
@@ -415,6 +417,13 @@
 				C523DEFF2B3BF75900F68E32 /* AmaniErrorExtensions.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		C57E47202B4FF36D006FA4E6 /* ProfileInfo */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ProfileInfo;
 			sourceTree = "<group>";
 		};
 		C5A06F6F29127C0C009520AF /* DocumentHandler */ = {
@@ -511,7 +520,6 @@
 				C5A4506A2B3A33580064AAA7 /* PhoneOTPScreen */,
 				C5FD51422B39BF160057DB87 /* CheckMailScreen */,
 				C5FD51372B39BD8C0057DB87 /* EmailOTPScreen */,
-				C5FD51302B39BD2D0057DB87 /* Components */,
 			);
 			path = OTPScreens;
 			sourceTree = "<group>";

@@ -14,9 +14,29 @@ class HomeViewController: BaseViewController {
   @IBOutlet weak var headView: UIView!
   var stepModels: [KYCStepViewModel]?
   var customerData: CustomerResponseModel? = nil
+  var onStepObserver: Any? = nil
+  var onProfileObserver: Any? = nil
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    onStepObserver = NotificationCenter.default.addObserver(
+      forName: NSNotification.Name(AppConstants.AmaniDelegateNotifications.onStepModel.rawValue),
+      object: nil, queue: nil) { [weak self] notification in
+        // 0th element is the customer id, which we don't need in here.
+        if let rules = (notification.object as? [Any?])?[1] as? [KYCRuleModel] {
+          self?.onStepModel(rules: rules)
+        }
+      }
+    
+    onProfileObserver = NotificationCenter.default.addObserver(
+      forName: Notification.Name(AppConstants.AmaniDelegateNotifications.onProfileStatus.rawValue),
+      object: nil, queue: nil) { [weak self] notification in
+        if let profileStatusModel = (notification.object as? [Any?])?[1] as? AmaniSDK.wsProfileStatusModel {
+          self?.onProfileStatus(profile: profileStatusModel)
+        }
+        
+      }
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -27,6 +47,17 @@ class HomeViewController: BaseViewController {
     super.viewDidAppear(true)
     self.initialSetUp()
     viewAppeared = true
+  }
+  
+  override func viewDidDisappear(_ animated: Bool) {
+    if let onStepObserver = self.onStepObserver {
+      NotificationCenter.default.removeObserver(onStepObserver)
+    }
+    if let onProfileObserver = self.onProfileObserver {
+      NotificationCenter.default.removeObserver(onProfileObserver)
+    }
+    
+    super.viewDidDisappear(animated)
   }
   
   // MARK: - Initial setup methods
@@ -84,7 +115,13 @@ class HomeViewController: BaseViewController {
           if stepModel.documents?.contains(where: { $0.id == "NF" }) == true && !NFCNDEFReaderSession.readingAvailable {
             return nil
           }
-          return KYCStepViewModel(from: stepModel, initialRule: ruleModel, topController: self)
+          
+          // Add only if the identifer equals to kyc
+          if stepModel.identifier == "kyc" {
+            return KYCStepViewModel(from: stepModel, initialRule: ruleModel, topController: self)
+          }
+          
+          return nil
         } else {
           return nil
         }
@@ -95,13 +132,12 @@ class HomeViewController: BaseViewController {
       stepModels = filteredViewModels.sorted { $0.sortOrder < $1.sortOrder }
     } else {
       rules.forEach { ruleModel in
-        if let stepModel = stepConfig.first { $0.id == ruleModel.id } {
+        if let stepModel = stepConfig.first(where: { $0.id == ruleModel.id }) {
           if let stepID = stepModels?.firstIndex(where: {$0.id == ruleModel.id}) {
             stepModels?.remove(at: stepID)
             stepModels?.append(KYCStepViewModel(from: stepModel, initialRule: ruleModel, topController: self))
           }
         }
-        //      return KYCStepViewModel(from: stepModel!, initialRule: ruleModel, topController: self)
       }
       stepModels = stepModels?.sorted{ $0.sortOrder < $1.sortOrder }
     }
@@ -148,24 +184,17 @@ extension HomeViewController {
     }
   }
 }
-extension HomeViewController:AmaniDelegate{
-  func onError(type: String, error: [AmaniSDK.AmaniError]) {
-    // NOTE: This notification is used for internal error handling.
-    let errors = error.map { $0.toDictonary() }
-    let errorObject: [String: Any] = ["type": type, "errors": errors]
-    NotificationCenter.default.post(name: NSNotification.Name("ai.amani.onError"), object: errorObject)
-    AmaniUI.sharedInstance.delegate?.onError(type: type, Error: error)
-  }
+
+extension HomeViewController {
   
-  func onProfileStatus(customerId:String, profile: AmaniSDK.wsProfileStatusModel) {
-    print(profile)
+  func onProfileStatus(profile: AmaniSDK.wsProfileStatusModel) {
     if (profile.status?.uppercased() == ProfileStatus.PENDING_REVIEW.rawValue || profile.status?.uppercased() == ProfileStatus.APPROVED.rawValue) {
       goToSuccess()
       return
     }
   }
   
-  func onStepModel(customerId:String, rules: [AmaniSDK.KYCRuleModel]?) {
+  func onStepModel(rules: [AmaniSDK.KYCRuleModel]?) {
     // CHECK RULES AND OPEN SUCCESS SCREEN
     // Reload customer when upload is complete
     if viewAppeared{
@@ -178,9 +207,7 @@ extension HomeViewController:AmaniDelegate{
       try? self.generateKYCStepViewModels(from: rules)
       guard let stepModels = stepModels else {return}
       self.kycStepTblView.updateDataAndReload(stepModels: stepModels)
-      
     }
   }
-  
   
 }

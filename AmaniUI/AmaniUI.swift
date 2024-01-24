@@ -23,15 +23,13 @@ public class AmaniUI {
   /// Internal navigation controller.
   private var sdkNavigationController: UINavigationController?
   
-  private var clientNavColor: UIColor?
-  private var clientNavBackColor: UIColor?
-  
   // MARK: - Internal configurations
   internal var config: AppConfigModel?
   internal let sharedSDKInstance = Amani.sharedInstance
   
   
   var missingRules:[[String:String]]? = nil
+  var stepsBeforeKYC: [KYCStepViewModel] = []
   
   private var bundle: Bundle!
   private var customerRespData: CustomerResponseModel? = nil
@@ -44,6 +42,7 @@ public class AmaniUI {
   private var customer: CustomerRequestModel? = nil
   private var language: String = "tr"
   private var apiVersion: ApiVersions = .v2
+  private var nonKYCStepManager: NonKYCStepManager? = nil
   public var country: String? = nil
   public var nviData: NviModel? = nil
   public var location: CLLocation? = nil
@@ -175,6 +174,9 @@ public class AmaniUI {
   ) {
     parentVC = parentViewController
     
+    // set the delegate regardless of init method
+    self.sharedSDKInstance.setDelegate(delegate: self)
+    
     if (userName != nil && password != nil) {
       Amani.sharedInstance.initAmani(server: server!, userName: self.userName!, password: self.password!, sharedSecret: sharedSecret, customer: customer!, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
         guard let self = self else {return}
@@ -237,8 +239,19 @@ public class AmaniUI {
       if let newConfig = newConfig {
         if let self = self {
           self.config = newConfig
-          // This is kinda stupid btw...
-          self.uptateSDKView()
+          if apiVersion == .v2 {
+            // launch the steps before kyc flow
+            self.nonKYCStepManager = NonKYCStepManager(for: (config?.stepConfig!)!, customer: customerRespData!, vc: self.parentVC!)
+            self.nonKYCStepManager!.startFlow(forPreSteps: true) {[weak self] navController in
+              self?.sdkNavigationController = navController
+              // This method also checks the existence of nav controller and
+              // since both types are optional no need to check it here
+              self?.startKYCHome()
+            }
+          } else {
+            // It doesn't matter for api v1
+            self.startKYCHome()
+          }
         }
       } else {
         if let error = error {
@@ -248,37 +261,30 @@ public class AmaniUI {
     }
   }
   
-  private func uptateSDKView() {
+  private func startKYCHome() {
     DispatchQueue.main.async {
       self.initialVC = HomeViewController(nibName: String(describing: HomeViewController.self), bundle: Bundle(for: HomeViewController.self))
       self.initialVC!.bind(customerData: self.customerRespData!)
-      self.sharedSDKInstance.setDelegate(delegate: self.initialVC!)
       
-      self.sdkNavigationController = UINavigationController(rootViewController: self.initialVC!)
-      self.sdkNavigationController?.modalPresentationStyle = .fullScreen
+        // Setting the app theme here will ensure it runs correctly on the first time. Otherwise it won't have the correct theme on launch
       
-      if let navController = self.parentVC?.navigationController {
-        self.clientNavColor = navController.navigationBar.barTintColor
-        self.clientNavBackColor = navController.navigationBar.backgroundColor
-      }
-      
-      // Setting the app theme here will ensure it runs correctly on the first time. Otherwise it won't have the correct theme
-      // on launch
-      self.setAppTheme(model: self.config?.generalconfigs!, onVC: self.initialVC!)
-      
-      // Adding shadow to NavigationBar
-      self.sdkNavigationController?.navigationBar.layer.shadowColor = UIColor.black.cgColor
-      self.sdkNavigationController?.navigationBar.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
-      self.sdkNavigationController?.navigationBar.layer.shadowRadius = 4.0
-      self.sdkNavigationController?.navigationBar.layer.shadowOpacity = 0.4
-      self.sdkNavigationController?.navigationBar.layer.masksToBounds = false
-      
-      // Show the SDK!
-      self.parentVC?.present(self.sdkNavigationController!, animated: true)
-      
-      // Start OTP Flow if applicable (only available in v2)
-      if (self.apiVersion == .v2) {
-        self.startOTPFlow()
+      // Check if sdk navigation controller in pre kyc steps
+      if self.sdkNavigationController == nil {
+        self.sdkNavigationController = UINavigationController(rootViewController: self.initialVC!)
+        self.sdkNavigationController?.modalPresentationStyle = .fullScreen
+        // Adding shadow to NavigationBar
+        self.sdkNavigationController?.setupNavigationBarShadow()
+        // Show the SDK!
+        self.setAppTheme(model: self.config?.generalconfigs!, onVC: self.initialVC!)
+        self.parentVC?.present(self.sdkNavigationController!, animated: true)
+      } else {
+        // Using this method will also clear the backstack making the homevc
+        // is the first controller again.
+        self.setAppTheme(model: self.config?.generalconfigs!, onVC: self.initialVC!)
+        self.sdkNavigationController?.setViewControllers(
+          [self.initialVC!],
+          animated: true
+        )
       }
     }
   }
@@ -320,76 +326,67 @@ public class AmaniUI {
     }
   }
   
-  internal func startOTPFlow() {
-    let emailOTPEnabled = self.config?.generalconfigs?.emailOTPEnabled ?? false
-    let phoneOTPEnabled = self.config?.generalconfigs?.phoneOTPEnabled ?? false
-    guard (emailOTPEnabled || phoneOTPEnabled) else { return }
-    
-    let customer = Amani.sharedInstance.customerInfo().getCustomer()
-    let emailOTPCompleted = customer.emailVerified!
-    let phoneOTPCompleted = customer.phoneVerified!
-    let goesToPhone = phoneOTPEnabled && !phoneOTPCompleted
-    
-    if (emailOTPEnabled && !emailOTPCompleted) {
-      startEmailFlow(goesToPhone: goesToPhone)
-      return
-    } else if (phoneOTPEnabled && !phoneOTPCompleted) {
-      startPhoneFlow()
+  internal func generateStepsBeforeKYCOld() {
+    guard let steps = self.config?.stepConfig else {
       return
     }
-  }
-  
-  internal func startEmailFlow(goesToPhone: Bool = false) {
-    let emailOTPVC = EmailOTPScreenViewController()
     
-    emailOTPVC.setCompletionHandler {[weak self] in
-      guard let self = self else { return }
-      
-      if (goesToPhone) {
-        self.startPhoneFlow()
-      } else {
-        self.sdkNavigationController?.popToViewController(ofClass: HomeViewController.self, animated: true)
+    guard let rules = self.customerRespData?.rules else {
+      return
+    }
+    
+    let stepIdentifiers = AppConstants.StepsBeforeKYC.allCases.map { $0.rawValue }
+    
+      let viewModels: [KYCStepViewModel?] = rules.map { ruleModel in
+        // No need to add the step if it's already been approved
+        if ruleModel.status == DocumentStatus.APPROVED.rawValue { return nil }
+        if let stepModel = steps.first(where: { $0.id == ruleModel.id }) {
+          if stepIdentifiers.contains(stepModel.identifier ?? "") {
+            // NOTE(ddnzcn): Since the step model is made for using in Home
+            // DO NOT run the step with KYCStepViewModel#onStepPressed
+            // This is used due to it works as a mapper between rule and step
+            // model. 
+            // @see PreKYCStepManager class
+            return KYCStepViewModel(from: stepModel, initialRule: ruleModel, topController: self.parentVC!)
+          }
+        }
+        return nil
       }
-    }
     
-    DispatchQueue.main.async {
-      self.sdkNavigationController?.pushViewController(emailOTPVC, animated: false)
-    }
+    let filteredVMs = viewModels.filter { $0 != nil } as! [KYCStepViewModel]
+    self.stepsBeforeKYC = filteredVMs.sorted { $0.sortOrder < $1.sortOrder }
+  }
+    
   }
   
-  internal func startPhoneFlow() {
-    let phoneOTPVC = PhoneOTPScreenViewController()
-    
-    phoneOTPVC.setCompletionHandler {[weak self] in
-      // return to home.
-      self?.sdkNavigationController?.popToViewController(ofClass: HomeViewController.self, animated: true)
-    }
-    
-    DispatchQueue.main.async {
-      self.sdkNavigationController!.pushViewController(phoneOTPVC, animated: false)
-    }
+
+
+extension AmaniUI: AmaniDelegate {
+  public func onProfileStatus(customerId: String, profile: AmaniSDK.wsProfileStatusModel) {
+    let object: [Any?] = [customerId, profile]
+    NotificationCenter.default.post(
+      name: NSNotification.Name(AppConstants.AmaniDelegateNotifications.onProfileStatus.rawValue),
+      object: object
+    )
   }
   
+  public func onStepModel(customerId: String, rules: [AmaniSDK.KYCRuleModel]?) {
+    let object: [Any?] = [customerId, rules]
+    NotificationCenter.default.post(
+      name: NSNotification.Name(AppConstants.AmaniDelegateNotifications.onStepModel.rawValue),
+      object: object)
+  }
   
-  
+  public func onError(type: String, error: [AmaniSDK.AmaniError]) {
+    let errors = error.map { $0.toDictonary() }
+    let errorObject: [String: Any] = ["type": type, "errors": errors]
+    NotificationCenter.default.post(
+      name: NSNotification.Name(
+        AppConstants.AmaniDelegateNotifications.onError.rawValue
+      ),
+      object: errorObject
+    )
+    AmaniUI.sharedInstance.delegate?.onError(type: type, Error: error)
+  }
 }
-//extension AmaniUIv1:AmaniDelegate{
-//
-//  public func onProfileStatus(customerId:String, profile: AmaniSDK.wsProfileStatusModel) {
-//    print(profile)
-//  }
-//
-//  public func onStepModel(customerId:String, rules: [AmaniSDK.KYCRuleModel]?) {
-//    print(rules)
-//    guard let rules = rules else {return}
-//    missingRules = rules.filter{
-//      $0.status! != DocumentStatus.APPROVED.rawValue ||
-//      $0.status! != DocumentStatus.PENDING_REVIEW.rawValue}
-//      .map { (rule) -> [String:String] in
-//      return [rule.title!:rule.status!]
-//  }
-//
-//  }
-//
-//}
 

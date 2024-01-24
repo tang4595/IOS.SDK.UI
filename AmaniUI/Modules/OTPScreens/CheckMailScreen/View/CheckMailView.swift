@@ -150,7 +150,9 @@ class CheckMailView: UIView {
   deinit {
     NotificationCenter.default.removeObserver(
       self,
-      name: NSNotification.Name("ai.amani.onError"),
+      name: NSNotification.Name(
+        AppConstants.AmaniDelegateNotifications.onError.rawValue
+      ),
       object: nil
     )
   }
@@ -268,7 +270,7 @@ class CheckMailView: UIView {
   }
   
   func setupErrorHandling() {
-    NotificationCenter.default.addObserver(self, selector: #selector(didReceiveError(_:)), name: Notification.Name("ai.amani.onError"), object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(didReceiveError(_:)), name: Notification.Name(AppConstants.AmaniDelegateNotifications.onError.rawValue), object: nil)
   }
   
   @objc func didReceiveError(_ notification: Notification) {

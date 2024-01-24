@@ -21,6 +21,7 @@ class KYCStepViewModel {
   var textColor: UIColor = ThemeColor.blackColor
   var buttonColor: UIColor = ThemeColor.whiteColor
   var sortOrder: Int
+  var identifier: String? = ""
   private var documentSelectionTitle: String = ""
   private var documentSelectionDescription: String = ""
   private var maxAttempt: Int
@@ -42,6 +43,8 @@ class KYCStepViewModel {
     status = DocumentStatus(rawValue: initialRule.status ?? self.status.rawValue)!
     sortOrder = initialRule.sortOrder ?? 0
     rule = initialRule
+    
+    self.identifier = stepConfig.identifier
     
     let (buttonColor, textColor) = getColorsForStatus(status: DocumentStatus(rawValue: initialRule.status!)!, stepConfig: stepConfig)
     self.buttonColor = buttonColor
