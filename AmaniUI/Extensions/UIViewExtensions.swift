@@ -45,4 +45,33 @@ extension UIView {
     self.layer.borderWidth = borderWidth
     self.layer.borderColor = borderColor
   }
+  
+  func reportSuperviews(filtering:Bool = true) {
+    var currentSuper : UIView? = self.superview
+    print("reporting on \(self)\n")
+    while let ancestor = currentSuper {
+      let ok = ancestor.bounds.contains(ancestor.convert(self.frame, from: self.superview))
+      let report = "it is \(ok ? "inside" : "OUTSIDE") \(ancestor)\n"
+      if !filtering || !ok { print(report) }
+      currentSuper = ancestor.superview
+    }
+  }
+  
+  // Animated show hide with a cool fade out effect
+  func setIsHidden(_ hidden: Bool, animated: Bool) {
+    if animated {
+      if self.isHidden && !hidden {
+        self.alpha = 0.0
+        self.isHidden = false
+      }
+      UIView.animate(withDuration: 0.25, animations: {
+        self.alpha = hidden ? 0.0 : 1.0
+      }) { (complete) in
+        self.isHidden = hidden
+      }
+    } else {
+      self.isHidden = hidden
+    }
+  }
+  
 }

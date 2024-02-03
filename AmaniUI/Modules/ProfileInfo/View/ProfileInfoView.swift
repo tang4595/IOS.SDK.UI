@@ -177,9 +177,9 @@ class ProfileInfoView: UIView {
     if let errorObjc = notification.object as? [String: Any] {
       let type = errorObjc["type"] as! String
       let errors = errorObjc["errors"] as! [[String: String]]
-       // TODO: determine the error object
-      print(type)
-      print(errors)
+      if type == "customer_error" {
+        print(errors)
+      }
     }
   }
   

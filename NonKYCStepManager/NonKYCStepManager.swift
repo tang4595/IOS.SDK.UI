@@ -75,6 +75,8 @@ class NonKYCStepManager {
       startEmailOTP()
     case .profileInfo:
       startProfileInfo()
+    case .questionnaire:
+      startQuestionnaire()
     }
   }
 
@@ -138,6 +140,14 @@ class NonKYCStepManager {
     }
 
     DispatchQueue.main.sync {
+      self.navigate(to: self.currentStepViewController!)
+    }
+  }
+  
+  private func startQuestionnaire() {
+    DispatchQueue.main.async {
+      self.currentStepViewController = QuestionnaireViewController()
+      
       self.navigate(to: self.currentStepViewController!)
     }
   }

@@ -27,6 +27,7 @@ enum AppConstants {
     case phoneOTP = "phone_otp"
     case emailOTP = "email_otp"
     case profileInfo = "profile_info"
+    case questionnaire = "questionnaire"
   }
   
 }
