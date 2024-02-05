@@ -59,10 +59,10 @@ class KYCStepViewModel {
     documentHandler = DocumentHandlerHelper(for: stepConfig.documents!, of: self)
     
     
-    // FIXME: Remove this after testing questionnaire
-    if identifier == "questionnaire" {
-      sortOrder = 0
-    }
+//    // FIXME: Remove this after testing questionnaire
+//    if identifier == "questionnaire" {
+//      sortOrder = 0
+//    }
   }
   
   /// Updates the status of current rule

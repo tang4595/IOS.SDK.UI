@@ -13,20 +13,6 @@ class QuestionnaireView: UIView {
   private var questions: [QuestionModel] = []
   private let questionnaire = Amani.sharedInstance.questionnaire()
   private var viewModel: QuestionnaireViewModel?
-
-//  private lazy var collectionView: UICollectionView = {
-//    var layout = UICollectionViewFlowLayout()
-//    layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-//    layout.minimumLineSpacing = 0
-//    layout.minimumInteritemSpacing = 0
-//
-//    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-//    collectionView.dataSource = self
-//    collectionView.register(QuestionViewCell.self, forCellWithReuseIdentifier: "cell")
-//    collectionView.contentInsetAdjustmentBehavior = .always
-//    collectionView.contentMode = .scaleToFill
-//    return collectionView
-//  }()
   
   private lazy var tableView: UITableView = {
     let tableView = UITableView()
@@ -58,17 +44,6 @@ class QuestionnaireView: UIView {
       tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
       tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
     ])
-
-//    let questionView = QuestionViewCell()
-//    questionView.question = self.questions.first!
-//    questionView.configure(delegate: self)
-//    questionView.translatesAutoresizingMaskIntoConstraints = false
-//    addSubview(questionView)
-//     NSLayoutConstraint.activate([
-//      questionView.topAnchor.constraint(equalTo: topAnchor, constant: 100),
-//      questionView.leadingAnchor.constraint(equalTo: leadingAnchor),
-//      questionView.trailingAnchor.constraint(equalTo: trailingAnchor),
-//    ])
   }
 }
 
@@ -94,9 +69,5 @@ extension QuestionnaireView: QuestionDelegate {
     // TODO: Add answer to viewModel
     print(answerID)
     print(questionType)
-    // Now probably the only thing left is just adding the header for the table
-    // view
-
-    // FUCK.
   }
 }
