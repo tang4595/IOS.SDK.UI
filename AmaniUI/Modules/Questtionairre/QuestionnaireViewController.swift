@@ -10,6 +10,7 @@ import UIKit
 
 class QuestionnaireViewController: BaseViewController {
   private var questionnaireView: QuestionnaireView!
+  private var handler: (() -> Void)? = nil
   
   let questionnaireViewModel = QuestionnaireViewModel()
   
@@ -17,13 +18,18 @@ class QuestionnaireViewController: BaseViewController {
     questionnaireView = QuestionnaireView()
     view.addSubview(questionnaireView)
     questionnaireView.translatesAutoresizingMaskIntoConstraints = false
+    view.backgroundColor = UIColor(hexString: "#EEF4FA")
+    questionnaireView.bind(with: questionnaireViewModel, completionHandler: handler!)
     NSLayoutConstraint.activate([
-      // FIXME: After implementing table view, change this
       questionnaireView.topAnchor.constraint(equalTo: view.topAnchor),
       questionnaireView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
       questionnaireView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
       questionnaireView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
     ])
+  }
+  
+  func setCompletionHandler(_ handler: @escaping (() -> Void)) {
+    self.handler = handler
   }
   
 }

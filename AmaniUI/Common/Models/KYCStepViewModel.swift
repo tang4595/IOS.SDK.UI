@@ -60,9 +60,9 @@ class KYCStepViewModel {
     
     
 //    // FIXME: Remove this after testing questionnaire
-//    if identifier == "questionnaire" {
-//      sortOrder = 0
-//    }
+    if identifier == "questionnaire" {
+      sortOrder = 0
+    }
   }
   
   /// Updates the status of current rule

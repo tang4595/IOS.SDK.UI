@@ -52,7 +52,7 @@ class AnswerButton: UIButton {
     )
 
     setAttributedTitle(attributedString, for: .normal)
-
+    
     tintColor = .black
     backgroundColor = .white
 
@@ -130,6 +130,11 @@ class AnswerButton: UIButton {
     if let cb = self.didPressCallback {
       cb(self.question!.id)
     }
+  }
+  
+  func setChecked(_ isChecked: Bool) {
+    guard type == .multiple else {return}
+    self.isChecked = isChecked
   }
   
 }

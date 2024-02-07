@@ -18,7 +18,7 @@ class QuestionDropdownView: UIView {
       // FIXME: Since the table view doesn't want to update the cell height
       // automatically, this disables the show hide function for now.
       // Find a way to notify the changes to the table view
-      
+
 //      answerStackView.setIsHidden(!answersHidden, animated: true)
 //      self.layoutIfNeeded()
 //      self.superview?.layoutIfNeeded()
@@ -69,20 +69,30 @@ class QuestionDropdownView: UIView {
     return stackView
   }()
 
-  convenience init(with question: QuestionModel) {
+  convenience init(with question: QuestionModel, answers: QuestionAnswerRequestModel? = nil) {
     self.init()
     self.question = question
-    setupUI()
+    setupUI(with: answers)
   }
 
-  func setupUI() {
+  func setupUI(with answers: QuestionAnswerRequestModel? = nil) {
     guard let question = question else {
       return
     }
 
     let buttonType: AnswerButtonType = question.answerType == "multiple_choice" ? .multiple : .single
+    
+    let selectedAnswerIDs = answers?.multipleOptionAnswer
+    
     question.answers.forEach { answer in
       let answerButton = AnswerButton(with: answer, type: buttonType)
+      
+      if let answerIDs = selectedAnswerIDs, buttonType == .multiple {
+        if answerIDs.contains(answer.id) {
+          answerButton.setChecked(true)
+        }
+      }
+      
       self.answerStackView.addArrangedSubview(answerButton)
     }
 
@@ -91,19 +101,27 @@ class QuestionDropdownView: UIView {
       .foregroundColor: UIColor(hexString: "#565656"),
     ]
 
-    let attributedString = NSAttributedString(
-      string: buttonType == .single ? "Select" : "Select the applicable options",
-      attributes: attributes
-    )
-
-    showHideButton.setAttributedTitle(attributedString, for: .normal)
+    if buttonType == .single && answers?.singleOptionAnswer != nil{
+      let title = question.answers.first(where: { $0.id == answers?.singleOptionAnswer })?.title ?? "Select"
+      let attributedString = NSAttributedString(
+        string: title,
+        attributes: attributes
+      )
+      showHideButton.setAttributedTitle(attributedString, for: .normal)
+    } else {
+      let attributedString = NSAttributedString(
+        string: buttonType == .single ? "Select" : "Select the applicable options",
+        attributes: attributes
+      )
+      showHideButton.setAttributedTitle(attributedString, for: .normal)
+    }
 
     // Show hide button area
     showHideButton.translatesAutoresizingMaskIntoConstraints = false
     addSubview(showHideButton)
 
     answerStackView.translatesAutoresizingMaskIntoConstraints = false
-    
+
     addSubview(answerStackView)
     NSLayoutConstraint.activate([
       showHideButton.topAnchor.constraint(equalTo: topAnchor),
@@ -114,17 +132,32 @@ class QuestionDropdownView: UIView {
       answerStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
       answerStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
       // fucking culprit.
-      answerStackView.bottomAnchor.constraint(equalTo: bottomAnchor)
+      answerStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
     ])
   }
 
   func bind(didTapAnswerFunc: @escaping (String) -> Void) {
     didTapAnswerCallback = didTapAnswerFunc
     showHideButton.addTarget(self, action: #selector(showHideButtonAction), for: .touchUpInside)
-    
+
     let answerButtons: [AnswerButton] = answerStackView.arrangedSubviews as! [AnswerButton]
-    answerButtons.forEach { $0.bind(didPressAnswerFN: didTapAnswerFunc)}
-    
+    answerButtons.forEach { $0.bind(didPressAnswerFN: { answerID in
+      didTapAnswerFunc(answerID)
+      guard let question = self.question else { return }
+      guard question.answerType == "single_choice" else { return }
+      let answer = question.answers.first(where: { $0.id == answerID })
+      let attributes: [NSAttributedString.Key: Any] = [
+        .font: UIFont.systemFont(ofSize: 16.0, weight: .regular),
+        .foregroundColor: UIColor(hexString: "#565656"),
+      ]
+
+      let attributedString = NSAttributedString(
+        string: answer?.title ?? "Select",
+        attributes: attributes
+      )
+
+      self.showHideButton.setAttributedTitle(attributedString, for: .normal)
+    }) }
   }
 
   @objc func showHideButtonAction() {
