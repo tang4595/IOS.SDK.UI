@@ -15,6 +15,13 @@ class ProfileInfoViewController: KeyboardAvoidanceViewController {
   private var handler: (() -> Void)? = nil
   private var docVersion: DocumentVersion?
   
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    if isMovingFromParent {
+      AmaniUI.sharedInstance.popViewController()
+    }
+  }
+  
   override func viewDidLoad() {
     profileInfoView = ProfileInfoView()
     profileInfoView.bind(withViewModel: profileInfoViewModel)

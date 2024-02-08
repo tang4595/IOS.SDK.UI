@@ -13,7 +13,7 @@ class NonKYCStepManager {
   var preSteps: [KYCStepViewModel] = []
   var postSteps: [KYCStepViewModel] = []
   let customerVC: UIViewController
-  private var navigationController: UINavigationController?
+  public var navigationController: UINavigationController?
   private var completionHandler: ((UINavigationController?) -> Void)!
   private let customer: CustomerResponseModel
   private var steps: [KYCStepViewModel] = []
@@ -33,6 +33,13 @@ class NonKYCStepManager {
     }
 
     let filtered = allStepModels.filter { $0 != nil } as! [KYCStepViewModel]
+    
+    if filtered.isEmpty {
+      self.preSteps = []
+      self.postSteps = []
+      return
+    }
+    
     let sorted = filtered.sorted { $0.sortOrder < $1.sortOrder }
 
     let firstKYCIndex = sorted.firstIndex(where: { $0.identifier == "kyc" })
@@ -145,6 +152,11 @@ class NonKYCStepManager {
   }
   
   private func startQuestionnaire() {
+    if currentStep.status == DocumentStatus.APPROVED {
+      stepCompleted()
+      return
+    }
+    
     DispatchQueue.main.async {
       self.currentStepViewController = QuestionnaireViewController()
       

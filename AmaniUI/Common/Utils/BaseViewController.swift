@@ -61,6 +61,7 @@ class BaseViewController: UIViewController {
    */
   private func baseSetup() {
     self.setThemeColor()
+    self.setupFirstPop()
     self.navigationController?.navigationBar.isHidden = false
     if #available(iOS 13.0, *) {
       overrideUserInterfaceStyle = .light
@@ -79,6 +80,18 @@ class BaseViewController: UIViewController {
     self.navigationItem.leftBarButtonItem = backBarButtonItem
   }
   
+  func setPopButton(TintColor:String? = nil) {
+    let leftButton: UIButton = UIButton(type: .custom)
+    leftButton.setImage(UIImage(named: "ic_backArrow", in: Bundle(for: HomeViewController.self), compatibleWith: nil), for: .normal)
+    leftButton.tintColor = UIColor(hexString: TintColor ?? navBarFontColor)
+    leftButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
+    leftButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+    leftButton.backgroundColor = .clear
+    leftButton.addTarget(self, action: #selector(popToCustomerVC), for: .touchUpInside)
+    let backBarButtonItem: UIBarButtonItem = UIBarButtonItem(customView: leftButton)
+    self.navigationItem.leftBarButtonItem = backBarButtonItem
+  }
+  
   @objc func popViewController() {
     self.navigationController?.popViewController(animated: true)
   }
@@ -90,7 +103,6 @@ class BaseViewController: UIViewController {
   }
   
   func setRightNavBarButtonAction(cb:@escaping VoidCallback) {
-    
     navbarRightButtonAction = cb
   }
   
@@ -124,6 +136,14 @@ class BaseViewController: UIViewController {
       
     } else {
       self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: textColor ?? UIColor(hexString: navBarFontColor)]
+    }
+  }
+  
+  // If the navigation controller only has a single item
+  // this function allows customer to quit the process
+  func setupFirstPop() {
+    if (self.navigationController?.viewControllers.count == 1) {
+      self.setPopButton()
     }
   }
   
@@ -187,6 +207,11 @@ class BaseViewController: UIViewController {
   
   @objc func donePressOnPicker() {
     self.view.endEditing(true)
+  }
+  
+  @objc
+  func popToCustomerVC() {
+    AmaniUI.sharedInstance.popViewController()
   }
   
  

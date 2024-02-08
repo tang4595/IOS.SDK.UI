@@ -14,7 +14,13 @@ class QuestionnaireViewController: BaseViewController {
   
   let questionnaireViewModel = QuestionnaireViewModel()
   
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    AmaniUI.sharedInstance.popViewController()
+  }
+  
   override func viewDidLoad() {
+    self.setPopButton(TintColor: "#FFF")
     questionnaireView = QuestionnaireView()
     view.addSubview(questionnaireView)
     questionnaireView.translatesAutoresizingMaskIntoConstraints = false

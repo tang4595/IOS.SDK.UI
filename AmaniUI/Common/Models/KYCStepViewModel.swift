@@ -57,12 +57,6 @@ class KYCStepViewModel {
     documents = stepConfig.documents!
     // Interesting note: You can actually use `self` on the init method, just needs to be initialized after all variables are initialized in the class in this case all required parameters are initialized on the KYCStepViewModel.
     documentHandler = DocumentHandlerHelper(for: stepConfig.documents!, of: self)
-    
-    
-//    // FIXME: Remove this after testing questionnaire
-    if identifier == "questionnaire" {
-      sortOrder = 0
-    }
   }
   
   /// Updates the status of current rule

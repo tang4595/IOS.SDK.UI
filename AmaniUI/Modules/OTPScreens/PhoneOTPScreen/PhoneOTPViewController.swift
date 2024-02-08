@@ -23,9 +23,7 @@ class PhoneOTPScreenViewController: KeyboardAvoidanceViewController {
   
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
-    
     if isMovingFromParent {
-      // Exit directly to the user's app
       AmaniUI.sharedInstance.popViewController()
     }
   }

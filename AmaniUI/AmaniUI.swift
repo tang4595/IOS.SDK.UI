@@ -229,8 +229,15 @@ public class AmaniUI {
     if let missingRules = missingRules {
       self.delegate?.onKYCFailed(CustomerId: customerId, Rules: missingRules)
     }
-    guard let sdkNavigationController = sdkNavigationController else { return }
-    sdkNavigationController.dismiss(animated: true)
+    
+    
+    if let sdkNavigationController = sdkNavigationController {
+      sdkNavigationController.dismiss(animated: true)
+    } else {
+      if let navcontroller = nonKYCStepManager?.navigationController {
+        navcontroller.dismiss(animated: true)
+      }
+    }
   }
   
   // MARK: - internal methods
