@@ -37,6 +37,22 @@ class ProfileInfoViewModel {
       .eraseToAnyPublisher()
   }
   
+  var isBdayValidPublisher: AnyPublisher<Bool, Never> {
+    $birthDay.debounce(for: 0.5, scheduler: RunLoop.main)
+      .map { newBday in
+        if newBday == "" { return true }
+        let replacedBday = newBday.replacingOccurrences(of: "/", with: "-")
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MM-yyyy"
+        
+        if let _ = dateFormatter.date(from: replacedBday) {
+          return true
+        } else {
+          return false
+        }
+      }.eraseToAnyPublisher()
+  }
+  
   func submitForm() {
     
     guard !name.isEmpty && !surname.isEmpty && !birthDay.isEmpty else {
