@@ -29,9 +29,7 @@ class PhoneOTPViewModel {
   
   func submitPhoneForOTP() {
     state = .loading
-    customerInfo.setPhone(phone: phone)
-    customerInfo.upload(
-      location: AmaniUI.sharedInstance.location) { [weak self] phoneChanged in
+    customerInfo.updatePhone(phone: phone) {[weak self] phoneChanged in
         
         if (phoneChanged == false) {
           self?.state = .failed

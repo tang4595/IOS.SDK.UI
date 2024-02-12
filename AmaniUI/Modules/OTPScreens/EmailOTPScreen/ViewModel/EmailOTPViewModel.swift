@@ -29,10 +29,7 @@ class EmailOTPViewModel {
   
   func submitEmailForOTP() {
     state = .loading
-    customerInfo.setEmail(email: email)
-    customerInfo.upload(
-      location: AmaniUI.sharedInstance.location) { [weak self] emailChanged in
-        
+    customerInfo.updateEmail(email: email) { [weak self] emailChanged in
         if emailChanged == false {
           self?.state = .failed
           return

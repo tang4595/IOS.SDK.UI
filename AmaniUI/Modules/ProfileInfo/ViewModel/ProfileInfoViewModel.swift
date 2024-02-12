@@ -40,22 +40,18 @@ class ProfileInfoViewModel {
   var isBdayValidPublisher: AnyPublisher<Bool, Never> {
     $birthDay.debounce(for: 0.5, scheduler: RunLoop.main)
       .map { newBday in
-        if newBday == "" { return true }
-        let replacedBday = newBday.replacingOccurrences(of: "/", with: "-")
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd-MM-yyyy"
-        
-        if let _ = dateFormatter.date(from: replacedBday) {
-          return true
-        } else {
-          return false
-        }
+        self.isBdayValid(input: newBday)
       }.eraseToAnyPublisher()
   }
   
   func submitForm() {
     
     guard !name.isEmpty && !surname.isEmpty && !birthDay.isEmpty else {
+      self.state = .failed
+      return
+    }
+    
+    guard isBdayValid(input: birthDay) else {
       self.state = .failed
       return
     }
@@ -71,6 +67,19 @@ class ProfileInfoViewModel {
       } else {
         self?.state = .success
       }
+    }
+  }
+  
+  private func isBdayValid(input: String) -> Bool {
+    if input == "" { return true }
+    let replacedBday = input.replacingOccurrences(of: "/", with: "-")
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "dd-MM-yyyy"
+    
+    if let _ = dateFormatter.date(from: replacedBday) {
+      return true
+    } else {
+      return false
     }
   }
   
