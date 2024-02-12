@@ -23,7 +23,8 @@ class NFHandler: DocumentHandler {
   }
   
   func start(docStep: AmaniSDK.DocumentStepModel, version: AmaniSDK.DocumentVersion, workingStepIndex: Int = 0,completion: @escaping StepCompletionCallback) {
-    nfcCaptureModule.setType(type: version.type!)
+    // FIXME: Add correct id type to nf document on configuration
+    nfcCaptureModule.setType(type: DocumentTypes.TurkishIdNew.rawValue)
     
     if AmaniUI.sharedInstance.getNvi() == nil {
       stepView = nfcCaptureModule.start(idCardType: DocumentTypes.TurkishIdNew.rawValue) { [weak self] (nfcreq) in

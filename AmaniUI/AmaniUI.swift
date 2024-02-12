@@ -271,9 +271,7 @@ public class AmaniUI {
   private func startKYCHome() {
     DispatchQueue.main.async {
       self.initialVC = HomeViewController(nibName: String(describing: HomeViewController.self), bundle: Bundle(for: HomeViewController.self))
-      self.initialVC!.bind(customerData: self.customerRespData!)
-      
-        // Setting the app theme here will ensure it runs correctly on the first time. Otherwise it won't have the correct theme on launch
+      self.initialVC!.bind(customerData: self.customerRespData!, nonKYCManager: self.nonKYCStepManager)
       
       // Check if sdk navigation controller in pre kyc steps
       if self.sdkNavigationController == nil {
