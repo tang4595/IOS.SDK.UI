@@ -52,10 +52,12 @@ class RoundedTextInput: UIView {
     keyboardType: UIKeyboardType
   ) {
     self.init()
-    commonInit(borderColor: borderColor,
-               placeholderColor: placeholderColor,
-               keyboardType: keyboardType,
-               isPasswordToggleEnabled: isPasswordToggleEnabled
+    commonInit(
+      placeHolderText: placeholderText,
+      borderColor: borderColor,
+      placeholderColor: placeholderColor,
+      keyboardType: keyboardType,
+      isPasswordToggleEnabled: isPasswordToggleEnabled
     )
   }
 
@@ -148,14 +150,14 @@ class RoundedTextInput: UIView {
     // TODO: Add special case for focused
     layer.borderColor = UIColor(hexString: "#C0C0C0").cgColor
   }
-  
+
   func updatePlaceHolder(text: String, color: UIColor = .lightGray) {
     field.attributedPlaceholder =
-    NSAttributedString(string: text,
-                       attributes:
-                        [NSAttributedString.Key.foregroundColor: color,
-                        ]
-    )
+      NSAttributedString(string: text,
+                         attributes:
+                         [NSAttributedString.Key.foregroundColor: color,
+                         ]
+      )
   }
 
   @objc

@@ -83,7 +83,7 @@ class ProfileInfoView: UIView {
 
   private lazy var birthdateInput: RoundedTextInput = {
     let input = RoundedTextInput(
-      placeholderText: "XX/XX/XXXX",
+      placeholderText: "DD/MM/YYYY",
       borderColor: UIColor(hexString: "#515166"),
       placeholderColor: UIColor(hexString: "#C0C0C0"),
       isPasswordToggleEnabled: false,
