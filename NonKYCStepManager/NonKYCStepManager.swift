@@ -23,35 +23,7 @@ class NonKYCStepManager {
   init(for steps: [AmaniSDK.StepConfig], customer: CustomerResponseModel, vc: UIViewController) {
     self.customer = customer
     customerVC = vc
-
-    let allStepModels: [KYCStepViewModel?] = customer.rules!.map { ruleModel in
-      if ruleModel.status == DocumentStatus.APPROVED.rawValue { return nil }
-      if let stepModel = steps.first(where: { $0.id == ruleModel.id }) {
-        return KYCStepViewModel(from: stepModel, initialRule: ruleModel, topController: vc)
-      }
-      return nil
-    }
-
-    let filtered = allStepModels.filter { $0 != nil } as! [KYCStepViewModel]
-    
-    if filtered.isEmpty {
-      self.preSteps = []
-      self.postSteps = []
-      return
-    }
-    
-    let sorted = filtered.sorted { $0.sortOrder < $1.sortOrder }
-
-    let firstKYCIndex = sorted.firstIndex(where: { $0.identifier == "kyc" })
-    let lastKYCIndex = sorted.lastIndex(where: { $0.identifier == "kyc" })
-
-    if firstKYCIndex == 0 {
-      preSteps = []
-    } else {
-      preSteps = Array(sorted[0 ... (firstKYCIndex!.advanced(by: -1))])
-    }
-    
-    postSteps = Array(sorted[lastKYCIndex!.advanced(by: 1)...])
+    generate(for: steps, rules: customer.rules!)
   }
 
   /// If nil is returned from the completion callback it means there are no
@@ -183,6 +155,36 @@ class NonKYCStepManager {
     } else {
       navigationController!.pushViewController(viewController, animated: true)
     }
+  }
+  
+  private func generate(for steps: [AmaniSDK.StepConfig], rules: [AmaniSDK.KYCRuleModel]) {
+    let allStepModels: [KYCStepViewModel?] = rules.map { ruleModel in
+      if let stepModel = steps.first(where: { $0.id == ruleModel.id }) {
+        return KYCStepViewModel(from: stepModel, initialRule: ruleModel, topController: customerVC)
+      }
+      return nil
+    }
+    
+    let filtered = allStepModels.filter { $0 != nil } as! [KYCStepViewModel]
+    
+    if filtered.isEmpty {
+      self.preSteps = []
+      self.postSteps = []
+      return
+    }
+    
+    let sorted = filtered.sorted { $0.sortOrder < $1.sortOrder }
+    
+    let firstKYCIndex = sorted.firstIndex(where: { $0.identifier == "kyc" })
+    let lastKYCIndex = sorted.lastIndex(where: { $0.identifier == "kyc" })
+    
+    if firstKYCIndex == 0 {
+      preSteps = []
+    } else {
+      preSteps = Array(sorted[0 ... (firstKYCIndex!.advanced(by: -1))])
+    }
+    
+    postSteps = Array(sorted[lastKYCIndex!.advanced(by: 1)...])
   }
 
   public func hasPostSteps() -> Bool {
