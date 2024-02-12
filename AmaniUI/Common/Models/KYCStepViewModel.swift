@@ -22,6 +22,7 @@ class KYCStepViewModel {
   var buttonColor: UIColor = ThemeColor.whiteColor
   var sortOrder: Int
   var identifier: String? = ""
+  var isHidden: Bool = false
   private var documentSelectionTitle: String = ""
   private var documentSelectionDescription: String = ""
   private var maxAttempt: Int
@@ -43,7 +44,6 @@ class KYCStepViewModel {
     status = DocumentStatus(rawValue: initialRule.status ?? self.status.rawValue)!
     sortOrder = initialRule.sortOrder ?? 0
     rule = initialRule
-    
     self.identifier = stepConfig.identifier
     
     let (buttonColor, textColor) = getColorsForStatus(status: DocumentStatus(rawValue: initialRule.status!)!, stepConfig: stepConfig)
@@ -55,6 +55,14 @@ class KYCStepViewModel {
     
     topViewController = onVC
     documents = stepConfig.documents!
+    
+    // ??
+    if (documents.count == 1) {
+      if let docVersion = documents.first?.versions?.first {
+        self.isHidden = docVersion.isHidden ?? false
+      }
+    }
+    
     // Interesting note: You can actually use `self` on the init method, just needs to be initialized after all variables are initialized in the class in this case all required parameters are initialized on the KYCStepViewModel.
     documentHandler = DocumentHandlerHelper(for: stepConfig.documents!, of: self)
   }

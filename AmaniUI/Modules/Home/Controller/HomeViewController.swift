@@ -17,6 +17,8 @@ class HomeViewController: BaseViewController {
   var onStepObserver: Any? = nil
   var onProfileObserver: Any? = nil
   
+  var nonKYCStepManager: NonKYCStepManager? = nil
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -57,7 +59,11 @@ class HomeViewController: BaseViewController {
       NotificationCenter.default.removeObserver(onProfileObserver)
     }
     
+    
     super.viewDidDisappear(animated)
+    if !isMovingFromParent && !((self.navigationController?.viewControllers.count)! > 1) {
+      AmaniUI.sharedInstance.popViewController()
+    }
   }
   
   // MARK: - Initial setup methods
@@ -128,7 +134,7 @@ class HomeViewController: BaseViewController {
       }
       
       
-      let filteredViewModels = viewModels.filter { $0 != nil } as! [KYCStepViewModel]
+      let filteredViewModels = viewModels.filter { $0 != nil && !($0?.isHidden ?? false)} as! [KYCStepViewModel]
       stepModels = filteredViewModels.sorted { $0.sortOrder < $1.sortOrder }
     } else {
       rules.forEach { ruleModel in
@@ -150,8 +156,9 @@ class HomeViewController: BaseViewController {
     self.kycStepTblView.backgroundColor = color
   }
   
-  public func bind(customerData: CustomerResponseModel) {
+  public func bind(customerData: CustomerResponseModel, nonKYCManager: NonKYCStepManager? = nil) {
     self.customerData = customerData
+    self.nonKYCStepManager = nonKYCManager
   }
   
 }
@@ -178,9 +185,19 @@ extension HomeViewController {
   }
   
   func goToSuccess() {
-    DispatchQueue.main.async {
-      let successVC = SuccessViewController(nibName: String(describing: SuccessViewController.self), bundle: Bundle(for: SuccessViewController.self))
-      self.navigationController?.pushViewController(successVC, animated: false)
+    
+    if let nonKYCManager = self.nonKYCStepManager, nonKYCManager.hasPostSteps() {
+        nonKYCManager.startFlow(forPreSteps: false) {_ in
+          DispatchQueue.main.async {
+            let successVC = SuccessViewController(nibName: String(describing: SuccessViewController.self), bundle: Bundle(for: SuccessViewController.self))
+            self.navigationController?.pushViewController(successVC, animated: true)
+          }
+        }
+    } else {
+      DispatchQueue.main.async {
+        let successVC = SuccessViewController(nibName: String(describing: SuccessViewController.self), bundle: Bundle(for: SuccessViewController.self))
+        self.navigationController?.pushViewController(successVC, animated: false)
+      }  
     }
   }
 }
