@@ -88,7 +88,7 @@ class NonKYCStepManager {
   }
 
   private func startEmailOTP() {
-    guard customer.emailVerified == false else {
+    if currentStep.status == DocumentStatus.APPROVED {
       stepCompleted()
       return
     }
@@ -114,7 +114,7 @@ class NonKYCStepManager {
   }
 
   private func startPhoneOTP() {
-    guard customer.phoneVerified == false else {
+    if currentStep.status == DocumentStatus.APPROVED {
       stepCompleted()
       return
     }
@@ -132,7 +132,6 @@ class NonKYCStepManager {
   }
 
   private func startProfileInfo() {
-    print(currentStep.status)
     if currentStep.status == DocumentStatus.APPROVED {
       stepCompleted()
       return
