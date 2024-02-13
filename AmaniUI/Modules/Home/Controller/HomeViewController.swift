@@ -14,31 +14,19 @@ class HomeViewController: BaseViewController {
   @IBOutlet weak var headView: UIView!
   var stepModels: [KYCStepViewModel]?
   var customerData: CustomerResponseModel? = nil
-  var onStepObserver: Any? = nil
-  var onProfileObserver: Any? = nil
   
   var nonKYCStepManager: NonKYCStepManager? = nil
   
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    onStepObserver = NotificationCenter.default.addObserver(
-      forName: NSNotification.Name(AppConstants.AmaniDelegateNotifications.onStepModel.rawValue),
-      object: nil, queue: nil) { [weak self] notification in
-        // 0th element is the customer id, which we don't need in here.
-        if let rules = (notification.object as? [Any?])?[1] as? [KYCRuleModel] {
-          self?.onStepModel(rules: rules)
-        }
-      }
+    NotificationCenter.default.addObserver(self, selector: #selector(didReceiveStepModel), name: Notification.Name(
+      AppConstants.AmaniDelegateNotifications.onStepModel.rawValue
+    ), object: nil)
     
-    onProfileObserver = NotificationCenter.default.addObserver(
-      forName: Notification.Name(AppConstants.AmaniDelegateNotifications.onProfileStatus.rawValue),
-      object: nil, queue: nil) { [weak self] notification in
-        if let profileStatusModel = (notification.object as? [Any?])?[1] as? AmaniSDK.wsProfileStatusModel {
-          self?.onProfileStatus(profile: profileStatusModel)
-        }
-        
-      }
+    NotificationCenter.default.addObserver(self, selector: #selector(didReceiveProfileStatus), name: NSNotification.Name(
+      AppConstants.AmaniDelegateNotifications.onProfileStatus.rawValue
+    ), object: nil)
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -52,15 +40,8 @@ class HomeViewController: BaseViewController {
   }
   
   override func viewDidDisappear(_ animated: Bool) {
-    if let onStepObserver = self.onStepObserver {
-      NotificationCenter.default.removeObserver(onStepObserver)
-    }
-    if let onProfileObserver = self.onProfileObserver {
-      NotificationCenter.default.removeObserver(onProfileObserver)
-    }
-    
-    
     super.viewDidDisappear(animated)
+    NotificationCenter.default.removeObserver(self)
     if !isMovingFromParent && !((self.navigationController?.viewControllers.count)! > 1) {
       AmaniUI.sharedInstance.popViewController()
     }
@@ -200,6 +181,23 @@ extension HomeViewController {
       }  
     }
   }
+  
+  @objc
+  func didReceiveStepModel(_ notification: Notification) {
+    if let rules = (notification.object as? [Any?])?[1] as? [KYCRuleModel] {
+      self.onStepModel(rules: rules)
+    }
+  }
+  
+  @objc
+  func didReceiveProfileStatus(_ notification: Notification) {
+    if let profileStatusModel = (notification.object as? [Any?])?[1] as?
+        AmaniSDK.wsProfileStatusModel {
+      self.onProfileStatus(profile: profileStatusModel)
+    }
+  }
+  
+  
 }
 
 extension HomeViewController {
