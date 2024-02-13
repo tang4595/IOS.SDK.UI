@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import AmaniSDK
 
 class QuestionnaireViewController: BaseViewController {
   private var questionnaireView: QuestionnaireView!
@@ -37,5 +38,10 @@ class QuestionnaireViewController: BaseViewController {
   func setCompletionHandler(_ handler: @escaping (() -> Void)) {
     self.handler = handler
   }
+  
+  func bind(with stepVM: KYCStepViewModel) {
+    self.questionnaireViewModel.setRuleID(stepVM.getRuleModel().id!)
+  }
+  
   
 }
