@@ -126,8 +126,9 @@ class NonKYCStepManager {
     
     DispatchQueue.main.async {
       self.currentStepViewController = QuestionnaireViewController()
-      
-      (self.currentStepViewController as? QuestionnaireViewController)!.setCompletionHandler {[weak self] in
+      let questionnaireVC = self.currentStepViewController as! QuestionnaireViewController
+      questionnaireVC.bind(with: self.currentStep)
+      questionnaireVC.setCompletionHandler {[weak self] in
         self?.stepCompleted()
       }
       

@@ -13,6 +13,7 @@ class QuestionnaireViewModel {
   @Published var questions: [QuestionModel] = []
   @Published var answers: [QuestionAnswerRequestModel] = []
   private let questionnaire = Amani.sharedInstance.questionnaire()
+  private var ruleID: String?
 
   enum ViewState {
     case loading
@@ -29,7 +30,13 @@ class QuestionnaireViewModel {
       // PREFILL THE ANSWERS FOR EASY MODIFICATION
       self.answers = self.questions.map { QuestionAnswerRequestModel(questionID: $0.id)}
     })
+    setupRuleHook()
   }
+  
+  deinit {
+    NotificationCenter.default.removeObserver(self)
+  }
+
 
   func addSingleAnswer(for questionID: String, answerID: String) {
     if let index = answers.firstIndex(where: { $0.question == questionID }) {
@@ -105,6 +112,33 @@ class QuestionnaireViewModel {
     }
     
     return nil
+  }
+  
+  private func setupRuleHook() {
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(didReceiveRules),
+      name: NSNotification.Name(
+        AppConstants.AmaniDelegateNotifications.onStepModel.rawValue
+      ),
+      object: nil)
+  }
+  
+  @objc
+  private func didReceiveRules(_ notification: Notification) {
+    guard let ruleID = ruleID else { return }
+    if let rules = (notification.object as? [Any?])?[1] as? [KYCRuleModel] {
+      if let rule = rules.first(where: { $0.id == ruleID }),
+         rule.status == DocumentStatus.APPROVED.rawValue {
+        state = .success
+      } else {
+        state = .failed
+      }
+    }
+  }
+  
+  func setRuleID(_ ruleID: String) {
+    self.ruleID = ruleID
   }
   
 }
