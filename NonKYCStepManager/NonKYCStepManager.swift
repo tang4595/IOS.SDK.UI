@@ -65,17 +65,10 @@ class NonKYCStepManager {
       return
     }
 
-    guard let docVersion = currentStep.documents.first?.versions?.first
-    else {
-      print("Misconfigured email otp, ask Amani for corrections")
-      stepCompleted()
-      return
-    }
-
     self.currentStepViewController = EmailOTPScreenViewController()
     let emailOTPVC = currentStepViewController as! EmailOTPScreenViewController
     
-    emailOTPVC.bind(docVersion: currentStep)
+    emailOTPVC.bind(stepVM: currentStep)
     emailOTPVC.setCompletionHandler { [weak self] in
       self?.stepCompleted()
     }
@@ -92,11 +85,12 @@ class NonKYCStepManager {
     }
 
    self.currentStepViewController = PhoneOTPScreenViewController()
-
-    (currentStepViewController as! PhoneOTPScreenViewController)
-      .setCompletionHandler { [weak self] in
-        self?.stepCompleted()
-      }
+   let phoneOTPVC = currentStepViewController as! PhoneOTPScreenViewController
+    
+    phoneOTPVC.bind(stepVM: currentStep)
+    phoneOTPVC.setCompletionHandler {[weak self] in
+      self?.stepCompleted()
+    }
 
     DispatchQueue.main.async {
       self.navigate(to: self.currentStepViewController!)
@@ -112,8 +106,10 @@ class NonKYCStepManager {
     DispatchQueue.main.sync {
       self.currentStepViewController = ProfileInfoViewController()
     }
-
-    (currentStepViewController as! ProfileInfoViewController).setCompletionHandler { [weak self] in
+    let profileInfoVC = self.currentStepViewController as! ProfileInfoViewController
+    
+    profileInfoVC.bind(with: currentStep)
+    profileInfoVC.setCompletionHandler {[weak self] in
       self?.stepCompleted()
     }
 
