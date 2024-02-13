@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import Combine
+import AmaniSDK
 
 class CheckSMSView: UIView {
   private var viewModel: CheckSMSViewModel!
@@ -50,14 +51,16 @@ class CheckSMSView: UIView {
   }()
   
   // MARK: Form Area
-  
-  private lazy var otpLegendRow: UIStackView = {
+  private lazy var otpLegend: UILabel = {
     let label = UILabel()
     label.text = "OTP (One Time PIN)"
     label.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
-    label.textColor = UIColor(hexString: "#20202F")
-    
-    let stackView = UIStackView(arrangedSubviews: [label])
+    label.textColor = UIColor(hexString: "#20202F")   
+    return label
+  }()
+  
+  private lazy var otpLegendRow: UIStackView = {
+    let stackView = UIStackView(arrangedSubviews: [otpLegend])
     return stackView
   }()
   
@@ -185,7 +188,10 @@ class CheckSMSView: UIView {
     timerLabel.text = String(format: "in %02d:%02d", minutes, seconds)
   }
   
-  func bind(withViewModel viewModel: CheckSMSViewModel) {
+  func bind(
+    withViewModel viewModel: CheckSMSViewModel,
+    withDocument document: DocumentVersion?
+  ) {
     otpInput.setDelegate(delegate: self)
     
     otpInput.textPublisher
@@ -226,9 +232,15 @@ class CheckSMSView: UIView {
     timerButton.addTarget(self, action: #selector(didTapRetryButton), for: .touchUpInside)
     
     self.viewModel = viewModel
+    
+    if let doc = document {
+      self.setTextsFrom(document: doc)
+    }
+    
+    
   }
   
-  func setTimerButtonDefaultStylings() {
+  func setTimerButtonDefaultStylings(text: String? = "Resend OTP") {
     timerButton.isEnabled = false
     
     let attributes: [NSAttributedString.Key: Any] = [
@@ -238,7 +250,7 @@ class CheckSMSView: UIView {
     
     timerButton.setAttributedTitle(
       NSAttributedString(
-        string: "Resend OTP",
+        string: text!,
         attributes: attributes),
       for: .normal)
     
@@ -284,6 +296,19 @@ class CheckSMSView: UIView {
       }
     }
   }
+  
+  private func setTextsFrom(document: DocumentVersion) {
+    if let step = document.steps?.first {
+      DispatchQueue.main.async {
+        self.titleText.text = step.confirmationTitle
+        self.titleDescription.text = step.confirmationDescription
+        self.setTimerButtonDefaultStylings(text: document.resendOTP)
+        // FIXME: Another one
+//        self.otpLegend.text = step.otpHint
+      }
+    }
+  }
+  
 }
 
 // MARK: TextFieldDelegate

@@ -7,10 +7,12 @@
 
 import Foundation
 import UIKit
+import AmaniSDK
 
 class CheckMailViewController: KeyboardAvoidanceViewController {
   private var checkMailView: CheckMailView!
   private var checkMailViewModel: CheckMailViewModel!
+  private var docVersion: DocumentVersion?
   
   override init() {
     super.init()
@@ -28,7 +30,10 @@ class CheckMailViewController: KeyboardAvoidanceViewController {
   }
   
   override func viewDidLoad() {
-    checkMailView.bind(withViewModel: self.checkMailViewModel)
+    checkMailView.bind(
+      withViewModel: self.checkMailViewModel,
+      withDocument: self.docVersion
+    )
     addPoweredByIcon()
     view.backgroundColor = UIColor(hexString: "#EEF4FA")
     contentView.addSubview(checkMailView)
@@ -46,6 +51,7 @@ class CheckMailViewController: KeyboardAvoidanceViewController {
   }
   
   func bind(with stepModel: KYCStepViewModel) {
+    self.docVersion = stepModel.documents.first?.versions?.first
     self.checkMailViewModel.setRuleID(stepModel.getRuleModel().id!)
   }
   

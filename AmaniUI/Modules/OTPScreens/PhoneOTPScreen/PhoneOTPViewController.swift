@@ -7,14 +7,20 @@
 
 import Foundation
 import UIKit
+import AmaniSDK
 
 class PhoneOTPScreenViewController: KeyboardAvoidanceViewController {
   private var phoneOTPView: PhoneOTPView!
+  private var phoneOTPViewModel: PhoneOTPViewModel!
+  
   private var handler: (() -> Void)? = nil
+  private var docVersion: DocumentVersion? = nil
+  private var stepVM: KYCStepViewModel?
   
   override init() {
     super.init()
     phoneOTPView = PhoneOTPView()
+    phoneOTPViewModel = PhoneOTPViewModel()
   }
   
   required init?(coder: NSCoder) {
@@ -29,7 +35,7 @@ class PhoneOTPScreenViewController: KeyboardAvoidanceViewController {
   }
   
   override func viewDidLoad() {
-    phoneOTPView.bind(withViewModel: PhoneOTPViewModel())
+    phoneOTPView.bind(withViewModel: phoneOTPViewModel, withDocument: self.docVersion)
     
     phoneOTPView.setCompletion {[weak self] in
       let checkSMSViewController = CheckSMSViewController()
@@ -60,6 +66,11 @@ class PhoneOTPScreenViewController: KeyboardAvoidanceViewController {
   
   func setCompletionHandler(_ handler: @escaping (() -> Void)) {
     self.handler = handler
+  }
+  
+  func bind(stepVM: KYCStepViewModel?) {
+    self.docVersion = stepVM?.documents.first?.versions?.first
+    self.stepVM = stepVM
   }
   
 }

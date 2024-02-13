@@ -53,13 +53,16 @@ class CheckMailView: UIView {
 
   // MARK: Form Area
 
-  private lazy var otpLegendRow: UIStackView = {
+  private lazy var otpLegend: UILabel = {
     let label = UILabel()
     label.text = "OTP (One Time PIN)"
     label.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
-    label.textColor = UIColor(hexString: "#20202F")
-
-    let stackView = UIStackView(arrangedSubviews: [label])
+    label.textColor = UIColor(hexString: "#20202F")   
+    return label
+  }()
+  
+  private lazy var otpLegendRow: UIStackView = {
+    let stackView = UIStackView(arrangedSubviews: [otpLegend])
     return stackView
   }()
 
@@ -199,7 +202,9 @@ class CheckMailView: UIView {
     timerLabel.text = String(format: "in %02d:%02d", minutes, seconds)
   }
 
-  func bind(withViewModel viewModel: CheckMailViewModel) {
+  func bind(withViewModel viewModel: CheckMailViewModel,
+            withDocument document: DocumentVersion?
+  ) {
     otpInput.setDelegate(delegate: self)
 
     otpInput.textPublisher
@@ -240,9 +245,13 @@ class CheckMailView: UIView {
     timerButton.addTarget(self, action: #selector(didTapRetryButton), for: .touchUpInside)
 
     self.viewModel = viewModel
+    
+    if let doc = document {
+      self.setTextsFrom(document: doc)
+    }
   }
   
-  func setTimerButtonDefaultStylings() {
+  func setTimerButtonDefaultStylings(text: String? = "Resend OTP") {
     timerButton.isEnabled = false
     
     let attributes: [NSAttributedString.Key: Any] = [
@@ -252,7 +261,7 @@ class CheckMailView: UIView {
     
     timerButton.setAttributedTitle(
       NSAttributedString(
-        string: "Resend OTP",
+        string: text!,
         attributes: attributes),
       for: .normal)
     
@@ -298,6 +307,20 @@ class CheckMailView: UIView {
       }
     }
   }
+  
+  private func setTextsFrom(document: DocumentVersion) {
+    if let step = document.steps?.first {
+      DispatchQueue.main.async {
+        // FIXME: proper confirm button text isn't in the document version.
+        self.titleText.text = step.confirmationTitle
+        self.titleDescription.text = step.confirmationDescription
+        self.setTimerButtonDefaultStylings(text: document.resendOTP)
+        // FIXME: Also no otp hint
+//        self.otpLegend.text = document.otpHint
+      }
+    }
+  }
+  
   
 }
 

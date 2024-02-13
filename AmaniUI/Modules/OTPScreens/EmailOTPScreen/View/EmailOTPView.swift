@@ -179,6 +179,7 @@ class EmailOTPView: UIView {
     // This view is single step, we need capture title and confirmation title for this specific screen
     let step = document.steps!.first!
     DispatchQueue.main.async {
+      // FIXME: Button titles DOES NOT EXISTS in the configuration
       self.titleText.text = step.captureTitle
       self.descriptionText.text = step.captureDescription
       self.emailLegend.text = document.emailTitle!

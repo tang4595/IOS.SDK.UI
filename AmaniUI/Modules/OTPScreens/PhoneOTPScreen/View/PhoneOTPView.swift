@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import Combine
+import AmaniSDK
 
 class PhoneOTPView: UIView {
   
@@ -124,7 +125,10 @@ class PhoneOTPView: UIView {
     ])
   }
   
-  func bind(withViewModel viewModel: PhoneOTPViewModel) {
+  func bind(
+    withViewModel viewModel: PhoneOTPViewModel,
+    withDocument document: DocumentVersion?
+  ) {
     phoneInput.setDelegate(delegate: self)
     
     phoneInput.textPublisher
@@ -165,6 +169,9 @@ class PhoneOTPView: UIView {
     }
     
     self.viewModel = viewModel
+    if let doc = document {
+      setTextsFrom(document: doc)
+    }
   }
   
   func setCompletion(handler: @escaping () -> Void) {
@@ -197,6 +204,17 @@ class PhoneOTPView: UIView {
             self.phoneInput.showError(message: "There is a problem with this phone number")
           }
         }
+      }
+    }
+  }
+  
+  private func setTextsFrom(document: DocumentVersion) {
+    if let step = document.steps?.first {
+      // FIXME: No button text
+      DispatchQueue.main.async {
+        self.titleText.text = step.captureTitle
+        self.descriptionText.text = step.captureDescription
+        self.phoneLegend.text = document.phoneHint
       }
     }
   }

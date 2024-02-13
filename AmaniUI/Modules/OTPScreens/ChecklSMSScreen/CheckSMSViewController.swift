@@ -7,13 +7,17 @@
 
 import Foundation
 import UIKit
+import AmaniSDK
 
 class CheckSMSViewController: KeyboardAvoidanceViewController {
   private var checkSMSView: CheckSMSView!
+  private var checkSMSViewModel: CheckSMSViewModel!
+  private var docVersion: DocumentVersion?
   
   override init() {
     super.init()
     checkSMSView = CheckSMSView()
+    checkSMSViewModel = CheckSMSViewModel()
   }
   
   required init?(coder: NSCoder) {
@@ -26,7 +30,7 @@ class CheckSMSViewController: KeyboardAvoidanceViewController {
   }
   
   override func viewDidLoad() {
-    checkSMSView.bind(withViewModel: CheckSMSViewModel())
+    checkSMSView.bind(withViewModel: checkSMSViewModel, withDocument: docVersion)
     addPoweredByIcon()
     view.backgroundColor = UIColor(hexString: "#EEF4FA")
     contentView.addSubview(checkSMSView)
@@ -41,6 +45,11 @@ class CheckSMSViewController: KeyboardAvoidanceViewController {
   
   func setupCompletionHandler(_ handler: @escaping (() -> Void)) {
     checkSMSView.setCompletionHandler(handler)
+  }
+  
+  func bind(with stepModel: KYCStepViewModel) {
+    self.docVersion = stepModel.documents.first?.versions?.first
+    self.checkSMSViewModel.setRuleID(stepModel.getRuleModel().id!)
   }
   
 }
