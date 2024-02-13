@@ -14,6 +14,7 @@ class EmailOTPScreenViewController: KeyboardAvoidanceViewController {
   let emailOTPViewModel = EmailOTPViewModel()
   private var handler: (() -> Void)? = nil
   private var docVersion: DocumentVersion?
+  private var stepVM: KYCStepViewModel?
   
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
@@ -27,7 +28,7 @@ class EmailOTPScreenViewController: KeyboardAvoidanceViewController {
     
     emailOTPView.setCompletion {[weak self] in
       let checkMailViewController = CheckMailViewController()
-      
+      checkMailViewController.bind(with: (self?.stepVM)!)
       checkMailViewController.setupCompletionHandler {
         if let handler = self?.handler {
           handler()
@@ -56,8 +57,9 @@ class EmailOTPScreenViewController: KeyboardAvoidanceViewController {
     self.handler = handler
   }
   
-  func bind(docVersion: DocumentVersion?) {
-    self.docVersion = docVersion
+  func bind(stepVM: KYCStepViewModel?) {
+    self.docVersion = stepVM?.documents.first?.versions?.first
+    self.stepVM = stepVM
   }
   
 }

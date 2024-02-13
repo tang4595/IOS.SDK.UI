@@ -10,10 +10,12 @@ import UIKit
 
 class CheckMailViewController: KeyboardAvoidanceViewController {
   private var checkMailView: CheckMailView!
+  private var checkMailViewModel: CheckMailViewModel!
   
   override init() {
     super.init()
     checkMailView = CheckMailView()
+    checkMailViewModel = CheckMailViewModel()
   }
   
   required init?(coder: NSCoder) {
@@ -26,7 +28,7 @@ class CheckMailViewController: KeyboardAvoidanceViewController {
   }
   
   override func viewDidLoad() {
-    checkMailView.bind(withViewModel: CheckMailViewModel())
+    checkMailView.bind(withViewModel: self.checkMailViewModel)
     addPoweredByIcon()
     view.backgroundColor = UIColor(hexString: "#EEF4FA")
     contentView.addSubview(checkMailView)
@@ -41,6 +43,10 @@ class CheckMailViewController: KeyboardAvoidanceViewController {
   
   func setupCompletionHandler(_ handler: @escaping (() -> Void)) {
     checkMailView.setCompletionHandler(handler)
+  }
+  
+  func bind(with stepModel: KYCStepViewModel) {
+    self.checkMailViewModel.setRuleID(stepModel.getRuleModel().id!)
   }
   
 }

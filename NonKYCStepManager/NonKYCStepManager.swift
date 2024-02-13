@@ -75,7 +75,7 @@ class NonKYCStepManager {
     self.currentStepViewController = EmailOTPScreenViewController()
     let emailOTPVC = currentStepViewController as! EmailOTPScreenViewController
     
-    emailOTPVC.bind(docVersion: docVersion)
+    emailOTPVC.bind(docVersion: currentStep)
     emailOTPVC.setCompletionHandler { [weak self] in
       self?.stepCompleted()
     }

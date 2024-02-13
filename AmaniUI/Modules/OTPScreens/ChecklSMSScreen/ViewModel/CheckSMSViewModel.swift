@@ -11,6 +11,7 @@ import AmaniSDK
 
 class CheckSMSViewModel {
   private let customerInfo = Amani.sharedInstance.customerInfo()
+  private var ruleID: String?
   
   enum ViewState {
     case loading
@@ -21,6 +22,14 @@ class CheckSMSViewModel {
   
   @Published var otp = ""
   @Published var state: ViewState = .none
+  
+  init() {
+    setupRuleHook()
+  }
+  
+  deinit {
+    NotificationCenter.default.removeObserver(self)
+  }
   
   var isOTPValidPublisher: AnyPublisher<Bool, Never> {
     $otp.debounce(for: 0.5, scheduler: RunLoop.main)
@@ -33,9 +42,7 @@ class CheckSMSViewModel {
     
     self.state = .loading
     customerInfo.submitPhoneOTP(code: otp) {[weak self] success in
-      if let success = success, success {
-        self?.state = .success
-      } else {
+      if success == false {
         self?.state = .failed
       }
     }
@@ -57,6 +64,33 @@ class CheckSMSViewModel {
     }
     
     return true
+  }
+  
+  func setupRuleHook() {
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(didReceiveRules),
+      name: NSNotification.Name(
+        AppConstants.AmaniDelegateNotifications.onStepModel.rawValue
+      ),
+      object: nil)
+  }
+  
+  @objc
+  func didReceiveRules(_ notification: Notification) {
+    guard let ruleID = ruleID else { return }
+    if let rules = (notification.object as? [Any?])?[1] as? [KYCRuleModel] {
+      if let rule = rules.first(where: { $0.id == ruleID }),
+         rule.status == DocumentStatus.APPROVED.rawValue {
+        state = .success
+      } else {
+        state = .failed
+      }
+    }
+  }
+  
+  func setRuleID(_ ruleID: String) {
+    self.ruleID = ruleID
   }
   
 }
