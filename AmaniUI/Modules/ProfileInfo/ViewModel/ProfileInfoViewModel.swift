@@ -11,6 +11,8 @@ import Combine
 
 class ProfileInfoViewModel {
   private let customerInfo = Amani.sharedInstance.customerInfo()
+  private var ruleID: String?
+  
   enum ViewState {
     case loading
     case success
@@ -44,6 +46,14 @@ class ProfileInfoViewModel {
       }.eraseToAnyPublisher()
   }
   
+  init() {
+    setupRuleHook()
+  }
+  
+  deinit {
+    NotificationCenter.default.removeObserver(self)
+  }
+  
   func submitForm() {
     
     guard !name.isEmpty && !surname.isEmpty && !birthDay.isEmpty else {
@@ -64,8 +74,6 @@ class ProfileInfoViewModel {
       if uploadSuccess == false {
         self?.state = .failed
         return
-      } else {
-        self?.state = .success
       }
     }
   }
@@ -81,6 +89,33 @@ class ProfileInfoViewModel {
     } else {
       return false
     }
+  }
+  
+  func setupRuleHook() {
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(didReceiveRules),
+      name: NSNotification.Name(
+        AppConstants.AmaniDelegateNotifications.onStepModel.rawValue
+      ),
+      object: nil)
+  }
+  
+  @objc
+  func didReceiveRules(_ notification: Notification) {
+    guard let ruleID = ruleID else { return }
+    if let rules = (notification.object as? [Any?])?[1] as? [KYCRuleModel] {
+      if let rule = rules.first(where: { $0.id == ruleID }),
+         rule.status == DocumentStatus.APPROVED.rawValue {
+        state = .success
+      } else {
+        state = .failed
+      }
+    }
+  }
+  
+  func setRuleID(_ ruleID: String) {
+    self.ruleID = ruleID
   }
   
 }

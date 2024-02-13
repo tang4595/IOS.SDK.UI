@@ -24,7 +24,7 @@ class ProfileInfoViewController: KeyboardAvoidanceViewController {
   
   override func viewDidLoad() {
     profileInfoView = ProfileInfoView()
-    profileInfoView.bind(withViewModel: profileInfoViewModel)
+    profileInfoView.bind(withViewModel: profileInfoViewModel, withDocument: docVersion)
     
     profileInfoView.setCompletion { [weak self] in
       if let handler = self?.handler {
@@ -49,8 +49,9 @@ class ProfileInfoViewController: KeyboardAvoidanceViewController {
     self.handler = handler
   }
   
-  func bind(with docVersion: DocumentVersion?) {
-    self.docVersion = docVersion
+  func bind(with stepModel: KYCStepViewModel) {
+    self.docVersion = stepModel.documents.first?.versions?.first
+    self.profileInfoViewModel.setRuleID(stepModel.getRuleModel().id!)
   }
 
 }

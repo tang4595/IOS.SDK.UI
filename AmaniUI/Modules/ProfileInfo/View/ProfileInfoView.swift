@@ -188,7 +188,8 @@ class ProfileInfoView: UIView {
   }
 
   func bind(
-    withViewModel viewModel: ProfileInfoViewModel
+    withViewModel viewModel: ProfileInfoViewModel,
+    withDocument document: DocumentVersion?
   ) {
     nameInput.setDelegate(delegate: self)
     surnameInput.setDelegate(delegate: self)
@@ -268,6 +269,11 @@ class ProfileInfoView: UIView {
       }.store(in: &cancellables)
 
     self.viewModel = viewModel
+    
+    if let doc = document {
+      setTextsFrom(document: doc)
+    }
+    
   }
 
   func setCompletion(handler: @escaping () -> Void) {
@@ -291,6 +297,17 @@ class ProfileInfoView: UIView {
     }
 
     return formattedText
+  }
+  
+  private func setTextsFrom(document: DocumentVersion) {
+      DispatchQueue.main.async {
+        self.nameLegend.text = document.nameTitle!
+        self.nameInput.updatePlaceHolder(text: document.nameHint!)
+        self.surnameLegend.text = document.surnameTitle!
+        self.surnameInput.updatePlaceHolder(text: document.surnameHint!)
+        self.birthdateLabel.text = document.birthDateTitle!
+        self.birthdateInput.updatePlaceHolder(text: document.birthDateHint!)
+    }
   }
 }
 
