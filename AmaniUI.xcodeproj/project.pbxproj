@@ -155,8 +155,8 @@
 		C5B07D7B290048E300243A5B /* xx_id_0_back.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = xx_id_0_back.json; sourceTree = "<group>"; };
 		C5BA62A32914006B004108B4 /* NFHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFHandler.swift; sourceTree = "<group>"; };
 		C5D3B93F2A9355B00023B66E /* OpenSSL.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = OpenSSL.xcframework; path = Carthage/Build/OpenSSL.xcframework; sourceTree = SOURCE_ROOT; };
-		C5FD14962B7FC78E00E02F95 /* KeyboardAvoidenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KeyboardAvoidenceViewController.swift; path = AmaniUI/Common/Utils/KeyboardAvoidenceViewController.swift; sourceTree = "<group>"; };
-		C5FD14982B7FC7D300E02F95 /* NonKYCStepManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NonKYCStepManager.swift; path = AmaniUI/NonKYCStepManager/NonKYCStepManager.swift; sourceTree = "<group>"; };
+		C5FD14962B7FC78E00E02F95 /* KeyboardAvoidenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardAvoidenceViewController.swift; sourceTree = "<group>"; };
+		C5FD14982B7FC7D300E02F95 /* NonKYCStepManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonKYCStepManager.swift; sourceTree = "<group>"; };
 		C5FD51312B39BD2D0057DB87 /* RoundedTextInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedTextInput.swift; sourceTree = "<group>"; };
 		C5FD51332B39BD2D0057DB87 /* RoundedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		C5FD51392B39BD970057DB87 /* EmailOTPViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailOTPViewModel.swift; sourceTree = "<group>"; };
@@ -187,8 +187,6 @@
 		489D406426BBE5DD0009AB39 = {
 			isa = PBXGroup;
 			children = (
-				C5FD14982B7FC7D300E02F95 /* NonKYCStepManager.swift */,
-				C5FD14962B7FC78E00E02F95 /* KeyboardAvoidenceViewController.swift */,
 				C544FEE428C2303700C0B406 /* AmaniUI */,
 				489D41C526BC04F80009AB39 /* Frameworks */,
 				489D406E26BBE5DD0009AB39 /* Products */,
@@ -402,6 +400,7 @@
 		C54B58AF28C76148005DBAA9 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				C5FD14962B7FC78E00E02F95 /* KeyboardAvoidenceViewController.swift */,
 				C54B58B028C76160005DBAA9 /* BaseViewController.swift */,
 				C53C475028C7B39800FA10B6 /* Constants.swift */,
 				C53C475428C8D9C800FA10B6 /* UtilityModels.swift */,
@@ -508,17 +507,10 @@
 			path = Animations;
 			sourceTree = "<group>";
 		};
-		C5BBD3422B39EBB500A856CC /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Utils;
-			sourceTree = "<group>";
-		};
 		C5FD512F2B39BCA30057DB87 /* OTPScreens */ = {
 			isa = PBXGroup;
 			children = (
-				C5BBD3422B39EBB500A856CC /* Utils */,
+				C5FD14982B7FC7D300E02F95 /* NonKYCStepManager.swift */,
 				C523DEF52B3A73EC00F68E32 /* ChecklSMSScreen */,
 				C5A4506A2B3A33580064AAA7 /* PhoneOTPScreen */,
 				C5FD51422B39BF160057DB87 /* CheckMailScreen */,

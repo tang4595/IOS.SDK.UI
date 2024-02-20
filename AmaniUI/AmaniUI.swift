@@ -138,7 +138,7 @@ public class AmaniUI {
     userName: String,
     password: String,
     sharedSecret: String? = nil,
-    customer: CustomerRequestModel,
+    customer: CustomerRequestModel?,
     language: String = "tr",
     nviModel: NviModel? = nil,
     country: String? = nil,
@@ -169,6 +169,22 @@ public class AmaniUI {
     poseEstimationRecord = enable
   }
   
+  fileprivate func getConfig( _ customerModel: CustomerResponseModel?, _ error: NetworkError?) {
+    do {
+      self.config = try Amani.sharedInstance.appConfig().getApplicationConfig()
+    } catch let error {
+      print("Error while fetching app configuration \(error)")
+    }
+    if let customerResponseModel = customerModel {
+      self.customerRespData = customerResponseModel
+    }
+    
+    if let comp = completion {
+      comp(customerModel, error)
+      updateConfig()
+    }
+  }
+  
   public func showSDK(on parentViewController: UIViewController,
                       completion: ((CustomerResponseModel?, NetworkError?) -> ())?
   ) {
@@ -176,43 +192,30 @@ public class AmaniUI {
     
     // set the delegate regardless of init method
     self.sharedSDKInstance.setDelegate(delegate: self)
-    
-    if (userName != nil && password != nil) {
-      Amani.sharedInstance.initAmani(server: server!, userName: self.userName!, password: self.password!, sharedSecret: sharedSecret, customer: customer!, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
-        guard let self = self else {return}
-        do {
-          self.config = try Amani.sharedInstance.appConfig().getApplicationConfig()
-        } catch let error {
-          print("Error while fetching app configuration \(error)")
+    if let customer = customer {
+      if (userName != nil && password != nil) {
+        Amani.sharedInstance.initAmani(server: server!, userName: self.userName!, password: self.password!, sharedSecret: sharedSecret, customer: customer!, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
+          self?.getConfig( customerModel, error)
         }
-        if let customerResponseModel = customerModel {
-          self.customerRespData = customerResponseModel
-        }
+      } else if (token != nil){
         
-        if let comp = completion {
-          updateConfig()
-          comp(customerModel, error)
+        Amani.sharedInstance.initAmani(server: server!, token: token!, sharedSecret: sharedSecret, customer: customer!, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
+          self?.getConfig( customerModel, error)
         }
       }
-    } else if (token != nil){
-      
-      Amani.sharedInstance.initAmani(server: server!, token: token!, sharedSecret: sharedSecret, customer: customer!, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
-        guard let self = self else {return}
-        do {
-          self.config = try Amani.sharedInstance.appConfig().getApplicationConfig()
-        } catch let error {
-          print("Error while fetching app configuration \(error)")
+    } else {
+      if (userName != nil && password != nil) {
+        Amani.sharedInstance.initAmani(server: server!, userName: self.userName!, password: self.password!, sharedSecret: sharedSecret, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
+          self?.getConfig( customerModel, error)
         }
-        if let customerResponseModel = customerModel {
-          self.customerRespData = customerResponseModel
-        }
+      } else if (token != nil){
         
-        if let comp = completion {
-          comp(customerModel, error)
-          updateConfig()
+        Amani.sharedInstance.initAmani(server: server!, token: token!, sharedSecret: sharedSecret, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
+          self?.getConfig( customerModel, error)
         }
       }
     }
+
   }
   
   
