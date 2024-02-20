@@ -63,6 +63,20 @@
 		C54B58AD28C75279005DBAA9 /* KYCStepTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C54B58A828C75279005DBAA9 /* KYCStepTableViewCell.xib */; };
 		C54B58B128C76160005DBAA9 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54B58B028C76160005DBAA9 /* BaseViewController.swift */; };
 		C54B58B428C761BF005DBAA9 /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54B58B328C761BF005DBAA9 /* UIColorExtensions.swift */; };
+		C561693E2B84CD8400050A8D /* QuestionnaireViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56169332B84CD8400050A8D /* QuestionnaireViewModel.swift */; };
+		C561693F2B84CD8400050A8D /* QuestionnaireViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56169342B84CD8400050A8D /* QuestionnaireViewController.swift */; };
+		C56169402B84CD8400050A8D /* QuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56169362B84CD8400050A8D /* QuestionView.swift */; };
+		C56169412B84CD8400050A8D /* QuestionSubmitButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56169372B84CD8400050A8D /* QuestionSubmitButton.swift */; };
+		C56169422B84CD8400050A8D /* QuestionDropdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56169382B84CD8400050A8D /* QuestionDropdownView.swift */; };
+		C56169432B84CD8400050A8D /* SingleAnswerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56169392B84CD8400050A8D /* SingleAnswerButton.swift */; };
+		C56169442B84CD8400050A8D /* QuestionnaireHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C561693A2B84CD8400050A8D /* QuestionnaireHeaderView.swift */; };
+		C56169452B84CD8400050A8D /* AnswerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C561693B2B84CD8400050A8D /* AnswerButton.swift */; };
+		C56169462B84CD8400050A8D /* QuestionnaireView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C561693D2B84CD8400050A8D /* QuestionnaireView.swift */; };
+		C561694D2B84CDE200050A8D /* ProfileInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56169492B84CDE200050A8D /* ProfileInfoViewModel.swift */; };
+		C561694E2B84CDE200050A8D /* ProfileInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C561694A2B84CDE200050A8D /* ProfileInfoViewController.swift */; };
+		C561694F2B84CDE200050A8D /* ProfileInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C561694C2B84CDE200050A8D /* ProfileInfoView.swift */; };
+		C56169512B84CEB600050A8D /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56169502B84CEB600050A8D /* String+Extensions.swift */; };
+		C56169532B84CF8E00050A8D /* NonKYCStepManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FD14982B7FC7D300E02F95 /* NonKYCStepManager.swift */; };
 		C58BD65428EEEE19009301EC /* OvalOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58BD65328EEEE19009301EC /* OvalOverlayView.swift */; };
 		C5984DD728F9B35000DA64B3 /* UINavigationControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5984DD628F9B35000DA64B3 /* UINavigationControllerExtensions.swift */; };
 		C5A06F7229127C47009520AF /* IdHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A06F7129127C47009520AF /* IdHandler.swift */; };
@@ -75,7 +89,6 @@
 		C5BA62A42914006B004108B4 /* NFHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BA62A32914006B004108B4 /* NFHandler.swift */; };
 		C5D3B9402A9355B00023B66E /* OpenSSL.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5D3B93F2A9355B00023B66E /* OpenSSL.xcframework */; };
 		C5FD14972B7FC78E00E02F95 /* KeyboardAvoidenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FD14962B7FC78E00E02F95 /* KeyboardAvoidenceViewController.swift */; };
-		C5FD14992B7FC7D300E02F95 /* NonKYCStepManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FD14982B7FC7D300E02F95 /* NonKYCStepManager.swift */; };
 		C5FD51342B39BD2D0057DB87 /* RoundedTextInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FD51312B39BD2D0057DB87 /* RoundedTextInput.swift */; };
 		C5FD51362B39BD2D0057DB87 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FD51332B39BD2D0057DB87 /* RoundedButton.swift */; };
 		C5FD513D2B39BD970057DB87 /* EmailOTPViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FD51392B39BD970057DB87 /* EmailOTPViewModel.swift */; };
@@ -131,6 +144,19 @@
 		C54B58A828C75279005DBAA9 /* KYCStepTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KYCStepTableViewCell.xib; sourceTree = "<group>"; };
 		C54B58B028C76160005DBAA9 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		C54B58B328C761BF005DBAA9 /* UIColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
+		C56169332B84CD8400050A8D /* QuestionnaireViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionnaireViewModel.swift; sourceTree = "<group>"; };
+		C56169342B84CD8400050A8D /* QuestionnaireViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionnaireViewController.swift; sourceTree = "<group>"; };
+		C56169362B84CD8400050A8D /* QuestionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionView.swift; sourceTree = "<group>"; };
+		C56169372B84CD8400050A8D /* QuestionSubmitButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionSubmitButton.swift; sourceTree = "<group>"; };
+		C56169382B84CD8400050A8D /* QuestionDropdownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionDropdownView.swift; sourceTree = "<group>"; };
+		C56169392B84CD8400050A8D /* SingleAnswerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleAnswerButton.swift; sourceTree = "<group>"; };
+		C561693A2B84CD8400050A8D /* QuestionnaireHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionnaireHeaderView.swift; sourceTree = "<group>"; };
+		C561693B2B84CD8400050A8D /* AnswerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnswerButton.swift; sourceTree = "<group>"; };
+		C561693D2B84CD8400050A8D /* QuestionnaireView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionnaireView.swift; sourceTree = "<group>"; };
+		C56169492B84CDE200050A8D /* ProfileInfoViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileInfoViewModel.swift; sourceTree = "<group>"; };
+		C561694A2B84CDE200050A8D /* ProfileInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileInfoViewController.swift; sourceTree = "<group>"; };
+		C561694C2B84CDE200050A8D /* ProfileInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileInfoView.swift; sourceTree = "<group>"; };
+		C56169502B84CEB600050A8D /* String+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		C58BD65328EEEE19009301EC /* OvalOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OvalOverlayView.swift; sourceTree = "<group>"; };
 		C5984DD628F9B35000DA64B3 /* UINavigationControllerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationControllerExtensions.swift; sourceTree = "<group>"; };
 		C5A06F7129127C47009520AF /* IdHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdHandler.swift; sourceTree = "<group>"; };
@@ -331,6 +357,7 @@
 		C544FEE428C2303700C0B406 /* AmaniUI */ = {
 			isa = PBXGroup;
 			children = (
+				C56169302B84CCF400050A8D /* NonKYCStepManager */,
 				C5A06F6F29127C0C009520AF /* DocumentHandler */,
 				C5B07D6C290048E300243A5B /* Assets */,
 				C54B58B228C761A1005DBAA9 /* Extensions */,
@@ -346,7 +373,8 @@
 		C544FEF328C2573200C0B406 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				C57E47202B4FF36D006FA4E6 /* ProfileInfo */,
+				C56169472B84CDE200050A8D /* ProfileInfo */,
+				C56169312B84CD8400050A8D /* Questtionairre */,
 				C5FD512F2B39BCA30057DB87 /* OTPScreens */,
 				48B909FE29A2647900508E63 /* SignatureScreen */,
 				48DF760C29699A22000D519A /* ContainerVC */,
@@ -418,15 +446,83 @@
 				C53C474E28C7718300FA10B6 /* UIViewExtensions.swift */,
 				C5984DD628F9B35000DA64B3 /* UINavigationControllerExtensions.swift */,
 				C523DEFF2B3BF75900F68E32 /* AmaniErrorExtensions.swift */,
+				C56169502B84CEB600050A8D /* String+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		C57E47202B4FF36D006FA4E6 /* ProfileInfo */ = {
+		C56169302B84CCF400050A8D /* NonKYCStepManager */ = {
 			isa = PBXGroup;
 			children = (
+				C5FD14982B7FC7D300E02F95 /* NonKYCStepManager.swift */,
+			);
+			path = NonKYCStepManager;
+			sourceTree = "<group>";
+		};
+		C56169312B84CD8400050A8D /* Questtionairre */ = {
+			isa = PBXGroup;
+			children = (
+				C56169322B84CD8400050A8D /* ViewModel */,
+				C56169342B84CD8400050A8D /* QuestionnaireViewController.swift */,
+				C56169352B84CD8400050A8D /* Components */,
+				C561693C2B84CD8400050A8D /* View */,
+			);
+			path = Questtionairre;
+			sourceTree = "<group>";
+		};
+		C56169322B84CD8400050A8D /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				C56169332B84CD8400050A8D /* QuestionnaireViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		C56169352B84CD8400050A8D /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				C56169362B84CD8400050A8D /* QuestionView.swift */,
+				C56169372B84CD8400050A8D /* QuestionSubmitButton.swift */,
+				C56169382B84CD8400050A8D /* QuestionDropdownView.swift */,
+				C56169392B84CD8400050A8D /* SingleAnswerButton.swift */,
+				C561693A2B84CD8400050A8D /* QuestionnaireHeaderView.swift */,
+				C561693B2B84CD8400050A8D /* AnswerButton.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		C561693C2B84CD8400050A8D /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C561693D2B84CD8400050A8D /* QuestionnaireView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		C56169472B84CDE200050A8D /* ProfileInfo */ = {
+			isa = PBXGroup;
+			children = (
+				C56169482B84CDE200050A8D /* ViewModel */,
+				C561694A2B84CDE200050A8D /* ProfileInfoViewController.swift */,
+				C561694B2B84CDE200050A8D /* View */,
 			);
 			path = ProfileInfo;
+			sourceTree = "<group>";
+		};
+		C56169482B84CDE200050A8D /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				C56169492B84CDE200050A8D /* ProfileInfoViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		C561694B2B84CDE200050A8D /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C561694C2B84CDE200050A8D /* ProfileInfoView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		C5A06F6F29127C0C009520AF /* DocumentHandler */ = {
@@ -510,7 +606,6 @@
 		C5FD512F2B39BCA30057DB87 /* OTPScreens */ = {
 			isa = PBXGroup;
 			children = (
-				C5FD14982B7FC7D300E02F95 /* NonKYCStepManager.swift */,
 				C523DEF52B3A73EC00F68E32 /* ChecklSMSScreen */,
 				C5A4506A2B3A33580064AAA7 /* PhoneOTPScreen */,
 				C5FD51422B39BF160057DB87 /* CheckMailScreen */,
@@ -683,7 +778,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C5FD14992B7FC7D300E02F95 /* NonKYCStepManager.swift in Sources */,
+				C56169532B84CF8E00050A8D /* NonKYCStepManager.swift in Sources */,
+				C56169402B84CD8400050A8D /* QuestionView.swift in Sources */,
+				C561694D2B84CDE200050A8D /* ProfileInfoViewModel.swift in Sources */,
 				C5FD14972B7FC78E00E02F95 /* KeyboardAvoidenceViewController.swift in Sources */,
 				C5A450722B3A33AB0064AAA7 /* PhoneOTPViewModel.swift in Sources */,
 				484E26F8295A3DC700839E54 /* AmaniUIDelegate.swift in Sources */,
@@ -691,6 +788,7 @@
 				C53C475928C9E2DD00FA10B6 /* ThemeColor.swift in Sources */,
 				48B90A0429A278E700508E63 /* SignatureHandler.swift in Sources */,
 				4842810E29D0F7DB00D48925 /* DocumentsHandler.swift in Sources */,
+				C56169422B84CD8400050A8D /* QuestionDropdownView.swift in Sources */,
 				C53C475728C9E2AF00FA10B6 /* KYCStepViewModel.swift in Sources */,
 				C5FD51482B39BF240057DB87 /* CheckMailView.swift in Sources */,
 				C52F145928F9819100D7A5A6 /* NFCViewController.swift in Sources */,
@@ -700,6 +798,8 @@
 				C5A4506F2B3A338F0064AAA7 /* PhoneOTPView.swift in Sources */,
 				4856111E29DC91CE00E70D77 /* DocumentsHandlerDelegate.swift in Sources */,
 				C58BD65428EEEE19009301EC /* OvalOverlayView.swift in Sources */,
+				C561693F2B84CD8400050A8D /* QuestionnaireViewController.swift in Sources */,
+				C561694F2B84CDE200050A8D /* ProfileInfoView.swift in Sources */,
 				C53DFE0228ED81F500AE7D32 /* DocConfirmationViewController.swift in Sources */,
 				C544FEF228C24DE500C0B406 /* AmaniUI.swift in Sources */,
 				C54B58A928C75279005DBAA9 /* KYCStepTableView.swift in Sources */,
@@ -712,21 +812,29 @@
 				C52F145028F5AE3D00D7A5A6 /* VersionSelectTableViewCell.swift in Sources */,
 				C54B58AB28C75279005DBAA9 /* HomeViewController.swift in Sources */,
 				C5A06F762913ED9E009520AF /* SelfieHandler.swift in Sources */,
+				C56169412B84CD8400050A8D /* QuestionSubmitButton.swift in Sources */,
 				C5FD513F2B39BD970057DB87 /* EmailOTPView.swift in Sources */,
 				C52F145228F5B70400D7A5A6 /* DocumentHandler.swift in Sources */,
 				48EAA84E29E37C9B001A2A35 /* SignatureViewController.swift in Sources */,
 				C54B58B128C76160005DBAA9 /* BaseViewController.swift in Sources */,
 				C5FD514A2B39BF240057DB87 /* CheckMailViewModel.swift in Sources */,
+				C56169512B84CEB600050A8D /* String+Extensions.swift in Sources */,
 				C523DEF72B3A740B00F68E32 /* CheckSMSViewController.swift in Sources */,
 				C53C475128C7B39800FA10B6 /* Constants.swift in Sources */,
+				C561694E2B84CDE200050A8D /* ProfileInfoViewController.swift in Sources */,
+				C56169442B84CD8400050A8D /* QuestionnaireHeaderView.swift in Sources */,
 				C5984DD728F9B35000DA64B3 /* UINavigationControllerExtensions.swift in Sources */,
 				C539A5C9290FE9F9003386F8 /* SuccessViewController.swift in Sources */,
+				C56169432B84CD8400050A8D /* SingleAnswerButton.swift in Sources */,
 				C5FD51362B39BD2D0057DB87 /* RoundedButton.swift in Sources */,
 				C5A4506C2B3A33820064AAA7 /* PhoneOTPViewController.swift in Sources */,
 				C5A06F7429127C55009520AF /* BaseDocumentHandler.swift in Sources */,
 				48DF761029699A8F000D519A /* ContainerViewController.swift in Sources */,
+				C561693E2B84CD8400050A8D /* QuestionnaireViewModel.swift in Sources */,
 				C53C475528C8D9C800FA10B6 /* UtilityModels.swift in Sources */,
+				C56169452B84CD8400050A8D /* AnswerButton.swift in Sources */,
 				C5BA62A42914006B004108B4 /* NFHandler.swift in Sources */,
+				C56169462B84CD8400050A8D /* QuestionnaireView.swift in Sources */,
 				C5FD513D2B39BD970057DB87 /* EmailOTPViewModel.swift in Sources */,
 				C5FD51492B39BF240057DB87 /* CheckMailViewController.swift in Sources */,
 				C5FD513E2B39BD970057DB87 /* EmailOTPScreenViewController.swift in Sources */,

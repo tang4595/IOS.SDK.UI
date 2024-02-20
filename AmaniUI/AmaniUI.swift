@@ -169,7 +169,9 @@ public class AmaniUI {
     poseEstimationRecord = enable
   }
   
-  fileprivate func getConfig( _ customerModel: CustomerResponseModel?, _ error: NetworkError?) {
+  fileprivate func getConfig(customerModel: CustomerResponseModel?,
+                             error: NetworkError?,
+                             completion: ((CustomerResponseModel?, NetworkError?) -> Void)?) {
     do {
       self.config = try Amani.sharedInstance.appConfig().getApplicationConfig()
     } catch let error {
@@ -194,24 +196,23 @@ public class AmaniUI {
     self.sharedSDKInstance.setDelegate(delegate: self)
     if let customer = customer {
       if (userName != nil && password != nil) {
-        Amani.sharedInstance.initAmani(server: server!, userName: self.userName!, password: self.password!, sharedSecret: sharedSecret, customer: customer!, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
-          self?.getConfig( customerModel, error)
+        Amani.sharedInstance.initAmani(server: server!, userName: self.userName!, password: self.password!, sharedSecret: sharedSecret, customer: customer, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
+          self?.getConfig(customerModel: customerModel, error: error, completion: completion)
         }
       } else if (token != nil){
-        
-        Amani.sharedInstance.initAmani(server: server!, token: token!, sharedSecret: sharedSecret, customer: customer!, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
-          self?.getConfig( customerModel, error)
+        Amani.sharedInstance.initAmani(server: server!, token: token!, sharedSecret: sharedSecret, customer: customer, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
+          self?.getConfig(customerModel: customerModel, error: error, completion: completion)
         }
       }
     } else {
       if (userName != nil && password != nil) {
-        Amani.sharedInstance.initAmani(server: server!, userName: self.userName!, password: self.password!, sharedSecret: sharedSecret, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
-          self?.getConfig( customerModel, error)
+        Amani.sharedInstance.initAmani(server: server!, userName: self.userName!, password: self.password!, sharedSecret: sharedSecret, customer: customer!, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
+          
+          self?.getConfig(customerModel: customerModel, error: error, completion: completion)
         }
       } else if (token != nil){
-        
-        Amani.sharedInstance.initAmani(server: server!, token: token!, sharedSecret: sharedSecret, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
-          self?.getConfig( customerModel, error)
+        Amani.sharedInstance.initAmani(server: server!, token: token!, sharedSecret: sharedSecret, customer: customer!, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
+          self?.getConfig(customerModel: customerModel, error: error, completion: completion)
         }
       }
     }
