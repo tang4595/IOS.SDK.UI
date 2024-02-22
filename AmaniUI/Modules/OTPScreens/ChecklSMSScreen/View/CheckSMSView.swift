@@ -16,7 +16,8 @@ class CheckSMSView: UIView {
   private var completionHandler: (() -> Void)!
   private var shouldShowError: Bool?
   
-  private var retryTime = 120 // 2 minutes
+  private let retrySeconds = 120 // 2 minutes
+  private var retryTime: Int
   private var timer: Timer?
   
   // MARK: Info Section
@@ -85,7 +86,7 @@ class CheckSMSView: UIView {
   
   private lazy var timerLabel: UILabel = {
     let label = UILabel()
-    label.text = "in 03:00"
+    label.text = "in 02:00"
     label.font = .systemFont(ofSize: 15.0, weight: .regular)
     return label
   }()
@@ -137,6 +138,8 @@ class CheckSMSView: UIView {
   }()
   
   override init(frame: CGRect) {
+    retryTime = retrySeconds
+    
     super.init(frame: frame)
     setupUI()
     startRetryTimer()
@@ -168,6 +171,7 @@ class CheckSMSView: UIView {
     
     if retryTime < 0 {
       timer?.invalidate()
+      retryTime = retrySeconds
       timerButton.isEnabled = true
       let attr: [NSAttributedString.Key: Any] = [
         .font: UIFont.systemFont(ofSize: 15.0, weight: .bold),
@@ -255,6 +259,7 @@ class CheckSMSView: UIView {
       for: .normal)
     
     timerButton.contentHorizontalAlignment = .right
+    timerLabel.isHidden = false
   }
   
   @objc func didTapRetryButton() {

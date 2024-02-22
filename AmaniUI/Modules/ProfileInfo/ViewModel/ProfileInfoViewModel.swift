@@ -24,6 +24,8 @@ class ProfileInfoViewModel {
   @Published var surname = ""
   @Published var birthDay = ""
   @Published var state: ViewState = .none
+//  @Published var currentErrorToShow: AmaniError?
+  @Published var currentErrorToShow: String?
 
   var isNameValidPublisher: AnyPublisher<Bool, Never> {
     $name.debounce(for: 0.5, scheduler: RunLoop.main)
@@ -111,6 +113,14 @@ class ProfileInfoViewModel {
           state = .success
         } else if rule.status == DocumentStatus.NOT_UPLOADED.rawValue {
           state = .none
+        } else if rule.status == DocumentStatus.REJECTED.rawValue || rule.status == DocumentStatus.AUTOMATICALLY_REJECTED.rawValue {
+          if state == .loading {
+            state = .failed
+            // FIXME: Consult with backend about this dumbnut
+//            currentErrorToShow = rule.errors?.first
+            // Btw change the type to AmaniError when the backend stuff is resolved
+            currentErrorToShow = "Unable to update profile info"
+          }
         }
       } else {
         state = .failed

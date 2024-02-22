@@ -15,8 +15,9 @@ class CheckMailView: UIView {
   private var cancellables = Set<AnyCancellable>()
   private var completionHandler: (() -> Void)!
   private var shouldShowError: Bool?
-
-  private var retryTime = 180 // 3 minutes
+  
+  private let retrySeconds = 180 // 3 minutes
+  private var retryTime: Int
   private var timer: Timer?
 
   // MARK: Info Section
@@ -140,6 +141,7 @@ class CheckMailView: UIView {
 
   // MARK: Initializers
   override init(frame: CGRect) {
+    retryTime = retrySeconds
     super.init(frame: frame)
     setupUI()
     startRetryTimer()
@@ -182,6 +184,7 @@ class CheckMailView: UIView {
 
     if retryTime < 0 {
       timer?.invalidate()
+      retryTime = retrySeconds
       timerButton.isEnabled = true
       let attr: [NSAttributedString.Key: Any] = [
         .font: UIFont.systemFont(ofSize: 15.0, weight: .bold),
@@ -266,6 +269,7 @@ class CheckMailView: UIView {
       for: .normal)
     
     timerButton.contentHorizontalAlignment = .right
+    timerLabel.isHidden = false
   }
   
   @objc func didTapRetryButton() {

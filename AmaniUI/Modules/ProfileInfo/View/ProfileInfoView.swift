@@ -254,6 +254,7 @@ class ProfileInfoView: UIView {
       .sink { [weak self] state in
         switch state {
         case .loading:
+          self?.toggleTextInputs(isEnabled: false)
           self?.submitButton.showActivityIndicator()
         case .success:
           DispatchQueue.main.async {
@@ -262,18 +263,24 @@ class ProfileInfoView: UIView {
             }
           }
         case .failed:
+          self?.toggleTextInputs(isEnabled: true)
           self?.submitButton.hideActivityIndicator()
         case .none:
           break
         }
       }.store(in: &cancellables)
+    
+    viewModel.$currentErrorToShow.sink {[weak self] error in
+      guard let error = error else {return}
+      // FIXME: Also
+      self?.showMsgAlertWithHandler(alertTitle: "Profile Error", message: error, successTitle: "Ok")
+    }.store(in: &cancellables)
 
     self.viewModel = viewModel
     
     if let doc = document {
       setTextsFrom(document: doc)
     }
-    
   }
 
   func setCompletion(handler: @escaping () -> Void) {
@@ -307,6 +314,14 @@ class ProfileInfoView: UIView {
         self.surnameInput.updatePlaceHolder(text: document.surnameHint!)
         self.birthdateLabel.text = document.birthDateTitle!
         self.birthdateInput.updatePlaceHolder(text: document.birthDateHint!)
+    }
+  }
+  
+  private func toggleTextInputs(isEnabled: Bool = true) {
+    DispatchQueue.main.async {
+      self.nameInput.field.isEnabled = isEnabled
+      self.surnameInput.field.isEnabled = isEnabled
+      self.birthdateInput.field.isEnabled = isEnabled
     }
   }
 }

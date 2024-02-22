@@ -9,15 +9,17 @@ import UIKit
  This file represents the native alerts utility as a Singleton instance
  */
 class AlertDialogueUtility {
-  
   // MARK: - Local properties
+
   /// This property represents theshared instance of AlertDialogueUtility
   static var shared: AlertDialogueUtility = AlertDialogueUtility()
-  
+
   // MARK: - Private initializer
+
   private init() {}
-  
+
   // MARK: - Helper methods
+
   /**
    This method is used to present UIAlertController with handler
    - parameter viewController: UIViewController
@@ -27,11 +29,11 @@ class AlertDialogueUtility {
    */
   func showMsgAlertWithHandler(controller: UIViewController?, alertTitle: String, message: String, successTitle: String, success: ((UIAlertAction) -> Void)? = nil, failureTitle: String? = nil, failure: ((UIAlertAction) -> Void)? = nil) {
     let alertController = UIAlertController(title: alertTitle, message:
-                                              "", preferredStyle: UIAlertController.Style.alert)
-    
+      "", preferredStyle: UIAlertController.Style.alert)
+
     alertController.title = alertTitle
     alertController.message = message
-    
+
     if let title = failureTitle {
       let failureAction = UIAlertAction(title: title, style: UIAlertAction.Style.default, handler: failure)
       alertController.addAction(failureAction)
