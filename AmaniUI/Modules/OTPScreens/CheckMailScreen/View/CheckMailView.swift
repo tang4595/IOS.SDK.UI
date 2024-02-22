@@ -20,8 +20,9 @@ class CheckMailView: UIView {
   private var retryTime: Int
   private var timer: Timer?
 
+  private var errorMessage: String!
+  
   // MARK: Info Section
-
   private lazy var titleText: UILabel = {
     let label = UILabel()
     label.font = UIFont.systemFont(ofSize: 22.0, weight: .bold)
@@ -206,7 +207,8 @@ class CheckMailView: UIView {
   }
 
   func bind(withViewModel viewModel: CheckMailViewModel,
-            withDocument document: DocumentVersion?
+            withDocument document: DocumentVersion?,
+            rejectedMessage message: String = "Unable to verify profile information"
   ) {
     otpInput.setDelegate(delegate: self)
 
@@ -252,6 +254,8 @@ class CheckMailView: UIView {
     if let doc = document {
       self.setTextsFrom(document: doc)
     }
+    
+    self.errorMessage = message
   }
   
   func setTimerButtonDefaultStylings(text: String? = "Resend OTP") {

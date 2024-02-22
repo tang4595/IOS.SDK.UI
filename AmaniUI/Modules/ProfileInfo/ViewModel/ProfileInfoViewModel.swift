@@ -116,7 +116,7 @@ class ProfileInfoViewModel {
         } else if rule.status == DocumentStatus.REJECTED.rawValue || rule.status == DocumentStatus.AUTOMATICALLY_REJECTED.rawValue {
           if state == .loading {
             state = .failed
-            // FIXME: Consult with backend about this dumbnut
+            // FIXME: Consult with backend about this dumbnut being empty.
 //            currentErrorToShow = rule.errors?.first
             // Btw change the type to AmaniError when the backend stuff is resolved
             currentErrorToShow = "Unable to update profile info"
@@ -124,6 +124,40 @@ class ProfileInfoViewModel {
         }
       } else {
         state = .failed
+      }
+    }
+  }
+  
+  func setupErrorHook() {
+    NotificationCenter
+      .default
+      .addObserver(
+        self,
+        selector: #selector(didReceiveError),
+        name: NSNotification.Name(
+          AppConstants.AmaniDelegateNotifications.onError.rawValue
+        ),
+        object: nil)
+  }
+  
+  @objc
+  func didReceiveError(_ notification: Notification) {
+    if let errorObjc = notification.object as? [String: Any] {
+      let type = errorObjc["type"] as! String
+      let errors = errorObjc["errors"] as! [[String: String]]
+      if (type == "OTP_error") {
+        if let errorMessageJson = errors.first?["errorMessage"] {
+          if let detail = try? JSONDecoder()
+            .decode(
+              [String: String].self,
+              from: errorMessageJson.data(using: .utf8)!
+            ) {
+            let message = detail["detail"]
+            self.currentErrorToShow = message
+          }
+        } else {
+          self.currentErrorToShow = "Unable to update the profile info"
+        }
       }
     }
   }

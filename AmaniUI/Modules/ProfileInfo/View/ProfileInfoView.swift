@@ -272,8 +272,9 @@ class ProfileInfoView: UIView {
     
     viewModel.$currentErrorToShow.sink {[weak self] error in
       guard let error = error else {return}
-      // FIXME: Also
+      // FIXME: Also update the message in here
       self?.showMsgAlertWithHandler(alertTitle: "Profile Error", message: error, successTitle: "Ok")
+      self?.clearTextInputs()
     }.store(in: &cancellables)
 
     self.viewModel = viewModel
@@ -322,6 +323,14 @@ class ProfileInfoView: UIView {
       self.nameInput.field.isEnabled = isEnabled
       self.surnameInput.field.isEnabled = isEnabled
       self.birthdateInput.field.isEnabled = isEnabled
+    }
+  }
+  
+  private func clearTextInputs() {
+    DispatchQueue.main.async {
+      self.nameInput.field.text = ""
+      self.surnameInput.field.text = ""
+      self.birthdateInput.field.text = ""
     }
   }
 }

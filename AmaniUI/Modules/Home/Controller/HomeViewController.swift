@@ -41,9 +41,9 @@ class HomeViewController: BaseViewController {
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     NotificationCenter.default.removeObserver(self)
-    if !isMovingFromParent && !((self.navigationController?.viewControllers.count)! > 1) {
-      AmaniUI.sharedInstance.popViewController()
-    }
+//    if !isMovingFromParent && !((self.navigationController?.viewControllers.count)! > 1) {
+//      AmaniUI.sharedInstance.popViewController()
+//    }
   }
   
   // MARK: - Initial setup methods
@@ -73,9 +73,9 @@ class HomeViewController: BaseViewController {
   /**
    This method used to pop put the controller. For example back button pressed to exit the SDK screen.
    */
-  override func popViewController() {
-    AmaniUI.sharedInstance.popViewController()
-  }
+//  override func popViewController() {
+//    AmaniUI.sharedInstance.popViewController()
+//  }
   
   func checkStatus(model: CustomerResponseModel) -> Bool{
     let rules = model.rules ?? []

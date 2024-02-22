@@ -282,7 +282,7 @@ public class AmaniUI {
         self.sdkNavigationController = UINavigationController(rootViewController: self.initialVC!)
         self.sdkNavigationController?.modalPresentationStyle = .fullScreen
         // Adding shadow to NavigationBar
-        self.sdkNavigationController?.setupNavigationBarShadow()
+//        self.sdkNavigationController?.setupNavigationBarShadow()
         // Show the SDK!
         self.setAppTheme(model: self.config?.generalconfigs!, onVC: self.initialVC!)
         self.parentVC?.present(self.sdkNavigationController!, animated: true)

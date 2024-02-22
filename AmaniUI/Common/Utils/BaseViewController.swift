@@ -92,7 +92,16 @@ class BaseViewController: UIViewController {
   }
   
   @objc func popViewController() {
-    self.navigationController?.dismiss(animated: true)
+    // FIXME: ATTENTION: This is an hotfix. Since some screens are actually calling
+    // setNavigationLeftButton directly, and it stupidly calls this method,
+    // we need to double check it here.
+    // Either find the ancient curse that is laid upon here, or remove the
+    // setFirstPop method correctly.
+    if(self.navigationController?.viewControllers.count == 1) {
+      self.navigationController?.dismiss(animated: true)
+    } else {
+      self.navigationController?.popViewController(animated: true)
+    }
   }
   
   @objc func selectorFunc() {
