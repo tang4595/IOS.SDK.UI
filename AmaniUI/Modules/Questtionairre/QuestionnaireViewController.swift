@@ -17,9 +17,9 @@ class QuestionnaireViewController: BaseViewController {
   
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
-    if !isMovingFromParent {
-      AmaniUI.sharedInstance.popViewController()
-    }
+//    if isMovingFromParent {
+//      AmaniUI.sharedInstance.popViewController()
+//    }
   }
   
   override func viewDidLoad() {

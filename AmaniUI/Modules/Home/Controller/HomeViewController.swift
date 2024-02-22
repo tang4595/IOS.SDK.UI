@@ -19,7 +19,10 @@ class HomeViewController: BaseViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(true)
     NotificationCenter.default.addObserver(self, selector: #selector(didReceiveStepModel), name: Notification.Name(
       AppConstants.AmaniDelegateNotifications.onStepModel.rawValue
     ), object: nil)
@@ -27,10 +30,6 @@ class HomeViewController: BaseViewController {
     NotificationCenter.default.addObserver(self, selector: #selector(didReceiveProfileStatus), name: NSNotification.Name(
       AppConstants.AmaniDelegateNotifications.onProfileStatus.rawValue
     ), object: nil)
-  }
-  
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(true)
   }
   
   override func viewDidAppear(_ animated: Bool) {
@@ -212,6 +211,7 @@ extension HomeViewController {
   func onStepModel(rules: [AmaniSDK.KYCRuleModel]?) {
     // CHECK RULES AND OPEN SUCCESS SCREEN
     // Reload customer when upload is complete
+    print("on stepmodel \(rules)")
     if viewAppeared{
       guard let kycStepTblView = kycStepTblView else {return}
       guard let rules = rules else {

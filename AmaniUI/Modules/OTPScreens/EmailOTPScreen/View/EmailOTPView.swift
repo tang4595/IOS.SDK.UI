@@ -108,7 +108,7 @@ class EmailOTPView: UIView {
   deinit {
     NotificationCenter.default.removeObserver(
       self,
-      name: NSNotification.Name("ai.amani.onError"),
+      name: NSNotification.Name(AppConstants.AmaniDelegateNotifications.onError.rawValue),
       object: nil
     )
   }

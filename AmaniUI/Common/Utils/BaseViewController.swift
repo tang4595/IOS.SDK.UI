@@ -38,7 +38,6 @@ class BaseViewController: UIViewController {
   /// The configuration of the SDK.
   
   // MARK: - Life cycle methods
-  
   override func viewDidLoad() {
     
 //    rotateScreen(orientation: orientation)
@@ -93,7 +92,7 @@ class BaseViewController: UIViewController {
   }
   
   @objc func popViewController() {
-    self.navigationController?.popViewController(animated: true)
+    self.navigationController?.dismiss(animated: true)
   }
   
   @objc func selectorFunc() {

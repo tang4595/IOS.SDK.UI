@@ -29,9 +29,9 @@ class PhoneOTPScreenViewController: KeyboardAvoidanceViewController {
   
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
-    if isMovingFromParent {
-      AmaniUI.sharedInstance.popViewController()
-    }
+//    if isMovingFromParent {
+//      AmaniUI.sharedInstance.popViewController()
+//    }
   }
   
   override func viewDidLoad() {
@@ -39,7 +39,7 @@ class PhoneOTPScreenViewController: KeyboardAvoidanceViewController {
     
     phoneOTPView.setCompletion {[weak self] in
       let checkSMSViewController = CheckSMSViewController()
-      
+      checkSMSViewController.bind(with: (self?.stepVM)!)
       checkSMSViewController.setupCompletionHandler {
         if let handler = self?.handler {
           handler()

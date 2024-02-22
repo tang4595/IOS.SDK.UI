@@ -74,7 +74,9 @@ class QuestionnaireViewModel {
     state = .loading
     questionnaire.submitAnswers(answers: answers,
                                 completion: { [weak self] answerState in
-                                  self?.state = answerState ? .success : .failed
+      if answerState == false {
+        self?.state = .failed
+      }
                                 })
   }
 
@@ -127,6 +129,7 @@ class QuestionnaireViewModel {
   @objc
   private func didReceiveRules(_ notification: Notification) {
     guard let ruleID = ruleID else { return }
+    guard state != .success else { return }
     if let rules = (notification.object as? [Any?])?[1] as? [KYCRuleModel] {
       if let rule = rules.first(where: { $0.id == ruleID }),
          rule.status == DocumentStatus.APPROVED.rawValue {

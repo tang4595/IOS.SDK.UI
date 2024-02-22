@@ -150,7 +150,8 @@ class NonKYCStepManager {
       navigationController!.modalPresentationStyle = .fullScreen
       customerVC.present(navigationController!, animated: true)
     } else {
-      navigationController!.pushViewController(viewController, animated: true)
+      navigationController!.setViewControllers([viewController], animated: true)
+//      navigationController!.pushViewController(viewController, animated: true)
     }
   }
   

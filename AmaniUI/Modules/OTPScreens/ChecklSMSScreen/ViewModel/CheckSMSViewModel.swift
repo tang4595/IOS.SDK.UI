@@ -79,12 +79,16 @@ class CheckSMSViewModel {
   @objc
   func didReceiveRules(_ notification: Notification) {
     guard let ruleID = ruleID else { return }
+    guard state != .success else { return }
     if let rules = (notification.object as? [Any?])?[1] as? [KYCRuleModel] {
-      if let rule = rules.first(where: { $0.id == ruleID }),
-         rule.status == DocumentStatus.APPROVED.rawValue {
-        state = .success
-      } else {
-        state = .failed
+      if let rule = rules.first(where: { $0.id == ruleID }) {
+        if rule.status == DocumentStatus.APPROVED.rawValue {
+          state = .success
+        } else if rule.status == DocumentStatus.NOT_UPLOADED.rawValue {
+          state = .none
+        } else {
+          state = .failed
+        }
       }
     }
   }
