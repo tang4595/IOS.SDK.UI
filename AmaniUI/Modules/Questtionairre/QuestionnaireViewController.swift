@@ -35,6 +35,7 @@ class QuestionnaireViewController: BaseViewController {
       questionnaireView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
       questionnaireView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
     ])
+    self.navigationItem.titleView?.tintColor = UIColor(hexString: "#20202F")
   }
   
   func setCompletionHandler(_ handler: @escaping (() -> Void)) {
@@ -43,6 +44,9 @@ class QuestionnaireViewController: BaseViewController {
   
   func bind(with stepVM: KYCStepViewModel) {
     self.questionnaireViewModel.setRuleID(stepVM.getRuleModel().id!)
+    DispatchQueue.main.async {
+      self.title = stepVM.documents.first?.versions?.first?.steps?.first?.captureTitle ?? "Questionnaire"
+    }
   }
   
   

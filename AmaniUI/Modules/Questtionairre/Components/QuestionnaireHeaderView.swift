@@ -10,14 +10,6 @@ import UIKit
 
 class QuestionnaireHeaderView: UIStackView {
   
-  private lazy var titleLabel: UILabel = {
-    let titleLabel = UILabel()
-    titleLabel.text = "Questionnaire"
-    titleLabel.textColor = UIColor(hexString: "#20202F")
-    titleLabel.font = UIFont.systemFont(ofSize: 20.0, weight: .medium)
-    return titleLabel
-  }()
-  
   private lazy var descriptionLabel: UILabel = {
     let descriptionLabel = UILabel()
     descriptionLabel.text = "Please answer the following simple questions to help us serve you better."
@@ -41,12 +33,17 @@ class QuestionnaireHeaderView: UIStackView {
     self.axis = .vertical
     self.spacing = 12
     
-    self.addArrangedSubview(titleLabel)
     self.addArrangedSubview(descriptionLabel)
     self.backgroundColor = UIColor(hexString: "#EEF4FA")
     
     self.layoutMargins = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
     self.isLayoutMarginsRelativeArrangement = true
+  }
+  
+  func setDescriptionLabelText(_ text: String) {
+    DispatchQueue.main.async {
+      self.descriptionLabel.text = text
+    }
   }
   
 }

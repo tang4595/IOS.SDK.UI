@@ -16,14 +16,6 @@ class PhoneOTPView: UIView {
   private var viewModel: PhoneOTPViewModel!
   private var completion: (() -> Void)? = nil
   
-  private lazy var titleText: UILabel = {
-    let label = UILabel()
-    label.text = "Verify Phone Number"
-    label.font = UIFont.systemFont(ofSize: 20.0, weight: .bold)
-    label.textColor = UIColor(hexString: "#20202F")
-    return label
-  }()
-  
   private lazy var descriptionText: UILabel = {
     let label = UILabel()
     label.text = "We will send a ‘one time PIN’ to your phone number for verification"
@@ -76,7 +68,6 @@ class PhoneOTPView: UIView {
   
   private lazy var mainStackView: UIStackView = {
     let stackView = UIStackView(arrangedSubviews: [
-      titleText,
       descriptionText,
       formView,
       submitButton,
@@ -86,7 +77,6 @@ class PhoneOTPView: UIView {
     stackView.distribution = .fill
     stackView.spacing = 0.0
     
-    stackView.setCustomSpacing(16.0, after: titleText)
     stackView.setCustomSpacing(80.0, after: descriptionText)
     stackView.setCustomSpacing(150.0, after: formView)
     
@@ -212,7 +202,6 @@ class PhoneOTPView: UIView {
     if let step = document.steps?.first {
       // FIXME: No button text
       DispatchQueue.main.async {
-        self.titleText.text = step.captureTitle
         self.descriptionText.text = step.captureDescription
         self.phoneLegend.text = document.phoneHint
       }

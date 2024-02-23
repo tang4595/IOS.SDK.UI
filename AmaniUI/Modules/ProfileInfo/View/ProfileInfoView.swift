@@ -17,16 +17,6 @@ class ProfileInfoView: UIView {
   private let nameValidationString: String = "Name should not exceed 64 characters"
   private let surnameValidationString: String = "Surname should not exceed 32 characters"
 
-  // MARK: Info section
-
-  private lazy var titleText: UILabel = {
-    let label = UILabel()
-    label.text = "Fill the details"
-    label.font = UIFont.systemFont(ofSize: 24.0, weight: .bold)
-    label.textColor = UIColor(hexString: "#2020F")
-    return label
-  }()
-
   // MARK: Form Area
 
   private lazy var nameLegend: UILabel = {
@@ -116,7 +106,6 @@ class ProfileInfoView: UIView {
 
   private lazy var mainStackView: UIStackView = {
     let stackView = UIStackView(arrangedSubviews: [
-      titleText,
       formView,
       submitButton,
     ])
@@ -125,7 +114,6 @@ class ProfileInfoView: UIView {
     stackView.distribution = .fill
     stackView.spacing = 0.0
 
-    stackView.setCustomSpacing(24.0, after: titleText)
     stackView.setCustomSpacing(100.0, after: formView)
 
     return stackView

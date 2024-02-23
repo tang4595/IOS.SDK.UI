@@ -24,6 +24,7 @@ class EmailOTPScreenViewController: KeyboardAvoidanceViewController {
   }
   
   override func viewDidLoad() {
+    self.title = docVersion?.steps?.first?.captureTitle ?? "Verify Email Address"
     emailOTPView.bind(withViewModel: emailOTPViewModel, withDocument: docVersion)
     
     emailOTPView.setCompletion {[weak self] in

@@ -27,16 +27,9 @@ class PhoneOTPScreenViewController: KeyboardAvoidanceViewController {
     fatalError("init(coder:) has not been implemented")
   }
   
-  override func viewWillDisappear(_ animated: Bool) {
-    super.viewWillDisappear(animated)
-//    if isMovingFromParent {
-//      AmaniUI.sharedInstance.popViewController()
-//    }
-  }
-  
   override func viewDidLoad() {
+    self.title = docVersion?.steps?.first?.captureTitle ?? "Verify Phone Number"
     phoneOTPView.bind(withViewModel: phoneOTPViewModel, withDocument: self.docVersion)
-    
     phoneOTPView.setCompletion {[weak self] in
       let checkSMSViewController = CheckSMSViewController()
       checkSMSViewController.bind(with: (self?.stepVM)!)

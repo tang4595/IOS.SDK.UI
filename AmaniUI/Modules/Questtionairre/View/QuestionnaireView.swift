@@ -109,6 +109,8 @@ extension QuestionnaireView: UITableViewDataSource {
 extension QuestionnaireView: UITableViewDelegate {
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     let questionnaireHeader = QuestionnaireHeaderView()
+    let descriptionText = self.step?.documents.first?.versions?.first?.steps?.first?.captureDescription
+    questionnaireHeader.setDescriptionLabelText(descriptionText ?? "Please answer the following simple questions to help us serve you better.")
     return questionnaireHeader
   }
 

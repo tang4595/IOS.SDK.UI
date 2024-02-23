@@ -23,6 +23,7 @@ class ProfileInfoViewController: KeyboardAvoidanceViewController {
   }
   
   override func viewDidLoad() {
+    title = docVersion?.steps?.first?.captureTitle
     profileInfoView = ProfileInfoView()
     profileInfoView.bind(withViewModel: profileInfoViewModel, withDocument: docVersion)
     

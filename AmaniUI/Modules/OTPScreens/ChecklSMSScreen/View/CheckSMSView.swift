@@ -21,14 +21,6 @@ class CheckSMSView: UIView {
   private var timer: Timer?
   
   // MARK: Info Section
-  private lazy var titleText: UILabel = {
-    let label = UILabel()
-    label.font = UIFont.systemFont(ofSize: 22.0, weight: .bold)
-    label.text = "Check your SMS"
-    label.textColor = UIColor(hexString: "#20202F")
-    return label
-  }()
-  
   private lazy var titleDescription: UILabel = {
     let label = UILabel()
     label.font = UIFont.systemFont(ofSize: 16.0, weight: .light)
@@ -41,7 +33,6 @@ class CheckSMSView: UIView {
   
   private lazy var titleStackView: UIStackView = {
     let stackView = UIStackView(arrangedSubviews: [
-      titleText,
       titleDescription,
     ])
     stackView.axis = .vertical
@@ -305,7 +296,6 @@ class CheckSMSView: UIView {
   private func setTextsFrom(document: DocumentVersion) {
     if let step = document.steps?.first {
       DispatchQueue.main.async {
-        self.titleText.text = step.confirmationTitle
         self.titleDescription.text = step.confirmationDescription
         self.setTimerButtonDefaultStylings(text: document.resendOTP)
         // FIXME: Another one

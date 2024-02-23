@@ -9,53 +9,10 @@ import AmaniSDK
 import Foundation
 import UIKit
 
+// TODO: Update the name
 class QuestionDropdownView: UIView {
   var question: QuestionModel?
   var didTapAnswerCallback: ((String) -> Void)?
-
-  public var answersHidden: Bool = true {
-    didSet {
-      // FIXME: Since the table view doesn't want to update the cell height
-      // automatically, this disables the show hide function for now.
-      // Find a way to notify the changes to the table view
-
-//      answerStackView.setIsHidden(!answersHidden, animated: true)
-//      self.layoutIfNeeded()
-//      self.superview?.layoutIfNeeded()
-    }
-  }
-
-  private lazy var showHideButton: UIButton = {
-    let button = UIButton()
-    button.setTitle("Select the applicable options", for: .normal)
-    button.tintColor = .black
-    button.addCornerRadiousWith(radious: 10.0)
-    button.addBorder(borderWidth: 1.0, borderColor: UIColor(hexString: "#565656").cgColor)
-    button.backgroundColor = .white
-    button.contentHorizontalAlignment = .fill
-
-    if #available(iOS 15.0, *) {
-      var configuration = UIButton.Configuration.plain()
-      configuration.contentInsets = NSDirectionalEdgeInsets(
-        top: 15.5,
-        leading: 20.0,
-        bottom: 15.5,
-        trailing: 20)
-      configuration.imagePlacement = .trailing
-      button.configuration = configuration
-    } else {
-      // Fallback on earlier versions
-      button.contentEdgeInsets = UIEdgeInsets(
-        top: 15.5,
-        left: 20.0,
-        bottom: 15.5,
-        right: 20
-      )
-    }
-
-    button.setImage(UIImage(systemName: "chevron.down"), for: .normal)
-    return button
-  }()
 
   private lazy var answerStackView: UIStackView = {
     let stackView = UIStackView()
@@ -81,90 +38,48 @@ class QuestionDropdownView: UIView {
     }
 
     let buttonType: AnswerButtonType = question.answerType == "multiple_choice" ? .multiple : .single
-    
+
     let selectedAnswerIDs = answers?.multipleOptionAnswer
-    
+    let singleAnswerID = answers?.singleOptionAnswer
     question.answers.forEach { answer in
       let answerButton = AnswerButton(with: answer, type: buttonType)
-      
+
       if let answerIDs = selectedAnswerIDs, buttonType == .multiple {
         if answerIDs.contains(answer.id) {
           answerButton.setChecked(true)
         }
+      } else if let answerID = singleAnswerID, buttonType == .single {
+        if answer.id == answerID {
+          answerButton.setChecked(true)
+        }
       }
-      
+
       self.answerStackView.addArrangedSubview(answerButton)
     }
-
-    let attributes: [NSAttributedString.Key: Any] = [
-      .font: UIFont.systemFont(ofSize: 16.0, weight: .regular),
-      .foregroundColor: UIColor(hexString: "#565656"),
-    ]
-
-    if buttonType == .single && answers?.singleOptionAnswer != nil{
-      let title = question.answers.first(where: { $0.id == answers?.singleOptionAnswer })?.title ?? "Select"
-      let attributedString = NSAttributedString(
-        string: title,
-        attributes: attributes
-      )
-      showHideButton.setAttributedTitle(attributedString, for: .normal)
-    } else {
-      let attributedString = NSAttributedString(
-        string: buttonType == .single ? "Select" : "Select the applicable options",
-        attributes: attributes
-      )
-      showHideButton.setAttributedTitle(attributedString, for: .normal)
-    }
-
-    // Show hide button area
-    showHideButton.translatesAutoresizingMaskIntoConstraints = false
-    addSubview(showHideButton)
 
     answerStackView.translatesAutoresizingMaskIntoConstraints = false
 
     addSubview(answerStackView)
     NSLayoutConstraint.activate([
-      showHideButton.topAnchor.constraint(equalTo: topAnchor),
-      showHideButton.heightAnchor.constraint(equalToConstant: 50.0),
-      showHideButton.leadingAnchor.constraint(equalTo: leadingAnchor),
-      showHideButton.trailingAnchor.constraint(equalTo: trailingAnchor),
-      answerStackView.topAnchor.constraint(equalTo: showHideButton.bottomAnchor, constant: 8),
+      answerStackView.topAnchor.constraint(equalTo: topAnchor),
       answerStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
       answerStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-      // fucking culprit.
       answerStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
     ])
   }
 
   func bind(didTapAnswerFunc: @escaping (String) -> Void) {
     didTapAnswerCallback = didTapAnswerFunc
-    showHideButton.addTarget(self, action: #selector(showHideButtonAction), for: .touchUpInside)
 
     let answerButtons: [AnswerButton] = answerStackView.arrangedSubviews as! [AnswerButton]
-    answerButtons.forEach { $0.bind(didPressAnswerFN: { answerID in
-      didTapAnswerFunc(answerID)
-      guard let question = self.question else { return }
-      guard question.answerType == "single_choice" else { return }
-      let answer = question.answers.first(where: { $0.id == answerID })
-      let attributes: [NSAttributedString.Key: Any] = [
-        .font: UIFont.systemFont(ofSize: 16.0, weight: .regular),
-        .foregroundColor: UIColor(hexString: "#565656"),
-      ]
-
-      let attributedString = NSAttributedString(
-        string: answer?.title ?? "Select",
-        attributes: attributes
-      )
-
-      self.showHideButton.setAttributedTitle(attributedString, for: .normal)
-    }) }
-  }
-
-  @objc func showHideButtonAction() {
-    answersHidden.toggle()
-  }
-
-  override func layoutSubviews() {
-    super.layoutSubviews()
+    answerButtons.forEach { button in
+      button.bind(didPressAnswerFN: { answerID in
+        guard let question = self.question else { return }
+        if question.answerType == "single_choice" {
+          answerButtons.forEach { $0.setChecked($0.answerID == answerID) }
+        }
+        didTapAnswerFunc(answerID)
+      })
+    }
   }
 }

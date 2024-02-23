@@ -330,7 +330,7 @@ public class AmaniUI {
       
       onVC.setNavigationBarWith(title: model.mainTitleText!, textColor: UIColor(hexString: model.topBarFontColor ?? "000000"))
       //      onVC.headView.layer.cornerRadius = 25
-      onVC.headView.backgroundColor = UIColor(hexString: model.appBackground ?? "0F2435")
+//      onVC.headView.backgroundColor = UIColor(hexString: model.appBackground ?? "0F2435")
       onVC.setBackgroundColorOfTableView(color: UIColor(hexString: model.appBackground ?? "253C59"))
     }
   }

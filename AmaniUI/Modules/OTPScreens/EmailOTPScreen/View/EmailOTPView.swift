@@ -17,14 +17,6 @@ class EmailOTPView: UIView {
   private var completionHandler: (() -> Void)? = nil
   private var emailValidationText: String = "This email Address is wrong"
   
-  private lazy var titleText: UILabel = {
-    let label = UILabel()
-    label.text = "Verify Email Address"
-    label.font = UIFont.systemFont(ofSize: 20.0, weight: .bold)
-    label.textColor = UIColor(hexString: "#20202F")
-    return label
-  }()
-  
   private lazy var descriptionText: UILabel = {
     let label = UILabel()
     label.text = "We will send you a ‘one time PIN’ to reset your password"
@@ -77,7 +69,6 @@ class EmailOTPView: UIView {
   
   private lazy var mainStackView: UIStackView = {
     let stackView = UIStackView(arrangedSubviews: [
-      titleText,
       descriptionText,
       formView,
       submitButton,
@@ -87,7 +78,6 @@ class EmailOTPView: UIView {
     stackView.distribution = .fill
     stackView.spacing = 0.0
     
-    stackView.setCustomSpacing(16.0, after: titleText)
     stackView.setCustomSpacing(80.0, after: descriptionText)
     stackView.setCustomSpacing(150.0, after: formView)
     
@@ -180,7 +170,6 @@ class EmailOTPView: UIView {
     let step = document.steps!.first!
     DispatchQueue.main.async {
       // FIXME: Button titles DOES NOT EXISTS in the configuration
-      self.titleText.text = step.captureTitle
       self.descriptionText.text = step.captureDescription
       self.emailLegend.text = document.emailTitle!
       self.emailInput.updatePlaceHolder(text: document.emailHint!, color: UIColor(hexString: "#C0C0C0"))

@@ -15,30 +15,30 @@ enum AnswerButtonType {
 }
 
 class AnswerButton: UIButton {
-  private var question: QuestionAnswerModel?
+  public var answerID: String?
+  private var answerModel: QuestionAnswerModel?
   private var type: AnswerButtonType = .single
   private var didPressCallback: ((String) -> Void)?
 
-  private lazy var checkMark: UIImageView = {
-    let image = UIImage(systemName: "square")?.withTintColor(.black)
-    let imageView = UIImageView(image: image)
-    imageView.contentMode = .scaleAspectFit
-    return imageView
-  }()
-
   private var isChecked = false {
     didSet {
-      let image = isChecked ? UIImage(systemName: "square.fill") : UIImage(systemName: "square")
+      var image: UIImage?
+      if type == .multiple {
+        image = isChecked ? UIImage(systemName: "square.fill") : UIImage(systemName: "square")
+      } else if type == .single {
+        image = isChecked ? UIImage(systemName: "circle.fill") : UIImage(systemName: "circle")
+      }
       setImage(image!, for: .normal)
     }
   }
 
   convenience init(
-    with question: QuestionAnswerModel,
+    with answer: QuestionAnswerModel,
     type: AnswerButtonType = .single
   ) {
     self.init()
-    self.question = question
+    self.answerModel = answer
+    self.answerID = answer.id
     self.type = type
 
     let attributes: [NSAttributedString.Key: Any] = [
@@ -47,7 +47,7 @@ class AnswerButton: UIButton {
     ]
 
     let attributedString = NSAttributedString(
-      string: question.title,
+      string: answer.title,
       attributes: attributes
     )
 
@@ -64,15 +64,17 @@ class AnswerButton: UIButton {
     if type == .multiple {
       setImage(UIImage(systemName: "square"),
                for: .normal)
+    } else if type == .single {
+      setImage(UIImage(systemName: "circle"),
+               for: .normal)
+    }
 
-      if let titleLabel = titleLabel {
+    if let titleLabel = titleLabel {
         NSLayoutConstraint.activate([
           titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
           titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -20),
         ])
       }
-    }
-
     titleLabel?.numberOfLines = 3
     contentHorizontalAlignment = .leading
 
@@ -123,17 +125,13 @@ class AnswerButton: UIButton {
   
   @objc
   func didTapAnswer() {
-    if type == .multiple {
-      isChecked.toggle()
-    }
-    
+    isChecked.toggle()
     if let cb = self.didPressCallback {
-      cb(self.question!.id)
+      cb(self.answerModel!.id)
     }
   }
   
   func setChecked(_ isChecked: Bool) {
-    guard type == .multiple else {return}
     self.isChecked = isChecked
   }
   

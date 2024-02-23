@@ -29,6 +29,7 @@ class CheckMailViewController: KeyboardAvoidanceViewController {
   }
   
   override func viewDidLoad() {
+    self.title = docVersion?.steps?.first?.confirmationTitle
     checkMailView.bind(
       withViewModel: self.checkMailViewModel,
       withDocument: self.docVersion

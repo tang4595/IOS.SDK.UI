@@ -30,6 +30,7 @@ class CheckSMSViewController: KeyboardAvoidanceViewController {
   }
   
   override func viewDidLoad() {
+    self.title = docVersion?.steps?.first?.confirmationTitle ?? "Check your SMS"
     checkSMSView.bind(withViewModel: checkSMSViewModel, withDocument: docVersion)
     addPoweredByIcon()
     view.backgroundColor = UIColor(hexString: "#EEF4FA")

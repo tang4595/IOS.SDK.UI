@@ -11,14 +11,18 @@ class HomeViewController: BaseViewController {
   @IBOutlet private weak var kycStepTblView: KYCStepTblView!
   @IBOutlet weak var amaniLogo:UIImageView!
   
-  @IBOutlet weak var headView: UIView!
+  @IBOutlet weak var descriptionLabel: UILabel!
   var stepModels: [KYCStepViewModel]?
   var customerData: CustomerResponseModel? = nil
   
-  var nonKYCStepManager: NonKYCStepManager? = nil
+  let appConfig = try? Amani.sharedInstance.appConfig().getApplicationConfig()
   
+  var nonKYCStepManager: NonKYCStepManager? = nil
   override func viewDidLoad() {
     super.viewDidLoad()
+    // main description text
+    self.descriptionLabel.text = appConfig?.generalconfigs?.mainDescriptionText
+    self.descriptionLabel.textColor = UIColor(hexString: (appConfig?.generalconfigs?.topBarFontColor)!)
   }
   
   override func viewWillAppear(_ animated: Bool) {
