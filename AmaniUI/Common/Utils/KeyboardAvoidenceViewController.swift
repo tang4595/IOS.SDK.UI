@@ -118,7 +118,6 @@ class KeyboardAvoidanceViewController: BaseViewController {
       ),
       heightConstraint
     ])
-    // TODO: OTP Screen titles?
     setupNavigationBackButton()
   }
   

@@ -97,11 +97,11 @@ class BaseViewController: UIViewController {
     // we need to double check it here.
     // Either find the ancient curse that is laid upon here, or remove the
     // setFirstPop method correctly.
-    if(self.navigationController?.viewControllers.count == 1) {
-      self.navigationController?.dismiss(animated: true)
-    } else {
-      self.navigationController?.popViewController(animated: true)
-    }
+      if(self.navigationController?.viewControllers.count == 1) {
+        self.navigationController?.dismiss(animated: true)
+      } else {
+        self.navigationController?.popViewController(animated: true)
+      }
   }
   
   @objc func selectorFunc() {
@@ -163,20 +163,33 @@ class BaseViewController: UIViewController {
     
     
     navBarFontColor = config?.generalconfigs?.topBarFontColor ?? "000000"
-    if #available(iOS 13.0, *) {
       let appearance = UINavigationBarAppearance()
       appearance.configureWithOpaqueBackground()
       appearance.backgroundColor = UIColor(hexString: config?.generalconfigs?.topBarBackground ?? "0F2435")
       appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(hexString: navBarFontColor)]
-      self.navigationController?.navigationBar.standardAppearance = appearance;
-      self.navigationController?.navigationBar.scrollEdgeAppearance =  self.navigationController?.navigationBar.standardAppearance
+      appearance.shadowColor = .clear
+      self.navigationController?.navigationBar.standardAppearance = appearance
+      self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
       self.navigationController?.navigationBar.isTranslucent = true
-    } else {
-      self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(hexString:navBarFontColor)]
-      self.navigationController?.navigationBar.barTintColor = UIColor(hexString: config?.generalconfigs?.topBarBackground ?? "0F2435")
+      self.view.backgroundColor = UIColor(hexString: config?.generalconfigs?.appBackground ?? "253C59")
+      self.navigationController?.navigationBar.backgroundColor = UIColor(hexString: config?.generalconfigs?.topBarBackground ?? "0F2435")
+
+    // Setup bottom line
+    if let navigationBar = self.navigationController?.navigationBar {
+      let bottomLineView = UIView()
+      navigationBar.setValue(true, forKey: "hidesShadow")
+      
+      //Creating New line
+      let lineView = UIView(frame: CGRect(x: 0, y: 0, width:0, height: 1))
+      lineView.backgroundColor = UIColor(hexString: "#CACFD6")
+      navigationBar.addSubview(lineView)
+      
+      lineView.translatesAutoresizingMaskIntoConstraints = false
+      lineView.widthAnchor.constraint(equalTo: navigationBar.widthAnchor).isActive = true
+      lineView.heightAnchor.constraint(equalToConstant: CGFloat(1)).isActive = true
+      lineView.centerXAnchor.constraint(equalTo: navigationBar.centerXAnchor).isActive = true
+      lineView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor).isActive = true
     }
-    self.view.backgroundColor = UIColor(hexString: config?.generalconfigs?.appBackground ?? "253C59")
-    self.navigationController?.navigationBar.backgroundColor = UIColor(hexString: config?.generalconfigs?.topBarBackground ?? "0F2435")
     
   }
   

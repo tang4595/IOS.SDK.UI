@@ -23,7 +23,7 @@ class QuestionnaireViewController: BaseViewController {
   }
   
   override func viewDidLoad() {
-    self.setPopButton(TintColor: "#FFF")
+    self.setPopButton()
     questionnaireView = QuestionnaireView()
     view.addSubview(questionnaireView)
     questionnaireView.translatesAutoresizingMaskIntoConstraints = false
