@@ -202,6 +202,7 @@ class PhoneOTPView: UIView {
     if let step = document.steps?.first {
       // FIXME: No button text
       DispatchQueue.main.async {
+        self.submitButton.titleLabel?.text = document.nextButtonText
         self.descriptionText.text = step.captureDescription
         self.phoneLegend.text = document.phoneHint
       }

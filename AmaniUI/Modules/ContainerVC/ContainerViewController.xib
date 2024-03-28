@@ -24,9 +24,9 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pAJ-ZD-KGj">
-                            <rect key="frame" x="20" y="607" width="335" height="40"/>
+                            <rect key="frame" x="20" y="597" width="335" height="50"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="40" id="Inj-kH-s6q"/>
+                                <constraint firstAttribute="height" constant="50" id="Inj-kH-s6q"/>
                             </constraints>
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="plain" title="Button"/>
