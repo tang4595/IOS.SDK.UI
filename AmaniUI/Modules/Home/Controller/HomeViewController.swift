@@ -107,7 +107,7 @@ class HomeViewController: BaseViewController {
           }
           
           // Add only if the identifer equals to kyc
-          if stepModel.identifier == "kyc" {
+          if (stepModel.identifier == "kyc"||stepModel.identifier == nil ) {
             return KYCStepViewModel(from: stepModel, initialRule: ruleModel, topController: self)
           }
           

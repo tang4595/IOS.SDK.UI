@@ -30,7 +30,7 @@
                                 <rect key="frame" x="20" y="0.0" width="316" height="53"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="53" id="vP7-AD-TdU"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="vP7-AD-TdU"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <nil key="textColor"/>

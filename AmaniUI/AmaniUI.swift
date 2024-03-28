@@ -42,6 +42,7 @@ public class AmaniUI {
   private var customer: CustomerRequestModel? = nil
   private var language: String = "tr"
   private var apiVersion: ApiVersions = .v2
+  private var uploadSource:String = UploadSource.KYC.rawValue
   private var nonKYCStepManager: NonKYCStepManager? = nil
   public var country: String? = nil
   public var nviData: NviModel? = nil
@@ -108,6 +109,7 @@ public class AmaniUI {
     nviModel: NviModel? = nil,
     country: String? = nil,
     location: CLLocation? = nil,
+    uploadSource:String = UploadSource.KYC.rawValue,
     apiVersion:ApiVersions = .v2
   ) {
     self.server = server
@@ -119,6 +121,7 @@ public class AmaniUI {
     self.location = location
     self.apiVersion = apiVersion
     self.language = language
+    self.uploadSource = uploadSource
   }
   
   /**
@@ -143,6 +146,7 @@ public class AmaniUI {
     nviModel: NviModel? = nil,
     country: String? = nil,
     location: CLLocation? = nil,
+    uploadSource:String = UploadSource.KYC.rawValue,
     apiVersion:ApiVersions = .v2
   ) {
     self.server = server
@@ -155,6 +159,7 @@ public class AmaniUI {
     self.location = location
     self.apiVersion = apiVersion
     self.language = language
+    self.uploadSource = uploadSource
   }
   
   public func setIdVideoRecord(enable:Bool){
