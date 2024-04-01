@@ -42,7 +42,6 @@ public class AmaniUI {
   private var customer: CustomerRequestModel? = nil
   private var language: String = "tr"
   private var apiVersion: ApiVersions = .v2
-  private var uploadSource:String = UploadSource.KYC.rawValue
   private var nonKYCStepManager: NonKYCStepManager? = nil
   public var country: String? = nil
   public var nviData: NviModel? = nil
@@ -104,12 +103,11 @@ public class AmaniUI {
     server: String,
     token: String,
     sharedSecret: String? = nil,
-    customer: CustomerRequestModel,
+    customer: CustomerRequestModel? = nil,
     language: String = "tr",
     nviModel: NviModel? = nil,
     country: String? = nil,
     location: CLLocation? = nil,
-    uploadSource:String = UploadSource.KYC.rawValue,
     apiVersion:ApiVersions = .v2
   ) {
     self.server = server
@@ -121,7 +119,6 @@ public class AmaniUI {
     self.location = location
     self.apiVersion = apiVersion
     self.language = language
-    self.uploadSource = uploadSource
   }
   
   /**
@@ -141,12 +138,11 @@ public class AmaniUI {
     userName: String,
     password: String,
     sharedSecret: String? = nil,
-    customer: CustomerRequestModel?,
+    customer: CustomerRequestModel,
     language: String = "tr",
     nviModel: NviModel? = nil,
     country: String? = nil,
     location: CLLocation? = nil,
-    uploadSource:String = UploadSource.KYC.rawValue,
     apiVersion:ApiVersions = .v2
   ) {
     self.server = server
@@ -159,7 +155,6 @@ public class AmaniUI {
     self.location = location
     self.apiVersion = apiVersion
     self.language = language
-    self.uploadSource = uploadSource
   }
   
   public func setIdVideoRecord(enable:Bool){
@@ -178,7 +173,7 @@ public class AmaniUI {
                              error: NetworkError?,
                              completion: ((CustomerResponseModel?, NetworkError?) -> Void)?) {
     do {
-      self.config = try Amani.sharedInstance.appConfig().getApplicationConfig()
+      self.config = try sharedSDKInstance.appConfig().getApplicationConfig()
     } catch let error {
       print("Error while fetching app configuration \(error)")
     }
@@ -196,27 +191,17 @@ public class AmaniUI {
                       completion: ((CustomerResponseModel?, NetworkError?) -> ())?
   ) {
     parentVC = parentViewController
-    
     // set the delegate regardless of init method
     self.sharedSDKInstance.setDelegate(delegate: self)
     if let customer = customer {
       if (userName != nil && password != nil) {
-        Amani.sharedInstance.initAmani(server: server!, userName: self.userName!, password: self.password!, sharedSecret: sharedSecret, customer: customer, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
-          self?.getConfig(customerModel: customerModel, error: error, completion: completion)
-        }
-      } else if (token != nil){
-        Amani.sharedInstance.initAmani(server: server!, token: token!, sharedSecret: sharedSecret, customer: customer, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
+        sharedSDKInstance.initAmani(server: server!, userName: self.userName!, password: self.password!, sharedSecret: sharedSecret, customer: customer, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
           self?.getConfig(customerModel: customerModel, error: error, completion: completion)
         }
       }
     } else {
-      if (userName != nil && password != nil) {
-        Amani.sharedInstance.initAmani(server: server!, userName: self.userName!, password: self.password!, sharedSecret: sharedSecret, customer: customer!, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
-          
-          self?.getConfig(customerModel: customerModel, error: error, completion: completion)
-        }
-      } else if (token != nil){
-        Amani.sharedInstance.initAmani(server: server!, token: token!, sharedSecret: sharedSecret, customer: customer!, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
+      if (token != nil){
+        sharedSDKInstance.initAmani(server: server!, token: token!, sharedSecret: sharedSecret, customer: customer!, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
           self?.getConfig(customerModel: customerModel, error: error, completion: completion)
         }
       }
@@ -232,7 +217,7 @@ public class AmaniUI {
   
   @objc
   public func popViewController() {
-    let customer = Amani.sharedInstance.customerInfo().getCustomer()
+    let customer = sharedSDKInstance.customerInfo().getCustomer()
     guard let customerId:String = customer.id else {return}
     
     if let missingRules = missingRules {
@@ -251,7 +236,7 @@ public class AmaniUI {
   
   // MARK: - internal methods
   internal func updateConfig() {
-    Amani.sharedInstance.appConfig().fetchAppConfig {[weak self] (newConfig, error) in
+    sharedSDKInstance.appConfig().fetchAppConfig {[weak self] (newConfig, error) in
       if let newConfig = newConfig {
         if let self = self {
           self.config = newConfig
