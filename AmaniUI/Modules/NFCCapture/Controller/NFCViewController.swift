@@ -41,6 +41,12 @@ class NFCViewController: BaseViewController {
     desc1Label.text = documentVersion.nfcDescription1
     desc2Label.text = documentVersion.nfcDescription2
     desc3Label.text = documentVersion.nfcDescription3
+    desc1Label.numberOfLines = 0
+    desc2Label.numberOfLines = 0
+    desc3Label.numberOfLines = 0
+    desc1Label.lineBreakMode = .byWordWrapping
+    desc2Label.lineBreakMode = .byWordWrapping
+    desc3Label.lineBreakMode = .byWordWrapping
     
     continueButton.alpha = 0.6
     continueButton.isEnabled = true

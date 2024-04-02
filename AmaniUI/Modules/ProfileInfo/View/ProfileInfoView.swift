@@ -77,7 +77,7 @@ class ProfileInfoView: UIView {
       borderColor: UIColor(hexString: "#515166"),
       placeholderColor: UIColor(hexString: "#C0C0C0"),
       isPasswordToggleEnabled: false,
-      keyboardType: .default
+      keyboardType: .numberPad
     )
     return input
   }()

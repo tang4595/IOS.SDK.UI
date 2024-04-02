@@ -221,9 +221,16 @@ class EmailOTPView: UIView {
 }
 
 extension EmailOTPView: UITextFieldDelegate {
-  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    viewModel.submitEmailForOTP()
-    emailInput.field.resignFirstResponder()
-    return true
-  }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        viewModel.submitEmailForOTP()
+        emailInput.field.resignFirstResponder()
+        return true
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard let text = textField.text as NSString? else { return true }
+        let newText = text.replacingCharacters(in: range, with: string)
+        textField.text = newText.lowercasedFirstLetter()
+        return false
+    }
 }

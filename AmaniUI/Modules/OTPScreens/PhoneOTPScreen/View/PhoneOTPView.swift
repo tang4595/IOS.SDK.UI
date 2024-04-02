@@ -42,7 +42,7 @@ class PhoneOTPView: UIView {
       borderColor: UIColor(hexString: "#515166"),
       placeholderColor: UIColor(hexString: "#C0C0C0"),
       isPasswordToggleEnabled: false,
-      keyboardType: .emailAddress
+      keyboardType: .phonePad
     )
     return input
   }()
