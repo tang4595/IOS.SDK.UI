@@ -201,7 +201,7 @@ public class AmaniUI {
       }
     } else {
       if (token != nil){
-        sharedSDKInstance.initAmani(server: server!, token: token!, sharedSecret: sharedSecret, customer: customer!, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
+        sharedSDKInstance.initAmani(server: server!, token: token!, sharedSecret: sharedSecret, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
           self?.getConfig(customerModel: customerModel, error: error, completion: completion)
         }
       }
