@@ -1,2 +1,4 @@
 github "airbnb/lottie-ios"
 binary "https://raw.githubusercontent.com/AmaniTechnologiesLtd/Mobile_SDK_Repo/main/AmaniSDK.json"
+github "marmelroy/PhoneNumberKit"
+
