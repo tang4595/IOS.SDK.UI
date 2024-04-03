@@ -15,6 +15,7 @@ class PhoneOTPView: UIView {
   private var cancellables = Set<AnyCancellable>()
   private var viewModel: PhoneOTPViewModel!
   private var completion: (() -> Void)? = nil
+    var selectCountryButtonAction: (() -> Void)?
   
   private lazy var descriptionText: UILabel = {
     let label = UILabel()
@@ -36,7 +37,7 @@ class PhoneOTPView: UIView {
     return label
   }()
   
-  private lazy var phoneInput: RoundedTextInput = {
+    lazy var phoneInput: RoundedTextInput = {
     let input = RoundedTextInput(
       placeholderText: "Enter your phone here",
       borderColor: UIColor(hexString: "#515166"),
@@ -46,7 +47,15 @@ class PhoneOTPView: UIView {
     )
     return input
   }()
-  
+    
+    private lazy var selectCountryButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setTitle("Select Country", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.addTarget(self, action: #selector(selectCountryButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
   private lazy var submitButton: RoundedButton = {
     let button = RoundedButton(
       withTitle: "Continue",
@@ -54,10 +63,21 @@ class PhoneOTPView: UIView {
     )
     return button
   }()
+    
+    private lazy var phoneInputView: UIStackView = {
+      let stackView = UIStackView(arrangedSubviews: [
+        selectCountryButton, phoneInput
+      ])
+      
+      stackView.axis = .horizontal
+      stackView.distribution = .fill
+      stackView.spacing = 6.0
+      return stackView
+    }()
   
   private lazy var formView: UIStackView = {
     let stackView = UIStackView(arrangedSubviews: [
-      phoneLegend, phoneInput
+      phoneLegend, phoneInputView
     ])
     
     stackView.axis = .vertical
@@ -171,6 +191,10 @@ class PhoneOTPView: UIView {
   func setupErrorHandling() {
     NotificationCenter.default.addObserver(self, selector: #selector(didReceiveError(_:)), name: Notification.Name(AppConstants.AmaniDelegateNotifications.onError.rawValue), object: nil)
   }
+    
+    @objc func selectCountryButtonTapped() {
+        selectCountryButtonAction?()
+        }
   
   @objc func didReceiveError(_ notification: Notification) {
     //                                            type, errors
