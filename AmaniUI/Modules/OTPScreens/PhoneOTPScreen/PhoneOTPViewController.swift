@@ -81,9 +81,12 @@ class PhoneOTPScreenViewController: KeyboardAvoidanceViewController {
 
 extension PhoneOTPScreenViewController: CountryPickerDelegate {
     func countryPicker(didSelect country: Country) {
-        print(country.localizedName)
-        print(country.phoneCode)
         // Update the phone input field with the selected country code
-        phoneOTPView.phoneInput.updatePlaceHolder(text: "+" + country.phoneCode)
+        phoneOTPView.phoneInput.field.text = "\(("+" + country.phoneCode))"
+        guard let countryFlagLabel = phoneOTPView.selectCountryView.subviews.compactMap({ $0 as? UILabel }).first else {
+                   return
+               }
+        countryFlagLabel.text = "\(country.isoCode.getFlag())"
+//        phoneOTPView.selectCountryButton.setTitle("\(country.isoCode.getFlag())", for: .normal)
     }
 }

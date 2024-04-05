@@ -131,6 +131,9 @@
 		185A2BF32BBD64AE00855F77 /* DismissButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissButtonStyle.swift; sourceTree = "<group>"; };
 		185A2BF42BBD64AE00855F77 /* NotchAppearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotchAppearance.swift; sourceTree = "<group>"; };
 		185A2BF52BBD64AE00855F77 /* SeperatorAppearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeperatorAppearance.swift; sourceTree = "<group>"; };
+		185A2C072BBD9C5B00855F77 /* CountryPickerView */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CountryPickerView; path = Carthage/Checkouts/CountryPickerView; sourceTree = SOURCE_ROOT; };
+		185A2E222BBFD08800855F77 /* CountryPicker.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CountryPicker.xcframework; path = Carthage/Build/CountryPicker.xcframework; sourceTree = SOURCE_ROOT; };
+		185A2E252BBFD4EB00855F77 /* CountryPicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CountryPicker.framework; path = Carthage/Build/iOS/CountryPicker.framework; sourceTree = SOURCE_ROOT; };
 		4830904228900A3800B75529 /* AmaniSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AmaniSDK.xcframework; path = Carthage/Build/AmaniSDK.xcframework; sourceTree = SOURCE_ROOT; };
 		4842810D29D0F7DB00D48925 /* DocumentsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsHandler.swift; sourceTree = "<group>"; };
 		484E26F7295A3DC700839E54 /* AmaniUIDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmaniUIDelegate.swift; sourceTree = "<group>"; };
@@ -255,7 +258,6 @@
 			isa = PBXGroup;
 			children = (
 				185A2BE92BBD64AE00855F77 /* Assets.xcassets */,
-				185A2BEA2BBD64AE00855F77 /* countries.json */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -299,6 +301,9 @@
 		489D41C526BC04F80009AB39 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				185A2E252BBFD4EB00855F77 /* CountryPicker.framework */,
+				185A2E222BBFD08800855F77 /* CountryPicker.xcframework */,
+				185A2C072BBD9C5B00855F77 /* CountryPickerView */,
 				185A275A2BBC392500855F77 /* PhoneNumberKit.xcframework */,
 				C5D3B93F2A9355B00023B66E /* OpenSSL.xcframework */,
 				C544FF0528C5E2EB00C0B406 /* CryptoKit.framework */,
@@ -649,6 +654,7 @@
 			isa = PBXGroup;
 			children = (
 				C5B07D6D290048E300243A5B /* Assets.xcassets */,
+				185A2BEA2BBD64AE00855F77 /* countries.json */,
 				C5B07D6E290048E300243A5B /* Animations */,
 			);
 			path = Assets;
@@ -839,8 +845,8 @@
 				483D72C5296C8D28004AF421 /* tur_dl_0_front.json in Resources */,
 				483D72C8296C8D28004AF421 /* tur_dl_0_back.json in Resources */,
 				185A2BFA2BBD64AE00855F77 /* Assets.xcassets in Resources */,
-				185A2BFB2BBD64AE00855F77 /* countries.json in Resources */,
 				C54B58AD28C75279005DBAA9 /* KYCStepTableViewCell.xib in Resources */,
+				185A2BFB2BBD64AE00855F77 /* countries.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1059,6 +1065,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1094,6 +1104,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";

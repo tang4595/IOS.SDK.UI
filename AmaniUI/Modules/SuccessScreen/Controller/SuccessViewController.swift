@@ -25,6 +25,8 @@ class SuccessViewController: BaseViewController {
     amaniLogo.isHidden = generalConfig?.hideLogo ?? false
     amaniLogo.tintColor = UIColor(hexString: textColor)
     continueButton.setTitle(generalConfig?.continueText, for: .normal)
+      continueButton.backgroundColor = UIColor(hexString: "#EA3365")
+      continueButton.layer.cornerRadius = 25
     headerTextView.textColor = UIColor(hexString: textColor)
     info1TextView.textColor = UIColor(hexString: textColor)
     info2TextView.textColor = UIColor(hexString: textColor)

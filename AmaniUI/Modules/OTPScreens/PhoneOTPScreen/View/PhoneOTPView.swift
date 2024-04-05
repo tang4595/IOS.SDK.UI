@@ -45,16 +45,43 @@ class PhoneOTPView: UIView {
       isPasswordToggleEnabled: false,
       keyboardType: .phonePad
     )
+        input.field.text = "+1"
     return input
   }()
     
-    private lazy var selectCountryButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setTitle("Select Country", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.addTarget(self, action: #selector(selectCountryButtonTapped), for: .touchUpInside)
-        return button
+    lazy var selectCountryView: UIView = {
+        let countryView = UIView()
+        countryView.backgroundColor = UIColor(hexString: "#D9D9D9")
+        countryView.layer.cornerRadius = 25
+        countryView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
+
+        let countryFlag = UILabel()
+        countryFlag.text = "🇺🇸"
+        countryFlag.translatesAutoresizingMaskIntoConstraints = false
+
+        let arrowImage = UIImageView()
+        arrowImage.image = UIImage(named: "Polygon")
+        arrowImage.translatesAutoresizingMaskIntoConstraints = false
+        
+        countryView.addSubview(arrowImage)
+        countryView.addSubview(countryFlag)
+        NSLayoutConstraint.activate([
+            countryFlag.leadingAnchor.constraint(equalTo: countryView.leadingAnchor, constant: 8),
+            countryFlag.centerYAnchor.constraint(equalTo: countryView.centerYAnchor),
+
+            arrowImage.leadingAnchor.constraint(equalTo: countryFlag.trailingAnchor, constant: 8),
+            arrowImage.trailingAnchor.constraint(equalTo: countryView.trailingAnchor, constant: -8),
+            arrowImage.centerYAnchor.constraint(equalTo: countryView.centerYAnchor),
+            arrowImage.heightAnchor.constraint(equalToConstant: 24),
+        ])
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(selectCountryButtonTapped))
+        countryView.addGestureRecognizer(tapGesture)
+        return countryView
     }()
+
+
+
     
   private lazy var submitButton: RoundedButton = {
     let button = RoundedButton(
@@ -65,15 +92,39 @@ class PhoneOTPView: UIView {
   }()
     
     private lazy var phoneInputView: UIStackView = {
-      let stackView = UIStackView(arrangedSubviews: [
-        selectCountryButton, phoneInput
-      ])
-      
-      stackView.axis = .horizontal
-      stackView.distribution = .fill
-      stackView.spacing = 6.0
-      return stackView
+        let inputView = UIView()
+        phoneInput.addSubview(selectCountryView)
+        inputView.addSubview(phoneInput)
+        
+        selectCountryView.translatesAutoresizingMaskIntoConstraints = false
+        phoneInput.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            selectCountryView.leadingAnchor.constraint(equalTo: phoneInput.leadingAnchor),
+            selectCountryView.topAnchor.constraint(equalTo: phoneInput.topAnchor),
+            selectCountryView.bottomAnchor.constraint(equalTo: phoneInput.bottomAnchor),
+            selectCountryView.widthAnchor.constraint(equalToConstant: 66),
+            
+            phoneInput.leadingAnchor.constraint(equalTo: inputView.leadingAnchor),
+            phoneInput.topAnchor.constraint(equalTo: inputView.topAnchor),
+            phoneInput.bottomAnchor.constraint(equalTo: inputView.bottomAnchor),
+            phoneInput.trailingAnchor.constraint(equalTo: inputView.trailingAnchor),
+            
+            phoneInput.field.leadingAnchor.constraint(equalTo: inputView.leadingAnchor, constant: 70),
+            phoneInput.field.topAnchor.constraint(equalTo: inputView.topAnchor),
+            phoneInput.field.bottomAnchor.constraint(equalTo: inputView.bottomAnchor),
+            phoneInput.field.trailingAnchor.constraint(equalTo: inputView.trailingAnchor)
+        ])
+        
+        let stackView = UIStackView(arrangedSubviews: [inputView])
+        stackView.axis = .horizontal
+        stackView.distribution = .fill
+        stackView.alignment = .center
+        stackView.spacing = 4.0
+        
+        return stackView
     }()
+
   
   private lazy var formView: UIStackView = {
     let stackView = UIStackView(arrangedSubviews: [

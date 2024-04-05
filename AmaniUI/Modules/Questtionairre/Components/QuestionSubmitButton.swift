@@ -47,7 +47,7 @@ class QuestionSubmitButton: UIStackView {
     self.axis = .vertical
     self.layoutMargins = UIEdgeInsets(top: 42, left: 20, bottom: 42, right: 20)
     self.isLayoutMarginsRelativeArrangement = true
-    self.heightAnchor.constraint(equalToConstant: 50).isActive = true
+//    self.heightAnchor.constraint(equalToConstant: 50).isActive = true
   }
   
 }

@@ -100,7 +100,6 @@ class RoundedTextInput: UIView {
 
     addSubview(field)
     field.translatesAutoresizingMaskIntoConstraints = false
-
     NSLayoutConstraint.activate([
       heightAnchor.constraint(equalToConstant: 50),
     ])
