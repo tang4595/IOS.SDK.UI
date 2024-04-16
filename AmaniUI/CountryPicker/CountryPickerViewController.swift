@@ -70,7 +70,7 @@ public final class CountryPickerViewController: UIViewController {
                     CountryManager.shared.config.searchBarPlaceholderColor,
             ]
         )
-//        setSearchIcon(textField)
+        setSearchIcon(textField)
         setClearButton(textField)
         return textField
     }()
@@ -103,19 +103,19 @@ public final class CountryPickerViewController: UIViewController {
     }()
 
     /// Add search icon to textfield, default asset is "02Icons16X16Search"
-//    private func setSearchIcon(_ textField: UITextField) {
-//            let outerView =
-//                UIView(frame: CGRect(x: iconPadding, y: 0, width: iconHeight + (iconPadding * 2), height: iconHeight))
-//            let iconView = UIImageView(frame: CGRect(x: iconPadding, y: 0, width: iconHeight, height: iconHeight))
-//            iconView.image = CountryManager.shared.config.searchBarLeftImage ?? UIImage(
-//                named: "02Icons16X16Search",
-//                in: .main,
-//                compatibleWith: nil
-//            )
-//            outerView.addSubview(iconView)
-//            textField.leftView = outerView
-//            textField.leftViewMode = .always
-//        }
+    private func setSearchIcon(_ textField: UITextField) {
+            let outerView =
+                UIView(frame: CGRect(x: iconPadding, y: 0, width: iconHeight + (iconPadding * 2), height: iconHeight))
+            let iconView = UIImageView(frame: CGRect(x: iconPadding, y: 0, width: iconHeight, height: iconHeight))
+            iconView.image = CountryManager.shared.config.searchBarLeftImage ?? UIImage(
+                named: "02Icons16X16Search",
+                in: AmaniUI.sharedInstance.getBundle(),
+                compatibleWith: nil
+            )
+            outerView.addSubview(iconView)
+            textField.leftView = outerView
+            textField.leftViewMode = .always
+        }
 
 
     /// Add custom image for clear button, default is textFields clear image.
