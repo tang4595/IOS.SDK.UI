@@ -82,12 +82,12 @@ class ProfileInfoView: UIView {
     return input
   }()
     
-//    private lazy var datePicker: UIDatePicker = {
-//        let picker = UIDatePicker()
-//        picker.datePickerMode = .date
-//        picker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
-//        return picker
-//    }()
+    private lazy var datePicker: UIDatePicker = {
+        let picker = UIDatePicker()
+        picker.datePickerMode = .date
+        picker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
+        return picker
+    }()
 
   private lazy var submitButton: RoundedButton = {
     let button = RoundedButton(
@@ -161,14 +161,14 @@ class ProfileInfoView: UIView {
       mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
     ])
       
-      //      birthdateInput.field.addSubview(datePicker)
-      //      datePicker.translatesAutoresizingMaskIntoConstraints = false
-      //      datePicker.contentHorizontalAlignment = .center
-      //          NSLayoutConstraint.activate([
-      //              datePicker.leadingAnchor.constraint(equalTo: birthdateInput.field.leadingAnchor),
-      //              datePicker.trailingAnchor.constraint(equalTo: birthdateInput.field.trailingAnchor),
-      //              datePicker.topAnchor.constraint(equalTo: birthdateInput.field.topAnchor),
-      //          ])
+            birthdateInput.field.addSubview(datePicker)
+            datePicker.translatesAutoresizingMaskIntoConstraints = false
+            datePicker.contentHorizontalAlignment = .center
+                NSLayoutConstraint.activate([
+                    datePicker.leadingAnchor.constraint(equalTo: birthdateInput.field.leadingAnchor),
+                    datePicker.trailingAnchor.constraint(equalTo: birthdateInput.field.trailingAnchor),
+                    datePicker.topAnchor.constraint(equalTo: birthdateInput.field.topAnchor),
+                ])
   }
 
   func setupErrorHandling() {
@@ -182,29 +182,29 @@ class ProfileInfoView: UIView {
         object: nil)
   }
     
-//    private func setupDatePicker() {
-//        // Create the date picker
-//        let datePicker = UIDatePicker()
-//        datePicker.datePickerMode = .date
-//
-//        // Set the inputView of the birthday input field to the date picker
-//        birthdateInput.field.inputView = datePicker
-//
-//        // Handle date picker value changes
-//        datePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
-//    }
-// 
-//    @objc private func datePickerValueChanged(_ sender: UIDatePicker) {
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = "dd/MM/yyyy"
-//        let selectedDate = dateFormatter.string(from: sender.date)
-//        birthdateInput.field.text = selectedDate
-//        viewModel.birthDay = selectedDate
-//    }
-//
-//    @objc private func dismissDatePicker() {
-//        birthdateInput.field.resignFirstResponder()
-//    }
+    private func setupDatePicker() {
+        // Create the date picker
+        let datePicker = UIDatePicker()
+        datePicker.datePickerMode = .date
+
+        // Set the inputView of the birthday input field to the date picker
+        birthdateInput.field.inputView = datePicker
+
+        // Handle date picker value changes
+        datePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
+    }
+ 
+    @objc private func datePickerValueChanged(_ sender: UIDatePicker) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yyyy"
+        let selectedDate = dateFormatter.string(from: sender.date)
+        birthdateInput.field.text = selectedDate
+        viewModel.birthDay = selectedDate
+    }
+
+    @objc private func dismissDatePicker() {
+        birthdateInput.field.resignFirstResponder()
+    }
 
 
   @objc func didReceiveError(_ notification: Notification) {
