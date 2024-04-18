@@ -73,7 +73,7 @@ class ProfileInfoView: UIView {
 
   private lazy var birthdateInput: RoundedTextInput = {
     let input = RoundedTextInput(
-      placeholderText: "DD/MM/YYYY",
+      placeholderText: "",
       borderColor: UIColor(hexString: "#515166"),
       placeholderColor: UIColor(hexString: "#C0C0C0"),
       isPasswordToggleEnabled: false,
@@ -344,7 +344,7 @@ class ProfileInfoView: UIView {
         self.surnameLegend.text = document.surnameTitle!
         self.surnameInput.updatePlaceHolder(text: document.surnameHint!)
         self.birthdateLabel.text = document.birthDateTitle!
-        self.birthdateInput.updatePlaceHolder(text: document.birthDateHint!)
+//        self.birthdateInput.updatePlaceHolder(text: document.birthDateHint!)
     }
   }
   
