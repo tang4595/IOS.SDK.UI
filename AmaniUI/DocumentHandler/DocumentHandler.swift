@@ -5,6 +5,8 @@
 //  Created by Deniz Can on 11.10.2022.
 //
 
+//FIXME: SetVideo ve SetHologram'ın config'ten ayarlanması - parametre setlenmişse setleneni alsın, setlenmediyse config'ten alsın
+
 import AmaniSDK
 import Foundation
 import UIKit
@@ -95,8 +97,12 @@ class DocumentHandlerHelper {
       currentDocumentHandler?.start(docStep: step, version: currentDocumentVersion, workingStepIndex: 0, completion: completion)
     case .none:
       completion(.failure(.configError))
+
       return
     }
+      
+      //Farklı gelen type'lar için direkt co ıb ub gibi document handler'a gitmesi sağlanmalı
+      
   }
 
   func upload(completion: @escaping StepUploadCallback) {
