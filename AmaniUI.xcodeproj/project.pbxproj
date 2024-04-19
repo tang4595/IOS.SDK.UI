@@ -21,6 +21,7 @@
 		185A2C032BBD64AE00855F77 /* DismissButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185A2BF32BBD64AE00855F77 /* DismissButtonStyle.swift */; };
 		185A2C042BBD64AE00855F77 /* NotchAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185A2BF42BBD64AE00855F77 /* NotchAppearance.swift */; };
 		185A2C052BBD64AE00855F77 /* SeperatorAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185A2BF52BBD64AE00855F77 /* SeperatorAppearance.swift */; };
+		18E7B2CB2BD271370073C268 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 18E7B2CA2BD271370073C268 /* PrivacyInfo.xcprivacy */; };
 		48100B972A55658A007DA156 /* AmaniSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4830904228900A3800B75529 /* AmaniSDK.xcframework */; };
 		48100B9A2A55658F007DA156 /* Lottie.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48B4720E27B147870089D42E /* Lottie.xcframework */; };
 		483D72BD296C8D28004AF421 /* tur_pa_0_front.json in Resources */ = {isa = PBXBuildFile; fileRef = C5B07D76290048E300243A5B /* tur_pa_0_front.json */; };
@@ -132,6 +133,7 @@
 		185A2C072BBD9C5B00855F77 /* CountryPickerView */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CountryPickerView; path = Carthage/Checkouts/CountryPickerView; sourceTree = SOURCE_ROOT; };
 		185A2E222BBFD08800855F77 /* CountryPicker.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CountryPicker.xcframework; path = Carthage/Build/CountryPicker.xcframework; sourceTree = SOURCE_ROOT; };
 		185A2E252BBFD4EB00855F77 /* CountryPicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CountryPicker.framework; path = Carthage/Build/iOS/CountryPicker.framework; sourceTree = SOURCE_ROOT; };
+		18E7B2CA2BD271370073C268 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		4830904228900A3800B75529 /* AmaniSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AmaniSDK.xcframework; path = Carthage/Build/AmaniSDK.xcframework; sourceTree = SOURCE_ROOT; };
 		4842810D29D0F7DB00D48925 /* DocumentsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsHandler.swift; sourceTree = "<group>"; };
 		484E26F7295A3DC700839E54 /* AmaniUIDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmaniUIDelegate.swift; sourceTree = "<group>"; };
@@ -431,6 +433,7 @@
 				C544FEE528C2303700C0B406 /* AmaniUI.h */,
 				C544FEF128C24DE500C0B406 /* AmaniUI.swift */,
 				484E26F7295A3DC700839E54 /* AmaniUIDelegate.swift */,
+				18E7B2CA2BD271370073C268 /* PrivacyInfo.xcprivacy */,
 			);
 			path = AmaniUI;
 			sourceTree = "<group>";
@@ -829,6 +832,7 @@
 				483D72BE296C8D28004AF421 /* tur_id_1_back.json in Resources */,
 				C5B07D7C290048E300243A5B /* Assets.xcassets in Resources */,
 				483D72BD296C8D28004AF421 /* tur_pa_0_front.json in Resources */,
+				18E7B2CB2BD271370073C268 /* PrivacyInfo.xcprivacy in Resources */,
 				483D72C0296C8D28004AF421 /* xxx_se_0_front.json in Resources */,
 				C52F145828F9819100D7A5A6 /* NFCViewController.xib in Resources */,
 				483D72C5296C8D28004AF421 /* tur_dl_0_front.json in Resources */,

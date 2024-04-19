@@ -5,8 +5,6 @@
 //  Created by Deniz Can on 11.10.2022.
 //
 
-//FIXME: SetVideo ve SetHologram'ın config'ten ayarlanması - parametre setlenmişse setleneni alsın, setlenmediyse config'ten alsın
-
 import AmaniSDK
 import Foundation
 import UIKit
