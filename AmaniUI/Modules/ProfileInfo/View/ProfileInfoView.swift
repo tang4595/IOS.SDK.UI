@@ -151,25 +151,25 @@ class ProfileInfoView: UIView {
 
   // MARK: UI Setup
 
-  func setupUI() {
-    mainStackView.translatesAutoresizingMaskIntoConstraints = false
-    addSubview(mainStackView)
-    NSLayoutConstraint.activate([
-      mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-      mainStackView.topAnchor.constraint(equalTo: topAnchor),
-      mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-    ])
-      
-            birthdateInput.field.addSubview(datePicker)
-            datePicker.translatesAutoresizingMaskIntoConstraints = false
-            datePicker.contentHorizontalAlignment = .center
-                NSLayoutConstraint.activate([
-                    datePicker.leadingAnchor.constraint(equalTo: birthdateInput.field.leadingAnchor),
-                    datePicker.trailingAnchor.constraint(equalTo: birthdateInput.field.trailingAnchor),
-                    datePicker.topAnchor.constraint(equalTo: birthdateInput.field.topAnchor),
-                ])
-  }
+    func setupUI() {
+        mainStackView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(mainStackView)
+        NSLayoutConstraint.activate([
+            mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            mainStackView.topAnchor.constraint(equalTo: topAnchor),
+            mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+        ])
+        
+        birthdateInput.field.addSubview(datePicker)
+        datePicker.translatesAutoresizingMaskIntoConstraints = false
+        datePicker.contentHorizontalAlignment = .center
+        NSLayoutConstraint.activate([
+            datePicker.leadingAnchor.constraint(equalTo: birthdateInput.field.leadingAnchor),
+            datePicker.trailingAnchor.constraint(equalTo: birthdateInput.field.trailingAnchor),
+            datePicker.topAnchor.constraint(equalTo: birthdateInput.field.topAnchor),
+        ])
+    }
 
   func setupErrorHandling() {
     NotificationCenter.default
@@ -198,7 +198,8 @@ class ProfileInfoView: UIView {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM/yyyy"
         let selectedDate = dateFormatter.string(from: sender.date)
-        birthdateInput.field.text = selectedDate
+//        birthdateInput.field.text = selectedDate
+        
         viewModel.birthDay = selectedDate
     }
 

@@ -33,7 +33,7 @@ class ContainerViewController: BaseViewController {
     private lazy var titleDescription: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16.0, weight: .light)
-        label.text = "Click next to take a photo within the specified area"
+        label.text = "Click continue to take a photo within the specified area"
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         label.textColor = UIColor(hexString: "#20202F")
@@ -141,6 +141,7 @@ class ContainerViewController: BaseViewController {
     lottieAnimationView = .init(name: name,bundle: AmaniUI.sharedInstance.getBundle())
     lottieAnimationView!.frame = animationView.bounds
     lottieAnimationView!.backgroundColor = .clear
+    animationView.contentMode = .scaleAspectFit
     animationView.addSubview(lottieAnimationView!)
     lottieAnimationView?.bringSubviewToFront(view)
       lottieAnimationView!.play {[weak self] (_) in

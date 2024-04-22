@@ -68,7 +68,7 @@ extension KYCStepTblView: UITableViewDelegate, UITableViewDataSource {
       
       let stepViewModel = self.kycSteps[indexPath.row]
       if !stepViewModel.isEnabled() {
-        cell.bind(model: stepViewModel, alpha: 0.5)
+        cell.bind(model: stepViewModel, alpha: 1)
       } else {
         cell.bind(model: stepViewModel)
       }
