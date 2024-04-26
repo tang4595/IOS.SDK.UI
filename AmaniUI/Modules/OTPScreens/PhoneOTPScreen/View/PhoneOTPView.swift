@@ -198,8 +198,8 @@ class PhoneOTPView: UIView {
     
     viewModel.isEmailValidPublisher
       .sink(receiveValue: { [weak self] isValidEmail in
-        if !isValidEmail {
-          self?.phoneInput.showError(message: "This email Address is wrong")
+          if !isValidEmail || self?.phoneInput.field.text == "" {
+          self?.phoneInput.showError(message: "This phone number is wrong")
         } else {
           self?.phoneInput.hideError()
         }

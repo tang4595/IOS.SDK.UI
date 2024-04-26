@@ -96,8 +96,8 @@ class DocConfirmationViewController: BaseViewController {
       )
       
       self.view.bringSubviewToFront(selfieImageView)
-      self.view.addSubview(ovalView)
-      self.view.bringSubviewToFront(ovalView)
+//      self.view.addSubview(ovalView)
+//      self.view.bringSubviewToFront(ovalView)
       self.view.bringSubviewToFront(stackView)
       self.view.bringSubviewToFront(poweredByImg)
       self.view.bringSubviewToFront(lblView)

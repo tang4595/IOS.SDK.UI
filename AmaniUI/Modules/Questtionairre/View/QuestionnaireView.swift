@@ -121,6 +121,10 @@ extension QuestionnaireView: UITableViewDelegate {
     }
     return footerView
   }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 200
+    }
 }
 
 extension QuestionnaireView: QuestionDelegate {

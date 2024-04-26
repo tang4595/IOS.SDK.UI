@@ -48,7 +48,7 @@ class NFCViewController: BaseViewController {
     desc2Label.lineBreakMode = .byWordWrapping
     desc3Label.lineBreakMode = .byWordWrapping
     
-    continueButton.alpha = 0.6
+    continueButton.alpha = 1
     continueButton.isEnabled = true
     continueButton.setTitleColor(UIColor(hexString: generalConfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
     continueButton.backgroundColor = UIColor(hexString: generalConfigs?.primaryButtonBackgroundColor ?? ThemeColor.whiteColor.toHexString())
