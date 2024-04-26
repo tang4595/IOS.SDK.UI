@@ -166,16 +166,16 @@ class ProfileInfoView: UIView {
         datePicker.contentHorizontalAlignment = .center
         NSLayoutConstraint.activate([
             datePicker.leadingAnchor.constraint(equalTo: birthdateInput.field.leadingAnchor),
-            datePicker.trailingAnchor.constraint(equalTo: birthdateInput.field.trailingAnchor),
-            datePicker.topAnchor.constraint(equalTo: birthdateInput.field.topAnchor),
+//            datePicker.trailingAnchor.constraint(equalTo: birthdateInput.field.trailingAnchor),
+            datePicker.centerYAnchor.constraint(equalTo: birthdateInput.field.centerYAnchor),
         ])
         
         // Initially set the input view of the birthdate input field to nil
 //        birthdateInput.field.inputView = nil
 //        self.birthdateInput.field.setInputViewDatePicker(target: self, selector: #selector(doneTapped))
         // Add tap gesture recognizer to the birthdate input field
-//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(birthdateInputTapped))
-//        birthdateInput.field.addGestureRecognizer(tapGesture)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(birthdateInputTapped))
+        birthdateInput.field.addGestureRecognizer(tapGesture)
 //        addSubviews()
     }
     
@@ -191,7 +191,8 @@ class ProfileInfoView: UIView {
 //        self.birthdateInput.field.resignFirstResponder()
 //    }
 
-//    @objc private func birthdateInputTapped() {
+    @objc private func birthdateInputTapped() {
+        datePicker.becomeFirstResponder()
 //        // Set the input view of the birthdate input field to the date picker
 //        birthdateInput.field.inputView = datePicker
 //        
@@ -204,7 +205,7 @@ class ProfileInfoView: UIView {
 //        
 //        // Force the birthdate input field to become first responder to show the date picker
 //        birthdateInput.field.becomeFirstResponder()
-//    }
+    }
 
   func setupErrorHandling() {
     NotificationCenter.default
