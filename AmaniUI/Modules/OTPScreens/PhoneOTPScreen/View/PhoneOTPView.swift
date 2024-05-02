@@ -16,7 +16,8 @@ class PhoneOTPView: UIView {
   private var viewModel: PhoneOTPViewModel!
   private var completion: (() -> Void)? = nil
     var selectCountryButtonAction: (() -> Void)?
-  
+  var dialCodeDecimal = Int()
+    
   private lazy var descriptionText: UILabel = {
     let label = UILabel()
     label.text = "We will send a ‘one time PIN’ to your phone number for verification"
@@ -290,6 +291,24 @@ extension PhoneOTPView: UITextFieldDelegate {
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     viewModel.submitPhoneForOTP()
     phoneInput.field.resignFirstResponder()
-    return true
+      return true
   }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard let currentText = textField.text,
+              let textRange = Range(range, in: currentText) else {
+            return true
+        }
+        
+        let updatedText = currentText.replacingCharacters(in: textRange, with: string)
+        
+        if string.isEmpty && range.location < phoneInput.field.text?.count ?? 0 {
+            // Ensure the dial code and subsequent digit(s) remain intact
+            if let dialCode = phoneInput.field.text?.prefix(dialCodeDecimal + 1), !updatedText.hasPrefix(dialCode) {
+//                textField.text = "\(dialCode)\(updatedText)"
+                return false
+            }
+        }
+        return true
+    }
 }

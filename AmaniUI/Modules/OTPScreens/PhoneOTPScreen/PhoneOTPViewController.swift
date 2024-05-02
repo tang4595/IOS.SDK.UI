@@ -83,6 +83,7 @@ extension PhoneOTPScreenViewController: CountryPickerDelegate {
     func countryPicker(didSelect country: Country) {
         // Update the phone input field with the selected country code
         phoneOTPView.phoneInput.field.text = "\(("+" + country.phoneCode))"
+        phoneOTPView.dialCodeDecimal = country.phoneCode.count
         guard let countryFlagLabel = phoneOTPView.selectCountryView.subviews.compactMap({ $0 as? UILabel }).first else {
                    return
                }

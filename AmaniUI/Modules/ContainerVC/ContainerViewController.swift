@@ -30,10 +30,10 @@ class ContainerViewController: BaseViewController {
     self.docStep = docStep
   }
     
-    private lazy var titleDescription: UILabel = {
+    lazy var titleDescription: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16.0, weight: .light)
         label.text = "Click continue to take a photo within the specified area"
+        label.font = UIFont.systemFont(ofSize: 16.0, weight: .light)
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         label.textColor = UIColor(hexString: "#20202F")
@@ -50,6 +50,8 @@ class ContainerViewController: BaseViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+      showTitleDescriptionIfNeeded()
+      
       isDissapeared = false
 
     if let animationName = animationName {
@@ -97,7 +99,7 @@ class ContainerViewController: BaseViewController {
     
     self.initialSetup()
   }
-  
+    
   override func viewWillDisappear(_ animated: Bool) {
     // remove the sdk view on exiting by calling the callback
     print("Container View disappear")
@@ -136,22 +138,42 @@ class ContainerViewController: BaseViewController {
 //
 //
   }
-
-  private func lottieInit(name:String = "xx_id_0_front", completion:@escaping(_ finishedAnimation:Int)->()) {
-    lottieAnimationView = .init(name: name,bundle: AmaniUI.sharedInstance.getBundle())
-    lottieAnimationView!.frame = animationView.bounds
-    lottieAnimationView!.backgroundColor = .clear
-    animationView.contentMode = .scaleAspectFit
-    animationView.addSubview(lottieAnimationView!)
-    lottieAnimationView?.bringSubviewToFront(view)
-      lottieAnimationView!.play {[weak self] (_) in
-          self?.lottieAnimationView!.removeFromSuperview()
-          if let isdp = self?.isDissapeared, !isdp{
-              completion(steps.front.rawValue)
-          }
-      }
     
-  }
+    func showTitleDescriptionIfNeeded() {
+        if let _ = animationName, let step = docStep {
+            if step.captureTitle == "Take a Selfie" {
+                titleDescription.isHidden = false
+            } else {
+                titleDescription.isHidden = true
+            }
+        } else {
+            titleDescription.isHidden = true
+        }
+    }
+
+    private func lottieInit(name:String = "xx_id_0_front", completion:@escaping(_ finishedAnimation:Int)->()) {
+        lottieAnimationView = .init(name: name,bundle: AmaniUI.sharedInstance.getBundle())
+        //    lottieAnimationView!.frame = animationView.bounds
+        lottieAnimationView!.backgroundColor = .clear
+        lottieAnimationView!.contentMode = .scaleAspectFit
+        lottieAnimationView!.translatesAutoresizingMaskIntoConstraints = false
+        animationView.addSubview(lottieAnimationView!)
+        NSLayoutConstraint.activate([
+            lottieAnimationView!.centerXAnchor.constraint(equalTo: animationView.centerXAnchor),
+            lottieAnimationView!.centerYAnchor.constraint(equalTo: animationView.centerYAnchor),
+            lottieAnimationView!.widthAnchor.constraint(equalTo: animationView.widthAnchor),
+            lottieAnimationView!.heightAnchor.constraint(equalTo: animationView.heightAnchor),
+        ])
+        
+        lottieAnimationView?.bringSubviewToFront(view)
+        lottieAnimationView!.play {[weak self] (_) in
+            self?.lottieAnimationView!.removeFromSuperview()
+            if let isdp = self?.isDissapeared, !isdp{
+                completion(steps.front.rawValue)
+            }
+        }
+        
+    }
   
 }
 
