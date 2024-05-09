@@ -97,7 +97,7 @@ class DocConfirmationViewController: BaseViewController {
         selfieImageView.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
 //                selfieImageView.topAnchor.constraint(equalTo: lblView.bottomAnchor, constant: 20),
-                selfieImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -200)
+                selfieImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -220)
             ])
       
       self.view.bringSubviewToFront(selfieImageView)
@@ -131,9 +131,9 @@ class DocConfirmationViewController: BaseViewController {
         idImgView.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
                 idImgView.topAnchor.constraint(equalTo: view.topAnchor, constant: 80),
-                idImgView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -200),
-                idImgView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-                idImgView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+                idImgView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -240),
+                idImgView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                idImgView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
             ])
     }
     
