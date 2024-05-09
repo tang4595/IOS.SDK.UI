@@ -22,9 +22,9 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bd9-gA-Uzr">
-                    <rect key="frame" x="223" y="728" width="150" height="50"/>
+                    <rect key="frame" x="220" y="728" width="180" height="50"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="150" id="n3q-Lc-Brs"/>
+                        <constraint firstAttribute="width" constant="180" id="n3q-Lc-Brs"/>
                         <constraint firstAttribute="height" constant="50" id="rW2-K1-ciO"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -35,10 +35,10 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gOR-Lo-R4v">
-                    <rect key="frame" x="20" y="728" width="150" height="50"/>
+                    <rect key="frame" x="20" y="728" width="180" height="50"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="juH-BI-dhQ"/>
-                        <constraint firstAttribute="width" constant="150" id="vvb-Lh-OaJ"/>
+                        <constraint firstAttribute="width" constant="180" id="vvb-Lh-OaJ"/>
                     </constraints>
                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                     <state key="normal" title="Clear"/>
@@ -52,9 +52,8 @@
             <constraints>
                 <constraint firstItem="gOR-Lo-R4v" firstAttribute="centerY" secondItem="Bd9-gA-Uzr" secondAttribute="centerY" id="DMd-hZ-hGu"/>
                 <constraint firstItem="1iG-Dl-HwR" firstAttribute="bottom" secondItem="Bd9-gA-Uzr" secondAttribute="bottom" constant="40" id="F9r-If-6fF"/>
-                <constraint firstItem="Bd9-gA-Uzr" firstAttribute="leading" secondItem="gOR-Lo-R4v" secondAttribute="trailing" constant="53" id="JHa-dR-m3t"/>
+                <constraint firstItem="Bd9-gA-Uzr" firstAttribute="leading" secondItem="gOR-Lo-R4v" secondAttribute="trailing" constant="20" id="JHa-dR-m3t"/>
                 <constraint firstItem="gOR-Lo-R4v" firstAttribute="leading" secondItem="1iG-Dl-HwR" secondAttribute="leading" constant="20" id="nfS-7b-EyT"/>
-                <constraint firstItem="1iG-Dl-HwR" firstAttribute="trailing" secondItem="Bd9-gA-Uzr" secondAttribute="trailing" constant="20" id="xNt-aK-znq"/>
             </constraints>
             <point key="canvasLocation" x="133.58778625954199" y="19.718309859154932"/>
         </view>

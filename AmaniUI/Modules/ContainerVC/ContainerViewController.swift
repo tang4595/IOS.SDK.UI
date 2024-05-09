@@ -50,7 +50,6 @@ class ContainerViewController: BaseViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-      showTitleDescriptionIfNeeded()
       
       isDissapeared = false
 
@@ -138,19 +137,6 @@ class ContainerViewController: BaseViewController {
 //
 //
   }
-    
-    func showTitleDescriptionIfNeeded() {
-        if let _ = animationName, let step = docStep {
-            if step.captureTitle == "Take a Selfie" {
-                titleDescription.isHidden = false
-            } else {
-                titleDescription.isHidden = true
-            }
-        } else {
-            titleDescription.isHidden = true
-        }
-    }
-
     private func lottieInit(name:String = "xx_id_0_front", completion:@escaping(_ finishedAnimation:Int)->()) {
         lottieAnimationView = .init(name: name,bundle: AmaniUI.sharedInstance.getBundle())
         //    lottieAnimationView!.frame = animationView.bounds

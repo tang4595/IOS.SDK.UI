@@ -89,7 +89,6 @@ class DocumentHandlerHelper {
     case .CO, .IB, .UB:
       currentDocumentHandler = DocumentsHandler(topVC: topViewController, stepVM: stepViewModel, docID: DocumentID(rawValue: docID)!)
       currentDocumentHandler?.start(docStep: step, version: currentDocumentVersion, workingStepIndex: 1, completion: completion)
-      break
     case .SG:
       currentDocumentHandler = SignatureHandler(topVC: topViewController, stepVM: stepViewModel, docID: DocumentID(rawValue: docID)!)
       currentDocumentHandler?.start(docStep: step, version: currentDocumentVersion, workingStepIndex: 0, completion: completion)
