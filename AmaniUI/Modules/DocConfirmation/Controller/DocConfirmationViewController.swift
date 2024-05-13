@@ -116,6 +116,25 @@ class DocConfirmationViewController: BaseViewController {
       titleLabel.isHidden = true
       selfieImageView.isHidden = true
     }
+      else if documentID == DocumentID.SG{
+          imgOuterView.isHidden = false
+          self.idImgView.image = image
+          self.idImgView.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.appBackground ?? "#263B5B")
+          self.view.layoutIfNeeded()
+          titleLabel.isHidden = true
+          selfieImageView.isHidden = true
+          physicalContractImageView.isHidden = true
+          descriptionLabel.isHidden = true
+          idImgView.translatesAutoresizingMaskIntoConstraints = false
+          idImgView.backgroundColor = .white
+          descriptionLabel.removeFromSuperview()
+          NSLayoutConstraint.activate([
+            idImgView.topAnchor.constraint(equalTo: view.topAnchor, constant: 80),
+            idImgView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -240),
+            idImgView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            idImgView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+          ])
+      }
     // For everything else
     else {
       imgOuterView.isHidden = false
@@ -182,4 +201,16 @@ class DocConfirmationViewController: BaseViewController {
   }
   
   
+}
+extension DocConfirmationViewController: mrzInfoDelegate {
+  
+  public func mrzInfo(_ mrz: MrzModel?) {
+    
+    if let mrz = mrz {
+      let nvi: NviModel = NviModel(mrzModel: mrz)
+      AmaniUI.sharedInstance.nviData = nvi
+    } else {
+      //TODO: Kullanıcıya try again alert box'ı çıkart
+    }
+  }
 }
