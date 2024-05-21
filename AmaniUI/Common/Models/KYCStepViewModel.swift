@@ -37,7 +37,12 @@ class KYCStepViewModel {
   init(from stepConfig: StepConfig, initialRule: KYCRuleModel, topController onVC: UIViewController) {
     self.stepConfig = stepConfig
     id = stepConfig.id!
-    title = stepConfig.documents?.count ?? 0 > 1 ? (stepConfig.buttonText?.notUploaded ?? stepConfig.title! ): stepConfig.title!
+    title = stepConfig.buttonText?.notUploaded ?? stepConfig.title!
+      
+    if stepConfig.documents?.count ?? 0 > 1 {
+          title = stepConfig.documentSelectionTitle ?? "\(stepConfig.buttonText?.notUploaded ?? stepConfig.title!)"
+    }
+      
     mandatoryStepIDs = stepConfig.mandatoryStepIDs ?? []
     isphysicalContractEnabled = stepConfig.phase != nil && stepConfig.phase! as Int == 0 ? true : false
     maxAttempt = stepConfig.maxAttempt ?? 3
