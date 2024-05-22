@@ -21,6 +21,15 @@ class CheckMailView: UIView {
   private var timer: Timer?
 
   private var errorMessage: String!
+    
+    var appConfig: AppConfigModel? {
+          didSet {
+              guard let config = appConfig else { return }
+              setupUI()
+              startRetryTimer()
+              setupErrorHandling()
+          }
+      }
   
   // MARK: Info Section
   private lazy var titleDescription: UILabel = {
@@ -48,7 +57,14 @@ class CheckMailView: UIView {
 
   private lazy var otpLegend: UILabel = {
     let label = UILabel()
-    label.text = "OTP (One Time PIN)"
+      if appConfig?.generalconfigs?.language != "ar" {
+          let captureDescriptionText = appConfig?.stepConfig?[1].documents?[0].versions?[0].steps?[0].captureDescription
+          let otpLangauge = captureDescriptionText?.extractTextWithinSingleQuotes()
+        label.text = "OTP (\(otpLangauge ?? "One time PIN"))"
+      } else {
+          label.text = "OTP (دبوس مرة واحدة)"
+      }
+     
     label.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
     label.textColor = UIColor(hexString: "#20202F")   
     return label
@@ -80,7 +96,7 @@ class CheckMailView: UIView {
 
   private lazy var timerLabel: UILabel = {
     let label = UILabel()
-    label.text = "in 03:00"
+    label.text = "03:00"
     label.font = .systemFont(ofSize: 15.0, weight: .regular)
     return label
   }()
@@ -109,9 +125,11 @@ class CheckMailView: UIView {
 
   // MARK: Form Buttons
 
-  let submitButton: RoundedButton = {
+  private lazy var submitButton: RoundedButton = {
+    
+      
     let button = RoundedButton(
-      withTitle: "Verify Email",
+      withTitle: appConfig?.generalconfigs?.continueText ?? "Contunie",
       withColor: UIColor(hexString: "#EA3365")
     )
     return button
@@ -135,9 +153,8 @@ class CheckMailView: UIView {
   override init(frame: CGRect) {
     retryTime = retrySeconds
     super.init(frame: frame)
-    setupUI()
-    startRetryTimer()
-    setupErrorHandling()
+  
+      
   }
   
   required init?(coder: NSCoder) {
@@ -165,6 +182,8 @@ class CheckMailView: UIView {
       mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
     ])
     setTimerButtonDefaultStylings()
+      
+   
   }
   
   func startRetryTimer() {
@@ -194,7 +213,7 @@ class CheckMailView: UIView {
     let minutes = (retryTime / 60)
     let seconds = (retryTime % 60)
 
-    timerLabel.text = String(format: "in %02d:%02d", minutes, seconds)
+    timerLabel.text = String(format: "%02d:%02d", minutes, seconds)
   }
 
   func bind(withViewModel viewModel: CheckMailViewModel,

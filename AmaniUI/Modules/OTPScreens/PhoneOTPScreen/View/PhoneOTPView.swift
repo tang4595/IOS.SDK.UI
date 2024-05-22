@@ -15,9 +15,17 @@ class PhoneOTPView: UIView {
   private var cancellables = Set<AnyCancellable>()
   private var viewModel: PhoneOTPViewModel!
   private var completion: (() -> Void)? = nil
-    var selectCountryButtonAction: (() -> Void)?
-  var dialCodeDecimal = Int()
     
+  var selectCountryButtonAction: (() -> Void)?
+  var dialCodeDecimal = Int()
+  var appConfig: AppConfigModel? {
+        didSet {
+            guard let config = appConfig else { return }
+            setupUI()
+            setupErrorHandling()
+        }
+    }
+
   private lazy var descriptionText: UILabel = {
     let label = UILabel()
     label.text = "We will send a ‘one time PIN’ to your phone number for verification"
@@ -45,8 +53,14 @@ class PhoneOTPView: UIView {
       placeholderColor: UIColor(hexString: "#C0C0C0"),
       isPasswordToggleEnabled: false,
       keyboardType: .phonePad
+      
     )
+        if appConfig?.generalconfigs?.language == "ar" {
+          input.field.textAlignment = .right
+        }
+        
         input.field.text = "+1"
+        
     return input
   }()
     
@@ -86,7 +100,7 @@ class PhoneOTPView: UIView {
     
   private lazy var submitButton: RoundedButton = {
     let button = RoundedButton(
-      withTitle: "Continue",
+        withTitle: appConfig?.generalconfigs?.continueText ?? "Continue",
       withColor: UIColor(hexString: "#EA3365")
     )
     return button
@@ -158,8 +172,6 @@ class PhoneOTPView: UIView {
   
   override init(frame: CGRect) {
     super.init(frame: frame)
-    setupUI()
-    setupErrorHandling()
   }
   
   required init?(coder: NSCoder) {
@@ -200,7 +212,8 @@ class PhoneOTPView: UIView {
     viewModel.isEmailValidPublisher
       .sink(receiveValue: { [weak self] isValidEmail in
           if !isValidEmail || self?.phoneInput.field.text == "" {
-          self?.phoneInput.showError(message: "This phone number is wrong")
+              let message = self?.appConfig?.stepConfig?[2].documents?[0].versions?[0].invalidPhoneNumberError
+          self?.phoneInput.showError(message: message ?? "This phone number is wrong")
         } else {
           self?.phoneInput.hideError()
         }
@@ -301,6 +314,16 @@ extension PhoneOTPView: UITextFieldDelegate {
         }
         
         let updatedText = currentText.replacingCharacters(in: textRange, with: string)
+        
+        if updatedText.count > 13 {
+            return false
+        }
+        
+        if appConfig?.generalconfigs?.language == "ar" {
+             textField.textAlignment = .right
+         } else {
+             textField.textAlignment = .left
+         }
         
         if string.isEmpty && range.location < phoneInput.field.text?.count ?? 0 {
             // Ensure the dial code and subsequent digit(s) remain intact

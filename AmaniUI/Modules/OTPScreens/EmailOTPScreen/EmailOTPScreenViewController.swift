@@ -15,6 +15,7 @@ class EmailOTPScreenViewController: KeyboardAvoidanceViewController {
   private var handler: (() -> Void)? = nil
   private var docVersion: DocumentVersion?
   private var stepVM: KYCStepViewModel?
+
   
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
@@ -24,8 +25,15 @@ class EmailOTPScreenViewController: KeyboardAvoidanceViewController {
   }
   
   override func viewDidLoad() {
+      guard let appConfig = try? Amani.sharedInstance.appConfig().getApplicationConfig() else {
+          print("AppConfigError")
+          return
+      }
+      
     self.title = docVersion?.steps?.first?.captureTitle ?? "Verify Email Address"
+    emailOTPView.appConfig = appConfig
     emailOTPView.bind(withViewModel: emailOTPViewModel, withDocument: docVersion)
+  
     
     emailOTPView.setCompletion {[weak self] in
       let checkMailViewController = CheckMailViewController()

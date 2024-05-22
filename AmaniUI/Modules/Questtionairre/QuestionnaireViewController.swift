@@ -24,7 +24,13 @@ class QuestionnaireViewController: BaseViewController {
   
   override func viewDidLoad() {
     self.setPopButton()
+      guard let appConfig = try? Amani.sharedInstance.appConfig().getApplicationConfig() else {
+          print("AppConfigError")
+          return
+      }
+    
     questionnaireView = QuestionnaireView()
+    questionnaireView.appConfig = appConfig
     view.addSubview(questionnaireView)
     questionnaireView.translatesAutoresizingMaskIntoConstraints = false
     view.backgroundColor = UIColor(hexString: "#EEF4FA")

@@ -7,13 +7,22 @@
 
 import Foundation
 import UIKit
+import AmaniSDK
 
 class QuestionSubmitButton: UIStackView {
   public var nextCallback: (() -> Void)?
+    
+    var appConfig: AppConfigModel? {
+            didSet {
+                guard let config = appConfig else { return }
+                setupUI()
+            }
+        }
   
   private lazy var submitButton: UIButton = {
     let submit = UIButton()
-    submit.setTitle("NEXT", for: .normal)
+    let nextButtonTitle = appConfig?.generalconfigs?.continueText ?? "Contunie"
+    submit.setTitle(nextButtonTitle, for: .normal)
     submit.setTitleColor(.white, for: .normal)
     submit.backgroundColor = UIColor(hexString: "#EA3365")
     submit.addTarget(self, action: #selector(didTapNext), for: .touchUpInside)
@@ -30,7 +39,7 @@ class QuestionSubmitButton: UIStackView {
   
   override init(frame: CGRect) {
     super.init(frame: frame)
-    setupUI()
+ 
   }
   
   required init(coder: NSCoder) {

@@ -19,7 +19,13 @@ class PhoneOTPScreenViewController: KeyboardAvoidanceViewController {
   
   override init() {
     super.init()
+      guard let appConfig = try? Amani.sharedInstance.appConfig().getApplicationConfig() else {
+          print("AppConfigError")
+          return
+      }
+    
     phoneOTPView = PhoneOTPView()
+    phoneOTPView.appConfig = appConfig
     phoneOTPViewModel = PhoneOTPViewModel()
   }
   

@@ -23,9 +23,15 @@ class ProfileInfoViewController: KeyboardAvoidanceViewController {
   }
   
   override func viewDidLoad() {
-    title = docVersion?.steps?.first?.captureTitle
-    profileInfoView = ProfileInfoView()
-    profileInfoView.bind(withViewModel: profileInfoViewModel, withDocument: docVersion)
+      guard let appConfig = try? Amani.sharedInstance.appConfig().getApplicationConfig() else {
+          print("AppConfigError")
+          return
+      }
+      
+      title = docVersion?.steps?.first?.captureTitle
+      profileInfoView = ProfileInfoView()
+      profileInfoView.appConfig = appConfig
+      profileInfoView.bind(withViewModel: profileInfoViewModel, withDocument: docVersion)
     
     profileInfoView.setCompletion { [weak self] in
       if let handler = self?.handler {

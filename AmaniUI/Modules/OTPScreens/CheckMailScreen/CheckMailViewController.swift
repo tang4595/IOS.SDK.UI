@@ -16,7 +16,14 @@ class CheckMailViewController: KeyboardAvoidanceViewController {
   
   override init() {
     super.init()
+    
+      guard let appConfig = try? Amani.sharedInstance.appConfig().getApplicationConfig() else {
+          print("AppConfigError")
+          return
+      }
+      
     checkMailView = CheckMailView()
+    checkMailView.appConfig = appConfig
     checkMailViewModel = CheckMailViewModel()
   }
   

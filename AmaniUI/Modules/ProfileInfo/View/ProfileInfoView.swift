@@ -16,6 +16,13 @@ class ProfileInfoView: UIView {
   private var completionHandler: (() -> Void)?
   private let nameValidationString: String = "Name should not exceed 64 characters"
   private let surnameValidationString: String = "Surname should not exceed 32 characters"
+  var appConfig: AppConfigModel? {
+        didSet {
+            guard let config = appConfig else { return }
+            setupUI()
+            setupErrorHandling()
+        }
+    }
 
   // MARK: Form Area
 
@@ -90,8 +97,9 @@ class ProfileInfoView: UIView {
     }()
 
   private lazy var submitButton: RoundedButton = {
+
     let button = RoundedButton(
-      withTitle: "Continue",
+     withTitle: appConfig?.generalconfigs?.continueText ?? "Continue",
       withColor: UIColor(hexString: "#EA3365")
     )
     return button
@@ -128,9 +136,9 @@ class ProfileInfoView: UIView {
 
   override init(frame: CGRect) {
     super.init(frame: frame)
-    setupUI()
-    setupErrorHandling()
+ 
 //    setupDatePicker()
+ 
   }
 
   // MARK: Initializers
@@ -257,6 +265,7 @@ class ProfileInfoView: UIView {
   func bind(
     withViewModel viewModel: ProfileInfoViewModel,
     withDocument document: DocumentVersion?
+    
   ) {
     nameInput.setDelegate(delegate: self)
     surnameInput.setDelegate(delegate: self)

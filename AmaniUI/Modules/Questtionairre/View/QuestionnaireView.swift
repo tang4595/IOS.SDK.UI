@@ -15,6 +15,13 @@ class QuestionnaireView: UIView {
   private var step: KYCStepViewModel?
   private var cancellables: Set<AnyCancellable> = []
   private var completionHandler: (() -> Void)?
+
+  var appConfig: AppConfigModel? {
+        didSet {
+            guard let config = appConfig else { return }
+            setupUI()
+        }
+    }
   
   private lazy var tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .grouped)
@@ -26,7 +33,7 @@ class QuestionnaireView: UIView {
 
   override init(frame: CGRect) {
     super.init(frame: frame)
-    setupUI()
+//    setupUI()
   }
 
   required init?(coder: NSCoder) {
@@ -116,6 +123,7 @@ extension QuestionnaireView: UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
     let footerView = QuestionSubmitButton()
+      footerView.appConfig = self.appConfig
     footerView.bind {
       self.viewModel?.submitAnswers()
     }
