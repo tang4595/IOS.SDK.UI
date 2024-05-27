@@ -15,16 +15,42 @@ class NFCViewController: BaseViewController {
   @IBOutlet var desc2Label: UILabel!
   @IBOutlet var desc3Label: UILabel!
   @IBOutlet var amaniLogo: UIImageView!
+    let idCaptureModule =  Amani.sharedInstance.IdCapture()
+    let amani:Amani = Amani.sharedInstance
+    var isDone: Bool = false
+    
+    var nviData:NviModel? {
+      didSet{
+        Task { @MainActor in
+          if let nviData = nviData {
+              IDCapture.sharedInstance.setType(type: DocumentTypes.TurkishIdNew.rawValue)
+//            amani.IdCapture().setType(type: DocumentTypes.TurkishIdNew.rawValue)
+              let scannfc = await idCaptureModule.startNFC(nvi: nviData)
+              if scannfc {
+                  self.uploadNFCResult()
+              }
+          }
+        }
+      }
+    }
+    
+    var mrzDocumentId:String?
+    var mrzInfoDelegate: mrzInfoDelegate?
   
-  override func viewWillAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(true)
-    initialSetup()
+        Task { @MainActor in
+            await initialSetup()
+        }
+       
   }
   
-  func initialSetup() {
+    func initialSetup() async {
     guard let documentVersion = documentVersion else { return }
     
-    let generalConfigs = try? Amani.sharedInstance.appConfig().getApplicationConfig().generalconfigs
+    amani.setMRZDelegate(delegate:self)
+        
+    let generalConfigs = try? amani.appConfig().getApplicationConfig().generalconfigs
     
     let navFontColor = generalConfigs?.topBarFontColor ?? "ffffff"
     let textColor = generalConfigs?.appFontColor ?? "ffffff"
@@ -54,30 +80,51 @@ class NFCViewController: BaseViewController {
     continueButton.backgroundColor = UIColor(hexString: generalConfigs?.primaryButtonBackgroundColor ?? ThemeColor.whiteColor.toHexString())
     continueButton.addCornerRadiousWith(radious: CGFloat(generalConfigs?.buttonRadius ?? 10))
     continueButton.setTitle(generalConfigs?.continueText ?? "Devam", for: .normal)
-    scanNFC()
+        await scanNFC()
   }
-  
+    
   func bind(documentVersion: DocumentVersion, callback: @escaping VoidCallback) {
     self.documentVersion = documentVersion
     self.onFinishCallback = callback
   }
   
-  @IBAction func continueButtonPressed(_ sender: Any) {
-    scanNFC()
-  }
+    @IBAction func continueButtonPressed(_ sender: Any) {
+        Task { @MainActor in
+            await scanNFC()
+        }
+    }
+    
+    func uploadNFCResult() {
+        idCaptureModule.upload(location: nil) { isUploadSuccess in
+            if isUploadSuccess != nil {
+                self.isDone = true
+                self.doNext(done: self.isDone)
+            } else {
+                self.isDone = false
+                self.doNext(done: self.isDone)
+            }
+        }
+       
+    }
  
-  func scanNFC() {
+    func scanNFC() async {
     let tryAgainText = try? Amani.sharedInstance.appConfig().getApplicationConfig().generalconfigs?.tryAgainText
-    let idCaptureModule = Amani.sharedInstance.IdCapture()
+//    let idCaptureModule = Amani.sharedInstance.IdCapture()
+        
+//    guard let nvi = AmaniUI.sharedInstance.nviData else { return }
+//    let isDone = await idCaptureModule.startNFC(nvi: nvi)
+//    self.doNext(done: isDone)
     
     if let nvi:NviModel = AmaniUI.sharedInstance.nviData {
-      idCaptureModule.startNFC(nvi: nvi){[weak self] done in
-        self?.doNext(done: done)
-      }
+      let isDone = await idCaptureModule.startNFC(nvi: nvi)
+        self.doNext(done: isDone)
+      
     } else {
-      idCaptureModule.startNFC() {[weak self]  done in
-        self?.doNext(done: done)
-      }
+        idCaptureModule.setNfcIcons(newReadIcon: "👀",newBlankIcon: "🚀")
+        idCaptureModule.getMrz { mrzDocumentId in
+            self.mrzDocumentId = mrzDocumentId
+        }
+   
     }
     
   }
@@ -99,4 +146,13 @@ class NFCViewController: BaseViewController {
      }
   }
   
+}
+
+extension NFCViewController: mrzInfoDelegate {
+    func mrzInfo(_ mrz: AmaniSDK.MrzModel?, documentId: String?) {
+        guard let mrz = mrz else  {return}
+        let nviData = NviModel(mrzModel: mrz)
+        self.nviData = nviData
+   
+    }
 }

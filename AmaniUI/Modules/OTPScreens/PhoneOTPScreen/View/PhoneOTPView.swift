@@ -315,10 +315,6 @@ extension PhoneOTPView: UITextFieldDelegate {
         
         let updatedText = currentText.replacingCharacters(in: textRange, with: string)
         
-        if updatedText.count > 13 {
-            return false
-        }
-        
         if appConfig?.generalconfigs?.language == "ar" {
              textField.textAlignment = .right
          } else {

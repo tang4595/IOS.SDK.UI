@@ -69,7 +69,8 @@ class CheckSMSView: UIView {
     let stackView = UIStackView(arrangedSubviews: [otpLegend])
     return stackView
   }()
-  
+    
+#warning("burada OTP Code, OTP Code is not valid ve Verify Email&Phone, Next button texts datalarının eklenmesini iste.")
   private lazy var otpInput: RoundedTextInput = {
     let input = RoundedTextInput(
       placeholderText: "OTP Code",

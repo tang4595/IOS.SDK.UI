@@ -39,6 +39,7 @@ class KYCStepTblView: UITableView {
   
   func updateStatus(for step: KYCStepViewModel, status: DocumentStatus) {
     DispatchQueue.main.async {
+    
       step.updateStatus(status: status)
       self.reloadData()
     }
