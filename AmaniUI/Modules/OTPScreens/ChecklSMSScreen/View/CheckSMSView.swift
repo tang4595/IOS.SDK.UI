@@ -124,7 +124,7 @@ class CheckSMSView: UIView {
   private lazy var submitButton: RoundedButton = {
      
     let button = RoundedButton(
-      withTitle: appConfig?.generalconfigs?.continueText ?? "Contunie",
+      withTitle:  appConfig?.stepConfig?[2].documents?[0].versions?[0].steps?[0].captureTitle ?? "Verify Phone",
       withColor: UIColor(hexString: "#EA3365")
     )
     return button

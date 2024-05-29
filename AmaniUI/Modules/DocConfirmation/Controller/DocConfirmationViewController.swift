@@ -26,13 +26,15 @@ class DocConfirmationViewController: BaseViewController {
   
   @IBOutlet weak var idImgView: UIImageView!
   private var ovalView: OvalOverlayView!
-  
+  let child = AnimationView()
   private var image: UIImage?
   private var confirmCallback: ConfirmCallback?
   
   private var documentID: DocumentID?
   private var documentVersion: DocumentVersion?
   private var documentStep: DocumentStepModel?
+    private var nviData: NviModel?
+    private var mrzDocumentId: String?
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -44,11 +46,14 @@ class DocConfirmationViewController: BaseViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(true)
+    checkMRZ()
   }
   
   func initialSetup() {
     let appConfig = try! Amani.sharedInstance.appConfig().getApplicationConfig()
     let buttonRadious = CGFloat(appConfig.generalconfigs?.buttonRadius ?? 10)
+      
+      Amani.sharedInstance.setMRZDelegate(delegate: self)
     // Setting labels
     titleLabel.text = documentStep?.confirmationTitle ?? ""
     descriptionLabel.text = documentStep?.confirmationDescription ?? ""
@@ -136,6 +141,8 @@ class DocConfirmationViewController: BaseViewController {
                 idImgView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
             ])
     }
+      
+   
     
 //    if let errorList = idCaptureResponseModel?.errors{
 //      if !errorList.isEmpty{
@@ -160,6 +167,17 @@ class DocConfirmationViewController: BaseViewController {
 //    }
     
   }
+    
+    func checkMRZ() {
+        if documentVersion?.nfc ?? false && (documentVersion?.type?.contains("ID") ?? false || documentVersion?.type?.contains("PA") ?? false )  {
+  //         #warning("buraya full ekran indicator koyulacak")
+            createAnimationView()
+            Amani.sharedInstance.IdCapture().getMrz { mrzDocumentId in
+                self.mrzDocumentId = mrzDocumentId
+               
+            }
+        }
+    }
   
   func bind(image: UIImage, documentID: DocumentID, docVer: DocumentVersion, docStep: DocumentStepModel, callback: @escaping ConfirmCallback) {
     self.image = image
@@ -181,5 +199,61 @@ class DocConfirmationViewController: BaseViewController {
     }
   }
   
+    func createAnimationView() {
+        
+
+        // add the spinner view controller
+        DispatchQueue.main.async {
+            self.addChild(self.child)
+            self.child.view.frame = self.view.frame
+            self.view.addSubview(self.child.view)
+            self.child.didMove(toParent: self)
+            self.view.bringSubviewToFront(self.child.view)
+        }
+        
+
+        // wait two seconds to simulate some work happening
+    
+    }
+    
+    func dismissAnimationView() {
+        DispatchQueue.main.async {
+            // then remove the spinner view controller
+            self.child.willMove(toParent: nil)
+            self.child.view.removeFromSuperview()
+            self.child.removeFromParent()
+        }
+    }
   
+}
+
+extension DocConfirmationViewController: mrzInfoDelegate {
+    func mrzInfo(_ mrz: AmaniSDK.MrzModel?, documentId: String?) {
+        guard let mrz = mrz else  {return}
+        
+        var isReady: Bool = false
+        switch AmaniUI.sharedInstance.apiVersion {
+        case .v1:
+            isReady = true
+        case .v2:
+            isReady = self.mrzDocumentId == documentId
+        default:
+            break
+        }
+        
+        if isReady {
+            self.nviData = NviModel(mrzModel: mrz)
+            dismissAnimationView()
+        } else {
+            let uiAlertView = AlertDialogueUtility.shared.showMsgAlertWithHandler(controller: self, alertTitle: "Failed", message: "Re-try back Image", successTitle: "OK", failureTitle: "Re try") { _ in
+                self.popViewController()
+            }
+            
+        }
+          
+        
+        
+        
+        
+    }
 }

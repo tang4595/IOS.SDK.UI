@@ -100,6 +100,7 @@ class PhoneOTPView: UIView {
     
   private lazy var submitButton: RoundedButton = {
     let button = RoundedButton(
+//        withTitle: appConfig?.stepConfig?[2].documents?[0].versions?[0].steps?[0].captureTitle ?? "Verify Phone Number",
         withTitle: appConfig?.generalconfigs?.continueText ?? "Continue",
       withColor: UIColor(hexString: "#EA3365")
     )

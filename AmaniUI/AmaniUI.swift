@@ -41,7 +41,7 @@ public class AmaniUI {
   private var sharedSecret: String? = nil
   private var customer: CustomerRequestModel? = nil
   private var language: String = "tr"
-  private var apiVersion: ApiVersions = .v2
+  var apiVersion: ApiVersions = .v2
   private var nonKYCStepManager: NonKYCStepManager? = nil
   public var country: String? = nil
   public var nviData: NviModel? = nil

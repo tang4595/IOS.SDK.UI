@@ -57,7 +57,7 @@ class EmailOTPView: UIView {
   
   private lazy var submitButton: RoundedButton = {
     let button = RoundedButton(
-    withTitle: appConfig?.generalconfigs?.continueText ?? "Contunie",
+    withTitle: appConfig?.generalconfigs?.continueText ?? "Continue",
     withColor: UIColor(hexString: "#EA3365")
     )
     return button

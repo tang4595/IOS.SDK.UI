@@ -35,7 +35,6 @@ class NFCViewController: BaseViewController {
     }
     
     var mrzDocumentId:String?
-    var mrzInfoDelegate: mrzInfoDelegate?
   
     override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(true)
@@ -48,7 +47,7 @@ class NFCViewController: BaseViewController {
     func initialSetup() async {
     guard let documentVersion = documentVersion else { return }
     
-    amani.setMRZDelegate(delegate:self)
+    
         
     let generalConfigs = try? amani.appConfig().getApplicationConfig().generalconfigs
     
@@ -146,13 +145,4 @@ class NFCViewController: BaseViewController {
      }
   }
   
-}
-
-extension NFCViewController: mrzInfoDelegate {
-    func mrzInfo(_ mrz: AmaniSDK.MrzModel?, documentId: String?) {
-        guard let mrz = mrz else  {return}
-        let nviData = NviModel(mrzModel: mrz)
-        self.nviData = nviData
-   
-    }
 }
