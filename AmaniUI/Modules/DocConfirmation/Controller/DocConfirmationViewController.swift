@@ -232,31 +232,36 @@ class DocConfirmationViewController: BaseViewController {
 
 extension DocConfirmationViewController: mrzInfoDelegate {
     func mrzInfo(_ mrz: AmaniSDK.MrzModel?, documentId: String?) {
-        guard let mrz = mrz else  {return}
-        
-        var isReady: Bool = false
-        switch AmaniUI.sharedInstance.apiVersion {
-        case .v1:
-            isReady = true
-        case .v2:
-            isReady = self.mrzDocumentId == documentId
-        default:
-            break
-        }
-        
-        if isReady {
-          AmaniUI.sharedInstance.nviData = NviModel(mrzModel: mrz)
-            dismissAnimationView()
-        } else {
-            let uiAlertView = AlertDialogueUtility.shared.showMsgAlertWithHandler(controller: self, alertTitle: "Failed", message: "Re-try back Image", successTitle: "OK", failureTitle: "Re try") { _ in
-                self.popViewController()
+        if let mrzData = mrz {
+            var isReady: Bool = false
+            switch AmaniUI.sharedInstance.apiVersion {
+            case .v1:
+                isReady = true
+            case .v2:
+                isReady = self.mrzDocumentId == documentId
+            default:
+                break
             }
             
+            if isReady {
+              AmaniUI.sharedInstance.nviData = NviModel(mrzModel: mrzData)
+                dismissAnimationView()
+            }
+        } else {
+            DispatchQueue.main.async {
+                var actions: [(String, UIAlertAction.Style)] = []
+                actions.append(("Re try", UIAlertAction.Style.default))
+                AlertDialogueUtility.shared.showAlertWithActions(vc: self, title: "Failed", message: "Your ID's can't read correctly please re try back image.", actions: actions) { index in
+                    if index == 0 {
+                        self.dismissAnimationView()
+                        self.popViewController()
+                    }
+                }
+            }
+         
+//            let uiAlertView = AlertDialogueUtility.shared.showMsgAlertWithHandler(controller: self, alertTitle: "Failed", message: "Re-try back Image", successTitle: "OK", failureTitle: "Re try") { _ in
+//                
+//            }
         }
-          
-        
-        
-        
-        
     }
 }
