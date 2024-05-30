@@ -41,6 +41,7 @@
 		484E26F8295A3DC700839E54 /* AmaniUIDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484E26F7295A3DC700839E54 /* AmaniUIDelegate.swift */; };
 		4856111E29DC91CE00E70D77 /* DocumentsHandlerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4856111D29DC91CE00E70D77 /* DocumentsHandlerDelegate.swift */; };
 		48B90A0429A278E700508E63 /* SignatureHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B90A0329A278E700508E63 /* SignatureHandler.swift */; };
+		48CD62FC2C076B83002B635D /* AnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CD62FA2C076B83002B635D /* AnimationView.swift */; };
 		48DF760E29699A81000D519A /* ContainerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48DF760D29699A81000D519A /* ContainerViewController.xib */; };
 		48DF761029699A8F000D519A /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DF760F29699A8F000D519A /* ContainerViewController.swift */; };
 		48EAA84D29E37C98001A2A35 /* SignatureViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48B909FF29A264B700508E63 /* SignatureViewController.xib */; };
@@ -142,6 +143,7 @@
 		48B909FF29A264B700508E63 /* SignatureViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SignatureViewController.xib; sourceTree = "<group>"; };
 		48B90A0129A2656100508E63 /* SignatureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureViewController.swift; sourceTree = "<group>"; };
 		48B90A0329A278E700508E63 /* SignatureHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureHandler.swift; sourceTree = "<group>"; };
+		48CD62FA2C076B83002B635D /* AnimationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationView.swift; sourceTree = "<group>"; };
 		48DF760D29699A81000D519A /* ContainerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContainerViewController.xib; sourceTree = "<group>"; };
 		48DF760F29699A8F000D519A /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		C523DEF62B3A740B00F68E32 /* CheckSMSViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckSMSViewController.swift; sourceTree = "<group>"; };
@@ -315,6 +317,14 @@
 			path = SignatureScreen;
 			sourceTree = "<group>";
 		};
+		48CD62FB2C076B83002B635D /* AnimationView */ = {
+			isa = PBXGroup;
+			children = (
+				48CD62FA2C076B83002B635D /* AnimationView.swift */,
+			);
+			path = AnimationView;
+			sourceTree = "<group>";
+		};
 		48DF760C29699A22000D519A /* ContainerVC */ = {
 			isa = PBXGroup;
 			children = (
@@ -389,6 +399,7 @@
 		C538D74E28EC82C50033BB53 /* DocConfirmation */ = {
 			isa = PBXGroup;
 			children = (
+				48CD62FB2C076B83002B635D /* AnimationView */,
 				C538D74F28EC83F80033BB53 /* Controller */,
 			);
 			path = DocConfirmation;
@@ -868,6 +879,7 @@
 				C52F145928F9819100D7A5A6 /* NFCViewController.swift in Sources */,
 				C523DEFD2B3A747100F68E32 /* CheckSMSViewModel.swift in Sources */,
 				C523DEFA2B3A745F00F68E32 /* CheckSMSView.swift in Sources */,
+				48CD62FC2C076B83002B635D /* AnimationView.swift in Sources */,
 				C54B58B428C761BF005DBAA9 /* UIColorExtensions.swift in Sources */,
 				185A2C042BBD64AE00855F77 /* NotchAppearance.swift in Sources */,
 				185A2C002BBD64AE00855F77 /* CountryManager.swift in Sources */,

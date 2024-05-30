@@ -18,24 +18,7 @@ class NFCViewController: BaseViewController {
     let idCaptureModule =  Amani.sharedInstance.IdCapture()
     let amani:Amani = Amani.sharedInstance
     var isDone: Bool = false
-    
-    var nviData:NviModel? {
-      didSet{
-        Task { @MainActor in
-          if let nviData = nviData {
-              IDCapture.sharedInstance.setType(type: DocumentTypes.TurkishIdNew.rawValue)
-//            amani.IdCapture().setType(type: DocumentTypes.TurkishIdNew.rawValue)
-              let scannfc = await idCaptureModule.startNFC(nvi: nviData)
-              if scannfc {
-                  self.uploadNFCResult()
-              }
-          }
-        }
-      }
-    }
-    
-    var mrzDocumentId:String?
-  
+
     override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(true)
         Task { @MainActor in
@@ -118,12 +101,6 @@ class NFCViewController: BaseViewController {
       let isDone = await idCaptureModule.startNFC(nvi: nvi)
         self.doNext(done: isDone)
       
-    } else {
-        idCaptureModule.setNfcIcons(newReadIcon: "👀",newBlankIcon: "🚀")
-        idCaptureModule.getMrz { mrzDocumentId in
-            self.mrzDocumentId = mrzDocumentId
-        }
-   
     }
     
   }
