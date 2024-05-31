@@ -40,7 +40,7 @@ class KYCStepViewModel {
     title = stepConfig.buttonText?.notUploaded ?? stepConfig.title!
       
     if stepConfig.documents?.count ?? 0 > 1 {
-          title = stepConfig.documentSelectionTitle ?? "\(stepConfig.buttonText?.notUploaded ?? stepConfig.title!)"
+          title = stepConfig.buttonText?.notUploaded ?? stepConfig.title!
     }
       
     mandatoryStepIDs = stepConfig.mandatoryStepIDs ?? []

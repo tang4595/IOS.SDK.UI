@@ -154,6 +154,16 @@ class CheckSMSView: UIView {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+    
+    deinit {
+      NotificationCenter.default.removeObserver(
+        self,
+        name: NSNotification.Name(
+          AppConstants.AmaniDelegateNotifications.onError.rawValue
+        ),
+        object: nil
+      )
+    }
   
   func setupUI() {
     addSubview(mainStackView)
@@ -278,7 +288,8 @@ class CheckSMSView: UIView {
   }
   
   func setupErrorHandling() {
-    NotificationCenter.default.addObserver(self, selector: #selector(didReceiveError(_:)), name: Notification.Name("ai.amani.onError"), object: nil)
+//    NotificationCenter.default.addObserver(self, selector: #selector(didReceiveError(_:)), name: Notification.Name("ai.amani.onError"), object: nil)
+      NotificationCenter.default.addObserver(self, selector: #selector(didReceiveError(_:)), name: Notification.Name(AppConstants.AmaniDelegateNotifications.onError.rawValue), object: nil)
   }
   
   @objc func didReceiveError(_ notification: Notification) {

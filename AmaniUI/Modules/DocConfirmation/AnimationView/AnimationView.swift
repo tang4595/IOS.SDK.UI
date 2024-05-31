@@ -6,13 +6,26 @@
 //
 
 import Foundation
+import AmaniSDK
 
 
-class AnimationView: UIViewController {
+class AnimationViewDocConfirmation: UIViewController {
     var spinner = UIActivityIndicatorView(style: .large)
     var infoLabel = UILabel()
-
+    var config: StepConfig? {
+            didSet {
+                guard let config = config else { return }
+                setupUI()
+               
+            }
+        }
+    
     override func loadView() {
+        super.loadView()
+        
+    }
+  
+    private func setupUI() {
         view = UIView()
         view.backgroundColor = UIColor(white: 0, alpha: 0.7)
 

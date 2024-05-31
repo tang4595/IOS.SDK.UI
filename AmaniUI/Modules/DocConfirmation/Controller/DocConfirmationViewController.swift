@@ -26,7 +26,7 @@ class DocConfirmationViewController: BaseViewController {
   
   @IBOutlet weak var idImgView: UIImageView!
   private var ovalView: OvalOverlayView!
-  let child = AnimationView()
+  let child = AnimationViewDocConfirmation()
   var stepid:Int = 0
   private var image: UIImage?
   private var confirmCallback: ConfirmCallback?
@@ -34,11 +34,13 @@ class DocConfirmationViewController: BaseViewController {
   private var documentID: DocumentID?
   private var documentVersion: DocumentVersion?
   private var documentStep: DocumentStepModel?
-    private var mrzDocumentId: String?
+  private var mrzDocumentId: String?
+    
+  let appConfig = try? Amani.sharedInstance.appConfig().getApplicationConfig()
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    let appBackground = try? Amani.sharedInstance.appConfig().getApplicationConfig().generalconfigs?.appBackground
+      let appBackground = appConfig?.generalconfigs?.appBackground
     ovalView = OvalOverlayView(bgColor: UIColor(hexString: appBackground ?? "253C59"), strokeColor: UIColor(hexString: "ffffff engine='xlsxwrite"), screenBounds: UIScreen.main.bounds)
     
     self.initialSetup()
@@ -250,8 +252,14 @@ extension DocConfirmationViewController: mrzInfoDelegate {
         } else {
             DispatchQueue.main.async {
                 var actions: [(String, UIAlertAction.Style)] = []
-                actions.append(("Re try", UIAlertAction.Style.default))
-                AlertDialogueUtility.shared.showAlertWithActions(vc: self, title: "Failed", message: "Your ID's can't read correctly please re try back image.", actions: actions) { index in
+                
+                let title = self.appConfig?.generalconfigs?.tryAgainText
+                let buttonTitle = self.appConfig?.generalconfigs?.okText
+                let message = self.documentVersion?.mrzReadErrorText
+                
+                actions.append(("\(buttonTitle ?? "Re-try")", UIAlertAction.Style.default))
+                
+                AlertDialogueUtility.shared.showAlertWithActions(vc: self, title: title, message: message, actions: actions) { index in
                     if index == 0 {
                         self.dismissAnimationView()
                         self.popViewController()
