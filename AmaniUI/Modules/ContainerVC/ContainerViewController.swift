@@ -17,6 +17,7 @@ class ContainerViewController: BaseViewController {
   private var lottieAnimationView:LottieAnimationView?
   private var step:steps = .front
     private var isDissapeared = false
+    var stepConfig: StepConfig?
 
   @IBOutlet weak var btnContinue: UIButton!
   @IBOutlet weak var animationView: UIView!
@@ -32,7 +33,7 @@ class ContainerViewController: BaseViewController {
     
     lazy var titleDescription: UILabel = {
         let label = UILabel()
-        label.text = "Click continue to take a photo within the specified area"
+        label.text = stepConfig?.documents?[0].versions?[0].informationScreenDesc1 ?? "\(stepConfig?.documents?[0].versions?[0].steps?[0].captureDescription ?? "Click continue to take a photo within the specified area")"
         label.font = UIFont.systemFont(ofSize: 16.0, weight: .light)
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping

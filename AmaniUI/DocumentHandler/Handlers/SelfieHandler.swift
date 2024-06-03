@@ -32,6 +32,7 @@ class SelfieHandler: DocumentHandler {
       nibName: String(describing: ContainerViewController.self),
       bundle: Bundle(for: ContainerViewController.self)
     )
+    animationVC.stepConfig = stepViewModel.stepConfig
     self.topVC.navigationController?.pushViewController(animationVC, animated: true)
     
     animationVC.setDisappearCallback {

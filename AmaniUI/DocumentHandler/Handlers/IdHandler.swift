@@ -42,6 +42,7 @@ class IdHandler: DocumentHandler {
             nibName: String(describing: ContainerViewController.self),
             bundle: Bundle(for: ContainerViewController.self)
         )
+        containerVC.stepConfig = stepViewModel.stepConfig
         // NOTE(ddnzcn): For future refactor consider removing this logic as this
         // leads to repetition
         containerVC.setDisappearCallback {
