@@ -123,6 +123,25 @@ class DocConfirmationViewController: BaseViewController {
       titleLabel.isHidden = true
       selfieImageView.isHidden = true
     }
+      else if documentID == DocumentID.SG{
+          imgOuterView.isHidden = false
+          self.idImgView.image = image
+          self.idImgView.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.appBackground ?? "#263B5B")
+          self.view.layoutIfNeeded()
+          titleLabel.isHidden = true
+          selfieImageView.isHidden = true
+          physicalContractImageView.isHidden = true
+          descriptionLabel.isHidden = true
+          idImgView.translatesAutoresizingMaskIntoConstraints = false
+          idImgView.backgroundColor = .white
+          descriptionLabel.removeFromSuperview()
+          NSLayoutConstraint.activate([
+            idImgView.topAnchor.constraint(equalTo: view.topAnchor, constant: 80),
+            idImgView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -240),
+            idImgView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            idImgView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+          ])
+      }
     // For everything else
     else {
       imgOuterView.isHidden = false
@@ -246,7 +265,7 @@ extension DocConfirmationViewController: mrzInfoDelegate {
             }
             
             if isReady {
-              AmaniUI.sharedInstance.nviData = NviModel(mrzModel: mrzData)
+                AmaniUI.sharedInstance.nviData = NviModel(mrzModel: mrzData)
                 dismissAnimationView()
             }
         } else {
@@ -266,10 +285,10 @@ extension DocConfirmationViewController: mrzInfoDelegate {
                     }
                 }
             }
-         
-//            let uiAlertView = AlertDialogueUtility.shared.showMsgAlertWithHandler(controller: self, alertTitle: "Failed", message: "Re-try back Image", successTitle: "OK", failureTitle: "Re try") { _ in
-//                
-//            }
+            
+            //            let uiAlertView = AlertDialogueUtility.shared.showMsgAlertWithHandler(controller: self, alertTitle: "Failed", message: "Re-try back Image", successTitle: "OK", failureTitle: "Re try") { _ in
+            //
+            //            }
         }
     }
 }

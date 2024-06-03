@@ -34,7 +34,7 @@ class KYCStepTableViewCell: UITableViewCell {
                 } else {
                   if ((model.getRuleModel().errors?.count ?? 0) > 0){
                     // TODO: Get the error name from the DocumentStepModel.
-                      labelTest += "\n\(model.getRuleModel().errors?[0].error_message ?? "")"
+                      labelTest += ""
                     loaderView.stopAnimating()
                   }
                   

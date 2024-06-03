@@ -29,7 +29,7 @@ class NFHandler: DocumentHandler {
     func start(docStep: AmaniSDK.DocumentStepModel, version: AmaniSDK.DocumentVersion, workingStepIndex: Int = 0,completion: @escaping StepCompletionCallback) async {
     // FIXME: Add correct id type to nf document on configuration
     nfcCaptureModule.setType(type: DocumentTypes.TurkishIdNew.rawValue)
-        
+
       guard let nviData = AmaniUI.sharedInstance.getNvi() else { return }
         
         
