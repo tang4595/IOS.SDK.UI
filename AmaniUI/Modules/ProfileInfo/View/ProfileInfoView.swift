@@ -230,7 +230,7 @@ class ProfileInfoView: UIView {
         // Create the date picker
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
-
+        datePicker.locale = .current
         // Set the inputView of the birthday input field to the date picker
         birthdateInput.field.inputView = datePicker
 
@@ -240,8 +240,6 @@ class ProfileInfoView: UIView {
  
     @objc private func datePickerValueChanged(_ sender: UIDatePicker) {
         let dateFormatter = DateFormatter()
-        #warning("burada generalconfigten gelen language datası ile constant bir language code dict oluşturup orada check edip ona göre locale format oluşturup dateFormatter'a set edebilirim.")
-//        dateFormatter.locale = Locale(identifier: "\(appConfig?.generalconfigs.)_TR")
         dateFormatter.dateFormat = "dd/MM/yyyy"
         let selectedDate = dateFormatter.string(from: sender.date)
 //        birthdateInput.field.text = selectedDate
