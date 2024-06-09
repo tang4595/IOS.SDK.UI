@@ -29,17 +29,24 @@ class KYCStepTableViewCell: UITableViewCell {
         var labelTest: String = model.title
             if let loaderView = self?.loaderView {
                 if model.status == DocumentStatus.PROCESSING {
-                  labelTest = model.title
+                    labelTest = model.stepConfig.buttonText?.processing ?? model.title
                   loaderView.startAnimating()
-                } else {
-                  if ((model.getRuleModel().errors?.count ?? 0) > 0){
-                    // TODO: Get the error name from the DocumentStepModel.
-                      labelTest += ""
+                } else if model.status == DocumentStatus.APPROVED {
+                    labelTest = model.stepConfig.buttonText?.approved ?? model.title
                     loaderView.stopAnimating()
-                  }
-                  
-                  loaderView.stopAnimating()
+                } else if model.status == DocumentStatus.REJECTED {
+                    labelTest = model.stepConfig.buttonText?.rejected ?? "\(labelTest += "")"
+                    loaderView.stopAnimating()
+                } else {
+                    if ((model.getRuleModel().errors?.count ?? 0) > 0){
+                      // TODO: Get the error name from the DocumentStepModel.
+                        labelTest += ""
+                      loaderView.stopAnimating()
+                    }
+                    
+                    loaderView.stopAnimating()
                 }
+              
           }
         
           self?.titleLabel.text = labelTest
