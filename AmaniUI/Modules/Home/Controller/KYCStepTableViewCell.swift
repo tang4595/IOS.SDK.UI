@@ -23,37 +23,51 @@ class KYCStepTableViewCell: UITableViewCell {
      This method bind the data with view
      - parameter model: KYCRuleModel
      */
-    func bind(model: KYCStepViewModel, alpha: CGFloat = 1) {
-      DispatchQueue.main.async { [weak self] in
+  func bind(model: KYCStepViewModel, alpha: CGFloat = 1) {
+    DispatchQueue.main.async { [weak self] in
+      
+      var labelTest: String = model.title
+      if let loaderView = self?.loaderView {
+        if model.status == DocumentStatus.PROCESSING {
+          labelTest = model.stepConfig.buttonText?.processing ?? model.title
+          loaderView.startAnimating()
           
-        var labelTest: String = model.title
-            if let loaderView = self?.loaderView {
-                if model.status == DocumentStatus.PROCESSING {
-                    labelTest = model.stepConfig.buttonText?.processing ?? model.title
-                  loaderView.startAnimating()
-                } else if model.status == DocumentStatus.APPROVED {
-                    labelTest = model.stepConfig.buttonText?.approved ?? model.title
-                    loaderView.stopAnimating()
-                } else if model.status == DocumentStatus.REJECTED {
-                    labelTest = model.stepConfig.buttonText?.rejected ?? "\(labelTest += "")"
-                    loaderView.stopAnimating()
-                } else {
-                    if ((model.getRuleModel().errors?.count ?? 0) > 0){
-                      // TODO: Get the error name from the DocumentStepModel.
-                        labelTest += ""
-                      loaderView.stopAnimating()
-                    }
-                    
-                    loaderView.stopAnimating()
-                }
-              
+        }else if model.status == DocumentStatus.APPROVED{
+          labelTest = model.stepConfig.buttonText?.approved ?? model.title
+          loaderView.stopAnimating()
+          
+        }else if model.status == DocumentStatus.REJECTED{
+          labelTest = model.stepConfig.buttonText?.rejected ?? model.title
+          loaderView.stopAnimating()
+          
+        }else if model.status == DocumentStatus.AUTOMATICALLY_REJECTED{
+          labelTest = model.stepConfig.buttonText?.autoRejected ?? model.title
+          loaderView.stopAnimating()
+          
+        }else if model.status == DocumentStatus.NOT_UPLOADED{
+          labelTest = model.stepConfig.buttonText?.notUploaded ?? model.title
+          loaderView.stopAnimating()
+          
+        }else if model.status == DocumentStatus.PENDING_REVIEW{
+          labelTest = model.stepConfig.buttonText?.pendingReview ?? model.title
+          loaderView.stopAnimating()
+          
+        } else {
+          if ((model.getRuleModel().errors?.count ?? 0) > 0){
+              // TODO: Get the error name from the DocumentStepModel.
+            labelTest += "xxxxxx"
+            loaderView.stopAnimating()
           }
-        
-          self?.titleLabel.text = labelTest
-          self?.titleLabel.textColor = model.textColor
-          self?.outerView.backgroundColor = model.buttonColor
-          self?.outerView.alpha = alpha
+          
+          loaderView.stopAnimating()
         }
+      }
+      
+      self?.titleLabel.text = labelTest
+      self?.titleLabel.textColor = model.textColor
+      self?.outerView.backgroundColor = model.buttonColor
+      self?.outerView.alpha = alpha
     }
+  }
 
 }
