@@ -69,8 +69,7 @@ class CheckSMSView: UIView {
     let stackView = UIStackView(arrangedSubviews: [otpLegend])
     return stackView
   }()
-    
-#warning("burada OTP Code, OTP Code is not valid ve Verify Email&Phone, Next button texts datalarının eklenmesini iste.")
+
   private lazy var otpInput: RoundedTextInput = {
     let input = RoundedTextInput(
       placeholderText: "OTP Code",
@@ -101,7 +100,7 @@ class CheckSMSView: UIView {
     let stackView = UIStackView(arrangedSubviews: [timerButton, timerLabel])
     stackView.axis = .horizontal
     stackView.alignment = .center
-    stackView.distribution = .fillEqually
+    stackView.distribution = .fillProportionally
     stackView.spacing = 6.0
     return stackView
   }()
@@ -115,6 +114,7 @@ class CheckSMSView: UIView {
     
     stackView.axis = .vertical
     stackView.spacing = 6.0
+    stackView.alignment = .center
     stackView.setCustomSpacing(32.0, after: otpInput)
     return stackView
   }()
@@ -169,6 +169,10 @@ class CheckSMSView: UIView {
     addSubview(mainStackView)
     mainStackView.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
+    otpLegend.leadingAnchor.constraint(equalTo: otpInput.leadingAnchor),
+    otpInput.leadingAnchor.constraint(equalTo: formStackView.leadingAnchor, constant: 4),
+    otpInput.trailingAnchor.constraint(equalTo: formStackView.trailingAnchor, constant: -4),
+        
       mainStackView.topAnchor.constraint(equalTo: topAnchor),
       mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
       mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -337,4 +341,10 @@ extension CheckSMSView: UITextFieldDelegate {
     viewModel.submitOTP()
     return true
   }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard let currentText = textField.text else { return true }
+        let newLength = currentText.count + string.count - range.length
+        return newLength <= 4
+    }
 }
