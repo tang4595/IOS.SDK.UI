@@ -341,10 +341,5 @@ extension CheckSMSView: UITextFieldDelegate {
     viewModel.submitOTP()
     return true
   }
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        guard let currentText = textField.text else { return true }
-        let newLength = currentText.count + string.count - range.length
-        return newLength <= 4
-    }
+
 }
