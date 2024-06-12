@@ -131,7 +131,7 @@ class CheckMailView: UIView {
       
     let button = RoundedButton(
       withTitle: appConfig?.stepConfig?[1].documents?[0].versions?[0].steps?[0].captureTitle ?? "Verify E-mail",
-      withColor: UIColor(hexString: "#EA3365")
+      withColor: UIColor(hexString: appConfig?.generalconfigs?.primaryButtonBackgroundColor ?? "#EA3365")
     )
     return button
   }()

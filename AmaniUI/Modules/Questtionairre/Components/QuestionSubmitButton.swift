@@ -24,7 +24,7 @@ class QuestionSubmitButton: UIStackView {
     let nextButtonTitle = appConfig?.generalconfigs?.continueText ?? "Contunie"
     submit.setTitle(nextButtonTitle, for: .normal)
     submit.setTitleColor(.white, for: .normal)
-    submit.backgroundColor = UIColor(hexString: "#EA3365")
+    submit.backgroundColor = UIColor(hexString: appConfig?.generalconfigs?.primaryButtonBackgroundColor ?? "#EA3365")
     submit.addTarget(self, action: #selector(didTapNext), for: .touchUpInside)
       submit.addCornerRadiousWith(radious: 25.0)
     return submit

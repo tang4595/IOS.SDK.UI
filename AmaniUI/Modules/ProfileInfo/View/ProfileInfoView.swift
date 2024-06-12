@@ -100,7 +100,7 @@ class ProfileInfoView: UIView {
 
     let button = RoundedButton(
      withTitle: appConfig?.generalconfigs?.continueText ?? "Continue",
-      withColor: UIColor(hexString: "#EA3365")
+     withColor: UIColor(hexString: appConfig?.generalconfigs?.primaryButtonBackgroundColor ?? "#EA3365")
     )
     return button
   }()
