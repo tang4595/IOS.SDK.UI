@@ -12,19 +12,19 @@ import AmaniSDK
 class QuestionSubmitButton: UIStackView {
   public var nextCallback: (() -> Void)?
     
-    var appConfig: AppConfigModel? {
-            didSet {
-                guard let config = appConfig else { return }
-                setupUI()
-            }
+    var genConfig: GeneralConfig? {
+        didSet {
+            guard let config = genConfig else { return }
+            setupUI()
         }
-  
+    }
+    
   private lazy var submitButton: UIButton = {
     let submit = UIButton()
-    let nextButtonTitle = appConfig?.generalconfigs?.continueText ?? "Contunie"
+    let nextButtonTitle = genConfig?.continueText ?? "Contunie"
     submit.setTitle(nextButtonTitle, for: .normal)
     submit.setTitleColor(.white, for: .normal)
-    submit.backgroundColor = UIColor(hexString: appConfig?.generalconfigs?.primaryButtonBackgroundColor ?? "#EA3365")
+    submit.backgroundColor = UIColor(hexString: genConfig?.primaryButtonBackgroundColor ?? "#EA3365")
     submit.addTarget(self, action: #selector(didTapNext), for: .touchUpInside)
       submit.addCornerRadiousWith(radious: 25.0)
     return submit
@@ -51,7 +51,7 @@ class QuestionSubmitButton: UIStackView {
   }
   
     func setupUI() {
-        self.backgroundColor = UIColor(hexString: "#EEF4FA")
+        self.backgroundColor = UIColor(hexString: genConfig?.appBackground ?? "#EEF4FA")
         self.addArrangedSubview(submitButton)
         self.axis = .vertical
         self.layoutMargins = UIEdgeInsets(top: 10, left: 20, bottom: -10, right: 20)

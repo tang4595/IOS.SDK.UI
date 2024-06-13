@@ -10,6 +10,8 @@ import AmaniSDK
 
 typealias ConfirmCallback = () -> Void
 
+
+
 class DocConfirmationViewController: BaseViewController {
   
   @IBOutlet weak var lblView: UIView!
@@ -235,9 +237,6 @@ class DocConfirmationViewController: BaseViewController {
             self.child.didMove(toParent: self)
             self.view.bringSubviewToFront(self.child.view)
         }
-        
-
-        // wait two seconds to simulate some work happening
     
     }
     

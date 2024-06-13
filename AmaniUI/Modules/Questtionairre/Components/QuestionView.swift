@@ -20,6 +20,12 @@ class QuestionViewCell: UITableViewCell {
   
   private var dropdownView: QuestionDropdownView?
   private var singleOption: SingleAnswerButton?
+    
+    var genConfig: GeneralConfig? {
+        didSet {
+            setupUI()
+        }
+    }
   
   private lazy var questionTitle: UILabel = {
     let label = UILabel()
@@ -122,7 +128,7 @@ class QuestionViewCell: UITableViewCell {
   
   func setupUI() {
     // pin.
-    self.backgroundColor = UIColor(hexString: "#EEF4FA")
+    self.backgroundColor = UIColor(hexString: genConfig?.appBackground ?? "#EEF4FA")
     contentView.addSubview(stackView)
     stackView.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([

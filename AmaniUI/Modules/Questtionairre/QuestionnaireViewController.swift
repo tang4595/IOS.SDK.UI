@@ -33,7 +33,7 @@ class QuestionnaireViewController: BaseViewController {
     questionnaireView.appConfig = appConfig
     view.addSubview(questionnaireView)
     questionnaireView.translatesAutoresizingMaskIntoConstraints = false
-    view.backgroundColor = UIColor(hexString: "#EEF4FA")
+      view.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.appBackground ?? "#EEF4FA")
     questionnaireView.bind(with: questionnaireViewModel, completionHandler: handler!)
     NSLayoutConstraint.activate([
       questionnaireView.topAnchor.constraint(equalTo: view.topAnchor),
