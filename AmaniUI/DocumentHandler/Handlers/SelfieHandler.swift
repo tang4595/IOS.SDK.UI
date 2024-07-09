@@ -159,7 +159,7 @@ class SelfieHandler: DocumentHandler {
   }
   
   private func runPoseEstimation(step: DocumentStepModel, version: DocumentVersion, completion: @escaping StepCompletionCallback)->UIView? {
-    let poseCount = version.selfieType! + 1
+    let poseCount = version.selfieType!
     
     selfieModule = Amani.sharedInstance.poseEstimation()
     guard let currentSelfieModule = selfieModule as? PoseEstimation else {
