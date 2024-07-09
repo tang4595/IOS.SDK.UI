@@ -9,45 +9,51 @@ import Foundation
 import AmaniSDK
 
 
-class AnimationViewDocConfirmation: UIViewController {
-    var spinner = UIActivityIndicatorView(style: .large)
-    var infoLabel = UILabel()
-    var config: StepConfig? {
-            didSet {
-                guard let config = config else { return }
-                setupUI()
-               
-            }
-        }
-    
-    override func loadView() {
-        super.loadView()
-        
-    }
+class AnimationViewDocConfirmation: UIVisualEffectView {
+  var spinner = UIActivityIndicatorView(style: .large)
+
+//    var infoLabel = UILabel()
+//    var config: DocumentVersion?
+  
+  func bind(config:DocumentVersion){
+//    self.config = config
+    self.setupUI()
+
+  }
+
+  deinit {
+    self.spinner.stopAnimating()
+  }
   
     private func setupUI() {
-        view = UIView()
-        view.backgroundColor = UIColor(white: 0, alpha: 0.7)
+      DispatchQueue.main.async {
+        self.backgroundColor = UIColor(white: 0, alpha: 0.7)
+        
+        self.contentView.addSubview(self.spinner)
 
+        self.spinner.center = self.center
+        self.spinner.backgroundColor = UIColor.black.withAlphaComponent(0.2)
+        self.spinner.color = .white
+        self.spinner.hidesWhenStopped = true
+//        self.spinner.translatesAutoresizingMaskIntoConstraints = false
+//        
+////        self.infoLabel.text = "Your ID's informations are checking. Please wait..."
+////        self.infoLabel.textColor = .white
+////        self.infoLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 14)
+////        self.addSubview(self.infoLabel)
+////        self.infoLabel.translatesAutoresizingMaskIntoConstraints = false
+//        NSLayoutConstraint.activate([
+//          self.spinner.heightAnchor.constraint(equalToConstant: 80),
+//          self.spinner.widthAnchor.constraint(equalToConstant: 80),
+//          self.spinner.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+//          self.spinner.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+////          self.infoLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+////          self.infoLabel.topAnchor.constraint(equalTo: self.spinner.bottomAnchor, constant: 24)
+//        ])
+        self.contentView.bringSubviewToFront(self.spinner)
+        self.spinner.startAnimating()
 
-        spinner.translatesAutoresizingMaskIntoConstraints = false
-        spinner.startAnimating()
-        view.addSubview(spinner)
-
-       
-        infoLabel.translatesAutoresizingMaskIntoConstraints = false
-        infoLabel.text = "Your ID's informations are checking. Please wait..."
-        infoLabel.textColor = .white
-        infoLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 14)
-        view.addSubview(infoLabel)
-
- 
-        spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-
-       
-        infoLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        infoLabel.topAnchor.constraint(equalTo: spinner.bottomAnchor, constant: 24).isActive = true
+      }
     }
 }
 

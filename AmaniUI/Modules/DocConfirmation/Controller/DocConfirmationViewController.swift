@@ -37,6 +37,7 @@ class DocConfirmationViewController: BaseViewController {
   private var documentVersion: DocumentVersion?
   private var documentStep: DocumentStepModel?
   private var mrzDocumentId: String?
+  private var confimClicked:Bool = false
     
   let appConfig = try? Amani.sharedInstance.appConfig().getApplicationConfig()
   
@@ -212,6 +213,7 @@ class DocConfirmationViewController: BaseViewController {
     self.documentStep = docStep
     self.stepid = stepid
     self.confirmCallback = callback
+    self.confimClicked = false
   }
   
   
@@ -221,30 +223,30 @@ class DocConfirmationViewController: BaseViewController {
   
   
   @IBAction func confirmAction(_ sender: Any) {
-    if let confirmCallback = confirmCallback {
-      confirmCallback()
+    if (!confimClicked){
+      confimClicked = true
+      if let confirmCallback = confirmCallback {
+        confirmCallback()
+      }
     }
   }
   
     func createAnimationView() {
-        
-
         // add the spinner view controller
         DispatchQueue.main.async {
-            self.addChild(self.child)
-            self.child.view.frame = self.view.frame
-            self.view.addSubview(self.child.view)
-            self.child.didMove(toParent: self)
-            self.view.bringSubviewToFront(self.child.view)
+          self.view.addSubview(self.child)
+            self.child.frame = self.view.frame
+            self.view.addSubview(self.child)
+            self.view.bringSubviewToFront(self.child)
+            self.child.bind(config: self.documentVersion!)
+
         }
-    
     }
     
     func dismissAnimationView() {
         DispatchQueue.main.async {
             // then remove the spinner view controller
-            self.child.view.removeFromSuperview()
-            self.child.removeFromParent()
+            self.child.removeFromSuperview()
         }
     }
   

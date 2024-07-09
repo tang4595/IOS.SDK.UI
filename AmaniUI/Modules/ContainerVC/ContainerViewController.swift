@@ -46,7 +46,7 @@ class ContainerViewController: BaseViewController {
   }
   
   @IBAction func ActBtnContinue(_ sender: Any) {
-    lottieAnimationView?.stop()
+      self.lottieAnimationView?.stop()
   }
   
   override func viewWillAppear(_ animated: Bool) {
