@@ -27,35 +27,37 @@ class PhoneOTPViewModel {
       .eraseToAnyPublisher()
   }
   
-  func submitPhoneForOTP() {
-    state = .loading
-    customerInfo.setPhone(phone: phone)
-    customerInfo.upload(location: AmaniUI.sharedInstance.location) {[weak self] phoneChanged in
-        
-        if (phoneChanged == false) {
-          self?.state = .failed
+    func submitPhoneForOTP() {
+        if self.phone == ""{
+            state = .none
+        }else{
+            state = .loading
+            customerInfo.setPhone(phone: phone)
+            customerInfo.upload(location: AmaniUI.sharedInstance.location) {[weak self] phoneChanged in
+                
+                if (phoneChanged == false) {
+                    self?.state = .failed
+                }
+                
+                self?.customerInfo.requestPhoneOTPCode { success in
+                    if let success = success {
+                        self?.state = .success
+                    } else {
+                        self?.state = .failed
+                    }
+                }
+            }
         }
-        
-        self?.customerInfo.requestPhoneOTPCode { success in
-          if let success = success {
-            self?.state = .success
-          } else {
-            self?.state = .failed
-          }
-        }
-      }
-  }
+    }
   
-  private func isValidPhone() -> Bool {
-//    if self.email == "" { return true }
-//    
-//    let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
-//    let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
-//    
-//    return emailPredicate.evaluate(with: self.email)
-    // TODO: Phone Validations for multiple countries?
-    return true
-  }
+    private func isValidPhone() -> Bool {
+//        let phoneRegex = "^\\+(?:[0-9] ?){6,14}[0-9]$"
+//        let phonePredicate = NSPredicate(format: "SELF MATCHES %@", phoneRegex)
+//
+//        return phonePredicate.evaluate(with: self.phone)
+        
+        return true
+    }
   
   
 }

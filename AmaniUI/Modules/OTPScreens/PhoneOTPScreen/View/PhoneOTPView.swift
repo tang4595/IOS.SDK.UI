@@ -15,7 +15,17 @@ class PhoneOTPView: UIView {
   private var cancellables = Set<AnyCancellable>()
   private var viewModel: PhoneOTPViewModel!
   private var completion: (() -> Void)? = nil
-  
+    
+  var selectCountryButtonAction: (() -> Void)?
+  var dialCodeDecimal = Int()
+  var appConfig: AppConfigModel? {
+        didSet {
+            guard let config = appConfig else { return }
+            setupUI()
+            setupErrorHandling()
+        }
+    }
+
   private lazy var descriptionText: UILabel = {
     let label = UILabel()
     label.text = "We will send a ‘one time PIN’ to your phone number for verification"
@@ -36,28 +46,105 @@ class PhoneOTPView: UIView {
     return label
   }()
   
-  private lazy var phoneInput: RoundedTextInput = {
+    lazy var phoneInput: RoundedTextInput = {
     let input = RoundedTextInput(
       placeholderText: "Enter your phone here",
       borderColor: UIColor(hexString: "#515166"),
       placeholderColor: UIColor(hexString: "#C0C0C0"),
       isPasswordToggleEnabled: false,
-      keyboardType: .emailAddress
+      keyboardType: .phonePad
+      
     )
+        if appConfig?.generalconfigs?.language == "ar" {
+          input.field.textAlignment = .right
+        }
+        
+        input.field.text = "+1"
+        
     return input
   }()
-  
+    
+    lazy var selectCountryView: UIView = {
+        let countryView = UIView()
+        countryView.backgroundColor = UIColor(hexString: "#D9D9D9")
+        countryView.layer.cornerRadius = 25
+        countryView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
+
+        let countryFlag = UILabel()
+        countryFlag.text = "🇺🇸"
+        countryFlag.translatesAutoresizingMaskIntoConstraints = false
+
+        let arrowImage = UIImageView()
+        arrowImage.image = UIImage(named: "Polygon")
+        arrowImage.translatesAutoresizingMaskIntoConstraints = false
+        
+        countryView.addSubview(arrowImage)
+        countryView.addSubview(countryFlag)
+        NSLayoutConstraint.activate([
+            countryFlag.leadingAnchor.constraint(equalTo: countryView.leadingAnchor, constant: 8),
+            countryFlag.centerYAnchor.constraint(equalTo: countryView.centerYAnchor),
+
+            arrowImage.leadingAnchor.constraint(equalTo: countryFlag.trailingAnchor, constant: 8),
+            arrowImage.trailingAnchor.constraint(equalTo: countryView.trailingAnchor, constant: -8),
+            arrowImage.centerYAnchor.constraint(equalTo: countryView.centerYAnchor),
+            arrowImage.heightAnchor.constraint(equalToConstant: 24),
+        ])
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(selectCountryButtonTapped))
+        countryView.addGestureRecognizer(tapGesture)
+        return countryView
+    }()
+
+
+
+    
   private lazy var submitButton: RoundedButton = {
     let button = RoundedButton(
-      withTitle: "Continue",
-      withColor: UIColor(hexString: "#EA3365")
+//        withTitle: appConfig?.stepConfig?[2].documents?[0].versions?[0].steps?[0].captureTitle ?? "Verify Phone Number",
+        withTitle: appConfig?.generalconfigs?.continueText ?? "Continue",
+      withColor: UIColor(hexString: appConfig?.generalconfigs?.primaryButtonBackgroundColor ?? "#EA3365")
     )
     return button
   }()
+    
+    private lazy var phoneInputView: UIStackView = {
+        let inputView = UIView()
+        phoneInput.addSubview(selectCountryView)
+        inputView.addSubview(phoneInput)
+        
+        selectCountryView.translatesAutoresizingMaskIntoConstraints = false
+        phoneInput.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            selectCountryView.leadingAnchor.constraint(equalTo: phoneInput.leadingAnchor),
+            selectCountryView.topAnchor.constraint(equalTo: phoneInput.topAnchor),
+            selectCountryView.bottomAnchor.constraint(equalTo: phoneInput.bottomAnchor),
+            selectCountryView.widthAnchor.constraint(equalToConstant: 66),
+            
+            phoneInput.leadingAnchor.constraint(equalTo: inputView.leadingAnchor),
+            phoneInput.topAnchor.constraint(equalTo: inputView.topAnchor),
+            phoneInput.bottomAnchor.constraint(equalTo: inputView.bottomAnchor),
+            phoneInput.trailingAnchor.constraint(equalTo: inputView.trailingAnchor),
+            
+            phoneInput.field.leadingAnchor.constraint(equalTo: inputView.leadingAnchor, constant: 70),
+            phoneInput.field.topAnchor.constraint(equalTo: inputView.topAnchor),
+            phoneInput.field.bottomAnchor.constraint(equalTo: inputView.bottomAnchor),
+            phoneInput.field.trailingAnchor.constraint(equalTo: inputView.trailingAnchor)
+        ])
+        
+        let stackView = UIStackView(arrangedSubviews: [inputView])
+        stackView.axis = .horizontal
+        stackView.distribution = .fill
+        stackView.alignment = .center
+        stackView.spacing = 4.0
+        
+        return stackView
+    }()
+
   
   private lazy var formView: UIStackView = {
     let stackView = UIStackView(arrangedSubviews: [
-      phoneLegend, phoneInput
+      phoneLegend, phoneInputView
     ])
     
     stackView.axis = .vertical
@@ -86,8 +173,6 @@ class PhoneOTPView: UIView {
   
   override init(frame: CGRect) {
     super.init(frame: frame)
-    setupUI()
-    setupErrorHandling()
   }
   
   required init?(coder: NSCoder) {
@@ -127,8 +212,9 @@ class PhoneOTPView: UIView {
     
     viewModel.isEmailValidPublisher
       .sink(receiveValue: { [weak self] isValidEmail in
-        if !isValidEmail {
-          self?.phoneInput.showError(message: "This email Address is wrong")
+          if !isValidEmail || self?.phoneInput.field.text == "" {
+              let message = self?.appConfig?.stepConfig?[2].documents?[0].versions?[0].invalidPhoneNumberError
+          self?.phoneInput.showError(message: message ?? "This phone number is wrong")
         } else {
           self?.phoneInput.hideError()
         }
@@ -171,6 +257,10 @@ class PhoneOTPView: UIView {
   func setupErrorHandling() {
     NotificationCenter.default.addObserver(self, selector: #selector(didReceiveError(_:)), name: Notification.Name(AppConstants.AmaniDelegateNotifications.onError.rawValue), object: nil)
   }
+    
+    @objc func selectCountryButtonTapped() {
+        selectCountryButtonAction?()
+        }
   
   @objc func didReceiveError(_ notification: Notification) {
     //                                            type, errors
@@ -215,6 +305,30 @@ extension PhoneOTPView: UITextFieldDelegate {
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     viewModel.submitPhoneForOTP()
     phoneInput.field.resignFirstResponder()
-    return true
+      return true
   }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard let currentText = textField.text,
+              let textRange = Range(range, in: currentText) else {
+            return true
+        }
+        
+        let updatedText = currentText.replacingCharacters(in: textRange, with: string)
+        
+        if appConfig?.generalconfigs?.language == "ar" {
+             textField.textAlignment = .right
+         } else {
+             textField.textAlignment = .left
+         }
+        
+        if string.isEmpty && range.location < phoneInput.field.text?.count ?? 0 {
+            // Ensure the dial code and subsequent digit(s) remain intact
+            if let dialCode = phoneInput.field.text?.prefix(dialCodeDecimal + 1), !updatedText.hasPrefix(dialCode) {
+//                textField.text = "\(dialCode)\(updatedText)"
+                return false
+            }
+        }
+        return true
+    }
 }

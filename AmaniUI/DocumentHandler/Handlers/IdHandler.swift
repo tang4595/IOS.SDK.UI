@@ -42,6 +42,7 @@ class IdHandler: DocumentHandler {
             nibName: String(describing: ContainerViewController.self),
             bundle: Bundle(for: ContainerViewController.self)
         )
+        containerVC.stepConfig = stepViewModel.stepConfig
         // NOTE(ddnzcn): For future refactor consider removing this logic as this
         // leads to repetition
         containerVC.setDisappearCallback {
@@ -55,7 +56,7 @@ class IdHandler: DocumentHandler {
 //            self?.stepView?.removeFromSuperview()
                     self?.frontView?.removeFromSuperview()
                     // Start the confirm vc for the front side
-                    self?.startConfirmVC(image: image, docStep: version.steps![workingStep], docVer: version) { [weak self] () in
+                    self?.startConfirmVC(image: image, docStep: version.steps![workingStep], docVer: version,stepId: workingStep) { [weak self] () in
                         // CONFIRM CALLBACK
                         // Add back id capture view to the subviews
 //                  self?.showStepView(navbarHidden: false)

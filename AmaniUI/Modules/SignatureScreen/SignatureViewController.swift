@@ -99,6 +99,25 @@ class SignatureViewController: BaseViewController {
     clearBtn.setTitleColor(UIColor(hexString: appConfig.generalconfigs?.secondaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
     clearBtn.tintColor = UIColor(hexString: appConfig.generalconfigs?.secondaryButtonTextColor ?? ThemeColor.whiteColor.toHexString())
     clearBtn.addCornerRadiousWith(radious: buttonRadious)
+    
+    clearBtn.translatesAutoresizingMaskIntoConstraints = false
+    confirmBtn.translatesAutoresizingMaskIntoConstraints = false
+    
+    NSLayoutConstraint.activate([
+      clearBtn.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40),
+      confirmBtn.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40),
+      
+      clearBtn.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+      confirmBtn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+      
+      clearBtn.trailingAnchor.constraint(equalTo: view.centerXAnchor, constant: -10),
+      confirmBtn.leadingAnchor.constraint(equalTo: view.centerXAnchor, constant: 10),
+      
+      clearBtn.heightAnchor.constraint(equalToConstant: 50),
+      confirmBtn.heightAnchor.constraint(equalTo: clearBtn.heightAnchor),
+      
+      clearBtn.widthAnchor.constraint(equalTo: confirmBtn.widthAnchor)
+    ])
       
 //    // For everything else
 //      imgOuterView.isHidden = false

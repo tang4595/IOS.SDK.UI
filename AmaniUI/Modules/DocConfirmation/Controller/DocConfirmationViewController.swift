@@ -10,6 +10,8 @@ import AmaniSDK
 
 typealias ConfirmCallback = () -> Void
 
+
+
 class DocConfirmationViewController: BaseViewController {
   
   @IBOutlet weak var lblView: UIView!
@@ -26,17 +28,22 @@ class DocConfirmationViewController: BaseViewController {
   
   @IBOutlet weak var idImgView: UIImageView!
   private var ovalView: OvalOverlayView!
-  
+  let child = AnimationViewDocConfirmation()
+  var stepid:Int = 0
   private var image: UIImage?
   private var confirmCallback: ConfirmCallback?
   
   private var documentID: DocumentID?
   private var documentVersion: DocumentVersion?
   private var documentStep: DocumentStepModel?
+  private var mrzDocumentId: String?
+  private var confimClicked:Bool = false
+    
+  let appConfig = try? Amani.sharedInstance.appConfig().getApplicationConfig()
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    let appBackground = try? Amani.sharedInstance.appConfig().getApplicationConfig().generalconfigs?.appBackground
+      let appBackground = appConfig?.generalconfigs?.appBackground
     ovalView = OvalOverlayView(bgColor: UIColor(hexString: appBackground ?? "253C59"), strokeColor: UIColor(hexString: "ffffff engine='xlsxwrite"), screenBounds: UIScreen.main.bounds)
     
     self.initialSetup()
@@ -44,11 +51,14 @@ class DocConfirmationViewController: BaseViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(true)
+    checkMRZ()
   }
   
   func initialSetup() {
     let appConfig = try! Amani.sharedInstance.appConfig().getApplicationConfig()
     let buttonRadious = CGFloat(appConfig.generalconfigs?.buttonRadius ?? 10)
+      
+      Amani.sharedInstance.setMRZDelegate(delegate: self)
     // Setting labels
     titleLabel.text = documentStep?.confirmationTitle ?? ""
     descriptionLabel.text = documentStep?.confirmationDescription ?? ""
@@ -94,10 +104,15 @@ class DocConfirmationViewController: BaseViewController {
         strokeColor: UIColor(hexString: "ffffff"),
         screenBounds: UIScreen.main.bounds
       )
+        selfieImageView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+//                selfieImageView.topAnchor.constraint(equalTo: lblView.bottomAnchor, constant: 20),
+                selfieImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -220)
+            ])
       
       self.view.bringSubviewToFront(selfieImageView)
-      self.view.addSubview(ovalView)
-      self.view.bringSubviewToFront(ovalView)
+//      self.view.addSubview(ovalView)
+//      self.view.bringSubviewToFront(ovalView)
       self.view.bringSubviewToFront(stackView)
       self.view.bringSubviewToFront(poweredByImg)
       self.view.bringSubviewToFront(lblView)
@@ -111,6 +126,25 @@ class DocConfirmationViewController: BaseViewController {
       titleLabel.isHidden = true
       selfieImageView.isHidden = true
     }
+      else if documentID == DocumentID.SG{
+          imgOuterView.isHidden = false
+          self.idImgView.image = image
+          self.idImgView.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.appBackground ?? "#263B5B")
+          self.view.layoutIfNeeded()
+          titleLabel.isHidden = true
+          selfieImageView.isHidden = true
+          physicalContractImageView.isHidden = true
+          descriptionLabel.isHidden = true
+          idImgView.translatesAutoresizingMaskIntoConstraints = false
+          idImgView.backgroundColor = .white
+          descriptionLabel.removeFromSuperview()
+          NSLayoutConstraint.activate([
+            idImgView.topAnchor.constraint(equalTo: view.topAnchor, constant: 80),
+            idImgView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -240),
+            idImgView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            idImgView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+          ])
+      }
     // For everything else
     else {
       imgOuterView.isHidden = false
@@ -122,7 +156,17 @@ class DocConfirmationViewController: BaseViewController {
       titleLabel.isHidden = false
       selfieImageView.isHidden = true
       physicalContractImageView.isHidden = true
+        descriptionLabel.backgroundColor = .clear
+        idImgView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                idImgView.topAnchor.constraint(equalTo: view.topAnchor, constant: 80),
+                idImgView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -240),
+                idImgView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                idImgView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            ])
     }
+      
+   
     
 //    if let errorList = idCaptureResponseModel?.errors{
 //      if !errorList.isEmpty{
@@ -147,13 +191,29 @@ class DocConfirmationViewController: BaseViewController {
 //    }
     
   }
+    
+    func checkMRZ() {
+      if documentVersion?.nfc ?? false{
+        if (documentVersion?.type?.contains("ID") ?? false && stepid == steps.back.rawValue) ||
+            (documentVersion?.type?.contains("PA") ?? false && stepid == steps.front.rawValue )  {
+            //         #warning("buraya full ekran indicator koyulacak")
+          createAnimationView()
+          Amani.sharedInstance.IdCapture().getMrz { mrzDocumentId in
+            self.mrzDocumentId = mrzDocumentId
+            
+          }
+        }
+      }
+    }
   
-  func bind(image: UIImage, documentID: DocumentID, docVer: DocumentVersion, docStep: DocumentStepModel, callback: @escaping ConfirmCallback) {
+  func bind(image: UIImage, documentID: DocumentID, docVer: DocumentVersion, docStep: DocumentStepModel, stepid:Int ,callback: @escaping ConfirmCallback) {
     self.image = image
     self.documentID = documentID
     self.documentVersion = docVer
     self.documentStep = docStep
+    self.stepid = stepid
     self.confirmCallback = callback
+    self.confimClicked = false
   }
   
   
@@ -163,10 +223,73 @@ class DocConfirmationViewController: BaseViewController {
   
   
   @IBAction func confirmAction(_ sender: Any) {
-    if let confirmCallback = confirmCallback {
-      confirmCallback()
+    if (!confimClicked){
+      confimClicked = true
+      if let confirmCallback = confirmCallback {
+        confirmCallback()
+      }
     }
   }
   
+    func createAnimationView() {
+        // add the spinner view controller
+        DispatchQueue.main.async {
+          self.view.addSubview(self.child)
+            self.child.frame = self.view.frame
+            self.view.addSubview(self.child)
+            self.view.bringSubviewToFront(self.child)
+            self.child.bind(config: self.documentVersion!)
+
+        }
+    }
+    
+    func dismissAnimationView() {
+        DispatchQueue.main.async {
+            // then remove the spinner view controller
+            self.child.removeFromSuperview()
+        }
+    }
   
+}
+
+extension DocConfirmationViewController: mrzInfoDelegate {
+    func mrzInfo(_ mrz: AmaniSDK.MrzModel?, documentId: String?) {
+        if let mrzData = mrz {
+            var isReady: Bool = false
+            switch AmaniUI.sharedInstance.apiVersion {
+            case .v1:
+                isReady = true
+            case .v2:
+                isReady = self.mrzDocumentId == documentId
+            default:
+                break
+            }
+            
+            if isReady {
+                AmaniUI.sharedInstance.nviData = NviModel(mrzModel: mrzData)
+                dismissAnimationView()
+            }
+        } else {
+            DispatchQueue.main.async {
+                var actions: [(String, UIAlertAction.Style)] = []
+                
+                let title = self.appConfig?.generalconfigs?.tryAgainText
+                let buttonTitle = self.appConfig?.generalconfigs?.okText
+                let message = self.documentVersion?.mrzReadErrorText
+                
+                actions.append(("\(buttonTitle ?? "Re-try")", UIAlertAction.Style.default))
+                
+                AlertDialogueUtility.shared.showAlertWithActions(vc: self, title: title, message: message, actions: actions) { index in
+                    if index == 0 {
+                        self.dismissAnimationView()
+                        self.popViewController()
+                    }
+                }
+            }
+            
+            //            let uiAlertView = AlertDialogueUtility.shared.showMsgAlertWithHandler(controller: self, alertTitle: "Failed", message: "Re-try back Image", successTitle: "OK", failureTitle: "Re try") { _ in
+            //
+            //            }
+        }
+    }
 }

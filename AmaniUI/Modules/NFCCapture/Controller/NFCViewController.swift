@@ -15,16 +15,24 @@ class NFCViewController: BaseViewController {
   @IBOutlet var desc2Label: UILabel!
   @IBOutlet var desc3Label: UILabel!
   @IBOutlet var amaniLogo: UIImageView!
-  
-  override func viewWillAppear(_ animated: Bool) {
+    let idCaptureModule =  Amani.sharedInstance.IdCapture()
+    let amani:Amani = Amani.sharedInstance
+    var isDone: Bool = false
+
+    override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(true)
-    initialSetup()
+        Task { @MainActor in
+            await initialSetup()
+        }
+       
   }
   
-  func initialSetup() {
+    func initialSetup() async {
     guard let documentVersion = documentVersion else { return }
     
-    let generalConfigs = try? Amani.sharedInstance.appConfig().getApplicationConfig().generalconfigs
+    
+        
+    let generalConfigs = try? amani.appConfig().getApplicationConfig().generalconfigs
     
     let navFontColor = generalConfigs?.topBarFontColor ?? "ffffff"
     let textColor = generalConfigs?.appFontColor ?? "ffffff"
@@ -41,37 +49,58 @@ class NFCViewController: BaseViewController {
     desc1Label.text = documentVersion.nfcDescription1
     desc2Label.text = documentVersion.nfcDescription2
     desc3Label.text = documentVersion.nfcDescription3
+    desc1Label.numberOfLines = 0
+    desc2Label.numberOfLines = 0
+    desc3Label.numberOfLines = 0
+    desc1Label.lineBreakMode = .byWordWrapping
+    desc2Label.lineBreakMode = .byWordWrapping
+    desc3Label.lineBreakMode = .byWordWrapping
     
-    continueButton.alpha = 0.6
+    continueButton.alpha = 1
     continueButton.isEnabled = true
     continueButton.setTitleColor(UIColor(hexString: generalConfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
     continueButton.backgroundColor = UIColor(hexString: generalConfigs?.primaryButtonBackgroundColor ?? ThemeColor.whiteColor.toHexString())
     continueButton.addCornerRadiousWith(radious: CGFloat(generalConfigs?.buttonRadius ?? 10))
     continueButton.setTitle(generalConfigs?.continueText ?? "Devam", for: .normal)
-    scanNFC()
+        await scanNFC()
   }
-  
+    
   func bind(documentVersion: DocumentVersion, callback: @escaping VoidCallback) {
     self.documentVersion = documentVersion
     self.onFinishCallback = callback
   }
   
-  @IBAction func continueButtonPressed(_ sender: Any) {
-    scanNFC()
-  }
+    @IBAction func continueButtonPressed(_ sender: Any) {
+        Task { @MainActor in
+            await scanNFC()
+        }
+    }
+    
+    func uploadNFCResult() {
+        idCaptureModule.upload(location: nil) { isUploadSuccess in
+            if isUploadSuccess != nil {
+                self.isDone = true
+                self.doNext(done: self.isDone)
+            } else {
+                self.isDone = false
+                self.doNext(done: self.isDone)
+            }
+        }
+       
+    }
  
-  func scanNFC() {
+    func scanNFC() async {
     let tryAgainText = try? Amani.sharedInstance.appConfig().getApplicationConfig().generalconfigs?.tryAgainText
-    let idCaptureModule = Amani.sharedInstance.IdCapture()
+//    let idCaptureModule = Amani.sharedInstance.IdCapture()
+        
+//    guard let nvi = AmaniUI.sharedInstance.nviData else { return }
+//    let isDone = await idCaptureModule.startNFC(nvi: nvi)
+//    self.doNext(done: isDone)
     
     if let nvi:NviModel = AmaniUI.sharedInstance.nviData {
-      idCaptureModule.startNFC(nvi: nvi){[weak self] done in
-        self?.doNext(done: done)
-      }
-    } else {
-      idCaptureModule.startNFC() {[weak self]  done in
-        self?.doNext(done: done)
-      }
+      let isDone = await idCaptureModule.startNFC(nvi: nvi)
+        self.doNext(done: isDone)
+      
     }
     
   }

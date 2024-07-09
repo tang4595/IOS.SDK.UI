@@ -64,16 +64,17 @@ class NonKYCStepManager {
       stepCompleted()
       return
     }
-
+      
+      DispatchQueue.main.async {
     self.currentStepViewController = EmailOTPScreenViewController()
-    let emailOTPVC = currentStepViewController as! EmailOTPScreenViewController
+    let emailOTPVC = self.currentStepViewController as! EmailOTPScreenViewController
     
-    emailOTPVC.bind(stepVM: currentStep)
+    emailOTPVC.bind(stepVM: self.currentStep)
     emailOTPVC.setCompletionHandler { [weak self] in
       self?.stepCompleted()
     }
 
-    DispatchQueue.main.async {
+   
       self.navigate(to: emailOTPVC)
     }
   }
@@ -83,16 +84,17 @@ class NonKYCStepManager {
       stepCompleted()
       return
     }
-
+      
+      DispatchQueue.main.async {
    self.currentStepViewController = PhoneOTPScreenViewController()
-   let phoneOTPVC = currentStepViewController as! PhoneOTPScreenViewController
+          let phoneOTPVC = self.currentStepViewController as! PhoneOTPScreenViewController
     
-    phoneOTPVC.bind(stepVM: currentStep)
+          phoneOTPVC.bind(stepVM: self.currentStep)
     phoneOTPVC.setCompletionHandler {[weak self] in
       self?.stepCompleted()
     }
 
-    DispatchQueue.main.async {
+ 
       self.navigate(to: self.currentStepViewController!)
     }
   }
@@ -103,17 +105,16 @@ class NonKYCStepManager {
       return
     }
 
-    DispatchQueue.main.sync {
+    DispatchQueue.main.async {
       self.currentStepViewController = ProfileInfoViewController()
-    }
+    
     let profileInfoVC = self.currentStepViewController as! ProfileInfoViewController
     
-    profileInfoVC.bind(with: currentStep)
+        profileInfoVC.bind(with: self.currentStep)
     profileInfoVC.setCompletionHandler {[weak self] in
       self?.stepCompleted()
     }
 
-    DispatchQueue.main.sync {
       self.navigate(to: self.currentStepViewController!)
     }
   }

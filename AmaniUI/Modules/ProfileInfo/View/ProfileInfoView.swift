@@ -16,6 +16,13 @@ class ProfileInfoView: UIView {
   private var completionHandler: (() -> Void)?
   private let nameValidationString: String = "Name should not exceed 64 characters"
   private let surnameValidationString: String = "Surname should not exceed 32 characters"
+  var appConfig: AppConfigModel? {
+        didSet {
+            guard let config = appConfig else { return }
+            setupUI()
+            setupErrorHandling()
+        }
+    }
 
   // MARK: Form Area
 
@@ -73,19 +80,27 @@ class ProfileInfoView: UIView {
 
   private lazy var birthdateInput: RoundedTextInput = {
     let input = RoundedTextInput(
-      placeholderText: "DD/MM/YYYY",
+      placeholderText: "",
       borderColor: UIColor(hexString: "#515166"),
       placeholderColor: UIColor(hexString: "#C0C0C0"),
       isPasswordToggleEnabled: false,
-      keyboardType: .default
+      keyboardType: .numberPad
     )
     return input
   }()
+    
+    private lazy var datePicker: UIDatePicker = {
+        let picker = UIDatePicker()
+        picker.datePickerMode = .date
+        picker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
+        return picker
+    }()
 
   private lazy var submitButton: RoundedButton = {
+
     let button = RoundedButton(
-      withTitle: "Continue",
-      withColor: UIColor(hexString: "#EA3365")
+     withTitle: appConfig?.generalconfigs?.continueText ?? "Continue",
+     withColor: UIColor(hexString: appConfig?.generalconfigs?.primaryButtonBackgroundColor ?? "#EA3365")
     )
     return button
   }()
@@ -121,8 +136,9 @@ class ProfileInfoView: UIView {
 
   override init(frame: CGRect) {
     super.init(frame: frame)
-    setupUI()
-    setupErrorHandling()
+ 
+//    setupDatePicker()
+ 
   }
 
   // MARK: Initializers
@@ -143,16 +159,61 @@ class ProfileInfoView: UIView {
 
   // MARK: UI Setup
 
-  func setupUI() {
-    mainStackView.translatesAutoresizingMaskIntoConstraints = false
-    addSubview(mainStackView)
-    NSLayoutConstraint.activate([
-      mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-      mainStackView.topAnchor.constraint(equalTo: topAnchor),
-      mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-    ])
-  }
+    func setupUI() {
+        mainStackView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(mainStackView)
+        NSLayoutConstraint.activate([
+            mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            mainStackView.topAnchor.constraint(equalTo: topAnchor),
+            mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+        ])
+        
+        birthdateInput.field.addSubview(datePicker)
+        datePicker.translatesAutoresizingMaskIntoConstraints = false
+        datePicker.contentHorizontalAlignment = .center
+        NSLayoutConstraint.activate([
+            datePicker.leadingAnchor.constraint(equalTo: birthdateInput.field.leadingAnchor),
+//            datePicker.trailingAnchor.constraint(equalTo: birthdateInput.field.trailingAnchor),
+            datePicker.centerYAnchor.constraint(equalTo: birthdateInput.field.centerYAnchor),
+        ])
+        
+        // Initially set the input view of the birthdate input field to nil
+//        birthdateInput.field.inputView = nil
+//        self.birthdateInput.field.setInputViewDatePicker(target: self, selector: #selector(doneTapped))
+        // Add tap gesture recognizer to the birthdate input field
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(birthdateInputTapped))
+        birthdateInput.field.addGestureRecognizer(tapGesture)
+//        addSubviews()
+    }
+    
+//    @objc func doneTapped(){
+//        if let datePicker = self.birthdateInput.field.inputView as? UIDatePicker{
+//            let dateFormatter = DateFormatter()
+//            dateFormatter.dateFormat = "dd/MM/yyyy"
+//            let selectedDate = dateFormatter.string(from: datePicker.date)
+//    //        birthdateInput.field.text = selectedDate
+//            
+//            viewModel.birthDay = selectedDate
+//        }
+//        self.birthdateInput.field.resignFirstResponder()
+//    }
+
+    @objc private func birthdateInputTapped() {
+        datePicker.becomeFirstResponder()
+//        // Set the input view of the birthdate input field to the date picker
+//        birthdateInput.field.inputView = datePicker
+//        
+//        // Calculate the center point of the screen
+//        let screenCenter = CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)
+//        
+//        // Set the frame of the date picker to ensure it's centered
+//        datePicker.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 200)
+//        datePicker.center = screenCenter
+//        
+//        // Force the birthdate input field to become first responder to show the date picker
+//        birthdateInput.field.becomeFirstResponder()
+    }
 
   func setupErrorHandling() {
     NotificationCenter.default
@@ -164,6 +225,32 @@ class ProfileInfoView: UIView {
         ),
         object: nil)
   }
+    
+    private func setupDatePicker() {
+        // Create the date picker
+        let datePicker = UIDatePicker()
+        datePicker.datePickerMode = .date
+        datePicker.locale = .current
+        // Set the inputView of the birthday input field to the date picker
+        birthdateInput.field.inputView = datePicker
+
+        // Handle date picker value changes
+        datePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
+    }
+ 
+    @objc private func datePickerValueChanged(_ sender: UIDatePicker) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yyyy"
+        let selectedDate = dateFormatter.string(from: sender.date)
+//        birthdateInput.field.text = selectedDate
+        
+        viewModel.birthDay = selectedDate
+    }
+
+    @objc private func dismissDatePicker() {
+        birthdateInput.field.resignFirstResponder()
+    }
+
 
   @objc func didReceiveError(_ notification: Notification) {
     if let errorObjc = notification.object as? [String: Any] {
@@ -178,6 +265,7 @@ class ProfileInfoView: UIView {
   func bind(
     withViewModel viewModel: ProfileInfoViewModel,
     withDocument document: DocumentVersion?
+    
   ) {
     nameInput.setDelegate(delegate: self)
     surnameInput.setDelegate(delegate: self)
@@ -302,7 +390,7 @@ class ProfileInfoView: UIView {
         self.surnameLegend.text = document.surnameTitle!
         self.surnameInput.updatePlaceHolder(text: document.surnameHint!)
         self.birthdateLabel.text = document.birthDateTitle!
-        self.birthdateInput.updatePlaceHolder(text: document.birthDateHint!)
+//        self.birthdateInput.updatePlaceHolder(text: document.birthDateHint!)
     }
   }
   
@@ -324,6 +412,13 @@ class ProfileInfoView: UIView {
 }
 
 extension ProfileInfoView: UITextFieldDelegate {
+//    func textFieldDidBeginEditing(_ textField: UITextField) {
+//        if textField == birthdateInput.field {
+//            // Open the date picker when the birthdate input field is tapped
+//            textField.inputView = datePicker
+//        }
+//    }
+    
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     if textField == nameInput {
       surnameInput.becomeFirstResponder()
@@ -373,3 +468,23 @@ extension ProfileInfoView: UITextFieldDelegate {
     return false
   }
 }
+
+//extension UITextField{
+//    func setInputViewDatePicker(target: Any, selector: Selector){
+//        let screenWidth = UIScreen.main.bounds.width
+//        let datePicker = UIDatePicker(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 500))
+//        datePicker.datePickerMode = .date
+//        if #available(iOS 13.4, *) {
+//            datePicker.preferredDatePickerStyle = .wheels
+//        } else {
+//            // Fallback on earlier versions
+//        }
+//        self.inputView = datePicker
+//        
+//        let toolbar = UIToolbar(frame: CGRect(x: 0.0, y: 0.0, width: screenWidth, height: 44.0))
+//        let flexible = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+//        let barButton = UIBarButtonItem(title: "Done", style: .plain, target: target, action: selector)
+//        toolbar.setItems([flexible, barButton], animated: true)
+//        self.inputAccessoryView = toolbar
+//    }
+//}

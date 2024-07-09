@@ -7,17 +7,26 @@
 
 import Foundation
 import UIKit
+import AmaniSDK
 
 class QuestionSubmitButton: UIStackView {
   public var nextCallback: (() -> Void)?
-  
+    
+    var genConfig: GeneralConfig? {
+        didSet {
+            guard let config = genConfig else { return }
+            setupUI()
+        }
+    }
+    
   private lazy var submitButton: UIButton = {
     let submit = UIButton()
-    submit.setTitle("NEXT", for: .normal)
+    let nextButtonTitle = genConfig?.continueText ?? "Contunie"
+    submit.setTitle(nextButtonTitle, for: .normal)
     submit.setTitleColor(.white, for: .normal)
-    submit.backgroundColor = UIColor(hexString: "#EA3365")
+    submit.backgroundColor = UIColor(hexString: genConfig?.primaryButtonBackgroundColor ?? "#EA3365")
     submit.addTarget(self, action: #selector(didTapNext), for: .touchUpInside)
-    submit.addCornerRadiousWith(radious: 12.0)
+      submit.addCornerRadiousWith(radious: 25.0)
     return submit
   }()
   
@@ -30,7 +39,7 @@ class QuestionSubmitButton: UIStackView {
   
   override init(frame: CGRect) {
     super.init(frame: frame)
-    setupUI()
+ 
   }
   
   required init(coder: NSCoder) {
@@ -41,12 +50,13 @@ class QuestionSubmitButton: UIStackView {
     self.nextCallback = nextCb
   }
   
-  func setupUI() {
-    self.backgroundColor = UIColor(hexString: "#EEF4FA")
-    self.addArrangedSubview(submitButton)
-    self.axis = .vertical
-    self.layoutMargins = UIEdgeInsets(top: 42, left: 20, bottom: 42, right: 20)
-    self.isLayoutMarginsRelativeArrangement = true
-  }
-  
+    func setupUI() {
+        self.backgroundColor = UIColor(hexString: genConfig?.appBackground ?? "#EEF4FA")
+        self.addArrangedSubview(submitButton)
+        self.axis = .vertical
+        self.layoutMargins = UIEdgeInsets(top: 10, left: 20, bottom: -10, right: 20)
+        self.isLayoutMarginsRelativeArrangement = true
+        self.heightAnchor.constraint(equalToConstant: 50).isActive = true
+
+    }
 }

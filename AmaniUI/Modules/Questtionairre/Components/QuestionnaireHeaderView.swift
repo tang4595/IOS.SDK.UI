@@ -7,8 +7,15 @@
 
 import Foundation
 import UIKit
+import AmaniSDK
 
 class QuestionnaireHeaderView: UIStackView {
+    
+    var genConfig: GeneralConfig? {
+        didSet {
+            setupUI()
+        }
+    }
   
   private lazy var descriptionLabel: UILabel = {
     let descriptionLabel = UILabel()
@@ -34,7 +41,7 @@ class QuestionnaireHeaderView: UIStackView {
     self.spacing = 12
     
     self.addArrangedSubview(descriptionLabel)
-    self.backgroundColor = UIColor(hexString: "#EEF4FA")
+    self.backgroundColor = UIColor(hexString: genConfig?.appBackground ?? "#EEF4FA")
     
     self.layoutMargins = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
     self.isLayoutMarginsRelativeArrangement = true

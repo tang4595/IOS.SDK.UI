@@ -14,7 +14,6 @@ Pod::Spec.new do |s|
   s.documentation_url = "https://documentation.amani.ai"
   s.platform     = :ios, "13.0"
   s.pod_target_xcconfig = { "OTHER_LDFLAGS" => "-weak_framework CryptoKit -weak_framework CoreNFC -weak_framework CryptoTokenKit" }
-  s.dependency "OpenSSL-Universal", "~> 1.1.1100"
   s.dependency "lottie-ios", "~> 4.4.1"
   s.dependency "AmaniSDK", "~> 3"
 end

@@ -32,6 +32,7 @@ class SelfieHandler: DocumentHandler {
       nibName: String(describing: ContainerViewController.self),
       bundle: Bundle(for: ContainerViewController.self)
     )
+    animationVC.stepConfig = stepViewModel.stepConfig
     self.topVC.navigationController?.pushViewController(animationVC, animated: true)
     
     animationVC.setDisappearCallback {
@@ -158,7 +159,7 @@ class SelfieHandler: DocumentHandler {
   }
   
   private func runPoseEstimation(step: DocumentStepModel, version: DocumentVersion, completion: @escaping StepCompletionCallback)->UIView? {
-    let poseCount = version.selfieType! + 1
+    let poseCount = version.selfieType!
     
     selfieModule = Amani.sharedInstance.poseEstimation()
     guard let currentSelfieModule = selfieModule as? PoseEstimation else {

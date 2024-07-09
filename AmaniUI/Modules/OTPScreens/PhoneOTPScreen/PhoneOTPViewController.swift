@@ -19,7 +19,13 @@ class PhoneOTPScreenViewController: KeyboardAvoidanceViewController {
   
   override init() {
     super.init()
+      guard let appConfig = try? Amani.sharedInstance.appConfig().getApplicationConfig() else {
+          print("AppConfigError")
+          return
+      }
+    
     phoneOTPView = PhoneOTPView()
+    phoneOTPView.appConfig = appConfig
     phoneOTPViewModel = PhoneOTPViewModel()
   }
   
@@ -55,6 +61,10 @@ class PhoneOTPScreenViewController: KeyboardAvoidanceViewController {
       phoneOTPView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20.0),
       phoneOTPView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20.0),
     ])
+      
+      phoneOTPView.selectCountryButtonAction = { [weak self] in
+                  self?.presentCountryPicker()
+              }
   }
   
   func setCompletionHandler(_ handler: @escaping (() -> Void)) {
@@ -65,5 +75,25 @@ class PhoneOTPScreenViewController: KeyboardAvoidanceViewController {
     self.docVersion = stepVM?.documents.first?.versions?.first
     self.stepVM = stepVM
   }
+    
+    func presentCountryPicker() {
+            let countryPicker = CountryPickerViewController()
+            countryPicker.selectedCountry = "TR"
+            countryPicker.delegate = self
+            present(countryPicker, animated: true)
+        }
   
+}
+
+extension PhoneOTPScreenViewController: CountryPickerDelegate {
+    func countryPicker(didSelect country: Country) {
+        // Update the phone input field with the selected country code
+        phoneOTPView.phoneInput.field.text = "\(("+" + country.phoneCode))"
+        phoneOTPView.dialCodeDecimal = country.phoneCode.count
+        guard let countryFlagLabel = phoneOTPView.selectCountryView.subviews.compactMap({ $0 as? UILabel }).first else {
+                   return
+               }
+        countryFlagLabel.text = "\(country.isoCode.getFlag())"
+//        phoneOTPView.selectCountryButton.setTitle("\(country.isoCode.getFlag())", for: .normal)
+    }
 }

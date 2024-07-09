@@ -30,7 +30,13 @@ class CheckSMSViewController: KeyboardAvoidanceViewController {
   }
   
   override func viewDidLoad() {
+      guard let appConfig = try? Amani.sharedInstance.appConfig().getApplicationConfig() else {
+          print("AppConfigError")
+          return
+      }
+      
     self.title = docVersion?.steps?.first?.confirmationTitle ?? "Check your SMS"
+    checkSMSView.appConfig = appConfig
     checkSMSView.bind(withViewModel: checkSMSViewModel, withDocument: docVersion)
     addPoweredByIcon()
     view.backgroundColor = UIColor(hexString: "#EEF4FA")

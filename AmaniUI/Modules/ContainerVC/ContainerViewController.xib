@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,32 +22,27 @@
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="deL-Yh-FZ1">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                    <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pAJ-ZD-KGj">
-                            <rect key="frame" x="20" y="597" width="335" height="50"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="50" id="Inj-kH-s6q"/>
-                            </constraints>
-                            <state key="normal" title="Button"/>
-                            <buttonConfiguration key="configuration" style="plain" title="Button"/>
-                            <connections>
-                                <action selector="ActBtnContinue:" destination="-1" eventType="touchUpInside" id="O9I-TK-H7C"/>
-                            </connections>
-                        </button>
-                    </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstItem="pAJ-ZD-KGj" firstAttribute="centerX" secondItem="deL-Yh-FZ1" secondAttribute="centerX" id="Tom-nf-Vwd"/>
-                        <constraint firstAttribute="trailing" secondItem="pAJ-ZD-KGj" secondAttribute="trailing" constant="20" id="XWT-SM-ahZ"/>
-                        <constraint firstItem="pAJ-ZD-KGj" firstAttribute="leading" secondItem="deL-Yh-FZ1" secondAttribute="leading" constant="20" id="tWp-Gg-htb"/>
-                    </constraints>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pAJ-ZD-KGj">
+                    <rect key="frame" x="20" y="597" width="335" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="Inj-kH-s6q"/>
+                    </constraints>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                    <connections>
+                        <action selector="ActBtnContinue:" destination="-1" eventType="touchUpInside" id="O9I-TK-H7C"/>
+                    </connections>
+                </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="H71-dx-yzu"/>
             <constraints>
                 <constraint firstItem="deL-Yh-FZ1" firstAttribute="leading" secondItem="H71-dx-yzu" secondAttribute="leading" id="2wf-6M-l1T"/>
                 <constraint firstItem="H71-dx-yzu" firstAttribute="bottom" secondItem="deL-Yh-FZ1" secondAttribute="bottom" id="DzT-8D-8Q9"/>
-                <constraint firstItem="H71-dx-yzu" firstAttribute="bottom" secondItem="pAJ-ZD-KGj" secondAttribute="bottom" constant="20" id="X8W-UA-y49"/>
+                <constraint firstItem="H71-dx-yzu" firstAttribute="bottom" secondItem="pAJ-ZD-KGj" secondAttribute="bottom" constant="20" id="Mtc-ty-kE1"/>
+                <constraint firstItem="pAJ-ZD-KGj" firstAttribute="leading" secondItem="H71-dx-yzu" secondAttribute="leading" constant="20" id="Spr-Nl-mvV"/>
+                <constraint firstItem="H71-dx-yzu" firstAttribute="trailing" secondItem="pAJ-ZD-KGj" secondAttribute="trailing" constant="20" id="jXW-Du-MUF"/>
                 <constraint firstItem="H71-dx-yzu" firstAttribute="trailing" secondItem="deL-Yh-FZ1" secondAttribute="trailing" id="mAa-Bn-gDY"/>
                 <constraint firstItem="H71-dx-yzu" firstAttribute="top" secondItem="deL-Yh-FZ1" secondAttribute="top" constant="20" id="osQ-8U-e1V"/>
             </constraints>

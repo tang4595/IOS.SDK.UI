@@ -26,8 +26,8 @@ class DocumentsHandler: NSObject, DocumentHandler{
     self.stepViewModel = stepVM
     self.docID = docID
     ContainerVC = ContainerViewController(
-      nibName: String(describing: ContainerViewController.self),
-      bundle: Bundle(for: ContainerViewController.self)
+        nibName: String(describing: ContainerViewController.self),
+        bundle: Bundle(for: ContainerViewController.self)
     )
   }
   

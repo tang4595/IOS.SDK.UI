@@ -23,14 +23,14 @@ protocol DocumentHandler {
 }
 
 extension DocumentHandler {
-  func startConfirmVC(image: UIImage, docStep: DocumentStepModel, docVer: DocumentVersion, completion: @escaping ConfirmCallback) {
+  func startConfirmVC(image: UIImage, docStep: DocumentStepModel, docVer: DocumentVersion,stepId:Int = 0, completion: @escaping ConfirmCallback) {
     
     let confirmVC = DocConfirmationViewController(
       nibName: String(describing: DocConfirmationViewController.self),
       bundle: Bundle(for: DocConfirmationViewController.self)
     )
     
-    confirmVC.bind(image: image, documentID: docID, docVer: docVer, docStep: docStep, callback: completion)
+    confirmVC.bind(image: image, documentID: docID, docVer: docVer, docStep: docStep,stepid: stepId, callback: completion)
     
     self.topVC.navigationController?.pushViewController(confirmVC, animated: true)
   }

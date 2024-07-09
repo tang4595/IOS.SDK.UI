@@ -3,10 +3,25 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		185A2BF72BBD64AE00855F77 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185A2BE52BBD64AE00855F77 /* String+Extension.swift */; };
+		185A2BF82BBD64AE00855F77 /* UIStackView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185A2BE62BBD64AE00855F77 /* UIStackView+Extension.swift */; };
+		185A2BF92BBD64AE00855F77 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185A2BE72BBD64AE00855F77 /* UIView+Extension.swift */; };
+		185A2BFB2BBD64AE00855F77 /* countries.json in Resources */ = {isa = PBXBuildFile; fileRef = 185A2BEA2BBD64AE00855F77 /* countries.json */; };
+		185A2BFC2BBD64AE00855F77 /* CloseButtonAlignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185A2BEC2BBD64AE00855F77 /* CloseButtonAlignment.swift */; };
+		185A2BFD2BBD64AE00855F77 /* ColorCompatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185A2BED2BBD64AE00855F77 /* ColorCompatibility.swift */; };
+		185A2BFE2BBD64AE00855F77 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185A2BEE2BBD64AE00855F77 /* Config.swift */; };
+		185A2BFF2BBD64AE00855F77 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185A2BEF2BBD64AE00855F77 /* Country.swift */; };
+		185A2C002BBD64AE00855F77 /* CountryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185A2BF02BBD64AE00855F77 /* CountryManager.swift */; };
+		185A2C012BBD64AE00855F77 /* CountryPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185A2BF12BBD64AE00855F77 /* CountryPickerCell.swift */; };
+		185A2C022BBD64AE00855F77 /* CountryPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185A2BF22BBD64AE00855F77 /* CountryPickerViewController.swift */; };
+		185A2C032BBD64AE00855F77 /* DismissButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185A2BF32BBD64AE00855F77 /* DismissButtonStyle.swift */; };
+		185A2C042BBD64AE00855F77 /* NotchAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185A2BF42BBD64AE00855F77 /* NotchAppearance.swift */; };
+		185A2C052BBD64AE00855F77 /* SeperatorAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185A2BF52BBD64AE00855F77 /* SeperatorAppearance.swift */; };
+		18E7B2CB2BD271370073C268 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 18E7B2CA2BD271370073C268 /* PrivacyInfo.xcprivacy */; };
 		48100B972A55658A007DA156 /* AmaniSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4830904228900A3800B75529 /* AmaniSDK.xcframework */; };
 		48100B9A2A55658F007DA156 /* Lottie.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48B4720E27B147870089D42E /* Lottie.xcframework */; };
 		483D72BD296C8D28004AF421 /* tur_pa_0_front.json in Resources */ = {isa = PBXBuildFile; fileRef = C5B07D76290048E300243A5B /* tur_pa_0_front.json */; };
@@ -26,6 +41,7 @@
 		484E26F8295A3DC700839E54 /* AmaniUIDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484E26F7295A3DC700839E54 /* AmaniUIDelegate.swift */; };
 		4856111E29DC91CE00E70D77 /* DocumentsHandlerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4856111D29DC91CE00E70D77 /* DocumentsHandlerDelegate.swift */; };
 		48B90A0429A278E700508E63 /* SignatureHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B90A0329A278E700508E63 /* SignatureHandler.swift */; };
+		48CD62FC2C076B83002B635D /* AnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CD62FA2C076B83002B635D /* AnimationView.swift */; };
 		48DF760E29699A81000D519A /* ContainerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48DF760D29699A81000D519A /* ContainerViewController.xib */; };
 		48DF761029699A8F000D519A /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DF760F29699A8F000D519A /* ContainerViewController.swift */; };
 		48EAA84D29E37C98001A2A35 /* SignatureViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48B909FF29A264B700508E63 /* SignatureViewController.xib */; };
@@ -100,14 +116,34 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		185A275A2BBC392500855F77 /* PhoneNumberKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PhoneNumberKit.xcframework; path = Carthage/Build/PhoneNumberKit.xcframework; sourceTree = SOURCE_ROOT; };
+		185A2BE52BBD64AE00855F77 /* String+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		185A2BE62BBD64AE00855F77 /* UIStackView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStackView+Extension.swift"; sourceTree = "<group>"; };
+		185A2BE72BBD64AE00855F77 /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
+		185A2BEA2BBD64AE00855F77 /* countries.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = countries.json; sourceTree = "<group>"; };
+		185A2BEC2BBD64AE00855F77 /* CloseButtonAlignment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloseButtonAlignment.swift; sourceTree = "<group>"; };
+		185A2BED2BBD64AE00855F77 /* ColorCompatibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorCompatibility.swift; sourceTree = "<group>"; };
+		185A2BEE2BBD64AE00855F77 /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		185A2BEF2BBD64AE00855F77 /* Country.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
+		185A2BF02BBD64AE00855F77 /* CountryManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryManager.swift; sourceTree = "<group>"; };
+		185A2BF12BBD64AE00855F77 /* CountryPickerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryPickerCell.swift; sourceTree = "<group>"; };
+		185A2BF22BBD64AE00855F77 /* CountryPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryPickerViewController.swift; sourceTree = "<group>"; };
+		185A2BF32BBD64AE00855F77 /* DismissButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissButtonStyle.swift; sourceTree = "<group>"; };
+		185A2BF42BBD64AE00855F77 /* NotchAppearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotchAppearance.swift; sourceTree = "<group>"; };
+		185A2BF52BBD64AE00855F77 /* SeperatorAppearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeperatorAppearance.swift; sourceTree = "<group>"; };
+		185A2C072BBD9C5B00855F77 /* CountryPickerView */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CountryPickerView; path = Carthage/Checkouts/CountryPickerView; sourceTree = SOURCE_ROOT; };
+		185A2E222BBFD08800855F77 /* CountryPicker.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CountryPicker.xcframework; path = Carthage/Build/CountryPicker.xcframework; sourceTree = SOURCE_ROOT; };
+		185A2E252BBFD4EB00855F77 /* CountryPicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CountryPicker.framework; path = Carthage/Build/iOS/CountryPicker.framework; sourceTree = SOURCE_ROOT; };
+		18E7B2CA2BD271370073C268 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		4830904228900A3800B75529 /* AmaniSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AmaniSDK.xcframework; path = Carthage/Build/AmaniSDK.xcframework; sourceTree = SOURCE_ROOT; };
 		4842810D29D0F7DB00D48925 /* DocumentsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsHandler.swift; sourceTree = "<group>"; };
 		484E26F7295A3DC700839E54 /* AmaniUIDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmaniUIDelegate.swift; sourceTree = "<group>"; };
 		4856111D29DC91CE00E70D77 /* DocumentsHandlerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsHandlerDelegate.swift; sourceTree = "<group>"; };
-		48B4720E27B147870089D42E /* Lottie.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Lottie.xcframework; path = Carthage/Build/Lottie.xcframework; sourceTree = SOURCE_ROOT; };
+		48B4720E27B147870089D42E /* Lottie.xcframework */ = {isa = PBXFileReference; expectedSignature = "SelfSigned:892F1B43047B50538F2F46EAD92900DD3D4811F3582178C061A5FB20F111CB26"; lastKnownFileType = wrapper.xcframework; name = Lottie.xcframework; path = Carthage/Build/Lottie.xcframework; sourceTree = SOURCE_ROOT; };
 		48B909FF29A264B700508E63 /* SignatureViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SignatureViewController.xib; sourceTree = "<group>"; };
 		48B90A0129A2656100508E63 /* SignatureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureViewController.swift; sourceTree = "<group>"; };
 		48B90A0329A278E700508E63 /* SignatureHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureHandler.swift; sourceTree = "<group>"; };
+		48CD62FA2C076B83002B635D /* AnimationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationView.swift; sourceTree = "<group>"; };
 		48DF760D29699A81000D519A /* ContainerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContainerViewController.xib; sourceTree = "<group>"; };
 		48DF760F29699A8F000D519A /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		C523DEF62B3A740B00F68E32 /* CheckSMSViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckSMSViewController.swift; sourceTree = "<group>"; };
@@ -210,6 +246,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		185A2BE82BBD64AE00855F77 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				185A2BE52BBD64AE00855F77 /* String+Extension.swift */,
+				185A2BE62BBD64AE00855F77 /* UIStackView+Extension.swift */,
+				185A2BE72BBD64AE00855F77 /* UIView+Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		185A2BF62BBD64AE00855F77 /* CountryPicker */ = {
+			isa = PBXGroup;
+			children = (
+				185A2BE82BBD64AE00855F77 /* Extensions */,
+				185A2BEC2BBD64AE00855F77 /* CloseButtonAlignment.swift */,
+				185A2BED2BBD64AE00855F77 /* ColorCompatibility.swift */,
+				185A2BEE2BBD64AE00855F77 /* Config.swift */,
+				185A2BEF2BBD64AE00855F77 /* Country.swift */,
+				185A2BF02BBD64AE00855F77 /* CountryManager.swift */,
+				185A2BF12BBD64AE00855F77 /* CountryPickerCell.swift */,
+				185A2BF22BBD64AE00855F77 /* CountryPickerViewController.swift */,
+				185A2BF32BBD64AE00855F77 /* DismissButtonStyle.swift */,
+				185A2BF42BBD64AE00855F77 /* NotchAppearance.swift */,
+				185A2BF52BBD64AE00855F77 /* SeperatorAppearance.swift */,
+			);
+			path = CountryPicker;
+			sourceTree = "<group>";
+		};
 		489D406426BBE5DD0009AB39 = {
 			isa = PBXGroup;
 			children = (
@@ -230,6 +294,10 @@
 		489D41C526BC04F80009AB39 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				185A2E252BBFD4EB00855F77 /* CountryPicker.framework */,
+				185A2E222BBFD08800855F77 /* CountryPicker.xcframework */,
+				185A2C072BBD9C5B00855F77 /* CountryPickerView */,
+				185A275A2BBC392500855F77 /* PhoneNumberKit.xcframework */,
 				C5D3B93F2A9355B00023B66E /* OpenSSL.xcframework */,
 				C544FF0528C5E2EB00C0B406 /* CryptoKit.framework */,
 				C544FF0628C5E2EB00C0B406 /* CryptoTokenKit.framework */,
@@ -247,6 +315,14 @@
 				48B90A0129A2656100508E63 /* SignatureViewController.swift */,
 			);
 			path = SignatureScreen;
+			sourceTree = "<group>";
+		};
+		48CD62FB2C076B83002B635D /* AnimationView */ = {
+			isa = PBXGroup;
+			children = (
+				48CD62FA2C076B83002B635D /* AnimationView.swift */,
+			);
+			path = AnimationView;
 			sourceTree = "<group>";
 		};
 		48DF760C29699A22000D519A /* ContainerVC */ = {
@@ -323,6 +399,7 @@
 		C538D74E28EC82C50033BB53 /* DocConfirmation */ = {
 			isa = PBXGroup;
 			children = (
+				48CD62FB2C076B83002B635D /* AnimationView */,
 				C538D74F28EC83F80033BB53 /* Controller */,
 			);
 			path = DocConfirmation;
@@ -357,6 +434,7 @@
 		C544FEE428C2303700C0B406 /* AmaniUI */ = {
 			isa = PBXGroup;
 			children = (
+				185A2BF62BBD64AE00855F77 /* CountryPicker */,
 				C56169302B84CCF400050A8D /* NonKYCStepManager */,
 				C5A06F6F29127C0C009520AF /* DocumentHandler */,
 				C5B07D6C290048E300243A5B /* Assets */,
@@ -366,6 +444,7 @@
 				C544FEE528C2303700C0B406 /* AmaniUI.h */,
 				C544FEF128C24DE500C0B406 /* AmaniUI.swift */,
 				484E26F7295A3DC700839E54 /* AmaniUIDelegate.swift */,
+				18E7B2CA2BD271370073C268 /* PrivacyInfo.xcprivacy */,
 			);
 			path = AmaniUI;
 			sourceTree = "<group>";
@@ -578,6 +657,7 @@
 			isa = PBXGroup;
 			children = (
 				C5B07D6D290048E300243A5B /* Assets.xcassets */,
+				185A2BEA2BBD64AE00855F77 /* countries.json */,
 				C5B07D6E290048E300243A5B /* Animations */,
 			);
 			path = Assets;
@@ -763,11 +843,13 @@
 				483D72BE296C8D28004AF421 /* tur_id_1_back.json in Resources */,
 				C5B07D7C290048E300243A5B /* Assets.xcassets in Resources */,
 				483D72BD296C8D28004AF421 /* tur_pa_0_front.json in Resources */,
+				18E7B2CB2BD271370073C268 /* PrivacyInfo.xcprivacy in Resources */,
 				483D72C0296C8D28004AF421 /* xxx_se_0_front.json in Resources */,
 				C52F145828F9819100D7A5A6 /* NFCViewController.xib in Resources */,
 				483D72C5296C8D28004AF421 /* tur_dl_0_front.json in Resources */,
 				483D72C8296C8D28004AF421 /* tur_dl_0_back.json in Resources */,
 				C54B58AD28C75279005DBAA9 /* KYCStepTableViewCell.xib in Resources */,
+				185A2BFB2BBD64AE00855F77 /* countries.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -784,17 +866,23 @@
 				C5FD14972B7FC78E00E02F95 /* KeyboardAvoidenceViewController.swift in Sources */,
 				C5A450722B3A33AB0064AAA7 /* PhoneOTPViewModel.swift in Sources */,
 				484E26F8295A3DC700839E54 /* AmaniUIDelegate.swift in Sources */,
+				185A2BFC2BBD64AE00855F77 /* CloseButtonAlignment.swift in Sources */,
 				C5A06F7229127C47009520AF /* IdHandler.swift in Sources */,
 				C53C475928C9E2DD00FA10B6 /* ThemeColor.swift in Sources */,
+				185A2C032BBD64AE00855F77 /* DismissButtonStyle.swift in Sources */,
 				48B90A0429A278E700508E63 /* SignatureHandler.swift in Sources */,
 				4842810E29D0F7DB00D48925 /* DocumentsHandler.swift in Sources */,
+				185A2C012BBD64AE00855F77 /* CountryPickerCell.swift in Sources */,
 				C56169422B84CD8400050A8D /* QuestionDropdownView.swift in Sources */,
 				C53C475728C9E2AF00FA10B6 /* KYCStepViewModel.swift in Sources */,
 				C5FD51482B39BF240057DB87 /* CheckMailView.swift in Sources */,
 				C52F145928F9819100D7A5A6 /* NFCViewController.swift in Sources */,
 				C523DEFD2B3A747100F68E32 /* CheckSMSViewModel.swift in Sources */,
 				C523DEFA2B3A745F00F68E32 /* CheckSMSView.swift in Sources */,
+				48CD62FC2C076B83002B635D /* AnimationView.swift in Sources */,
 				C54B58B428C761BF005DBAA9 /* UIColorExtensions.swift in Sources */,
+				185A2C042BBD64AE00855F77 /* NotchAppearance.swift in Sources */,
+				185A2C002BBD64AE00855F77 /* CountryManager.swift in Sources */,
 				C5A4506F2B3A338F0064AAA7 /* PhoneOTPView.swift in Sources */,
 				4856111E29DC91CE00E70D77 /* DocumentsHandlerDelegate.swift in Sources */,
 				C58BD65428EEEE19009301EC /* OvalOverlayView.swift in Sources */,
@@ -811,16 +899,19 @@
 				C52F144F28F5AE3D00D7A5A6 /* VersionViewController.swift in Sources */,
 				C52F145028F5AE3D00D7A5A6 /* VersionSelectTableViewCell.swift in Sources */,
 				C54B58AB28C75279005DBAA9 /* HomeViewController.swift in Sources */,
+				185A2BF72BBD64AE00855F77 /* String+Extension.swift in Sources */,
 				C5A06F762913ED9E009520AF /* SelfieHandler.swift in Sources */,
 				C56169412B84CD8400050A8D /* QuestionSubmitButton.swift in Sources */,
 				C5FD513F2B39BD970057DB87 /* EmailOTPView.swift in Sources */,
 				C52F145228F5B70400D7A5A6 /* DocumentHandler.swift in Sources */,
 				48EAA84E29E37C9B001A2A35 /* SignatureViewController.swift in Sources */,
+				185A2BFD2BBD64AE00855F77 /* ColorCompatibility.swift in Sources */,
 				C54B58B128C76160005DBAA9 /* BaseViewController.swift in Sources */,
 				C5FD514A2B39BF240057DB87 /* CheckMailViewModel.swift in Sources */,
 				C56169512B84CEB600050A8D /* String+Extensions.swift in Sources */,
 				C523DEF72B3A740B00F68E32 /* CheckSMSViewController.swift in Sources */,
 				C53C475128C7B39800FA10B6 /* Constants.swift in Sources */,
+				185A2BFF2BBD64AE00855F77 /* Country.swift in Sources */,
 				C561694E2B84CDE200050A8D /* ProfileInfoViewController.swift in Sources */,
 				C56169442B84CD8400050A8D /* QuestionnaireHeaderView.swift in Sources */,
 				C5984DD728F9B35000DA64B3 /* UINavigationControllerExtensions.swift in Sources */,
@@ -828,15 +919,20 @@
 				C56169432B84CD8400050A8D /* SingleAnswerButton.swift in Sources */,
 				C5FD51362B39BD2D0057DB87 /* RoundedButton.swift in Sources */,
 				C5A4506C2B3A33820064AAA7 /* PhoneOTPViewController.swift in Sources */,
+				185A2BF82BBD64AE00855F77 /* UIStackView+Extension.swift in Sources */,
 				C5A06F7429127C55009520AF /* BaseDocumentHandler.swift in Sources */,
 				48DF761029699A8F000D519A /* ContainerViewController.swift in Sources */,
 				C561693E2B84CD8400050A8D /* QuestionnaireViewModel.swift in Sources */,
 				C53C475528C8D9C800FA10B6 /* UtilityModels.swift in Sources */,
 				C56169452B84CD8400050A8D /* AnswerButton.swift in Sources */,
+				185A2BFE2BBD64AE00855F77 /* Config.swift in Sources */,
+				185A2BF92BBD64AE00855F77 /* UIView+Extension.swift in Sources */,
 				C5BA62A42914006B004108B4 /* NFHandler.swift in Sources */,
 				C56169462B84CD8400050A8D /* QuestionnaireView.swift in Sources */,
 				C5FD513D2B39BD970057DB87 /* EmailOTPViewModel.swift in Sources */,
+				185A2C022BBD64AE00855F77 /* CountryPickerViewController.swift in Sources */,
 				C5FD51492B39BF240057DB87 /* CheckMailViewController.swift in Sources */,
+				185A2C052BBD64AE00855F77 /* SeperatorAppearance.swift in Sources */,
 				C5FD513E2B39BD970057DB87 /* EmailOTPScreenViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -973,6 +1069,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1008,6 +1108,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";

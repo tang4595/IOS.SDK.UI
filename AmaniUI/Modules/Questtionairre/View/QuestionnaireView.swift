@@ -15,6 +15,13 @@ class QuestionnaireView: UIView {
   private var step: KYCStepViewModel?
   private var cancellables: Set<AnyCancellable> = []
   private var completionHandler: (() -> Void)?
+
+  var appConfig: AppConfigModel? {
+        didSet {
+            guard let config = appConfig else { return }
+            setupUI()
+        }
+    }
   
   private lazy var tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .grouped)
@@ -26,7 +33,7 @@ class QuestionnaireView: UIView {
 
   override init(frame: CGRect) {
     super.init(frame: frame)
-    setupUI()
+//    setupUI()
   }
 
   required init?(coder: NSCoder) {
@@ -34,8 +41,8 @@ class QuestionnaireView: UIView {
   }
 
   func setupUI() {
-    tableView.backgroundColor = UIColor(hexString: "#EEF4FA")
-    backgroundColor = UIColor(hexString: "#EEF4FA")
+    tableView.backgroundColor = UIColor(hexString: appConfig?.generalconfigs?.appBackground ?? "#EEF4FA")
+    backgroundColor = UIColor(hexString: appConfig?.generalconfigs?.appBackground ?? "#EEF4FA")
     addSubview(tableView)
     tableView.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
@@ -98,6 +105,7 @@ extension QuestionnaireView: UITableViewDataSource {
     })
 
     let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: QuestionViewCell.self), for: indexPath) as! QuestionViewCell
+    cell.genConfig = appConfig?.generalconfigs 
     cell.isConfigured = false
     cell.question = questionForCell
     cell.configure(delegate: self, selectedAnswers: selectedAnswerForQuestion)
@@ -109,6 +117,7 @@ extension QuestionnaireView: UITableViewDataSource {
 extension QuestionnaireView: UITableViewDelegate {
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     let questionnaireHeader = QuestionnaireHeaderView()
+      questionnaireHeader.genConfig = appConfig?.generalconfigs
     let descriptionText = self.step?.documents.first?.versions?.first?.steps?.first?.captureDescription
     questionnaireHeader.setDescriptionLabelText(descriptionText ?? "Please answer the following simple questions to help us serve you better.")
     return questionnaireHeader
@@ -116,11 +125,16 @@ extension QuestionnaireView: UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
     let footerView = QuestionSubmitButton()
+    footerView.genConfig = self.appConfig?.generalconfigs
     footerView.bind {
       self.viewModel?.submitAnswers()
     }
     return footerView
   }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 200
+    }
 }
 
 extension QuestionnaireView: QuestionDelegate {

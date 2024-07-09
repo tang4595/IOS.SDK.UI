@@ -19,6 +19,14 @@ class CheckSMSView: UIView {
   private let retrySeconds = 120 // 2 minutes
   private var retryTime: Int
   private var timer: Timer?
+  var appConfig: AppConfigModel? {
+          didSet {
+              guard let config = appConfig else { return }
+              setupUI()
+              startRetryTimer()
+              setupErrorHandling()
+          }
+      }
   
   // MARK: Info Section
   private lazy var titleDescription: UILabel = {
@@ -45,7 +53,13 @@ class CheckSMSView: UIView {
   // MARK: Form Area
   private lazy var otpLegend: UILabel = {
     let label = UILabel()
-    label.text = "OTP (One Time PIN)"
+      if appConfig?.generalconfigs?.language != "ar" {
+          let captureDescriptionText = appConfig?.stepConfig?[1].documents?[0].versions?[0].steps?[0].captureDescription
+          let otpLangauge = captureDescriptionText?.extractTextWithinSingleQuotes()
+        label.text = "OTP (\(otpLangauge ?? "One time PIN"))"
+      } else {
+          label.text = "OTP (دبوس مرة واحدة)"
+      }
     label.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
     label.textColor = UIColor(hexString: "#20202F")   
     return label
@@ -55,7 +69,7 @@ class CheckSMSView: UIView {
     let stackView = UIStackView(arrangedSubviews: [otpLegend])
     return stackView
   }()
-  
+
   private lazy var otpInput: RoundedTextInput = {
     let input = RoundedTextInput(
       placeholderText: "OTP Code",
@@ -77,7 +91,7 @@ class CheckSMSView: UIView {
   
   private lazy var timerLabel: UILabel = {
     let label = UILabel()
-    label.text = "in 02:00"
+    label.text = "02:00"
     label.font = .systemFont(ofSize: 15.0, weight: .regular)
     return label
   }()
@@ -86,7 +100,7 @@ class CheckSMSView: UIView {
     let stackView = UIStackView(arrangedSubviews: [timerButton, timerLabel])
     stackView.axis = .horizontal
     stackView.alignment = .center
-    stackView.distribution = .fillEqually
+    stackView.distribution = .fillProportionally
     stackView.spacing = 6.0
     return stackView
   }()
@@ -100,16 +114,18 @@ class CheckSMSView: UIView {
     
     stackView.axis = .vertical
     stackView.spacing = 6.0
+    stackView.alignment = .center
     stackView.setCustomSpacing(32.0, after: otpInput)
     return stackView
   }()
   
   // MARK: Form Buttons
   
-  let submitButton: RoundedButton = {
+  private lazy var submitButton: RoundedButton = {
+     
     let button = RoundedButton(
-      withTitle: "Verify Phone",
-      withColor: UIColor(hexString: "#EA3365")
+      withTitle:  appConfig?.stepConfig?[2].documents?[0].versions?[0].steps?[0].captureTitle ?? "Verify Phone",
+      withColor: UIColor(hexString: appConfig?.generalconfigs?.primaryButtonBackgroundColor ?? "#EA3365")
     )
     return button
   }()
@@ -132,19 +148,31 @@ class CheckSMSView: UIView {
     retryTime = retrySeconds
     
     super.init(frame: frame)
-    setupUI()
-    startRetryTimer()
-    setupErrorHandling()
+   
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+    
+    deinit {
+      NotificationCenter.default.removeObserver(
+        self,
+        name: NSNotification.Name(
+          AppConstants.AmaniDelegateNotifications.onError.rawValue
+        ),
+        object: nil
+      )
+    }
   
   func setupUI() {
     addSubview(mainStackView)
     mainStackView.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
+    otpLegend.leadingAnchor.constraint(equalTo: otpInput.leadingAnchor),
+    otpInput.leadingAnchor.constraint(equalTo: formStackView.leadingAnchor, constant: 4),
+    otpInput.trailingAnchor.constraint(equalTo: formStackView.trailingAnchor, constant: -4),
+        
       mainStackView.topAnchor.constraint(equalTo: topAnchor),
       mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
       mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -180,7 +208,7 @@ class CheckSMSView: UIView {
     let minutes = (retryTime / 60)
     let seconds = (retryTime % 60)
     
-    timerLabel.text = String(format: "in %02d:%02d", minutes, seconds)
+    timerLabel.text = String(format: "%02d:%02d", minutes, seconds)
   }
   
   func bind(
@@ -264,7 +292,8 @@ class CheckSMSView: UIView {
   }
   
   func setupErrorHandling() {
-    NotificationCenter.default.addObserver(self, selector: #selector(didReceiveError(_:)), name: Notification.Name("ai.amani.onError"), object: nil)
+//    NotificationCenter.default.addObserver(self, selector: #selector(didReceiveError(_:)), name: Notification.Name("ai.amani.onError"), object: nil)
+      NotificationCenter.default.addObserver(self, selector: #selector(didReceiveError(_:)), name: Notification.Name(AppConstants.AmaniDelegateNotifications.onError.rawValue), object: nil)
   }
   
   @objc func didReceiveError(_ notification: Notification) {
@@ -312,4 +341,5 @@ extension CheckSMSView: UITextFieldDelegate {
     viewModel.submitOTP()
     return true
   }
+
 }

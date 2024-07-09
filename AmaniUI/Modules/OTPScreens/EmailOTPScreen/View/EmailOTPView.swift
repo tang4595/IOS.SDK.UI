@@ -15,8 +15,15 @@ class EmailOTPView: UIView {
   private var cancellables = Set<AnyCancellable>()
   private var viewModel: EmailOTPViewModel!
   private var completionHandler: (() -> Void)? = nil
-  private var emailValidationText: String = "This email Address is wrong"
-  
+//  private var emailValidationText: String? = "This email Address is wrong"
+    var appConfig: AppConfigModel? {
+          didSet {
+              guard let config = appConfig else { return }
+              setupUI()
+              setupErrorHandling()
+          }
+      }
+
   private lazy var descriptionText: UILabel = {
     let label = UILabel()
     label.text = "We will send you a ‘one time PIN’ to reset your password"
@@ -50,8 +57,8 @@ class EmailOTPView: UIView {
   
   private lazy var submitButton: RoundedButton = {
     let button = RoundedButton(
-      withTitle: "Continue",
-      withColor: UIColor(hexString: "#EA3365")
+    withTitle: appConfig?.generalconfigs?.continueText ?? "Continue",
+    withColor: UIColor(hexString: appConfig?.generalconfigs?.primaryButtonBackgroundColor ?? "#EA3365")
     )
     return button
   }()
@@ -87,8 +94,6 @@ class EmailOTPView: UIView {
   
   override init(frame: CGRect) {
     super.init(frame: frame)
-    setupUI()
-    setupErrorHandling()
   }
   
   required init?(coder: NSCoder) {
@@ -112,6 +117,8 @@ class EmailOTPView: UIView {
       mainStackView.topAnchor.constraint(equalTo: topAnchor),
       mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor)
     ])
+      
+ 
   }
   
   func bind(
@@ -127,7 +134,9 @@ class EmailOTPView: UIView {
     viewModel.isEmailValidPublisher
       .sink(receiveValue: { [weak self] isValidEmail in
         if !isValidEmail {
-          self?.emailInput.showError(message: self!.emailValidationText)
+            let message = self?.appConfig?.stepConfig?[1].documents?[0].versions?[0].invalidEmailError
+            print(message)
+            self?.emailInput.showError(message: message ?? "This email Address is wrong")
           
         } else {
           self?.emailInput.hideError()
@@ -221,9 +230,31 @@ class EmailOTPView: UIView {
 }
 
 extension EmailOTPView: UITextFieldDelegate {
-  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    viewModel.submitEmailForOTP()
-    emailInput.field.resignFirstResponder()
-    return true
-  }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        viewModel.submitEmailForOTP()
+        emailInput.field.resignFirstResponder()
+        return true
+    }
+    
+//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+//        // Get the current text in the text field
+//        guard let currentText = textField.text as NSString? else { return true }
+//        
+//        // Construct the new text by replacing characters in the specified range
+//        var newText = currentText.replacingCharacters(in: range, with: string)
+//        
+//        // Make the first letter lowercase
+//        newText = newText.lowercasedFirstLetter()
+//        
+//        // Set the new text in the text field
+//        textField.text = newText
+//        
+//        // Notify the view model about the change
+//        viewModel.email = newText
+//        
+//        // Always return false to prevent the system from replacing the text
+//        return false
+//    }
+
+
 }

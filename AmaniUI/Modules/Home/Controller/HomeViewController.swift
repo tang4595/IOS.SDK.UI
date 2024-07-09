@@ -225,6 +225,11 @@ extension HomeViewController {
       
       try? self.generateKYCStepViewModels(from: rules)
       guard let stepModels = stepModels else {return}
+//        for stepModel in stepModels {
+//            
+//            self.kycStepTblView.updateStatus(for: stepModel, status: stepModel.status)
+//        }
+        
       self.kycStepTblView.updateDataAndReload(stepModels: stepModels)
     }
   }
