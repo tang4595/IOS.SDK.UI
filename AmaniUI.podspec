@@ -15,6 +15,6 @@ Pod::Spec.new do |s|
   s.platform     = :ios, "13.0"
   s.pod_target_xcconfig = { "OTHER_LDFLAGS" => "-weak_framework CryptoKit -weak_framework CoreNFC -weak_framework CryptoTokenKit" }
   s.dependency "lottie-ios", "~> 4.4.1"
-  s.dependency "AmaniSDK", "~> 3"
+  s.dependency "AmaniSDK", "~> 3.4"
 end
 

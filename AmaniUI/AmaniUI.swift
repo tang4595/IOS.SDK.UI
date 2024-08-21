@@ -50,7 +50,7 @@ public class AmaniUI {
   public var idVideoRecord:Bool = false
   public var idHologramDetection:Bool = false
   public var poseEstimationRecord:Bool = false
-  
+  public var isEnabledClientSideMrz: Bool = false
   
   /**
    This method used to get SDK bundle
@@ -168,6 +168,11 @@ public class AmaniUI {
   public func setPoseEstimationRecord(enable:Bool){
     poseEstimationRecord = enable
   }
+    
+    
+    public func setClientSideMrz(enabled: Bool) {
+    isEnabledClientSideMrz = enabled
+    }
   
   fileprivate func getConfig(customerModel: CustomerResponseModel?,
                              error: NetworkError?,

@@ -197,11 +197,14 @@ class DocConfirmationViewController: BaseViewController {
         if (documentVersion?.type?.contains("ID") ?? false && stepid == steps.back.rawValue) ||
             (documentVersion?.type?.contains("PA") ?? false && stepid == steps.front.rawValue )  {
             //         #warning("buraya full ekran indicator koyulacak")
-          createAnimationView()
-          Amani.sharedInstance.IdCapture().getMrz { mrzDocumentId in
-            self.mrzDocumentId = mrzDocumentId
             
-          }
+            if !AmaniUI.sharedInstance.isEnabledClientSideMrz {
+                createAnimationView()
+                Amani.sharedInstance.IdCapture().getMrz { mrzDocumentId in
+                  self.mrzDocumentId = mrzDocumentId
+                  
+                }
+            }
         }
       }
     }
@@ -254,20 +257,29 @@ class DocConfirmationViewController: BaseViewController {
 
 extension DocConfirmationViewController: mrzInfoDelegate {
     func mrzInfo(_ mrz: AmaniSDK.MrzModel?, documentId: String?) {
+        print("MRZ INFO DELEGATE'E GELDI")
         if let mrzData = mrz {
             var isReady: Bool = false
             switch AmaniUI.sharedInstance.apiVersion {
             case .v1:
                 isReady = true
             case .v2:
-                isReady = self.mrzDocumentId == documentId
+                if !AmaniUI.sharedInstance.isEnabledClientSideMrz {
+                    isReady = self.mrzDocumentId == documentId
+                } else {
+                    isReady = true
+                }
+
             default:
                 break
             }
             
             if isReady {
                 AmaniUI.sharedInstance.nviData = NviModel(mrzModel: mrzData)
-                dismissAnimationView()
+                if !AmaniUI.sharedInstance.isEnabledClientSideMrz {
+                    dismissAnimationView()
+                }
+                
             }
         } else {
             DispatchQueue.main.async {
