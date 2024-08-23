@@ -57,8 +57,9 @@ class DocConfirmationViewController: BaseViewController {
   func initialSetup() {
     let appConfig = try! Amani.sharedInstance.appConfig().getApplicationConfig()
     let buttonRadious = CGFloat(appConfig.generalconfigs?.buttonRadius ?? 10)
-      
+    if !AmaniUI.sharedInstance.isEnabledClientSideMrz {
       Amani.sharedInstance.setMRZDelegate(delegate: self)
+    }
     // Setting labels
     titleLabel.text = documentStep?.confirmationTitle ?? ""
     descriptionLabel.text = documentStep?.confirmationDescription ?? ""

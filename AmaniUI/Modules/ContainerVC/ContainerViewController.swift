@@ -111,6 +111,9 @@ class ContainerViewController: BaseViewController {
   }
   
   func initialSetup() {
+    if AmaniUI.sharedInstance.isEnabledClientSideMrz {
+      Amani.sharedInstance.setMRZDelegate(delegate: self)
+    }
     let appConfig = try! Amani.sharedInstance.appConfig().getApplicationConfig()
     let buttonRadious = CGFloat(appConfig.generalconfigs?.buttonRadius ?? 10)
 
@@ -163,162 +166,43 @@ class ContainerViewController: BaseViewController {
     }
   
 }
-
-
-//import UIKit
-//import Lottie
-//import AmaniSDK
-//
-//class ContainerViewController: BaseViewController {
-//    private var animationName: String?
-//    private var callback: VoidCallback?
-//    private var disappearCallback: VoidCallback?
-//    private var docStep: DocumentStepModel?
-//    private var lottieAnimationView: LottieAnimationView?
-//    private var step: steps = .front
-//    private var isDissapeared = false
-//
-//    lazy var btnContinue: UIButton = {
-//        let button = UIButton()
-//        button.translatesAutoresizingMaskIntoConstraints = false
-//        button.addTarget(self, action: #selector(ActBtnContinue(_:)), for: .touchUpInside)
-//        return button
-//    }()
-//
-//    lazy var animationView: UIView = {
-//        let view = UIView()
-//        view.translatesAutoresizingMaskIntoConstraints = false
-//        return view
-//    }()
-//
-//    lazy var titleLabel: UILabel = {
-//        let label = UILabel()
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        label.textAlignment = .center
-//        label.textColor = .white
-//        label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
-//        return label
-//    }()
-//
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        initialSetup()
-//    }
-//
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        isDissapeared = false
-//
-//        if let animationName = animationName {
-//            var side: String = "front"
-//            switch step {
-//            case .front:
-//                side = "front"
-//                break
-//            case .back:
-//                side = "back"
-//                break
-//            default:
-//                side = "front"
-//                break
-//            }
-//            var name = "\((animationName.lowercased()))_\(side)"
-//
-//            let appConfig = try! Amani.sharedInstance.appConfig().getApplicationConfig() // Move appConfig declaration here
-//
-//            if ((AmaniUI.sharedInstance.getBundle().url(forResource: name, withExtension: "json")?.isFileURL) == nil) {
-//                name = "xx_id_0_\(side)"
-//            }
-//            lottieInit(name: name) {[weak self] _ in
-//                self?.callback?()
-//            }
-//        } else {
-//            lottieAnimationView?.removeFromSuperview()
-//            self.callback?()
+extension ContainerViewController: mrzInfoDelegate {
+  func mrzInfo(_ mrz: AmaniSDK.MrzModel?, documentId: String?) {
+    print("MRZ INFO DELEGATE'E GELDI")
+    if let mrzData = mrz {
+      var isReady: Bool = false
+      switch AmaniUI.sharedInstance.apiVersion {
+      case .v1:
+        isReady = true
+      case .v2:
+        if AmaniUI.sharedInstance.isEnabledClientSideMrz {
+          isReady = true
+        }
+      default:
+        break
+      }
+      
+      if isReady {
+        AmaniUI.sharedInstance.nviData = NviModel(mrzModel: mrzData)
+      }
+    } else {
+//      DispatchQueue.main.async {
+//        var actions: [(String, UIAlertAction.Style)] = []
+//        
+//        let title = self.appConfig?.generalconfigs?.tryAgainText
+//        let buttonTitle = self.appConfig?.generalconfigs?.okText
+//        let message = self.documentVersion?.mrzReadErrorText
+//        
+//        actions.append(("\(buttonTitle ?? "Re-try")", UIAlertAction.Style.default))
+//        
+//        AlertDialogueUtility.shared.showAlertWithActions(vc: self, title: title, message: message, actions: actions) { index in
+//          if index == 0 {
+//            self.dismissAnimationView()
+//            self.popViewController()
+//          }
 //        }
-//    }
-//
-//    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//        print("Container View disappear")
-//        disappearCallback?()
-//        isDissapeared = true
-//    }
-//
-//    func bind(animationName: String?, docStep: DocumentStepModel, step: steps, callback: @escaping VoidCallback) {
-//        self.animationName = animationName
-//        self.callback = callback
-//        self.step = step
-//        self.docStep = docStep
-//    }
-//
-//    func setDisappearCallback(_ callback: @escaping VoidCallback) {
-//        self.disappearCallback = callback
-//    }
-//
-//    @objc func ActBtnContinue(_ sender: Any) {
-//        lottieAnimationView?.stop()
-//    }
-//
-//    func initialSetup() {
-//        let appConfig = try! Amani.sharedInstance.appConfig().getApplicationConfig() // Move appConfig declaration here
-//
-//        view.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.appBackground ?? "#263B5B")
-//
-//        // Navigation Bar
-//        setNavigationBarWith(title: docStep?.captureTitle ?? "", textColor: UIColor(hexString: appConfig.generalconfigs?.topBarFontColor ?? "ffffff"))
-//        setNavigationLeftButton(TintColor: appConfig.generalconfigs?.topBarFontColor ?? "ffffff")
-//
-//        // Button setup
-//        let buttonRadious = CGFloat(appConfig.generalconfigs?.buttonRadius ?? 10)
-//        btnContinue.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonBackgroundColor ?? ThemeColor.primaryColor.toHexString())
-//        btnContinue.layer.borderColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonBorderColor ?? "#263B5B").cgColor
-//        btnContinue.setTitle(appConfig.generalconfigs?.continueText, for: .normal)
-//        btnContinue.setTitleColor(UIColor(hexString: appConfig.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
-//        btnContinue.tintColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString())
-//        btnContinue.addCornerRadiousWith(radious: buttonRadious)
-//
-//        // Add subviews
-//        view.addSubview(btnContinue)
-//        view.addSubview(animationView)
-//
-//        // Positioning subviews
-//        NSLayoutConstraint.activate([
-//            btnContinue.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//            btnContinue.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20), // Adjust bottom constant as needed
-//            btnContinue.widthAnchor.constraint(equalToConstant: 200), // Adjust width as needed
-//            btnContinue.heightAnchor.constraint(equalToConstant: 50), // Adjust height as needed
-//
-//            animationView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20), // Adjust top constant as needed
-//            animationView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20), // Adjust leading constant as needed
-//            animationView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20), // Adjust trailing constant as needed
-//            animationView.bottomAnchor.constraint(equalTo: btnContinue.topAnchor, constant: -20) // Adjust bottom constant as needed
-//        ])
-//
-//        // Set up label
-//        titleLabel.text = "Your Label Text"
-//        animationView.addSubview(titleLabel)
-//
-//        // Position label
-//        NSLayoutConstraint.activate([
-//            titleLabel.centerXAnchor.constraint(equalTo: animationView.centerXAnchor),
-//            titleLabel.centerYAnchor.constraint(equalTo: animationView.centerYAnchor),
-//            titleLabel.leadingAnchor.constraint(equalTo: animationView.leadingAnchor, constant: 20), // Adjust leading constant as needed
-//            titleLabel.trailingAnchor.constraint(equalTo: animationView.trailingAnchor, constant: -20) // Adjust trailing constant as needed
-//        ])
-//    }
-//
-//    private func lottieInit(name: String = "xx_id_0_front", completion: @escaping(_ finishedAnimation: Int) -> ()) {
-//        lottieAnimationView = .init(name: name, bundle: AmaniUI.sharedInstance.getBundle())
-//        lottieAnimationView!.frame = animationView.bounds
-//        lottieAnimationView!.backgroundColor = .clear
-//        animationView.addSubview(lottieAnimationView!)
-//        lottieAnimationView?.bringSubviewToFront(view)
-//        lottieAnimationView!.play {[weak self] (_) in
-//            self?.lottieAnimationView!.removeFromSuperview()
-//            if let isdp = self?.isDissapeared, !isdp {
-//                completion(steps.front.rawValue)
-//            }
-//        }
-//    }
-//}
+//      }
+      
+    }
+  }
+}
