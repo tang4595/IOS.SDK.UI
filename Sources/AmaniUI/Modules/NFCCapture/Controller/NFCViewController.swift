@@ -90,14 +90,13 @@ class NFCViewController: BaseViewController {
     }
  
     func scanNFC() async {
-    let tryAgainText = try? Amani.sharedInstance.appConfig().getApplicationConfig().generalconfigs?.tryAgainText
 //    let idCaptureModule = Amani.sharedInstance.IdCapture()
-        
+      self.continueButton.isEnabled = false
 //    guard let nvi = AmaniUI.sharedInstance.nviData else { return }
 //    let isDone = await idCaptureModule.startNFC(nvi: nvi)
 //    self.doNext(done: isDone)
-    
     if let nvi:NviModel = AmaniUI.sharedInstance.nviData {
+      print(nvi)
       let isDone = await idCaptureModule.startNFC(nvi: nvi)
         self.doNext(done: isDone)
       

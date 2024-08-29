@@ -77,6 +77,7 @@ class IdHandler: DocumentHandler {
       idCaptureModule.setType(type: version.type!)
       idCaptureModule.setVideoRecording(enabled: AmaniUI.sharedInstance.idVideoRecord)
       idCaptureModule.setIdHologramDetection(enabled:AmaniUI.sharedInstance.idHologramDetection)
+      idCaptureModule.setClientSideMRZ(enabled: AmaniUI.sharedInstance.isEnabledClientSideMrz)
         var workingStep = workingStepIndex
         // FIXME: remove or increase manualcrop timeout
         idCaptureModule.setManualCropTimeout(Timeout: 30)
