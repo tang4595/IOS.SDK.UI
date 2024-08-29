@@ -170,9 +170,17 @@ public class AmaniUI {
   }
     
     
-    public func setClientSideMrz(enabled: Bool) {
+  public func setClientSideMrz(enabled: Bool) {
     isEnabledClientSideMrz = enabled
+  }
+
+  public func setSSLPinning(certificate:URL) throws{
+    do {
+      try sharedSDKInstance.setSSLPinning(certificate: certificate)
+    } catch (let error){
+      throw error
     }
+  }
   
   fileprivate func getConfig(customerModel: CustomerResponseModel?,
                              error: NetworkError?,
