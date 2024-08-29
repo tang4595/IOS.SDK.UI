@@ -5,7 +5,7 @@
 //  Created by Bedri Doğan on 29.05.2024.
 //
 
-import Foundation
+import UIKit
 import AmaniSDK
 
 
