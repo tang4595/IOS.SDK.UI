@@ -30,7 +30,7 @@ class SelfieHandler: DocumentHandler {
     }
     let animationVC = ContainerViewController(
       nibName: String(describing: ContainerViewController.self),
-      bundle: Bundle(for: ContainerViewController.self)
+      bundle: AmaniUI.sharedInstance.getBundle()
     )
     animationVC.stepConfig = stepViewModel.stepConfig
     self.topVC.navigationController?.pushViewController(animationVC, animated: true)

@@ -12,6 +12,7 @@ import AmaniSDK
 /**
  Base controller for all view controllers
  */
+
 class BaseViewController: UIViewController {
   
 //  let orientation: UIInterfaceOrientationMask = .portrait
@@ -69,7 +70,7 @@ class BaseViewController: UIViewController {
   
   func setNavigationLeftButton(TintColor:String? = nil) {
     let leftButton: UIButton = UIButton(type: .custom)
-    leftButton.setImage(UIImage(named: "ic_backArrow", in: Bundle(for: HomeViewController.self), compatibleWith: nil), for: .normal)
+    leftButton.setImage(UIImage(named: "ic_backArrow", in: AmaniUI.sharedInstance.getBundle(), compatibleWith: nil), for: .normal)
     leftButton.tintColor = UIColor(hexString: TintColor ?? navBarFontColor)
     leftButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
     leftButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
@@ -81,7 +82,7 @@ class BaseViewController: UIViewController {
   
   func setPopButton(TintColor:String? = nil) {
     let leftButton: UIButton = UIButton(type: .custom)
-    leftButton.setImage(UIImage(named: "ic_backArrow", in: Bundle(for: HomeViewController.self), compatibleWith: nil), for: .normal)
+    leftButton.setImage(UIImage(named: "ic_backArrow", in: AmaniUI.sharedInstance.getBundle(), compatibleWith: nil), for: .normal)
     leftButton.tintColor = UIColor(hexString: TintColor ?? navBarFontColor)
     leftButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
     leftButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)

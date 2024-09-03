@@ -40,7 +40,7 @@ class IdHandler: DocumentHandler {
     func showContainerVC(version: DocumentVersion, workingStep: Int, completion: @escaping StepCompletionCallback) {
         let containerVC = ContainerViewController(
             nibName: String(describing: ContainerViewController.self),
-            bundle: Bundle(for: ContainerViewController.self)
+            bundle:  AmaniUI.sharedInstance.getBundle()
         )
         containerVC.stepConfig = stepViewModel.stepConfig
         // NOTE(ddnzcn): For future refactor consider removing this logic as this
@@ -114,7 +114,7 @@ class IdHandler: DocumentHandler {
     private func startNFCCapture(docVer: DocumentVersion, completion: @escaping StepCompletionCallback) {
         let nfcCaptureView = NFCViewController(
             nibName: String(describing: NFCViewController.self),
-            bundle: Bundle(for: NFCViewController.self)
+            bundle: AmaniUI.sharedInstance.getBundle()
         )
         DispatchQueue.main.async {
             nfcCaptureView.bind(documentVersion: docVer) {

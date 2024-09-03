@@ -4,6 +4,7 @@ import AmaniSDK
 /**
 This class represents the cell class of Version Selector
 */
+@objc(VersionSelectTableViewCell)
 class VersionSelectTableViewCell: UITableViewCell {
     
     // MARK: - IBOutlets

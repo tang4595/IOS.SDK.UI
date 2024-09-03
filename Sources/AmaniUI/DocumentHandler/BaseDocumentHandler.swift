@@ -27,7 +27,7 @@ extension DocumentHandler {
     
     let confirmVC = DocConfirmationViewController(
       nibName: String(describing: DocConfirmationViewController.self),
-      bundle: Bundle(for: DocConfirmationViewController.self)
+      bundle: AmaniUI.sharedInstance.getBundle()
     )
     
     confirmVC.bind(image: image, documentID: docID, docVer: docVer, docStep: docStep,stepid: stepId, callback: completion)

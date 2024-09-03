@@ -27,7 +27,7 @@ class SignatureHandler: DocumentHandler {
       
       let SignatureVC = SignatureViewController(
         nibName: String(describing: SignatureViewController.self),
-        bundle: Bundle(for: SignatureViewController.self)
+        bundle: AmaniUI.sharedInstance.getBundle()
       )
       
       SignatureVC.start( docStep: version.steps![steps.front.rawValue], version: version) { [weak self] previewImage in

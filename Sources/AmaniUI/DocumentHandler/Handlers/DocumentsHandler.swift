@@ -27,7 +27,7 @@ class DocumentsHandler: NSObject, DocumentHandler{
     self.docID = docID
     ContainerVC = ContainerViewController(
         nibName: String(describing: ContainerViewController.self),
-        bundle: Bundle(for: ContainerViewController.self)
+        bundle: AmaniUI.sharedInstance.getBundle()
     )
   }
   

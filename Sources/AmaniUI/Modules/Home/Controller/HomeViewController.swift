@@ -173,13 +173,13 @@ extension HomeViewController {
     if let nonKYCManager = self.nonKYCStepManager, nonKYCManager.hasPostSteps() {
         nonKYCManager.startFlow(forPreSteps: false) {_ in
           DispatchQueue.main.async {
-            let successVC = SuccessViewController(nibName: String(describing: SuccessViewController.self), bundle: Bundle(for: SuccessViewController.self))
+            let successVC = SuccessViewController(nibName: String(describing: SuccessViewController.self), bundle: AmaniUI.sharedInstance.getBundle())
             self.navigationController?.pushViewController(successVC, animated: true)
           }
         }
     } else {
       DispatchQueue.main.async {
-        let successVC = SuccessViewController(nibName: String(describing: SuccessViewController.self), bundle: Bundle(for: SuccessViewController.self))
+        let successVC = SuccessViewController(nibName: String(describing: SuccessViewController.self), bundle: AmaniUI.sharedInstance.getBundle())
         self.navigationController?.pushViewController(successVC, animated: false)
       }  
     }

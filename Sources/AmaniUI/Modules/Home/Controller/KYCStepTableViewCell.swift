@@ -3,6 +3,7 @@ import AmaniSDK
 /**
  This class represents the cell class of KYC step
  */
+@objc(KYCStepTableViewCell)
 class KYCStepTableViewCell: UITableViewCell {
 
     // MARK: - IBOutlets

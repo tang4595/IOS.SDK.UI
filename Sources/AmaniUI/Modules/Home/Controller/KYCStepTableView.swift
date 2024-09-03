@@ -3,6 +3,7 @@ import AmaniSDK
 /**
  This class represents the KYC step list view
  */
+@objc(KYCStepTblView)
 class KYCStepTblView: UITableView {
 
     // MARK: - Local properties
@@ -31,7 +32,7 @@ class KYCStepTblView: UITableView {
     
     self.callback = onSelectCallback
     DispatchQueue.main.async {
-      self.register(UINib(nibName: String(describing: KYCStepTableViewCell.self), bundle: Bundle(for: KYCStepTableViewCell.self)), forCellReuseIdentifier: String(describing: KYCStepTableViewCell.self))
+      self.register(UINib(nibName: String(describing: KYCStepTableViewCell.self), bundle: AmaniUI.sharedInstance.getBundle()), forCellReuseIdentifier: String(describing: KYCStepTableViewCell.self))
       self.reloadData()
     }
     

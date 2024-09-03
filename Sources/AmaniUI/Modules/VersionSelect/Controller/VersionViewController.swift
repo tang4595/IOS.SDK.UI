@@ -4,6 +4,7 @@ import AmaniSDK
 /**
  The VersionViewController class is used to provide a user interface for version selection screen.
  */
+@objc(VersionViewController)
 class VersionViewController: BaseViewController {
   
   // MARK: - IBOutlets
@@ -48,7 +49,7 @@ class VersionViewController: BaseViewController {
     amaniLogo.tintColor = UIColor(hexString: textColor)
     versionSeclectionTblView.delegate = self
     versionSeclectionTblView.dataSource = self
-    versionSeclectionTblView.register(UINib(nibName: String(describing: VersionSelectTableViewCell.self), bundle: Bundle(for: VersionViewController.self)), forCellReuseIdentifier: String(describing: VersionSelectTableViewCell.self))
+    versionSeclectionTblView.register(UINib(nibName: String(describing: VersionSelectTableViewCell.self), bundle: AmaniUI.sharedInstance.getBundle()), forCellReuseIdentifier: String(describing: VersionSelectTableViewCell.self))
     versionSeclectionTblView.reloadData()
   }
   
