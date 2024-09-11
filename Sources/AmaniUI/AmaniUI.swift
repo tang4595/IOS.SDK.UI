@@ -82,7 +82,11 @@ public class AmaniUI {
               let bundle = Bundle(path: path)  {
       self.bundle = bundle
     } else {
+    #if !SPM
+        let bundle = Bundle(for: AmaniBundleLocator.self)
+    #else
       let bundle = Bundle.module
+    #endif
       self.bundle = bundle
     }
   }
@@ -277,7 +281,8 @@ public class AmaniUI {
   
   private func startKYCHome() {
     DispatchQueue.main.async {
-      self.initialVC = HomeViewController(nibName: String(describing: HomeViewController.self), bundle: self.getBundle())
+        self.initialVC = HomeViewController()
+//      self.initialVC = HomeViewController(nibName: String(describing: HomeViewController.self), bundle: self.getBundle())
       self.initialVC!.bind(customerData: self.customerRespData!, nonKYCManager: self.nonKYCStepManager)
       
       // Check if sdk navigation controller in pre kyc steps

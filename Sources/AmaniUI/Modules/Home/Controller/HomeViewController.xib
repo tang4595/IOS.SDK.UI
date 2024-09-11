@@ -3,18 +3,17 @@
     <device id="retina6_1" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeViewController" customModule="AmaniUI" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeViewController" customModule="AmaniUI">
             <connections>
                 <outlet property="amaniLogo" destination="AEM-Ze-QDw" id="coc-Ad-kIS"/>
                 <outlet property="descriptionLabel" destination="cbE-Yd-KLx" id="J2M-UI-8gW"/>
                 <outlet property="kycStepTblView" destination="3LH-QF-DIC" id="5nN-ba-ASh"/>
-                <outlet property="view" destination="AK6-mj-FQk" id="cle-nG-EPD"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>

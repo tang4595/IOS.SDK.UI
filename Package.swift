@@ -12,7 +12,6 @@ let package = Package(
     products: [
         .library(
             name: "AmaniUI",
-            type: .dynamic,
             targets: ["AmaniUI"]
         )
     ],

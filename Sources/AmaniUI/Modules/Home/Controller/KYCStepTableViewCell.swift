@@ -5,20 +5,56 @@ import AmaniSDK
  */
 @objc(KYCStepTableViewCell)
 class KYCStepTableViewCell: UITableViewCell {
+    // MARK: - Properties
+    private lazy var outerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
 
-    // MARK: - IBOutlets
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet weak var loaderView: UIActivityIndicatorView!
-    @IBOutlet private weak var outerView: UIView!
-
-    // MARK: - Life cycle methods
-    override func awakeFromNib() {
-        super.awakeFromNib()
-      outerView.addShadowWithBorder(shadowRadius: 4, shadowColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.25), shadowOpacity: 1, borderColor: .clear, borderWidth: 0, cornerRadious: CGFloat(AmaniUI.sharedInstance.config?.generalconfigs?.buttonRadius ?? 10))
-      if let bordercolor:String = AmaniUI.sharedInstance.config?.generalconfigs?.primaryButtonBorderColor {
-            outerView.addBorder(borderWidth: 2, borderColor: UIColor(hexString: bordercolor).cgColor)
+        view.addShadowWithBorder(
+            shadowRadius: 4,
+            shadowColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.25),
+            shadowOpacity: 1,
+            borderColor: .clear,
+            borderWidth: 0,
+            cornerRadious: CGFloat(AmaniUI.sharedInstance.config?.generalconfigs?.buttonRadius ?? 10)
+        )
+        if let bordercolor: String = AmaniUI.sharedInstance.config?.generalconfigs?.primaryButtonBorderColor {
+            view.addBorder(borderWidth: 2, borderColor: UIColor(hexString: bordercolor).cgColor)
         }
+
+        return view
+    }()
+    
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 15.0, weight: .bold)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 2
+        label.textAlignment = .left
+        return label
+    }()
+    
+    private lazy var loaderView: UIActivityIndicatorView = {
+       let loader = UIActivityIndicatorView()
+        loader.translatesAutoresizingMaskIntoConstraints = false
+        loader.backgroundColor = .clear
+        loader.color = .white
+      return loader
+    }()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        setupUI()
+        self.selectionStyle = .none
     }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupUI()
+        self.selectionStyle = .none
+    }
+    
     // MARK: - Helper methods
     /**
      This method bind the data with view
@@ -63,12 +99,42 @@ class KYCStepTableViewCell: UITableViewCell {
           loaderView.stopAnimating()
         }
       }
-      
-      self?.titleLabel.text = labelTest
-      self?.titleLabel.textColor = model.textColor
-      self?.outerView.backgroundColor = model.buttonColor
-      self?.outerView.alpha = alpha
+        self?.titleLabel.text = labelTest
+        self?.titleLabel.textColor = model.textColor
+        self?.outerView.backgroundColor = model.buttonColor
+        self?.outerView.alpha = alpha
+        
     }
   }
 
+}
+
+// MARK: Setting the constraints
+extension KYCStepTableViewCell {
+    private func setupUI() {
+        contentView.addSubview(outerView)
+        outerView.addSubviews(titleLabel, loaderView)
+        
+        NSLayoutConstraint.activate([
+            outerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
+            outerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
+            outerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            outerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+           
+            
+            titleLabel.leadingAnchor.constraint(equalTo: outerView.leadingAnchor, constant: 20),
+            titleLabel.trailingAnchor.constraint(equalTo: outerView.trailingAnchor, constant: 11),
+            titleLabel.bottomAnchor.constraint(equalTo: outerView.bottomAnchor),
+            titleLabel.topAnchor.constraint(equalTo: outerView.topAnchor),
+            titleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 50),
+            
+            
+            loaderView.topAnchor.constraint(equalTo: outerView.topAnchor),
+            loaderView.bottomAnchor.constraint(equalTo: outerView.bottomAnchor),
+            loaderView.trailingAnchor.constraint(equalTo: outerView.trailingAnchor),
+            loaderView.widthAnchor.constraint(equalToConstant: 65)
+            
+        ])
+    }
+    
 }

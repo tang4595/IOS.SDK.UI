@@ -6,23 +6,38 @@ import CoreNFC
  The HomeViewController class is used to provide a user interface for home/main screen.
  */
 class HomeViewController: BaseViewController {
-  
-  var viewAppeared:Bool = false
-  @IBOutlet private weak var kycStepTblView: KYCStepTblView!
-  @IBOutlet weak var amaniLogo:UIImageView!
-  
-  @IBOutlet weak var descriptionLabel: UILabel!
-  var stepModels: [KYCStepViewModel]?
-  var customerData: CustomerResponseModel? = nil
-  
-  let appConfig = try? Amani.sharedInstance.appConfig().getApplicationConfig()
-  
-  var nonKYCStepManager: NonKYCStepManager? = nil
+    let appConfig = try? Amani.sharedInstance.appConfig().getApplicationConfig()
+    var viewAppeared:Bool = false
+    
+    var stepModels: [KYCStepViewModel]?
+    var customerData: CustomerResponseModel? = nil
+    var nonKYCStepManager: NonKYCStepManager? = nil
+    
+    // MARK: - Properties
+    private lazy var descriptionLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+      
+        return label
+    }()
+    
+    private lazy var kycStepTblView: KYCStepTblView! = {
+       let tableView = KYCStepTblView()
+       tableView.translatesAutoresizingMaskIntoConstraints = false
+        
+       return tableView
+    }()
+    
+    private lazy var amaniLogo: UIImageView = {
+       let logo = UIImageView()
+       
+      return logo
+    }()
+    
+ // MARK: - HomeViewController LifeCycle
   override func viewDidLoad() {
     super.viewDidLoad()
-    // main description text
-    self.descriptionLabel.text = appConfig?.generalconfigs?.mainDescriptionText
-    self.descriptionLabel.textColor = UIColor(hexString: (appConfig?.generalconfigs?.topBarFontColor)!)
+      setupUI()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -143,6 +158,7 @@ class HomeViewController: BaseViewController {
   public func bind(customerData: CustomerResponseModel, nonKYCManager: NonKYCStepManager? = nil) {
     self.customerData = customerData
     self.nonKYCStepManager = nonKYCManager
+   
   }
   
 }
@@ -234,4 +250,32 @@ extension HomeViewController {
     }
   }
   
+}
+extension HomeViewController {
+    private func setupUI() {
+        DispatchQueue.main.async {
+            self.view.addSubview(self.descriptionLabel)
+            self.view.addSubview(self.kycStepTblView)
+            self.view.addSubview(self.amaniLogo)
+            
+//            self.view.addSubviews(self.kycStepTblView, self.descriptionLabel, self.amaniLogo)
+            
+            NSLayoutConstraint.activate([
+              self.descriptionLabel.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 40),
+              self.descriptionLabel.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+              self.descriptionLabel.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+              self.descriptionLabel.bottomAnchor.constraint(equalTo: self.kycStepTblView.topAnchor, constant: -40),
+              // kycStepTblView constraints
+              self.kycStepTblView.topAnchor.constraint(equalTo:  self.descriptionLabel.bottomAnchor, constant: 40),
+              self.kycStepTblView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+              self.kycStepTblView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+              self.kycStepTblView.bottomAnchor.constraint(equalTo:  self.view.safeAreaLayoutGuide.bottomAnchor, constant: -40),
+
+              // amaniLogo constraints
+              self.amaniLogo.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -40),
+              self.amaniLogo.centerXAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerXAnchor)
+            ])
+        }
+     
+    }
 }
