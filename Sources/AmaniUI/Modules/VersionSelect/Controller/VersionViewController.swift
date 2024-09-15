@@ -6,11 +6,50 @@ import AmaniSDK
  */
 @objc(VersionViewController)
 class VersionViewController: BaseViewController {
+    
   
-  // MARK: - IBOutlets
-  @IBOutlet weak var versionSeclectionTblView: UITableView!
-  @IBOutlet weak var descriptionLabel: UILabel!
-  @IBOutlet weak var amaniLogo:UIImageView!
+  // MARK: - Properties
+    
+    private lazy var headerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    private lazy var descriptionLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Please select the type of document to be used for identification."
+        label.textAlignment = .left
+        label.numberOfLines = 0
+        label.font = UIFont.systemFont(ofSize: 15.0, weight: .light)
+        return label
+    }()
+    
+    private lazy var versionSelectionTblView: UITableView = {
+        let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.isScrollEnabled = false
+        tableView.showsVerticalScrollIndicator = false
+        tableView.showsHorizontalScrollIndicator = false
+        tableView.separatorStyle = .none
+        return tableView
+    }()
+    
+    private lazy var amaniLogo: UIImageView = {
+       
+        let imageView = UIImageView(image: UIImage(named: "ic_poweredBy", in: AmaniUI.sharedInstance.getBundle(), with: nil)?.withRenderingMode(.alwaysTemplate))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        imageView.clipsToBounds = true
+        imageView.tintAdjustmentMode = .normal
+       
+        return imageView
+    }()
+//
+//  @IBOutlet weak var versionSeclectionTblView: UITableView!
+//  @IBOutlet weak var descriptionLabel: UILabel!
+//  @IBOutlet weak var amaniLogo:UIImageView!
   
   // MARK: - Local properties
   
@@ -30,6 +69,8 @@ class VersionViewController: BaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.initialSetUp()
+    self.setupUI()
+    self.setTableView()
   }
   
   // MARK: - initial set up methods
@@ -47,10 +88,7 @@ class VersionViewController: BaseViewController {
     descriptionLabel.textColor = UIColor(hexString: textColor)
     amaniLogo.isHidden = generalConfigs?.hideLogo ?? false
     amaniLogo.tintColor = UIColor(hexString: textColor)
-    versionSeclectionTblView.delegate = self
-    versionSeclectionTblView.dataSource = self
-    versionSeclectionTblView.register(UINib(nibName: String(describing: VersionSelectTableViewCell.self), bundle: AmaniUI.sharedInstance.getBundle()), forCellReuseIdentifier: String(describing: VersionSelectTableViewCell.self))
-    versionSeclectionTblView.reloadData()
+     
   }
   
   // MARK: - Helper methods
@@ -69,13 +107,24 @@ extension VersionViewController: UITableViewDelegate, UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: VersionSelectTableViewCell.self), for: indexPath) as? VersionSelectTableViewCell else {
-      return UITableViewCell()
-    }
+      guard let cell = tableView.dequeueReusableCell(withIdentifier: "VersionSelectTableViewCell", for: indexPath) as? VersionSelectTableViewCell else {
+          return UITableViewCell()
+      }
+//    guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: VersionSelectTableViewCell.self), for: indexPath) as? VersionSelectTableViewCell else {
+//      return UITableViewCell()
+//    }
     cell.bindViewWith(model: documentHandler!.versionList[indexPath.row])
     return cell
   }
-  
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 73
+    }
+
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 73
+    }
+    
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     guard let runner = documentHandler else { return }
     
@@ -84,4 +133,54 @@ extension VersionViewController: UITableViewDelegate, UITableViewDataSource {
     
   }
   
+}
+
+extension VersionViewController {
+    private func setTableView() {
+        versionSelectionTblView.delegate = self
+        versionSelectionTblView.dataSource = self
+        versionSelectionTblView.register(VersionSelectTableViewCell.self, forCellReuseIdentifier: String(describing: VersionSelectTableViewCell.self))
+        versionSelectionTblView.isScrollEnabled = false
+        versionSelectionTblView.showsVerticalScrollIndicator = false
+        versionSelectionTblView.showsHorizontalScrollIndicator = false
+        versionSelectionTblView.separatorStyle = .none
+        versionSelectionTblView.reloadData()
+    }
+    
+    private func setupUI() {
+        DispatchQueue.main.async {
+            self.view.addSubview(self.headerView)
+            self.view.addSubview(self.descriptionLabel)
+            self.view.addSubview(self.versionSelectionTblView)
+            self.view.addSubview(self.amaniLogo)
+            self.amaniLogo.tintColor = UIColor(hexString: "#D3D3D3")
+            
+            NSLayoutConstraint.activate([
+                self.headerView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0),
+                self.headerView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+                self.headerView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+                self.headerView.bottomAnchor.constraint(equalTo: self.descriptionLabel.topAnchor, constant: -40),
+                self.headerView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.059),
+                
+                self.descriptionLabel.topAnchor.constraint(equalTo: self.headerView.bottomAnchor, constant: 40),
+                self.descriptionLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
+                self.descriptionLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
+                self.descriptionLabel.bottomAnchor.constraint(equalTo: self.versionSelectionTblView.topAnchor, constant: -40),
+                
+                self.versionSelectionTblView.topAnchor.constraint(equalTo: self.descriptionLabel.bottomAnchor, constant: 40),
+                self.versionSelectionTblView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
+                self.versionSelectionTblView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
+                self.versionSelectionTblView.bottomAnchor.constraint(equalTo: self.amaniLogo.topAnchor, constant: -20),
+                
+//                self.amaniLogo.topAnchor.constraint(equalTo: self.versionSelectionTblView.bottomAnchor, constant: 20),
+                self.amaniLogo.widthAnchor.constraint(equalToConstant: 114),
+                self.amaniLogo.heightAnchor.constraint(equalToConstant: 13),
+                self.amaniLogo.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+                self.amaniLogo.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -30)
+                
+            
+            ])
+        }
+      
+    }
 }

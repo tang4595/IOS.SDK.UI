@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NFCViewController" customModule="AmaniUI" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NFCViewController" customModule="AmaniUI">
             <connections>
                 <outlet property="amaniLogo" destination="R30-cu-uev" id="fA6-yJ-u69"/>
                 <outlet property="continueButton" destination="QyE-Sx-ZOG" id="Rqi-UA-r5X"/>
@@ -90,7 +90,6 @@
                         <constraint firstItem="5ky-dd-5fC" firstAttribute="centerX" secondItem="KPo-vY-VLb" secondAttribute="centerX" id="UaV-VB-vGP"/>
                         <constraint firstItem="5ky-dd-5fC" firstAttribute="leading" secondItem="KPo-vY-VLb" secondAttribute="leading" id="gGV-xX-I5o"/>
                         <constraint firstItem="Rpc-1H-Kjv" firstAttribute="centerY" secondItem="KPo-vY-VLb" secondAttribute="centerY" id="i7E-pH-sfx"/>
-                        <constraint firstItem="Rpc-1H-Kjv" firstAttribute="centerX" secondItem="KPo-vY-VLb" secondAttribute="centerX" id="nF6-pb-IQM"/>
                         <constraint firstItem="6sM-7y-N0u" firstAttribute="leading" secondItem="KPo-vY-VLb" secondAttribute="leadingMargin" id="nRL-eH-Aou"/>
                         <constraint firstAttribute="trailing" secondItem="5ky-dd-5fC" secondAttribute="trailing" id="to0-f0-VWM"/>
                         <constraint firstAttribute="trailingMargin" secondItem="Rpc-1H-Kjv" secondAttribute="trailing" id="wPa-Lb-mrt"/>

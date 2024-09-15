@@ -108,7 +108,8 @@ class KYCStepViewModel {
       documentHandler.start(for: (documents.first?.id)!)
     } else {
       // Navigate to version select screen
-      let versionSelectScreen = VersionViewController(nibName: String(describing: VersionViewController.self), bundle: AmaniUI.sharedInstance.getBundle())
+        let versionSelectScreen = VersionViewController()
+//      let versionSelectScreen = VersionViewController(nibName: String(describing: VersionViewController.self), bundle: AmaniUI.sharedInstance.getBundle())
       versionSelectScreen.bind(runnerHelper: self.documentHandler,
                                docTitle: self.documentSelectionTitle,
                                docDescription: self.documentSelectionDescription,

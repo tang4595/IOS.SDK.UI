@@ -5,16 +5,78 @@ typealias VoidCallback = () -> Void
 
 @available(iOS 13, *)
 class NFCViewController: BaseViewController {
+    // MARK: Properties
+    private lazy var headerLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 22.0, weight: .bold)
+        label.textAlignment = .center
+        label.textColor = .black
+        return label
+    }()
+    
+    private lazy var continueButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("CONTINUE", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        
+        return button
+    }()
+    
+    private lazy var labelsContainerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private lazy var desc1Label: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 17.0, weight: .light)
+        label.textAlignment = .center
+        label.textColor = .black
+        return label
+    }()
+    
+    private lazy var desc2Label: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 17.0, weight: .light)
+        label.textAlignment = .center
+        label.textColor = .black
+        return label
+    }()
+    
+    private lazy var desc3Label: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 17.0, weight: .light)
+        label.textAlignment = .center
+        label.textColor = .black
+        return label
+    }()
+    
+    private lazy var amaniLogo: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "ic_poweredBy", in: AmaniUI.sharedInstance.getBundle(), with: nil)?.withRenderingMode(.alwaysTemplate))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        imageView.clipsToBounds = true
+        imageView.tintAdjustmentMode = .normal
+       
+        return imageView
+    }()
+    
   private var documentVersion: DocumentVersion?
   private var onFinishCallback: VoidCallback?
 
-  // MARK: Outlets
-  @IBOutlet var headerLabel: UILabel!
-  @IBOutlet var continueButton: UIButton!
-  @IBOutlet var desc1Label: UILabel!
-  @IBOutlet var desc2Label: UILabel!
-  @IBOutlet var desc3Label: UILabel!
-  @IBOutlet var amaniLogo: UIImageView!
+  
+//  @IBOutlet var headerLabel: UILabel!
+//  @IBOutlet var continueButton: UIButton!
+//  @IBOutlet var desc1Label: UILabel!
+//  @IBOutlet var desc2Label: UILabel!
+//  @IBOutlet var desc3Label: UILabel!
+//  @IBOutlet var amaniLogo: UIImageView!
     let idCaptureModule =  Amani.sharedInstance.IdCapture()
     let amani:Amani = Amani.sharedInstance
     var isDone: Bool = false
@@ -22,16 +84,17 @@ class NFCViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(true)
         Task { @MainActor in
+            setupUI()
             await initialSetup()
+            
+            continueButton.addTarget(self, action: #selector(continueButtonPressed(_:)), for: .touchUpInside)
         }
        
   }
   
     func initialSetup() async {
     guard let documentVersion = documentVersion else { return }
-    
-    
-        
+
     let generalConfigs = try? amani.appConfig().getApplicationConfig().generalconfigs
     
     let navFontColor = generalConfigs?.topBarFontColor ?? "ffffff"
@@ -70,11 +133,16 @@ class NFCViewController: BaseViewController {
     self.onFinishCallback = callback
   }
   
-    @IBAction func continueButtonPressed(_ sender: Any) {
+    
+    @objc func continueButtonPressed(_ sender: Any) {
         Task { @MainActor in
             await scanNFC()
         }
     }
+    
+//    @IBAction func continueButtonPressed(_ sender: Any) {
+//      
+//    }
     
     func uploadNFCResult() {
         idCaptureModule.upload(location: nil) { isUploadSuccess in
@@ -121,4 +189,55 @@ class NFCViewController: BaseViewController {
      }
   }
   
+}
+
+extension NFCViewController {
+    private func setupUI() {
+        DispatchQueue.main.async {
+            self.view.addSubviews(self.headerLabel, self.labelsContainerView, self.amaniLogo, self.continueButton )
+            self.labelsContainerView.addSubviews(self.desc1Label, self.desc2Label, self.desc3Label)
+            
+            NSLayoutConstraint.activate([
+                self.headerLabel.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 47),
+                self.headerLabel.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 23),
+                self.headerLabel.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -23),
+                self.headerLabel.bottomAnchor.constraint(equalTo: self.labelsContainerView.topAnchor, constant: -72),
+                self.headerLabel.heightAnchor.constraint(equalToConstant: 30),
+                
+                self.labelsContainerView.topAnchor.constraint(equalTo: self.headerLabel.bottomAnchor, constant: 72),
+                self.labelsContainerView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+                self.labelsContainerView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+                self.labelsContainerView.heightAnchor.constraint(equalToConstant: 229),
+                
+                self.desc1Label.leadingAnchor.constraint(equalTo: self.labelsContainerView.leadingAnchor),
+                self.desc1Label.trailingAnchor.constraint(equalTo: self.labelsContainerView.trailingAnchor),
+                self.desc1Label.centerXAnchor.constraint(equalTo: self.labelsContainerView.centerXAnchor),
+                self.desc1Label.heightAnchor.constraint(equalToConstant: 60),
+                
+                self.desc2Label.topAnchor.constraint(equalTo: self.desc1Label.bottomAnchor, constant: 20),
+                self.desc2Label.bottomAnchor.constraint(equalTo: self.desc3Label.topAnchor, constant: -20),
+                self.desc2Label.leadingAnchor.constraint(equalTo: self.labelsContainerView.leadingAnchor),
+                self.desc2Label.trailingAnchor.constraint(equalTo: self.labelsContainerView.trailingAnchor),
+                self.desc2Label.centerXAnchor.constraint(equalTo: self.labelsContainerView.centerXAnchor),
+                self.desc2Label.centerYAnchor.constraint(equalTo: self.labelsContainerView.centerYAnchor),
+                
+                self.desc3Label.topAnchor.constraint(equalTo: self.desc2Label.bottomAnchor, constant: 20),
+                self.desc3Label.leadingAnchor.constraint(equalTo: self.labelsContainerView.leadingAnchor),
+                self.desc3Label.trailingAnchor.constraint(equalTo: self.labelsContainerView.trailingAnchor),
+                self.desc3Label.centerXAnchor.constraint(equalTo: self.labelsContainerView.centerXAnchor),
+                
+                self.continueButton.widthAnchor.constraint(equalToConstant: 333),
+                self.continueButton.heightAnchor.constraint(equalToConstant: 50),
+                self.continueButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+                self.continueButton.bottomAnchor.constraint(equalTo: self.amaniLogo.topAnchor, constant: -20),
+                
+                self.amaniLogo.widthAnchor.constraint(equalToConstant: 114),
+                self.amaniLogo.heightAnchor.constraint(equalToConstant: 13),
+                self.amaniLogo.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+                self.amaniLogo.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -30)
+                
+            
+            ])
+        }
+    }
 }

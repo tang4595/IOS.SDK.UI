@@ -24,13 +24,13 @@ class SignatureHandler: DocumentHandler {
   
   func start(docStep: AmaniSDK.DocumentStepModel, version: AmaniSDK.DocumentVersion, workingStepIndex: Int, completion: @escaping StepCompletionCallback) {
     DispatchQueue.main.async {
+      let signatureVC = SignatureViewController()
+//      let SignatureVC = SignatureViewController(
+//        nibName: String(describing: SignatureViewController.self),
+//        bundle: AmaniUI.sharedInstance.getBundle()
+//      )
       
-      let SignatureVC = SignatureViewController(
-        nibName: String(describing: SignatureViewController.self),
-        bundle: AmaniUI.sharedInstance.getBundle()
-      )
-      
-      SignatureVC.start( docStep: version.steps![steps.front.rawValue], version: version) { [weak self] previewImage in
+        signatureVC.start( docStep: version.steps![steps.front.rawValue], version: version) { [weak self] previewImage in
         self?.startConfirmVC(image: previewImage, docStep: docStep, docVer: version) { [weak self] () in
           completion(.success(self!.stepViewModel))
           self?.topVC.navigationController?.popToViewController(ofClass: HomeViewController.self)
@@ -60,7 +60,7 @@ class SignatureHandler: DocumentHandler {
         //      SignatureVC.view.addSubview(selfieView)
         //      SignatureVC.view.bringSubviewToFront(selfieView)
       }
-      self.topVC.navigationController?.pushViewController(SignatureVC, animated: true)
+      self.topVC.navigationController?.pushViewController(signatureVC, animated: true)
 
     }
   }

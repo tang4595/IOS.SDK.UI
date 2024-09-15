@@ -25,10 +25,12 @@ class DocumentsHandler: NSObject, DocumentHandler{
     self.topVC = topVC
     self.stepViewModel = stepVM
     self.docID = docID
-    ContainerVC = ContainerViewController(
-        nibName: String(describing: ContainerViewController.self),
-        bundle: AmaniUI.sharedInstance.getBundle()
-    )
+      
+    ContainerVC = ContainerViewController()
+//    ContainerVC = ContainerViewController(
+//        nibName: String(describing: ContainerViewController.self),
+//        bundle: AmaniUI.sharedInstance.getBundle()
+//    )
   }
   
   func start(docStep: AmaniSDK.DocumentStepModel, version: AmaniSDK.DocumentVersion, workingStepIndex: Int,completion: @escaping StepCompletionCallback) {

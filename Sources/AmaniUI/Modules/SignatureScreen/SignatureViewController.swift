@@ -7,7 +7,25 @@
 
 import UIKit
 import AmaniSDK
-class SignatureViewController: BaseViewController {
+
+final class SignatureViewController: BaseViewController {
+    
+    // MARK: Properties
+    private lazy var clearBtn: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        return button
+    }()
+    
+    private lazy var confirmBtn: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        return button
+    }()
+    
+    
     let amani:Amani = Amani.sharedInstance
     var viewContainer:UIView?
   var stepCount:Int = 0
@@ -15,16 +33,23 @@ class SignatureViewController: BaseViewController {
   var documentVersion: DocumentVersion?
   var callback:((UIImage)->())?
     
-  @IBOutlet weak var clearBtn: UIButton!
-  @IBOutlet weak var confirmBtn: UIButton!
+//  @IBOutlet weak var clearBtn: UIButton!
+//  @IBOutlet weak var confirmBtn: UIButton!
   
-  @IBAction func ConfirmAct(_ sender: UIButton) {
+    @objc func confirmAct(_ sender: UIButton) {
         amani.signature().capture()
-  }
+    }
     
-  @IBAction func ClearAct() {
-    amani.signature().clear()
-  }
+    @objc func clearAct(_ sender: Any) {
+        amani.signature().clear()
+    }
+//  @IBAction func ConfirmAct(_ sender: UIButton) {
+//        amani.signature().capture()
+//  }
+//    
+//  @IBAction func ClearAct() {
+//    amani.signature().clear()
+//  }
   
   func start(docStep: AmaniSDK.DocumentStepModel, version: AmaniSDK.DocumentVersion, completion: ((UIImage)->())?) {
     guard let steps = version.steps else {return}
@@ -36,6 +61,14 @@ class SignatureViewController: BaseViewController {
     
 
   }
+   
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.setConstraints()
+        clearBtn.addTarget(self, action: #selector(clearAct(_:)), for: .touchUpInside)
+        confirmBtn.addTarget(self, action: #selector(confirmAct(_:)), for: .touchUpInside)
+    }
+  
   override func viewWillAppear(_ animated: Bool) {
         do {
             let signature = amani.signature()
@@ -74,65 +107,80 @@ class SignatureViewController: BaseViewController {
         }
     }
   
-  
-  func initialSetup() {
-    let appConfig = try! Amani.sharedInstance.appConfig().getApplicationConfig()
-    let buttonRadious = CGFloat(appConfig.generalconfigs?.buttonRadius ?? 10)
-    
-
-    // Navigation Bar
-    self.setNavigationBarWith(title: docStep?.captureTitle ?? "", textColor: UIColor(hexString: appConfig.generalconfigs?.topBarFontColor ?? "ffffff"))
-    self.setNavigationLeftButton(TintColor: appConfig.generalconfigs?.topBarFontColor ?? "ffffff")
-    self.view.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.appBackground ?? "#263B5B")
-    confirmBtn.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonBackgroundColor ?? ThemeColor.primaryColor.toHexString())
-    confirmBtn.layer.borderColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonBorderColor ?? "#263B5B").cgColor
-    confirmBtn.setTitle(appConfig.generalconfigs?.confirmText, for: .normal)
-    confirmBtn.setTitleColor(UIColor(hexString: appConfig.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
-    confirmBtn.tintColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString())
-    confirmBtn.addCornerRadiousWith(radious: buttonRadious)
-    
-    let secondaryBackgroundColor:UIColor = appConfig.generalconfigs?.secondaryButtonBackgroundColor == nil ? UIColor.clear :UIColor(hexString: (appConfig.generalconfigs?.secondaryButtonBackgroundColor)!)
-
-    clearBtn.backgroundColor = secondaryBackgroundColor
-    clearBtn.addBorder(borderWidth: 1, borderColor: UIColor(hexString: appConfig.generalconfigs?.secondaryButtonBorderColor ?? "#263B5B").cgColor)
-    clearBtn.setTitle(documentVersion?.clearText ?? "Temizle", for: .normal)
-    clearBtn.setTitleColor(UIColor(hexString: appConfig.generalconfigs?.secondaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
-    clearBtn.tintColor = UIColor(hexString: appConfig.generalconfigs?.secondaryButtonTextColor ?? ThemeColor.whiteColor.toHexString())
-    clearBtn.addCornerRadiousWith(radious: buttonRadious)
-    
-    clearBtn.translatesAutoresizingMaskIntoConstraints = false
-    confirmBtn.translatesAutoresizingMaskIntoConstraints = false
-    
-    NSLayoutConstraint.activate([
-      clearBtn.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40),
-      confirmBtn.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40),
-      
-      clearBtn.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-      confirmBtn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-      
-      clearBtn.trailingAnchor.constraint(equalTo: view.centerXAnchor, constant: -10),
-      confirmBtn.leadingAnchor.constraint(equalTo: view.centerXAnchor, constant: 10),
-      
-      clearBtn.heightAnchor.constraint(equalToConstant: 50),
-      confirmBtn.heightAnchor.constraint(equalTo: clearBtn.heightAnchor),
-      
-      clearBtn.widthAnchor.constraint(equalTo: confirmBtn.widthAnchor)
-    ])
-      
-//    // For everything else
-//      imgOuterView.isHidden = false
-//      self.idImgView.image = image
-
-//      self.previewHeightConstraints.constant = (UIScreen.main.bounds.width - 46) * CGFloat((documentVersion?.aspectRatio!)!)
-//      self.previewHeightConstraints.isActive = true
-//      self.view.layoutIfNeeded()
-//      titleLabel.isHidden = false
-//      selfieImageView.isHidden = true
-//      physicalContractImageView.isHidden = true
-//
-//
-  }
     override func viewDidAppear(_ animated: Bool) {
     }
+ 
+   
     
+}
+// MARK: Initial setup and setting constraints
+extension SignatureViewController {
+   private func initialSetup() {
+       DispatchQueue.main.async {
+           let appConfig = try! Amani.sharedInstance.appConfig().getApplicationConfig()
+           let buttonRadious = CGFloat(appConfig.generalconfigs?.buttonRadius ?? 10)
+           
+           
+           // Navigation Bar
+           self.setNavigationBarWith(title: self.docStep?.captureTitle ?? "", textColor: UIColor(hexString: appConfig.generalconfigs?.topBarFontColor ?? "ffffff"))
+           self.setNavigationLeftButton(TintColor: appConfig.generalconfigs?.topBarFontColor ?? "ffffff")
+           self.view.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.appBackground ?? "#263B5B")
+           self.confirmBtn.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonBackgroundColor ?? ThemeColor.primaryColor.toHexString())
+           self.confirmBtn.layer.borderColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonBorderColor ?? "#263B5B").cgColor
+           self.confirmBtn.setTitle(appConfig.generalconfigs?.confirmText, for: .normal)
+           self.confirmBtn.setTitleColor(UIColor(hexString: appConfig.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
+           self.confirmBtn.tintColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString())
+           self.confirmBtn.addCornerRadiousWith(radious: buttonRadious)
+           
+           let secondaryBackgroundColor:UIColor = appConfig.generalconfigs?.secondaryButtonBackgroundColor == nil ? UIColor.clear :UIColor(hexString: (appConfig.generalconfigs?.secondaryButtonBackgroundColor)!)
+
+           self.clearBtn.backgroundColor = secondaryBackgroundColor
+           self.clearBtn.addBorder(borderWidth: 1, borderColor: UIColor(hexString: appConfig.generalconfigs?.secondaryButtonBorderColor ?? "#263B5B").cgColor)
+           self.clearBtn.setTitle(self.documentVersion?.clearText ?? "Temizle", for: .normal)
+           self.clearBtn.setTitleColor(UIColor(hexString: appConfig.generalconfigs?.secondaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
+           self.clearBtn.tintColor = UIColor(hexString: appConfig.generalconfigs?.secondaryButtonTextColor ?? ThemeColor.whiteColor.toHexString())
+           self.clearBtn.addCornerRadiousWith(radious: buttonRadious)
+           
+           self.clearBtn.translatesAutoresizingMaskIntoConstraints = false
+           self.confirmBtn.translatesAutoresizingMaskIntoConstraints = false
+           
+          
+       }
+     
+        
+  //    // For everything else
+  //      imgOuterView.isHidden = false
+  //      self.idImgView.image = image
+
+  //      self.previewHeightConstraints.constant = (UIScreen.main.bounds.width - 46) * CGFloat((documentVersion?.aspectRatio!)!)
+  //      self.previewHeightConstraints.isActive = true
+  //      self.view.layoutIfNeeded()
+  //      titleLabel.isHidden = false
+  //      selfieImageView.isHidden = true
+  //      physicalContractImageView.isHidden = true
+  //
+  //
+    }
+    
+    private func setConstraints() {
+        DispatchQueue.main.async {
+            self.view.addSubviews(self.confirmBtn, self.clearBtn)
+            
+            NSLayoutConstraint.activate([
+             self.clearBtn.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -40),
+             self.confirmBtn.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -40),
+              
+             self.clearBtn.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
+             self.confirmBtn.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
+              
+             self.clearBtn.trailingAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -10),
+             self.confirmBtn.leadingAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 10),
+              
+             self.clearBtn.heightAnchor.constraint(equalToConstant: 50),
+             self.confirmBtn.heightAnchor.constraint(equalTo: self.clearBtn.heightAnchor),
+              
+             self.clearBtn.widthAnchor.constraint(equalTo: self.confirmBtn.widthAnchor)
+            ])
+        }
+    }
 }
