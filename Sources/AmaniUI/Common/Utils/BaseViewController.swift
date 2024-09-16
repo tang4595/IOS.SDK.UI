@@ -46,7 +46,7 @@ class BaseViewController: UIViewController {
     
     super.viewDidLoad()
 //    self.locationManager.delegate = self
-    
+      self.setThemeColor()
   }
   
   
@@ -60,7 +60,7 @@ class BaseViewController: UIViewController {
    This method set up all the commmon initial feature of a controller
    */
   private func baseSetup() {
-    self.setThemeColor()
+   
     self.setupFirstPop()
     self.navigationController?.navigationBar.isHidden = false
     if #available(iOS 13.0, *) {
@@ -176,10 +176,10 @@ class BaseViewController: UIViewController {
       self.navigationController?.navigationBar.backgroundColor = UIColor(hexString: config?.generalconfigs?.topBarBackground ?? "0F2435")
 
     // Setup bottom line
+    
     if let navigationBar = self.navigationController?.navigationBar {
       let bottomLineView = UIView()
       navigationBar.setValue(true, forKey: "hidesShadow")
-      
       //Creating New line
       let lineView = UIView(frame: CGRect(x: 0, y: 0, width:0, height: 1))
       lineView.backgroundColor = UIColor(hexString: "#CACFD6")

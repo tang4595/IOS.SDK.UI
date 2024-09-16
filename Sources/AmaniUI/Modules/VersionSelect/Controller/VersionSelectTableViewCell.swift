@@ -59,6 +59,19 @@ class VersionSelectTableViewCell: UITableViewCell {
 
 extension VersionSelectTableViewCell {
     private func setupUI() {
+        let generalconfigs = try? Amani.sharedInstance.appConfig().getApplicationConfig().generalconfigs
+        
+        outerView.addShadowWithBorder(shadowRadius: 4, shadowColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.25), shadowOpacity: 1, borderColor: .clear, borderWidth: 0, cornerRadious: CGFloat(generalconfigs?.buttonRadius ?? 10))
+           titleLabel.textColor = UIColor( hexString: generalconfigs?.primaryButtonTextColor ?? "000000")
+           outerView.backgroundColor = UIColor( hexString: generalconfigs?.primaryButtonBackgroundColor ?? "ffffff")
+           if let bordercolor:String = generalconfigs?.primaryButtonBorderColor {
+               outerView.addBorder(borderWidth: 2, borderColor: UIColor(hexString: bordercolor).cgColor)
+           }
+        
+        setConstraints()
+    }
+    
+    private func setConstraints() {
         DispatchQueue.main.async {
             self.contentView.addSubview(self.outerView)
             self.outerView.addSubview(self.titleLabel)
@@ -77,21 +90,7 @@ extension VersionSelectTableViewCell {
                 self.titleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 53),
                 
             ])
-            
-            self.setCellConfiguration()
         }
-       
-    }
-    
-    private func setCellConfiguration() {
-        let generalconfigs = try? Amani.sharedInstance.appConfig().getApplicationConfig().generalconfigs
-        
-        outerView.addShadowWithBorder(shadowRadius: 4, shadowColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.25), shadowOpacity: 1, borderColor: .clear, borderWidth: 0, cornerRadious: CGFloat(generalconfigs?.buttonRadius ?? 10))
-           titleLabel.textColor = UIColor( hexString: generalconfigs?.primaryButtonTextColor ?? "000000")
-           outerView.backgroundColor = UIColor( hexString: generalconfigs?.primaryButtonBackgroundColor ?? "ffffff")
-           if let bordercolor:String = generalconfigs?.primaryButtonBorderColor {
-               outerView.addBorder(borderWidth: 2, borderColor: UIColor(hexString: bordercolor).cgColor)
-           }
     }
     
 }

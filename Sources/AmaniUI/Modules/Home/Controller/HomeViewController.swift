@@ -255,27 +255,27 @@ extension HomeViewController {
 }
 extension HomeViewController {
     private func setupUI() {
-        DispatchQueue.main.async {
-            self.view.addSubview(self.descriptionLabel)
-            self.view.addSubview(self.kycStepTblView)
-            self.view.addSubview(self.amaniLogo)
+        DispatchQueue.main.async { [self] in
+            view.addSubview(descriptionLabel)
+            view.addSubview(kycStepTblView)
+            view.addSubview(amaniLogo)
             
-//            self.view.addSubviews(self.kycStepTblView, self.descriptionLabel, self.amaniLogo)
+//            self.view.addSubviews(self.kycStepTblView, self.descriptionLabel, amaniLogo)
             
             NSLayoutConstraint.activate([
-              self.descriptionLabel.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 40),
-              self.descriptionLabel.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-              self.descriptionLabel.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-              self.descriptionLabel.bottomAnchor.constraint(equalTo: self.kycStepTblView.topAnchor, constant: -40),
+              descriptionLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
+              descriptionLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+              descriptionLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+              descriptionLabel.bottomAnchor.constraint(equalTo: kycStepTblView.topAnchor, constant: -40),
               // kycStepTblView constraints
-              self.kycStepTblView.topAnchor.constraint(equalTo:  self.descriptionLabel.bottomAnchor, constant: 40),
-              self.kycStepTblView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-              self.kycStepTblView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-              self.kycStepTblView.bottomAnchor.constraint(equalTo:  self.view.safeAreaLayoutGuide.bottomAnchor, constant: -40),
+              kycStepTblView.topAnchor.constraint(equalTo:  descriptionLabel.bottomAnchor, constant: 40),
+              kycStepTblView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+              kycStepTblView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+             kycStepTblView.bottomAnchor.constraint(equalTo:  view.safeAreaLayoutGuide.bottomAnchor, constant: -40),
 
               // amaniLogo constraints
-              self.amaniLogo.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -40),
-              self.amaniLogo.centerXAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerXAnchor)
+              amaniLogo.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -40),
+              amaniLogo.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor)
             ])
         }
      

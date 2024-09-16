@@ -7,10 +7,9 @@ class SuccessViewController: BaseViewController {
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.alignment = .center
         stack.axis = .vertical
-        stack.distribution = .fillProportionally
-//        stack.contentMode = .scaleToFill
-        stack.spacing = 7
-        
+        stack.distribution = .fill
+        stack.contentMode = .scaleToFill
+        stack.spacing = 8
         return stack
     }()
     
@@ -80,32 +79,25 @@ class SuccessViewController: BaseViewController {
         return imageView
     }()
     
-    
-//  @IBOutlet var successView: UIView!
-//  @IBOutlet var continueButton: UIButton!
-//  @IBOutlet var amaniLogo: UIImageView!
-//  @IBOutlet var headerTextView: UILabel!
-//  @IBOutlet var info1TextView: UILabel!
-//  @IBOutlet var info2TextView: UILabel!
-
   override func viewDidLoad() {
     super.viewDidLoad()
     initialSetup()
     setConstraints()
+    continueButton.addTarget(self, action: #selector(continueBtnAction(_:)), for: .touchUpInside)
   }
 
- 
 
   override func popViewController() {
     navigationController?.dismiss(animated: true, completion: nil)
   }
-
-  @IBAction func continueBtnAction(_ sender: UIButton) {
-    let customer = Amani.sharedInstance.customerInfo().getCustomer()
-    guard let customerId: String = customer.id else { return }
-    AmaniUI.sharedInstance.delegate?.onKYCSuccess(CustomerId: customerId)
-    navigationController?.dismiss(animated: true, completion: nil)
+    
+  @objc func continueBtnAction(_ sender: UIButton) {
+        let customer = Amani.sharedInstance.customerInfo().getCustomer()
+        guard let customerId: String = customer.id else { return }
+        AmaniUI.sharedInstance.delegate?.onKYCSuccess(CustomerId: customerId)
+        navigationController?.dismiss(animated: true, completion: nil)
   }
+
 }
 
 extension SuccessViewController {
@@ -131,62 +123,53 @@ extension SuccessViewController {
     }
     
     private func setConstraints() {
-        DispatchQueue.main.async {
+       
             self.view.addSubview(self.stackView)
             self.stackView.addArrangedSubview(self.approveImage)
             self.stackView.addArrangedSubview(self.labelContainerView)
-//            self.stackView.addSubviews(self.approveImage, self.labelContainerView)
-            self.labelContainerView.addSubviews(self.headerLabel, self.info1TextLabel, self.info2TextLabel)
-            self.view.addSubview(self.continueButton)
-            self.view.addSubview(self.amaniLogo)
+            self.labelContainerView.addSubviews(headerLabel, self.info1TextLabel, self.info2TextLabel)
+            self.view.addSubview(continueButton)
+            self.view.addSubview(amaniLogo)
             
             NSLayoutConstraint.activate([
-                self.stackView.centerYAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerYAnchor),
-//                self.stackView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 100),
-                self.stackView.bottomAnchor.constraint(equalTo: self.continueButton.topAnchor, constant: -24),
-                self.stackView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
-                self.stackView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
-                
-                self.approveImage.heightAnchor.constraint(equalToConstant: 100),
-                self.approveImage.widthAnchor.constraint(equalToConstant: 100),
-                
-                self.labelContainerView.widthAnchor.constraint(equalTo: self.stackView.widthAnchor, multiplier: 0.9),
-                
-//                self.labelContainerView.leadingAnchor.constraint(equalTo: self.stackView.leadingAnchor),
-//                self.labelContainerView.trailingAnchor.constraint(equalTo: self.stackView.trailingAnchor),
-//                self.labelContainerView.topAnchor.constraint(equalTo: self.stackView.topAnchor),
-//                self.labelContainerView.bottomAnchor.constraint(equalTo: self.stackView.bottomAnchor),
-                
-                self.headerLabel.leadingAnchor.constraint(equalTo: self.labelContainerView.leadingAnchor, constant: 16),
-                self.headerLabel.trailingAnchor.constraint(equalTo: self.labelContainerView.trailingAnchor, constant: -16),
-                self.headerLabel.topAnchor.constraint(equalTo: self.labelContainerView.topAnchor, constant: 16),
-                self.headerLabel.bottomAnchor.constraint(equalTo: self.info1TextLabel.topAnchor, constant: -24),
-                self.headerLabel.heightAnchor.constraint(equalToConstant: 24),
-                
-                self.info1TextLabel.topAnchor.constraint(equalTo: self.headerLabel.bottomAnchor, constant: 24),
-                self.info1TextLabel.leadingAnchor.constraint(equalTo: self.labelContainerView.leadingAnchor, constant: -16),
-                self.info1TextLabel.trailingAnchor.constraint(equalTo: self.labelContainerView.trailingAnchor, constant: 16),
-                self.info1TextLabel.bottomAnchor.constraint(equalTo: self.info2TextLabel.topAnchor, constant: -24),
-                self.info1TextLabel.heightAnchor.constraint(equalToConstant: 60),
-                
-                self.info2TextLabel.topAnchor.constraint(equalTo: self.info1TextLabel.bottomAnchor, constant: 24),
-                self.info2TextLabel.leadingAnchor.constraint(equalTo: self.labelContainerView.leadingAnchor, constant: 16),
-                self.info2TextLabel.trailingAnchor.constraint(equalTo: self.labelContainerView.trailingAnchor, constant: -16),
-                self.info2TextLabel.bottomAnchor.constraint(equalTo: self.labelContainerView.bottomAnchor, constant: -16),
-                
-                self.continueButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16),
-                self.continueButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16),
-                self.continueButton.bottomAnchor.constraint(equalTo: self.amaniLogo.topAnchor, constant: -16),
-                self.continueButton.heightAnchor.constraint(equalToConstant: 50),
+                stackView.centerYAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerYAnchor),
+                stackView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+                stackView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
                 
                 
-                self.amaniLogo.widthAnchor.constraint(equalToConstant: 114),
-                self.amaniLogo.heightAnchor.constraint(equalToConstant: 13),
-                self.amaniLogo.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-                self.amaniLogo.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -30)
+                approveImage.heightAnchor.constraint(equalToConstant: 100),
+                approveImage.widthAnchor.constraint(equalToConstant: 100),
+                
+                labelContainerView.widthAnchor.constraint(equalTo: stackView.widthAnchor, multiplier: 0.9),
+
+                headerLabel.leadingAnchor.constraint(equalTo: labelContainerView.leadingAnchor, constant: 16),
+                headerLabel.trailingAnchor.constraint(equalTo: self.labelContainerView.trailingAnchor, constant: -16),
+                headerLabel.topAnchor.constraint(equalTo: self.labelContainerView.topAnchor),
+                headerLabel.bottomAnchor.constraint(equalTo: self.info1TextLabel.topAnchor, constant: -24),
+                
+                info1TextLabel.topAnchor.constraint(equalTo: headerLabel.bottomAnchor, constant: 24),
+                info1TextLabel.leadingAnchor.constraint(equalTo: self.labelContainerView.leadingAnchor, constant: 16),
+                info1TextLabel.trailingAnchor.constraint(equalTo: self.labelContainerView.trailingAnchor, constant: -16),
+                info1TextLabel.bottomAnchor.constraint(equalTo: self.info2TextLabel.topAnchor, constant: -16),
+                
+                info2TextLabel.topAnchor.constraint(equalTo: self.info1TextLabel.bottomAnchor, constant: 16),
+                info2TextLabel.leadingAnchor.constraint(equalTo: self.labelContainerView.leadingAnchor, constant: 16),
+                info2TextLabel.trailingAnchor.constraint(equalTo: self.labelContainerView.trailingAnchor, constant: -16),
+                info2TextLabel.bottomAnchor.constraint(equalTo: self.labelContainerView.bottomAnchor, constant: -24),
+                
+                continueButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16),
+                continueButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16),
+                continueButton.bottomAnchor.constraint(equalTo: amaniLogo.topAnchor, constant: -16),
+                continueButton.heightAnchor.constraint(equalToConstant: 50),
+                
+                
+                amaniLogo.widthAnchor.constraint(equalToConstant: 114),
+                amaniLogo.heightAnchor.constraint(equalToConstant: 13),
+                amaniLogo.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+                amaniLogo.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -30)
             
             ])
-        }
+        
        
     }
 }

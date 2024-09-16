@@ -73,7 +73,7 @@ class ContainerViewController: BaseViewController {
       super.viewDidLoad()
       self.initialSetup()
       
-      self.setConstraints()
+     
       self.btnContinue.addTarget(self, action: #selector(actBtnContinue(_:)), for: .touchUpInside)
     }
     
@@ -106,8 +106,9 @@ class ContainerViewController: BaseViewController {
               self?.callback!()
             }
         }
-    
+        self.setConstraints()
     } else {
+    
       lottieAnimationView?.removeFromSuperview()
       self.callback!()
 
@@ -210,7 +211,6 @@ extension ContainerViewController {
         DispatchQueue.main.async {
             self.view.addSubview(self.titleDescription)
             self.view.addSubview(self.btnContinue)
-//            self.view.addSubview(self.animationView)
             
             NSLayoutConstraint.activate([
                 self.titleDescription.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 8),
@@ -221,11 +221,7 @@ extension ContainerViewController {
                 self.btnContinue.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
                 self.btnContinue.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
                 self.btnContinue.heightAnchor.constraint(equalToConstant: 50),
-                
-//                self.animationView.topAnchor.constraint(equalTo: self.titleDescription.bottomAnchor, constant: 40),
-//                self.animationView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-//                self.animationView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-//                self.animationView.bottomAnchor.constraint(equalTo: self.btnContinue.topAnchor, constant: -40)
+
             ])
         }
       

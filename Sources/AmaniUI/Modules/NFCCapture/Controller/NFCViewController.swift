@@ -6,7 +6,7 @@ typealias VoidCallback = () -> Void
 @available(iOS 13, *)
 class NFCViewController: BaseViewController {
     // MARK: Properties
-    private lazy var headerLabel: UILabel = {
+    private var headerLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 22.0, weight: .bold)
@@ -15,16 +15,15 @@ class NFCViewController: BaseViewController {
         return label
     }()
     
-    private lazy var continueButton: UIButton = {
+    private var continueButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("CONTINUE", for: .normal)
         button.setTitleColor(.white, for: .normal)
         
         return button
     }()
     
-    private lazy var labelsContainerView: UIView = {
+    private var labelsContainerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -70,13 +69,6 @@ class NFCViewController: BaseViewController {
   private var documentVersion: DocumentVersion?
   private var onFinishCallback: VoidCallback?
 
-  
-//  @IBOutlet var headerLabel: UILabel!
-//  @IBOutlet var continueButton: UIButton!
-//  @IBOutlet var desc1Label: UILabel!
-//  @IBOutlet var desc2Label: UILabel!
-//  @IBOutlet var desc3Label: UILabel!
-//  @IBOutlet var amaniLogo: UIImageView!
     let idCaptureModule =  Amani.sharedInstance.IdCapture()
     let amani:Amani = Amani.sharedInstance
     var isDone: Bool = false
@@ -84,9 +76,9 @@ class NFCViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(true)
         Task { @MainActor in
-            setupUI()
+            setConstraints()
             await initialSetup()
-            
+        
             continueButton.addTarget(self, action: #selector(continueButtonPressed(_:)), for: .touchUpInside)
         }
        
@@ -140,10 +132,6 @@ class NFCViewController: BaseViewController {
         }
     }
     
-//    @IBAction func continueButtonPressed(_ sender: Any) {
-//      
-//    }
-    
     func uploadNFCResult() {
         idCaptureModule.upload(location: nil) { isUploadSuccess in
             if isUploadSuccess != nil {
@@ -159,7 +147,7 @@ class NFCViewController: BaseViewController {
  
     func scanNFC() async {
 //    let idCaptureModule = Amani.sharedInstance.IdCapture()
-      self.continueButton.isEnabled = false
+      continueButton.isEnabled = false
 //    guard let nvi = AmaniUI.sharedInstance.nviData else { return }
 //    let isDone = await idCaptureModule.startNFC(nvi: nvi)
 //    self.doNext(done: isDone)
@@ -182,9 +170,9 @@ class NFCViewController: BaseViewController {
          }
        }
      } else {
-       DispatchQueue.main.async {
-         self.continueButton.setTitle(tryAgainText ?? "Tekrar Dene", for: .normal)
-         self.continueButton.isEnabled = true
+         DispatchQueue.main.async { [self] in
+         continueButton.setTitle(tryAgainText ?? "Tekrar Dene", for: .normal)
+         continueButton.isEnabled = true
        }
      }
   }
@@ -192,52 +180,52 @@ class NFCViewController: BaseViewController {
 }
 
 extension NFCViewController {
-    private func setupUI() {
-        DispatchQueue.main.async {
-            self.view.addSubviews(self.headerLabel, self.labelsContainerView, self.amaniLogo, self.continueButton )
-            self.labelsContainerView.addSubviews(self.desc1Label, self.desc2Label, self.desc3Label)
+    private func setConstraints() {
+       
+            self.view.addSubviews(headerLabel,labelsContainerView, amaniLogo, continueButton )
+           labelsContainerView.addSubviews(desc1Label,desc2Label,desc3Label)
             
             NSLayoutConstraint.activate([
-                self.headerLabel.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 47),
-                self.headerLabel.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 23),
-                self.headerLabel.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -23),
-                self.headerLabel.bottomAnchor.constraint(equalTo: self.labelsContainerView.topAnchor, constant: -72),
-                self.headerLabel.heightAnchor.constraint(equalToConstant: 30),
+                headerLabel.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 47),
+                headerLabel.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 23),
+                headerLabel.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -23),
+                headerLabel.bottomAnchor.constraint(equalTo:labelsContainerView.topAnchor, constant: -72),
+                headerLabel.heightAnchor.constraint(equalToConstant: 30),
                 
-                self.labelsContainerView.topAnchor.constraint(equalTo: self.headerLabel.bottomAnchor, constant: 72),
-                self.labelsContainerView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-                self.labelsContainerView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-                self.labelsContainerView.heightAnchor.constraint(equalToConstant: 229),
+               labelsContainerView.topAnchor.constraint(equalTo: headerLabel.bottomAnchor, constant: 72),
+               labelsContainerView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+               labelsContainerView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+               labelsContainerView.heightAnchor.constraint(equalToConstant: 229),
                 
-                self.desc1Label.leadingAnchor.constraint(equalTo: self.labelsContainerView.leadingAnchor),
-                self.desc1Label.trailingAnchor.constraint(equalTo: self.labelsContainerView.trailingAnchor),
-                self.desc1Label.centerXAnchor.constraint(equalTo: self.labelsContainerView.centerXAnchor),
-                self.desc1Label.heightAnchor.constraint(equalToConstant: 60),
+               desc1Label.leadingAnchor.constraint(equalTo:labelsContainerView.leadingAnchor),
+               desc1Label.trailingAnchor.constraint(equalTo:labelsContainerView.trailingAnchor),
+               desc1Label.centerXAnchor.constraint(equalTo:labelsContainerView.centerXAnchor),
+               desc1Label.heightAnchor.constraint(equalToConstant: 60),
                 
-                self.desc2Label.topAnchor.constraint(equalTo: self.desc1Label.bottomAnchor, constant: 20),
-                self.desc2Label.bottomAnchor.constraint(equalTo: self.desc3Label.topAnchor, constant: -20),
-                self.desc2Label.leadingAnchor.constraint(equalTo: self.labelsContainerView.leadingAnchor),
-                self.desc2Label.trailingAnchor.constraint(equalTo: self.labelsContainerView.trailingAnchor),
-                self.desc2Label.centerXAnchor.constraint(equalTo: self.labelsContainerView.centerXAnchor),
-                self.desc2Label.centerYAnchor.constraint(equalTo: self.labelsContainerView.centerYAnchor),
+               desc2Label.topAnchor.constraint(equalTo:desc1Label.bottomAnchor, constant: 20),
+               desc2Label.bottomAnchor.constraint(equalTo:desc3Label.topAnchor, constant: -20),
+               desc2Label.leadingAnchor.constraint(equalTo:labelsContainerView.leadingAnchor),
+               desc2Label.trailingAnchor.constraint(equalTo:labelsContainerView.trailingAnchor),
+               desc2Label.centerXAnchor.constraint(equalTo:labelsContainerView.centerXAnchor),
+               desc2Label.centerYAnchor.constraint(equalTo:labelsContainerView.centerYAnchor),
                 
-                self.desc3Label.topAnchor.constraint(equalTo: self.desc2Label.bottomAnchor, constant: 20),
-                self.desc3Label.leadingAnchor.constraint(equalTo: self.labelsContainerView.leadingAnchor),
-                self.desc3Label.trailingAnchor.constraint(equalTo: self.labelsContainerView.trailingAnchor),
-                self.desc3Label.centerXAnchor.constraint(equalTo: self.labelsContainerView.centerXAnchor),
+               desc3Label.topAnchor.constraint(equalTo:desc2Label.bottomAnchor, constant: 20),
+               desc3Label.leadingAnchor.constraint(equalTo:labelsContainerView.leadingAnchor),
+               desc3Label.trailingAnchor.constraint(equalTo:labelsContainerView.trailingAnchor),
+               desc3Label.centerXAnchor.constraint(equalTo:labelsContainerView.centerXAnchor),
                 
-                self.continueButton.widthAnchor.constraint(equalToConstant: 333),
-                self.continueButton.heightAnchor.constraint(equalToConstant: 50),
-                self.continueButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-                self.continueButton.bottomAnchor.constraint(equalTo: self.amaniLogo.topAnchor, constant: -20),
+                continueButton.widthAnchor.constraint(equalToConstant: 333),
+                continueButton.heightAnchor.constraint(equalToConstant: 50),
+                continueButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+                continueButton.bottomAnchor.constraint(equalTo: amaniLogo.topAnchor, constant: -20),
                 
-                self.amaniLogo.widthAnchor.constraint(equalToConstant: 114),
-                self.amaniLogo.heightAnchor.constraint(equalToConstant: 13),
-                self.amaniLogo.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-                self.amaniLogo.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -30)
+                amaniLogo.widthAnchor.constraint(equalToConstant: 114),
+                amaniLogo.heightAnchor.constraint(equalToConstant: 13),
+                amaniLogo.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+                amaniLogo.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -30)
                 
             
             ])
-        }
+        
     }
 }

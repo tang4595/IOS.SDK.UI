@@ -24,11 +24,11 @@ protocol DocumentHandler {
 
 extension DocumentHandler {
   func startConfirmVC(image: UIImage, docStep: DocumentStepModel, docVer: DocumentVersion,stepId:Int = 0, completion: @escaping ConfirmCallback) {
-    
-    let confirmVC = DocConfirmationViewController(
-      nibName: String(describing: DocConfirmationViewController.self),
-      bundle: AmaniUI.sharedInstance.getBundle()
-    )
+    let confirmVC = DocConfirmationViewController()
+//    let confirmVC = DocConfirmationViewController(
+//      nibName: String(describing: DocConfirmationViewController.self),
+//      bundle: AmaniUI.sharedInstance.getBundle()
+//    )
     
     confirmVC.bind(image: image, documentID: docID, docVer: docVer, docStep: docStep,stepid: stepId, callback: completion)
     
