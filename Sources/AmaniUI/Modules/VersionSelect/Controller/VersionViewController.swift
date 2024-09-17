@@ -14,7 +14,7 @@ class VersionViewController: BaseViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private lazy var descriptionLabel: UILabel = {
+    private var descriptionLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
@@ -23,7 +23,7 @@ class VersionViewController: BaseViewController {
         return label
     }()
     
-    private lazy var versionSelectionTblView: UITableView = {
+    private var versionSelectionTblView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.isScrollEnabled = false
@@ -74,10 +74,11 @@ class VersionViewController: BaseViewController {
     let generalConfigs = try! Amani.sharedInstance.appConfig().getApplicationConfig().generalconfigs
     let navFontColor = generalConfigs?.topBarFontColor ?? "ffffff"
     let textColor =  generalConfigs?.appFontColor ?? "ffffff"
-    
+     
     self.setNavigationBarWith(title: self.docTitle,textColor: UIColor(hexString: navFontColor))
     self.setNavigationLeftButton(TintColor: navFontColor)
     self.descriptionLabel.text = docDescription
+    self.versionSelectionTblView.backgroundColor = UIColor(hexString: generalConfigs?.appBackground ?? "#EEF4FA")
     descriptionLabel.textColor = UIColor(hexString: textColor)
     amaniLogo.isHidden = generalConfigs?.hideLogo ?? false
     amaniLogo.tintColor = UIColor(hexString: textColor)

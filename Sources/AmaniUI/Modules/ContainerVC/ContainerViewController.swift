@@ -11,7 +11,7 @@ import AmaniSDK
 
 class ContainerViewController: BaseViewController {
     // MARK: Properties
-    private lazy var btnContinue: UIButton = {
+    private var btnContinue: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         
@@ -25,7 +25,7 @@ class ContainerViewController: BaseViewController {
         return view
     }()
     
-    lazy var titleDescription: UILabel = {
+   private lazy var titleDescription: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = stepConfig?.documents?[0].versions?[0].informationScreenDesc1 ?? "\(stepConfig?.documents?[0].versions?[0].steps?[0].captureDescription ?? "Click continue to take a photo within the specified area")"
@@ -46,9 +46,6 @@ class ContainerViewController: BaseViewController {
   private var isDissapeared = false
   var stepConfig: StepConfig?
     
-
-//  @IBOutlet weak var btnContinue: UIButton!
-//  @IBOutlet weak var animationView: UIView!
   func bind(animationName:String?,
             docStep:DocumentStepModel,
             step:steps,
@@ -98,7 +95,7 @@ class ContainerViewController: BaseViewController {
       var name = "\((animationName.lowercased()))_\(side)"
       
       if ((AmaniUI.sharedInstance.getBundle().url(forResource: name, withExtension: "json")?.isFileURL) == nil) {
-        name = "xx_id_0_\(side)"
+        name = "xxx_id_0_\(side)"
       }
         DispatchQueue.main.async {
             self.lottieInit(name: name) {[weak self] _ in
@@ -182,24 +179,24 @@ extension ContainerViewController {
           lottieAnimationView.backgroundColor = .clear
           lottieAnimationView.contentMode = .scaleAspectFit
           lottieAnimationView.translatesAutoresizingMaskIntoConstraints = false
-          DispatchQueue.main.async {
-              self.view.addSubview(self.animationView)
-              self.animationView.addSubview(self.lottieAnimationView!)
+          DispatchQueue.main.async { [self] in
+              view.addSubview(animationView)
+              animationView.addSubview(lottieAnimationView)
               NSLayoutConstraint.activate([
-                self.animationView.centerXAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerXAnchor),
-                self.animationView.centerYAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerYAnchor),
-                self.animationView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
-                self.animationView.heightAnchor.constraint(equalTo: self.view.heightAnchor),
+               animationView.centerXAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerXAnchor),
+                animationView.centerYAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerYAnchor),
+                animationView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
+                animationView.heightAnchor.constraint(equalTo: self.view.heightAnchor),
                 
-                self.lottieAnimationView!.leadingAnchor.constraint(equalTo: self.animationView.leadingAnchor),
-                self.lottieAnimationView!.trailingAnchor.constraint(equalTo: self.animationView.trailingAnchor),
-                self.lottieAnimationView!.topAnchor.constraint(equalTo: self.animationView.topAnchor),
-                self.lottieAnimationView!.bottomAnchor.constraint(equalTo: self.animationView.bottomAnchor)
+                lottieAnimationView.leadingAnchor.constraint(equalTo: animationView.leadingAnchor),
+                lottieAnimationView.trailingAnchor.constraint(equalTo: animationView.trailingAnchor),
+                lottieAnimationView.topAnchor.constraint(equalTo: animationView.topAnchor),
+                lottieAnimationView.bottomAnchor.constraint(equalTo: animationView.bottomAnchor)
               ])
               
-              self.animationView.bringSubviewToFront(self.view)
-              self.lottieAnimationView!.play {[weak self] (_) in
-                  self?.lottieAnimationView!.removeFromSuperview()
+              animationView.bringSubviewToFront(view)
+              lottieAnimationView.play {[weak self] (_) in
+                  lottieAnimationView.removeFromSuperview()
                   if let isdp = self?.isDissapeared, !isdp{
                       completion(steps.front.rawValue)
                   }
@@ -208,19 +205,19 @@ extension ContainerViewController {
       }
     
     private func setConstraints() {
-        DispatchQueue.main.async {
-            self.view.addSubview(self.titleDescription)
-            self.view.addSubview(self.btnContinue)
+        DispatchQueue.main.async { [self] in
+            view.addSubview(titleDescription)
+            view.addSubview(btnContinue)
             
             NSLayoutConstraint.activate([
-                self.titleDescription.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 8),
-                self.titleDescription.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16),
-                self.titleDescription.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16),
+                titleDescription.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
+                titleDescription.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+                titleDescription.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
                 
-                self.btnContinue.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-                self.btnContinue.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-                self.btnContinue.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-                self.btnContinue.heightAnchor.constraint(equalToConstant: 50),
+                btnContinue.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+                btnContinue.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+                btnContinue.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+                btnContinue.heightAnchor.constraint(equalToConstant: 50),
 
             ])
         }

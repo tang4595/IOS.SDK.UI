@@ -14,21 +14,21 @@ class HomeViewController: BaseViewController {
     var nonKYCStepManager: NonKYCStepManager? = nil
     
     // MARK: - Properties
-    private lazy var descriptionLabel: UILabel = {
+    private var descriptionLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
       
         return label
     }()
     
-    private lazy var kycStepTblView: KYCStepTblView! = {
+    private var kycStepTblView: KYCStepTblView! = {
        let tableView = KYCStepTblView()
        tableView.translatesAutoresizingMaskIntoConstraints = false
         
        return tableView
     }()
     
-    private lazy var amaniLogo: UIImageView = {
+    private var amaniLogo: UIImageView = {
        let logo = UIImageView()
        
       return logo
@@ -37,7 +37,8 @@ class HomeViewController: BaseViewController {
  // MARK: - HomeViewController LifeCycle
   override func viewDidLoad() {
     super.viewDidLoad()
-      setupUI()
+      setConstraints()
+      
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -139,7 +140,9 @@ class HomeViewController: BaseViewController {
       rules.forEach { ruleModel in
         if let stepModel = stepConfig.first(where: { $0.id == ruleModel.id }) {
           if let stepID = stepModels?.firstIndex(where: {$0.id == ruleModel.id}) {
+              // FIXME: index out of range hatası socketten cevap gelmeyince app crash oluyor.
             stepModels?.remove(at: stepID)
+        
             stepModels?.append(KYCStepViewModel(from: stepModel, initialRule: ruleModel, topController: self))
           }
         }
@@ -254,7 +257,7 @@ extension HomeViewController {
   
 }
 extension HomeViewController {
-    private func setupUI() {
+    private func setConstraints() {
         DispatchQueue.main.async { [self] in
             view.addSubview(descriptionLabel)
             view.addSubview(kycStepTblView)
@@ -271,7 +274,7 @@ extension HomeViewController {
               kycStepTblView.topAnchor.constraint(equalTo:  descriptionLabel.bottomAnchor, constant: 40),
               kycStepTblView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
               kycStepTblView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-             kycStepTblView.bottomAnchor.constraint(equalTo:  view.safeAreaLayoutGuide.bottomAnchor, constant: -40),
+              kycStepTblView.bottomAnchor.constraint(equalTo:  view.safeAreaLayoutGuide.bottomAnchor, constant: -40),
 
               // amaniLogo constraints
               amaniLogo.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -40),

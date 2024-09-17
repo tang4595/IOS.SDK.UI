@@ -55,12 +55,14 @@ class DocConfirmationViewController: BaseViewController {
     private lazy var tryAgainBtn: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .regular)
         return button
     }()
     
     private lazy var confirmBtn: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .regular)
         return button
     }()
     
