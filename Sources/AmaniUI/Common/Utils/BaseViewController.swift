@@ -18,6 +18,7 @@ class BaseViewController: UIViewController {
     //  let orientation: UIInterfaceOrientationMask = .portrait
     var navBarFontColor: String = "000000"
     var navbarRightButtonAction:VoidCallback? = nil
+    var navbarLeftButtonAction: VoidCallback? = nil
     
     override open var shouldAutorotate: Bool {
         return true
@@ -68,8 +69,23 @@ class BaseViewController: UIViewController {
         }
     }
     
+    func setNavigationLeftButtonPDF(text: String?, tintColor: String?) {
+        let leftButton: UIButton = UIButton(type: .custom)
+       
+        leftButton.setTitle(text, for: .normal)
+        leftButton.tintColor = UIColor(hexString: tintColor ?? navBarFontColor)
+        leftButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
+        leftButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        leftButton.backgroundColor = .clear
+        leftButton.addTarget(self, action: #selector(selectorFunc), for: .touchUpInside)
+//        leftButton.addTarget(self, action: #selector(popViewController), for: .touchUpInside)
+        let backBarButtonItem: UIBarButtonItem = UIBarButtonItem(customView: leftButton)
+        self.navigationItem.leftBarButtonItem = backBarButtonItem
+    }
+    
     func setNavigationLeftButton(TintColor:String? = nil) {
         let leftButton: UIButton = UIButton(type: .custom)
+
         leftButton.setImage(UIImage(named: "ic_backArrow", in: AmaniUI.sharedInstance.getBundle(), compatibleWith: nil), for: .normal)
         leftButton.tintColor = UIColor(hexString: TintColor ?? navBarFontColor)
         leftButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
@@ -108,11 +124,17 @@ class BaseViewController: UIViewController {
     @objc func selectorFunc() {
         if let navbarRightButtonAction = navbarRightButtonAction  {
             navbarRightButtonAction()
+        } else if let navbarLeftButtonAction = navbarLeftButtonAction {
+            navbarLeftButtonAction()
         }
     }
     
+    
     func setRightNavBarButtonAction(cb:@escaping VoidCallback) {
         navbarRightButtonAction = cb
+    }
+    func setLeftNavBarButtonAction(cb:@escaping VoidCallback) {
+        navbarLeftButtonAction = cb
     }
     
     func setNavigationRightButton(text:String = "Elle Kırp", TintColor:String? = nil) {

@@ -45,6 +45,7 @@ class ContainerViewController: BaseViewController {
   private var step:steps = .front
   private var isDissapeared = false
   var stepConfig: StepConfig?
+  var docID: DocumentID?
     
   func bind(animationName:String?,
             docStep:DocumentStepModel,
@@ -105,10 +106,10 @@ class ContainerViewController: BaseViewController {
         }
         self.setConstraints()
     } else {
-    
+   
       lottieAnimationView?.removeFromSuperview()
       self.callback!()
-
+        
     }
 
   }
@@ -124,6 +125,8 @@ class ContainerViewController: BaseViewController {
       isDissapeared = true
     super.viewWillDisappear(animated)
   }
+    
+  
   
  
   
@@ -137,17 +140,26 @@ extension ContainerViewController {
       }
       let appConfig = try! Amani.sharedInstance.appConfig().getApplicationConfig()
       let buttonRadious = CGFloat(appConfig.generalconfigs?.buttonRadius ?? 10)
+        if self.docID?.rawValue == "IB" {
+            self.btnContinue.isHidden = true
+            self.titleDescription.isHidden = true
+        } else {
+            self.setNavigationLeftButton(TintColor: appConfig.generalconfigs?.topBarFontColor ?? "ffffff")
+            btnContinue.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonBackgroundColor ?? ThemeColor.primaryColor.toHexString())
+            btnContinue.layer.borderColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonBorderColor ?? "#263B5B").cgColor
+            btnContinue.setTitle(appConfig.generalconfigs?.continueText, for: .normal)
+            btnContinue.setTitleColor(UIColor(hexString: appConfig.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
+            btnContinue.tintColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString())
+            btnContinue.addCornerRadiousWith(radious: buttonRadious)
+            self.btnContinue.isHidden = false
+            self.titleDescription.isHidden = false
+        }
 
       // Navigation Bar
       self.setNavigationBarWith(title: docStep?.captureTitle ?? "", textColor: UIColor(hexString: appConfig.generalconfigs?.topBarFontColor ?? "ffffff"))
-      self.setNavigationLeftButton(TintColor: appConfig.generalconfigs?.topBarFontColor ?? "ffffff")
+
       self.view.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.appBackground ?? "#263B5B")
-      btnContinue.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonBackgroundColor ?? ThemeColor.primaryColor.toHexString())
-      btnContinue.layer.borderColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonBorderColor ?? "#263B5B").cgColor
-      btnContinue.setTitle(appConfig.generalconfigs?.continueText, for: .normal)
-      btnContinue.setTitleColor(UIColor(hexString: appConfig.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
-      btnContinue.tintColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString())
-      btnContinue.addCornerRadiousWith(radious: buttonRadious)
+      
       
   //    // For everything else
   //      imgOuterView.isHidden = false
@@ -162,6 +174,7 @@ extension ContainerViewController {
   //
   //
     }
+    
       private func lottieInit(name:String = "xx_id_0_front", completion:@escaping(_ finishedAnimation:Int)->()) {
           
           guard let animation = LottieAnimation.named(name, bundle: AmaniUI.sharedInstance.getBundle()) else {
