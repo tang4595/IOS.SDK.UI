@@ -82,12 +82,13 @@ public class AmaniUI {
               let bundle = Bundle(path: path)  {
       self.bundle = bundle
     } else {
-    #if !SPM
-        let bundle = Bundle(for: AmaniBundleLocator.self)
-    #else
+#if SWIFT_PACKAGE
       let bundle = Bundle.module
-    #endif
       self.bundle = bundle
+#else
+      let bundle = Bundle(for: AmaniBundleLocator.self)
+      self.bundle = bundle
+#endif
     }
   }
   
