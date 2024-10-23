@@ -19,6 +19,7 @@ protocol DocumentHandler {
   func start(docStep: DocumentStepModel, version: DocumentVersion, workingStepIndex:Int, completion: @escaping StepCompletionCallback)
   
   func upload(completion: @escaping StepUploadCallback)
+ 
   
 }
 

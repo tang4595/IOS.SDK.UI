@@ -125,11 +125,7 @@ class ContainerViewController: BaseViewController {
       isDissapeared = true
     super.viewWillDisappear(animated)
   }
-    
-  
-  
- 
-  
+
 }
 extension ContainerViewController {
    
@@ -140,11 +136,13 @@ extension ContainerViewController {
       }
       let appConfig = try! Amani.sharedInstance.appConfig().getApplicationConfig()
       let buttonRadious = CGFloat(appConfig.generalconfigs?.buttonRadius ?? 10)
-        if self.docID?.rawValue == "IB" {
+        if animationName == nil {
             self.btnContinue.isHidden = true
             self.titleDescription.isHidden = true
+            self.setNavigationLeftButtonPDF(text: appConfig.generalconfigs?.uploadPdf ?? "Upload PDF" ,tintColor: appConfig.generalconfigs?.topBarFontColor)
         } else {
-            self.setNavigationLeftButton(TintColor: appConfig.generalconfigs?.topBarFontColor ?? "ffffff")
+          
+            self.setNavigationLeftButton(TintColor: appConfig.generalconfigs?.topBarFontColor ?? "#ffffff")
             btnContinue.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonBackgroundColor ?? ThemeColor.primaryColor.toHexString())
             btnContinue.layer.borderColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonBorderColor ?? "#263B5B").cgColor
             btnContinue.setTitle(appConfig.generalconfigs?.continueText, for: .normal)

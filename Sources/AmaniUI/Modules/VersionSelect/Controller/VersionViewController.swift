@@ -132,7 +132,7 @@ extension VersionViewController {
         versionSelectionTblView.delegate = self
         versionSelectionTblView.dataSource = self
         versionSelectionTblView.register(VersionSelectTableViewCell.self, forCellReuseIdentifier: String(describing: VersionSelectTableViewCell.self))
-        versionSelectionTblView.isScrollEnabled = false
+        versionSelectionTblView.isScrollEnabled = true
         versionSelectionTblView.showsVerticalScrollIndicator = false
         versionSelectionTblView.showsHorizontalScrollIndicator = false
         versionSelectionTblView.separatorStyle = .none

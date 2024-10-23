@@ -16,7 +16,7 @@ import AmaniSDK
 class BaseViewController: UIViewController {
     
     //  let orientation: UIInterfaceOrientationMask = .portrait
-    var navBarFontColor: String = "000000"
+    var navBarFontColor: String = "#000000"
     var navbarRightButtonAction:VoidCallback? = nil
     var navbarLeftButtonAction: VoidCallback? = nil
     
@@ -73,10 +73,11 @@ class BaseViewController: UIViewController {
         let leftButton: UIButton = UIButton(type: .custom)
        
         leftButton.setTitle(text, for: .normal)
-        leftButton.tintColor = UIColor(hexString: tintColor ?? navBarFontColor)
+//        leftButton.tintColor = UIColor(hexString: tintColor ?? navBarFontColor)
         leftButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
         leftButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
         leftButton.backgroundColor = .clear
+        leftButton.setTitleColor(UIColor(hexString: tintColor ?? navBarFontColor), for: .normal)
         leftButton.addTarget(self, action: #selector(selectorFunc), for: .touchUpInside)
 //        leftButton.addTarget(self, action: #selector(popViewController), for: .touchUpInside)
         let backBarButtonItem: UIBarButtonItem = UIBarButtonItem(customView: leftButton)
@@ -91,6 +92,7 @@ class BaseViewController: UIViewController {
         leftButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
         leftButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
         leftButton.backgroundColor = .clear
+//        leftButton.titleLabel?.text = ""
         leftButton.addTarget(self, action: #selector(popViewController), for: .touchUpInside)
         let backBarButtonItem: UIBarButtonItem = UIBarButtonItem(customView: leftButton)
         self.navigationItem.leftBarButtonItem = backBarButtonItem

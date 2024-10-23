@@ -200,7 +200,7 @@ class DocConfirmationViewController: BaseViewController {
       
     }
     // Contract or Utility Bill
-    else if documentID == DocumentID.CO || documentID == DocumentID.UB||documentID == DocumentID.IB {
+      else if documentID == DocumentID.CO.self || documentID == DocumentID.UB||documentID == DocumentID.IB {
       imgOuterView.isHidden = true
       self.setNavigationBarWith(title: (self.documentStep?.confirmationTitle)!)
       self.physicalContractImageView.image = image

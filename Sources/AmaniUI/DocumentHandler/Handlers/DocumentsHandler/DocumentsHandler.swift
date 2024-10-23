@@ -50,11 +50,9 @@ extension DocumentsHandler {
         print("AppConfigError")
         return
       }
-        //MARK: burada diğer döküman tipleri için de yönlendirme yapmak gerekiyor. 
-        if self.docID == DocumentID.IB {
+     
            
             self.topVC.navigationController?.pushViewController(ContainerVC, animated: true)
-            ContainerVC.setNavigationLeftButtonPDF(text: appConfig.uploadPdf ?? "Upload PDF" ,tintColor: appConfig.topBarFontColor)
             ContainerVC.setLeftNavBarButtonAction {
               DispatchQueue.main.async {
               let documentPicker = UIDocumentPickerViewController(documentTypes: [kUTTypePDF as String ], in: .import)
@@ -84,7 +82,7 @@ extension DocumentsHandler {
   //            }
               
             }
-        }
+//        }
      
     }
     

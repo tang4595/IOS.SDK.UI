@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreImage
 
 extension UIImage {
     /// Converts the `UIImage` to a PDF file and saves it to the given file path.
@@ -33,4 +34,8 @@ extension UIImage {
         }
     }
     
+
+
 }
+
+

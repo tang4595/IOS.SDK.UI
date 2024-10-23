@@ -13,25 +13,30 @@ import AmaniSDK
 extension DocumentsHandler: VNDocumentCameraViewControllerDelegate {
    
     func startUploadSession(_ image: [UIImage]?) {
-        if let pdfURL = image?.first?.toPDF(withFilename: "TUR_IB_0.pdf") {
-            do {
-            let fileData = try Data.init(contentsOf: pdfURL)
-              self.files = [FileWithType(data: fileData, dataType: acceptedFileTypes.pdf.rawValue )]
-              self.stepView?.removeFromSuperview()
-              self.callback!(.success(self.stepViewModel))
-              self.topVC.navigationController?.popToViewController(ofClass: HomeViewController.self)
-            }catch {
-                print(error)
+        guard let images = image, !images.isEmpty else {
+               print("No images to upload.")
+               return
+           }
+        
+        for image in images {
+            if let imageData = image.jpegData(compressionQuality: 1) {
+                self.files?.append(FileWithType(data: imageData, dataType: acceptedFileTypes.jpg.rawValue))
             }
         }
-//        if let firstImage = image?.first {
-//            if let imageURL = firstImage.saveToTemporaryDirectory() {
-//               
-//                
-//            } else {
-//                print("Failed to save image")
-//            }
-//        }
+        
+        self.stepView?.removeFromSuperview()
+        self.callback!(.success(self.stepViewModel))
+        self.topVC.navigationController?.popToViewController(ofClass: HomeViewController.self)
+        
+//        if let pdfURL = toPDF(images: images, withFilename: "TUR_IB_0.pdf") {
+//               do {
+//                   let fileData = try Data(contentsOf: pdfURL)
+//                   self.files = [FileWithType(data: fileData, dataType: acceptedFileTypes.pdf.rawValue)]
+//                  
+//               } catch {
+//                   print(error)
+//               }
+//           }
     }
     
     func startDocumentScanning()  {
@@ -82,12 +87,16 @@ extension DocumentsHandler: VNDocumentCameraViewControllerDelegate {
        
     }
     
-    func documentCameraViewController(_ controller:            VNDocumentCameraViewController, didFinishWith scan: VNDocumentCameraScan) {
+    func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFinishWith scan: VNDocumentCameraScan) {
         // Process the scanned pages
         
         for pageNumber in 0..<scan.pageCount {
+            print("pageNumber değeri \(pageNumber)")
             let image = scan.imageOfPage(at: pageNumber)
-            scannedImages.append(image)
+            if scannedImages.count <= 3 {
+                scannedImages.append(image)
+            }
+            
         }
         startUploadSession(scannedImages)
       
