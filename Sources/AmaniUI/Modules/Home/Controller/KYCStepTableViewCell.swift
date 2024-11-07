@@ -47,7 +47,7 @@ class KYCStepTableViewCell: UITableViewCell {
      This method bind the data with view
      - parameter model: KYCRuleModel
      */
-  func bind(model: KYCStepViewModel, alpha: CGFloat = 1) {
+  func bind(model: KYCStepViewModel, alpha: CGFloat = 1, isEnabled: Bool = false) {
     DispatchQueue.main.async { [weak self] in
       
       var labelTest: String = model.title
@@ -57,8 +57,10 @@ class KYCStepTableViewCell: UITableViewCell {
           loaderView.startAnimating()
           
         }else if model.status == DocumentStatus.APPROVED{
+        
           labelTest = model.stepConfig.buttonText?.approved ?? model.title
           loaderView.stopAnimating()
+          
           
         }else if model.status == DocumentStatus.REJECTED{
           labelTest = model.stepConfig.buttonText?.rejected ?? model.title
@@ -72,9 +74,11 @@ class KYCStepTableViewCell: UITableViewCell {
           labelTest = model.stepConfig.buttonText?.notUploaded ?? model.title
           loaderView.stopAnimating()
           
+          
         }else if model.status == DocumentStatus.PENDING_REVIEW{
           labelTest = model.stepConfig.buttonText?.pendingReview ?? model.title
           loaderView.stopAnimating()
+          
           
         } else {
           if ((model.getRuleModel().errors?.count ?? 0) > 0){
@@ -89,7 +93,16 @@ class KYCStepTableViewCell: UITableViewCell {
         self?.titleLabel.text = labelTest
         self?.titleLabel.textColor = model.textColor
         self?.outerView.backgroundColor = model.buttonColor
+      if isEnabled {
         self?.outerView.alpha = alpha
+      } else if isEnabled && model.status == .APPROVED {
+        self?.outerView.alpha = alpha
+      } else if !isEnabled && model.status == .APPROVED {
+        self?.outerView.alpha = alpha
+      } else {
+        self?.outerView.alpha = 0.8
+      }
+        
         
     }
   }

@@ -12,6 +12,7 @@ class HomeViewController: BaseViewController {
     var stepModels: [KYCStepViewModel]?
     var customerData: CustomerResponseModel? = nil
     var nonKYCStepManager: NonKYCStepManager? = nil
+  
     
     // MARK: - Properties
     private var descriptionLabel: UILabel = {
@@ -43,6 +44,7 @@ class HomeViewController: BaseViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(true)
+    
     NotificationCenter.default.addObserver(self, selector: #selector(didReceiveStepModel), name: Notification.Name(
       AppConstants.AmaniDelegateNotifications.onStepModel.rawValue
     ), object: nil)
@@ -50,12 +52,17 @@ class HomeViewController: BaseViewController {
     NotificationCenter.default.addObserver(self, selector: #selector(didReceiveProfileStatus), name: NSNotification.Name(
       AppConstants.AmaniDelegateNotifications.onProfileStatus.rawValue
     ), object: nil)
+    
+    
+    self.initialSetUp()
   }
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(true)
-    self.initialSetUp()
+//    self.initialSetUp()
+   
     viewAppeared = true
+   
   }
   
   override func viewDidDisappear(_ animated: Bool) {
@@ -66,6 +73,7 @@ class HomeViewController: BaseViewController {
 //    }
   }
   
+
   // MARK: - Initial setup methods
   private func initialSetUp() {
     var customerInfo = Amani.sharedInstance.customerInfo().getCustomer()
@@ -74,12 +82,12 @@ class HomeViewController: BaseViewController {
         customerInfo = customerResp
       }
     }
+    
     if(stepModels == nil) {
-      guard let rules = customerInfo.rules else {
-        return
-      }
-      
-      try? generateKYCStepViewModels(from: rules)
+     
+     
+    
+      try? generateKYCStepViewModels(from: AmaniUI.sharedInstance.rulesKYC)
     }
     self.setCustomerInfo(model: customerInfo)
     if (customerInfo.status?.uppercased() == ProfileStatus.PENDING_REVIEW.rawValue || customerInfo.status?.uppercased() == ProfileStatus.APPROVED.rawValue) {
@@ -138,11 +146,13 @@ class HomeViewController: BaseViewController {
       stepModels = filteredViewModels.sorted { $0.sortOrder < $1.sortOrder }
     } else {
       rules.forEach { ruleModel in
+//        print("HOME EKRANINDA DELEGATEN GELEN RULE MODEL \(ruleModel)")
         if let stepModel = stepConfig.first(where: { $0.id == ruleModel.id }) {
           if let stepID = stepModels?.firstIndex(where: {$0.id == ruleModel.id}) {
               // FIXME: index out of range hatası socketten cevap gelmeyince app crash oluyor.
             stepModels?.remove(at: stepID)
-        
+//            print("STEP MODELDEN REMOVE EDILEN STEP ID \(stepID)")
+         
             stepModels?.append(KYCStepViewModel(from: stepModel, initialRule: ruleModel, topController: self))
           }
         }
@@ -236,22 +246,22 @@ extension HomeViewController {
   func onStepModel(rules: [AmaniSDK.KYCRuleModel]?) {
     // CHECK RULES AND OPEN SUCCESS SCREEN
     // Reload customer when upload is complete
-    print("on stepmodel \(rules)")
+    print("on stepmodel \(AmaniUI.sharedInstance.rulesKYC)")
     if viewAppeared{
       guard let kycStepTblView = kycStepTblView else {return}
-      guard let rules = rules else {
-        return
-      }
-      print(rules)
+//      guard let rules = rules else {
+//        return
+//      }
+      print(AmaniUI.sharedInstance.rulesKYC)
       
-      try? self.generateKYCStepViewModels(from: rules)
+      try? self.generateKYCStepViewModels(from:  AmaniUI.sharedInstance.rulesKYC)
       guard let stepModels = stepModels else {return}
 //        for stepModel in stepModels {
-//            
+          self.kycStepTblView.updateDataAndReload(stepModels: stepModels)
 //            self.kycStepTblView.updateStatus(for: stepModel, status: stepModel.status)
 //        }
         
-      self.kycStepTblView.updateDataAndReload(stepModels: stepModels)
+      
     }
   }
   

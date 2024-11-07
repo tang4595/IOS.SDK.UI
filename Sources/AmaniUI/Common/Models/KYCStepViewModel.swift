@@ -34,7 +34,7 @@ class KYCStepViewModel {
   var topViewController: UIViewController!
   var stepConfig:StepConfig
   
-  init(from stepConfig: StepConfig, initialRule: KYCRuleModel, topController onVC: UIViewController) {
+  init(from stepConfig: StepConfig, initialRule: KYCRuleModel, topController onVC: UIViewController?) {
     self.stepConfig = stepConfig
     id = stepConfig.id!
     title = stepConfig.buttonText?.notUploaded ?? stepConfig.title!
@@ -128,6 +128,7 @@ class KYCStepViewModel {
         return true
       }
     } else {
+      
       let allSteps = Amani.sharedInstance.customerInfo().getCustomer().rules
       // Filter rules by mandatory that approved and check the count
       return allSteps!.filter {  stepElement in

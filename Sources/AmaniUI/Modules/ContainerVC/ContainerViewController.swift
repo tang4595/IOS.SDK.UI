@@ -18,7 +18,7 @@ class ContainerViewController: BaseViewController {
         return button
     }()
 
-    private lazy var animationView: UIView = {
+    private var animationView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .clear
@@ -63,16 +63,13 @@ class ContainerViewController: BaseViewController {
     self.disappearCallback = callback
   }
     
-  @objc func actBtnContinue(_ sender: Any) {
-        self.lottieAnimationView?.stop()
-    }
+ 
   
     override func viewDidLoad() {
       super.viewDidLoad()
       self.initialSetup()
-      
      
-      self.btnContinue.addTarget(self, action: #selector(actBtnContinue(_:)), for: .touchUpInside)
+      self.btnContinue.addTarget(self, action: #selector(actBtnContinue(_ :)), for: .touchUpInside)
     }
     
   override func viewWillAppear(_ animated: Bool) {
@@ -129,7 +126,12 @@ class ContainerViewController: BaseViewController {
 }
 extension ContainerViewController {
    
+  @objc func actBtnContinue(_ sender: UIButton) {
+    print("LOTTIE ANIMATION DURDURULDU.")
+    self.lottieAnimationView?.stop()
     
+  }
+  
     func initialSetup() {
       if AmaniUI.sharedInstance.isEnabledClientSideMrz {
         Amani.sharedInstance.setMRZDelegate(delegate: self)
@@ -141,7 +143,8 @@ extension ContainerViewController {
             self.titleDescription.isHidden = true
             self.setNavigationLeftButtonPDF(text: appConfig.generalconfigs?.uploadPdf ?? "Upload PDF" ,tintColor: appConfig.generalconfigs?.topBarFontColor)
         } else {
-          
+            self.btnContinue.isHidden = false
+            self.titleDescription.isHidden = false
             self.setNavigationLeftButton(TintColor: appConfig.generalconfigs?.topBarFontColor ?? "#ffffff")
             btnContinue.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonBackgroundColor ?? ThemeColor.primaryColor.toHexString())
             btnContinue.layer.borderColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonBorderColor ?? "#263B5B").cgColor
@@ -149,8 +152,7 @@ extension ContainerViewController {
             btnContinue.setTitleColor(UIColor(hexString: appConfig.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
             btnContinue.tintColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString())
             btnContinue.addCornerRadiousWith(radious: buttonRadious)
-            self.btnContinue.isHidden = false
-            self.titleDescription.isHidden = false
+            
         }
 
       // Navigation Bar
