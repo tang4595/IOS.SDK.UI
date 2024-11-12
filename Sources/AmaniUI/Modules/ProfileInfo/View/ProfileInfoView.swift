@@ -25,113 +25,21 @@ class ProfileInfoView: UIView {
     }
 
   // MARK: Form Area
-
-  private lazy var nameLegend: UILabel = {
-    let label = UILabel()
-    label.text = "Name"
-    label.textColor = UIColor(hexString: "#2020F")
-    label.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
-    label.numberOfLines = 1
-    label.setContentCompressionResistancePriority(.required, for: .vertical)
-    return label
-  }()
-
-  private lazy var nameInput: RoundedTextInput = {
-    let input = RoundedTextInput(
-      placeholderText: "Enter your name",
-      borderColor: UIColor(hexString: "#515166"),
-      placeholderColor: UIColor(hexString: "#C0C0C0"),
-      isPasswordToggleEnabled: false,
-      keyboardType: .default
-    )
-    return input
-  }()
-
-  private lazy var surnameLegend: UILabel = {
-    let label = UILabel()
-    label.text = "Surname"
-    label.textColor = UIColor(hexString: "#2020F")
-    label.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
-    label.numberOfLines = 1
-    label.setContentCompressionResistancePriority(.required, for: .vertical)
-    return label
-  }()
-
-  private lazy var surnameInput: RoundedTextInput = {
-    let input = RoundedTextInput(
-      placeholderText: "Enter your surname",
-      borderColor: UIColor(hexString: "#515166"),
-      placeholderColor: UIColor(hexString: "#C0C0C0"),
-      isPasswordToggleEnabled: false,
-      keyboardType: .default
-    )
-    return input
-  }()
-
-  private lazy var birthdateLabel: UILabel = {
-    let label = UILabel()
-    label.text = "Date of Birth"
-    label.textColor = UIColor(hexString: "#2020F")
-    label.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
-    label.numberOfLines = 1
-    label.setContentCompressionResistancePriority(.required, for: .vertical)
-    return label
-  }()
-
-  private lazy var birthdateInput: RoundedTextInput = {
-    let input = RoundedTextInput(
-      placeholderText: "",
-      borderColor: UIColor(hexString: "#515166"),
-      placeholderColor: UIColor(hexString: "#C0C0C0"),
-      isPasswordToggleEnabled: false,
-      keyboardType: .numberPad
-    )
-    return input
-  }()
-    
-    private lazy var datePicker: UIDatePicker = {
-        let picker = UIDatePicker()
-        picker.datePickerMode = .date
-        picker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
-        return picker
-    }()
-
-  private lazy var submitButton: RoundedButton = {
-
-    let button = RoundedButton(
-     withTitle: appConfig?.generalconfigs?.continueText ?? "Continue",
-     withColor: UIColor(hexString: appConfig?.generalconfigs?.primaryButtonBackgroundColor ?? "#EA3365")
-    )
-    return button
-  }()
-
-  private lazy var formView: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [
-      nameLegend, nameInput,
-      surnameLegend, surnameInput,
-      birthdateLabel, birthdateInput,
-    ])
-
-    stackView.axis = .vertical
-    stackView.distribution = .fill
-    stackView.spacing = 6.0
-
-    return stackView
-  }()
-
-  private lazy var mainStackView: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [
-      formView,
-      submitButton,
-    ])
-
-    stackView.axis = .vertical
-    stackView.distribution = .fill
-    stackView.spacing = 0.0
-
-    stackView.setCustomSpacing(100.0, after: formView)
-
-    return stackView
+  private var nameLegend = UILabel()
+  private var nameInput = RoundedTextInput()
+  private var surnameLegend = UILabel()
+  private var surnameInput = RoundedTextInput()
+  private var birthdateLabel = UILabel()
+  private var birthdateInput = RoundedTextInput()
+  private var submitButton = RoundedButton()
+  private var formView = UIStackView()
+  private var mainStackView = UIStackView()
+  
+  private lazy var datePicker: UIDatePicker = {
+    let picker = UIDatePicker()
+    picker.datePickerMode = .date
+    picker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
+    return picker
   }()
 
   override init(frame: CGRect) {
@@ -160,23 +68,78 @@ class ProfileInfoView: UIView {
   // MARK: UI Setup
 
     func setupUI() {
-        mainStackView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(mainStackView)
-        NSLayoutConstraint.activate([
-            mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            mainStackView.topAnchor.constraint(equalTo: topAnchor),
-            mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-        ])
-        
-        birthdateInput.field.addSubview(datePicker)
-        datePicker.translatesAutoresizingMaskIntoConstraints = false
-        datePicker.contentHorizontalAlignment = .center
-        NSLayoutConstraint.activate([
-            datePicker.leadingAnchor.constraint(equalTo: birthdateInput.field.leadingAnchor),
-//            datePicker.trailingAnchor.constraint(equalTo: birthdateInput.field.trailingAnchor),
-            datePicker.centerYAnchor.constraint(equalTo: birthdateInput.field.centerYAnchor),
-        ])
+      
+      self.nameLegend.text = "Name"
+      self.nameLegend.textColor = UIColor(hexString: "#2020F")
+      self.nameLegend.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
+      self.nameLegend.numberOfLines = 1
+      self.nameLegend.setContentCompressionResistancePriority(.required, for: .vertical)
+      
+      self.nameInput = RoundedTextInput(
+        placeholderText: "Enter your name",
+        borderColor: UIColor(hexString: "#515166"),
+        placeholderColor: UIColor(hexString: "#C0C0C0"),
+        isPasswordToggleEnabled: false,
+        keyboardType: .default
+      )
+      
+      self.surnameLegend.text = "Surname"
+      self.surnameLegend.textColor = UIColor(hexString: "#2020F")
+      self.surnameLegend.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
+      self.surnameLegend.numberOfLines = 1
+      self.surnameLegend.setContentCompressionResistancePriority(.required, for: .vertical)
+      
+      self.surnameInput = RoundedTextInput(
+        placeholderText: "Enter your surname",
+        borderColor: UIColor(hexString: "#515166"),
+        placeholderColor: UIColor(hexString: "#C0C0C0"),
+        isPasswordToggleEnabled: false,
+        keyboardType: .default
+      )
+      
+      self.birthdateLabel.text = "Date of Birth"
+      self.birthdateLabel.textColor = UIColor(hexString: "#2020F")
+      self.birthdateLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
+      self.birthdateLabel.numberOfLines = 1
+      self.birthdateLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+      
+      self.birthdateInput = RoundedTextInput(
+        placeholderText: "",
+        borderColor: UIColor(hexString: "#515166"),
+        placeholderColor: UIColor(hexString: "#C0C0C0"),
+        isPasswordToggleEnabled: false,
+        keyboardType: .numberPad
+      )
+      
+      self.submitButton = RoundedButton(
+        withTitle: appConfig?.generalconfigs?.continueText ?? "Continue",
+        withColor: UIColor(hexString: appConfig?.generalconfigs?.primaryButtonBackgroundColor ?? "#EA3365")
+      )
+      
+      self.formView = UIStackView(arrangedSubviews: [
+        nameLegend, nameInput,
+        surnameLegend, surnameInput,
+        birthdateLabel, birthdateInput,
+      ])
+      
+      self.formView.axis = .vertical
+      self.formView.distribution = .fill
+      self.formView.spacing = 6.0
+      
+      
+      self.mainStackView = UIStackView(arrangedSubviews: [
+        formView,
+        submitButton,
+      ])
+      
+      self.mainStackView.axis = .vertical
+      self.mainStackView.distribution = .fill
+      self.mainStackView.spacing = 0.0
+      
+      self.mainStackView.setCustomSpacing(100.0, after: formView)
+      
+      self.mainStackView.translatesAutoresizingMaskIntoConstraints = false
+      
         
         // Initially set the input view of the birthdate input field to nil
 //        birthdateInput.field.inputView = nil
@@ -185,8 +148,26 @@ class ProfileInfoView: UIView {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(birthdateInputTapped))
         birthdateInput.field.addGestureRecognizer(tapGesture)
 //        addSubviews()
+      setConstraints()
     }
+  private func setConstraints() {
+    addSubview(mainStackView)
+    NSLayoutConstraint.activate([
+      mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+      mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+      mainStackView.topAnchor.constraint(equalTo: topAnchor),
+      mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+    ])
     
+    birthdateInput.field.addSubview(datePicker)
+    datePicker.translatesAutoresizingMaskIntoConstraints = false
+    datePicker.contentHorizontalAlignment = .center
+    NSLayoutConstraint.activate([
+      datePicker.leadingAnchor.constraint(equalTo: birthdateInput.field.leadingAnchor),
+      //            datePicker.trailingAnchor.constraint(equalTo: birthdateInput.field.trailingAnchor),
+      datePicker.centerYAnchor.constraint(equalTo: birthdateInput.field.centerYAnchor),
+    ])
+  }
 //    @objc func doneTapped(){
 //        if let datePicker = self.birthdateInput.field.inputView as? UIDatePicker{
 //            let dateFormatter = DateFormatter()

@@ -2,91 +2,21 @@ import AmaniSDK
 import UIKit
 
 class SuccessViewController: BaseViewController {
-    private lazy var stackView: UIStackView = {
-        let stack = UIStackView()
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.alignment = .center
-        stack.axis = .vertical
-        stack.distribution = .fill
-        stack.contentMode = .scaleToFill
-        stack.spacing = 8
-        return stack
-    }()
-    
-    private lazy var approveImage: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "checkmark.circle")
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
-        imageView.clipsToBounds = true
-        imageView.tintAdjustmentMode = .normal
-        imageView.tintColor = UIColor(hexString: "#6FF7D1")
-        
-        return imageView
-    }()
-    
-    private lazy var labelContainerView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-//        view.backgroundColor = .red
-        return view
-    }()
-   
-    private lazy var headerLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 20.0, weight: .bold)
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        label.textColor = .black
-        return label
-    }()
-    
-    private lazy var info1TextLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 17.0, weight: .light)
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        label.textColor = .black
-        
-        return label
-    }()
-    
-    private lazy var info2TextLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 17.0, weight: .light)
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        label.textColor = .black
-        return label
-    }()
-    
-    private lazy var continueButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
-    private lazy var amaniLogo: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "ic_poweredBy", in: AmaniUI.sharedInstance.getBundle(), with: nil)?.withRenderingMode(.alwaysTemplate))
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
-        imageView.clipsToBounds = true
-        imageView.tintAdjustmentMode = .normal
-        
-        return imageView
-    }()
+    private var stackView = UIStackView()
+    private var approveImage = UIImageView()
+    private var labelContainerView = UIView()
+    private var headerLabel = UILabel()
+    private var info1TextLabel = UILabel()
+    private var info2TextLabel = UILabel()
+    private var continueButton = UIButton()
+    private var amaniLogo = UIImageView()
     
   override func viewDidLoad() {
     super.viewDidLoad()
-    initialSetup()
-    setConstraints()
-    continueButton.addTarget(self, action: #selector(continueBtnAction(_:)), for: .touchUpInside)
+    setupUI()
+    
   }
-
-
+  
   override func popViewController() {
     navigationController?.dismiss(animated: true, completion: nil)
   }
@@ -101,9 +31,54 @@ class SuccessViewController: BaseViewController {
 }
 
 extension SuccessViewController {
-    private func initialSetup() {
+    private func setupUI() {
       let generalConfig = try? Amani.sharedInstance.appConfig().getApplicationConfig().generalconfigs
       let textColor = generalConfig?.appFontColor ?? "ffffff"
+      
+      self.stackView.translatesAutoresizingMaskIntoConstraints = false
+      self.stackView.alignment = .center
+      self.stackView.axis = .vertical
+      self.stackView.distribution = .fill
+      self.stackView.contentMode = .scaleToFill
+      self.stackView.spacing = 8
+      
+      
+      self.labelContainerView.translatesAutoresizingMaskIntoConstraints = false
+      
+      self.approveImage.image = UIImage(systemName: "checkmark.circle")
+      self.approveImage.translatesAutoresizingMaskIntoConstraints = false
+      self.approveImage.contentMode = .scaleAspectFit
+      self.approveImage.clipsToBounds = true
+      self.approveImage.tintAdjustmentMode = .normal
+      self.approveImage.tintColor = UIColor(hexString: "#6FF7D1")
+      
+      
+      self.headerLabel.translatesAutoresizingMaskIntoConstraints = false
+      self.headerLabel.font = UIFont.systemFont(ofSize: 20.0, weight: .bold)
+      self.headerLabel.textAlignment = .center
+      self.headerLabel.numberOfLines = 0
+      self.headerLabel.textColor = .black
+      
+      self.info1TextLabel.translatesAutoresizingMaskIntoConstraints = false
+      self.info1TextLabel.font = UIFont.systemFont(ofSize: 17.0, weight: .light)
+      self.info1TextLabel.textAlignment = .center
+      self.info1TextLabel.numberOfLines = 0
+      self.info1TextLabel.textColor = .black
+      
+      self.info2TextLabel.translatesAutoresizingMaskIntoConstraints = false
+      self.info2TextLabel.font = UIFont.systemFont(ofSize: 17.0, weight: .light)
+      self.info2TextLabel.textAlignment = .center
+      self.info2TextLabel.numberOfLines = 0
+      self.info2TextLabel.textColor = .black
+      
+      self.continueButton.translatesAutoresizingMaskIntoConstraints = false
+      
+      self.amaniLogo = UIImageView(image: UIImage(named: "ic_poweredBy", in: AmaniUI.sharedInstance.getBundle(), with: nil)?.withRenderingMode(.alwaysTemplate))
+      self.amaniLogo.translatesAutoresizingMaskIntoConstraints = false
+      self.amaniLogo.contentMode = .scaleAspectFit
+      self.amaniLogo.clipsToBounds = true
+      self.amaniLogo.tintAdjustmentMode = .normal
+      
       setNavigationBarWith(title: generalConfig?.successTitle ?? "Adımları Tamamladınız", textColor: UIColor(hexString: textColor))
       setNavigationLeftButton(TintColor: textColor)
       continueButton.setTitleColor(UIColor(hexString: generalConfig?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
@@ -120,6 +95,9 @@ extension SuccessViewController {
       headerLabel.text = generalConfig?.successHeaderText ?? "Tebrikler"
       info1TextLabel.text = generalConfig?.successInfo1Text ?? "Bütün adımları tamamladınız."
       info2TextLabel.text = generalConfig?.successInfo2Text ?? "Evraklarınızı kontrol edip başvurunuzu değerlendireceğiz."
+      continueButton.addTarget(self, action: #selector(continueBtnAction(_:)), for: .touchUpInside)
+      
+      setConstraints()
     }
     
     private func setConstraints() {
@@ -169,7 +147,5 @@ extension SuccessViewController {
                 amaniLogo.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -30)
             
             ])
-        
-       
     }
 }

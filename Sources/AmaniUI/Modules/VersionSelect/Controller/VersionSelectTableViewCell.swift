@@ -7,26 +7,12 @@ This class represents the cell class of Version Selector
 @objc(VersionSelectTableViewCell)
 class VersionSelectTableViewCell: UITableViewCell {
     // MARK: - Properties
-    private lazy var outerView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-
-        return view
-    }()
-    
-    private lazy var titleLabel: UILabel = {
-       let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 15.0, weight: .bold)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 2
-        label.textAlignment = .left
-       return label
-    }()
+    private var outerView = UIView()
+    private var titleLabel = UILabel()
     
     // MARK: - Life cycle methods
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
         setupUI()
         self.selectionStyle = .none
     }
@@ -50,15 +36,23 @@ extension VersionSelectTableViewCell {
     private func setupUI() {
         let generalconfigs = try? Amani.sharedInstance.appConfig().getApplicationConfig().generalconfigs
         contentView.backgroundColor = UIColor(hexString: generalconfigs?.appBackground ?? "#EEF4FA")
-        outerView.addShadowWithBorder(shadowRadius: 4, 
+      
+      self.outerView.translatesAutoresizingMaskIntoConstraints = false
+      
+      self.titleLabel.font = UIFont.systemFont(ofSize: 15.0, weight: .bold)
+      self.titleLabel.translatesAutoresizingMaskIntoConstraints = false
+      self.titleLabel.numberOfLines = 2
+      self.titleLabel.textAlignment = .left
+      
+      self.outerView.addShadowWithBorder(shadowRadius: 4,
                                       shadowColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.25),
                                       shadowOpacity: 1, borderColor: .clear, borderWidth: 0,
                                       cornerRadious: CGFloat(generalconfigs?.buttonRadius ?? 10))
         
-           titleLabel.textColor = UIColor( hexString: generalconfigs?.primaryButtonTextColor ?? "000000")
-           outerView.backgroundColor = UIColor( hexString: generalconfigs?.primaryButtonBackgroundColor ?? "ffffff")
+      self.titleLabel.textColor = UIColor( hexString: generalconfigs?.primaryButtonTextColor ?? "000000")
+      self.outerView.backgroundColor = UIColor( hexString: generalconfigs?.primaryButtonBackgroundColor ?? "ffffff")
            if let bordercolor:String = generalconfigs?.primaryButtonBorderColor {
-               outerView.addBorder(borderWidth: 2, borderColor: UIColor(hexString: bordercolor).cgColor)
+             self.outerView.addBorder(borderWidth: 2, borderColor: UIColor(hexString: bordercolor).cgColor)
            }
         
         setConstraints()

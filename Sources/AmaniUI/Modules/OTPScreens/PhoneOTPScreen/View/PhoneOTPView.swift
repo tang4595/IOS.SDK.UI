@@ -11,6 +11,17 @@ import Combine
 import AmaniSDK
 
 class PhoneOTPView: UIView {
+  private var entryInputView = UIView()
+  private var countryFlag = UILabel()
+  private var arrowImage = UIImageView()
+  private var descriptionText = UILabel()
+  private var phoneLegend = UILabel()
+  private var phoneInput = RoundedTextInput()
+  private var selectCountryView = UIView()
+  private var submitButton = RoundedButton()
+  private var phoneInputView = UIStackView()
+  private var formView = UIStackView()
+  private var mainStackView = UIStackView()
   
   private var cancellables = Set<AnyCancellable>()
   private var viewModel: PhoneOTPViewModel!
@@ -26,153 +37,9 @@ class PhoneOTPView: UIView {
         }
     }
 
-  private lazy var descriptionText: UILabel = {
-    let label = UILabel()
-    label.text = "We will send a ‘one time PIN’ to your phone number for verification"
-    label.font = UIFont.systemFont(ofSize: 16.0, weight: .light)
-    label.numberOfLines = 2
-    label.textColor = UIColor(hexString: "#20202F")
-    
-    return label
-  }()
-  
-  private lazy var phoneLegend: UILabel = {
-    let label = UILabel()
-    label.text = "Phone Number"
-    label.textColor = UIColor(hexString: "#20202F")
-    label.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
-    label.numberOfLines = 1
-    label.setContentCompressionResistancePriority(.required, for: .vertical)
-    return label
-  }()
-  
-    lazy var phoneInput: RoundedTextInput = {
-    let input = RoundedTextInput(
-      placeholderText: "Enter your phone here",
-      borderColor: UIColor(hexString: "#515166"),
-      placeholderColor: UIColor(hexString: "#C0C0C0"),
-      isPasswordToggleEnabled: false,
-      keyboardType: .phonePad
-      
-    )
-        if appConfig?.generalconfigs?.language == "ar" {
-          input.field.textAlignment = .right
-        }
-        
-        input.field.text = "+1"
-        
-    return input
-  }()
-    
-    lazy var selectCountryView: UIView = {
-        let countryView = UIView()
-        countryView.backgroundColor = UIColor(hexString: "#D9D9D9")
-        countryView.layer.cornerRadius = 25
-        countryView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
-
-        let countryFlag = UILabel()
-        countryFlag.text = "🇺🇸"
-        countryFlag.translatesAutoresizingMaskIntoConstraints = false
-
-        let arrowImage = UIImageView()
-        arrowImage.image = UIImage(named: "Polygon")
-        arrowImage.translatesAutoresizingMaskIntoConstraints = false
-        
-        countryView.addSubview(arrowImage)
-        countryView.addSubview(countryFlag)
-        NSLayoutConstraint.activate([
-            countryFlag.leadingAnchor.constraint(equalTo: countryView.leadingAnchor, constant: 8),
-            countryFlag.centerYAnchor.constraint(equalTo: countryView.centerYAnchor),
-
-            arrowImage.leadingAnchor.constraint(equalTo: countryFlag.trailingAnchor, constant: 8),
-            arrowImage.trailingAnchor.constraint(equalTo: countryView.trailingAnchor, constant: -8),
-            arrowImage.centerYAnchor.constraint(equalTo: countryView.centerYAnchor),
-            arrowImage.heightAnchor.constraint(equalToConstant: 24),
-        ])
-
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(selectCountryButtonTapped))
-        countryView.addGestureRecognizer(tapGesture)
-        return countryView
-    }()
-
-
-
-    
-  private lazy var submitButton: RoundedButton = {
-    let button = RoundedButton(
-//        withTitle: appConfig?.stepConfig?[2].documents?[0].versions?[0].steps?[0].captureTitle ?? "Verify Phone Number",
-        withTitle: appConfig?.generalconfigs?.continueText ?? "Continue",
-      withColor: UIColor(hexString: appConfig?.generalconfigs?.primaryButtonBackgroundColor ?? "#EA3365")
-    )
-    return button
-  }()
-    
-    private lazy var phoneInputView: UIStackView = {
-        let inputView = UIView()
-        phoneInput.addSubview(selectCountryView)
-        inputView.addSubview(phoneInput)
-        
-        selectCountryView.translatesAutoresizingMaskIntoConstraints = false
-        phoneInput.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            selectCountryView.leadingAnchor.constraint(equalTo: phoneInput.leadingAnchor),
-            selectCountryView.topAnchor.constraint(equalTo: phoneInput.topAnchor),
-            selectCountryView.bottomAnchor.constraint(equalTo: phoneInput.bottomAnchor),
-            selectCountryView.widthAnchor.constraint(equalToConstant: 66),
-            
-            phoneInput.leadingAnchor.constraint(equalTo: inputView.leadingAnchor),
-            phoneInput.topAnchor.constraint(equalTo: inputView.topAnchor),
-            phoneInput.bottomAnchor.constraint(equalTo: inputView.bottomAnchor),
-            phoneInput.trailingAnchor.constraint(equalTo: inputView.trailingAnchor),
-            
-            phoneInput.field.leadingAnchor.constraint(equalTo: inputView.leadingAnchor, constant: 70),
-            phoneInput.field.topAnchor.constraint(equalTo: inputView.topAnchor),
-            phoneInput.field.bottomAnchor.constraint(equalTo: inputView.bottomAnchor),
-            phoneInput.field.trailingAnchor.constraint(equalTo: inputView.trailingAnchor)
-        ])
-        
-        let stackView = UIStackView(arrangedSubviews: [inputView])
-        stackView.axis = .horizontal
-        stackView.distribution = .fill
-        stackView.alignment = .center
-        stackView.spacing = 4.0
-        
-        return stackView
-    }()
-
-  
-  private lazy var formView: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [
-      phoneLegend, phoneInputView
-    ])
-    
-    stackView.axis = .vertical
-    stackView.distribution = .fill
-    stackView.spacing = 6.0
-    return stackView
-  }()
-  
-  private lazy var mainStackView: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [
-      descriptionText,
-      formView,
-      submitButton,
-    ])
-    
-    stackView.axis = .vertical
-    stackView.distribution = .fill
-    stackView.spacing = 0.0
-    
-    stackView.setCustomSpacing(80.0, after: descriptionText)
-    stackView.setCustomSpacing(150.0, after: formView)
-    
-    
-    return stackView
-  }()
-  
   override init(frame: CGRect) {
     super.init(frame: frame)
+//    setupUI()
   }
   
   required init?(coder: NSCoder) {
@@ -188,15 +55,132 @@ class PhoneOTPView: UIView {
       object: nil
     )
   }
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    
+  }
   
   func setupUI() {
+      // Description Text
+    descriptionText.text = "We will send a ‘one time PIN’ to your phone number for verification"
+    descriptionText.font = UIFont.systemFont(ofSize: 16.0, weight: .light)
+    descriptionText.numberOfLines = 2
+    descriptionText.textColor = UIColor(hexString: "#20202F")
+    
+      // Phone Legend
+    phoneLegend.text = "Phone Number"
+    phoneLegend.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
+    phoneLegend.textColor = UIColor(hexString: "#20202F")
+    
+      // Phone Input
+    phoneInput = RoundedTextInput(
+      placeholderText: "Enter your phone here",
+      borderColor: UIColor(hexString: "#515166"),
+      placeholderColor: UIColor(hexString: "#C0C0C0"),
+      isPasswordToggleEnabled: false,
+      keyboardType: .phonePad
+    )
+    
+    phoneInput.field.textAlignment = appConfig?.generalconfigs?.language == "ar" ? .right : .left
+    phoneInput.field.text = "+1"
+    
+      // Select Country View
+  
+    selectCountryView.backgroundColor = UIColor(hexString: "#D9D9D9")
+    selectCountryView.layer.cornerRadius = 25
+    selectCountryView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
+    
+    
+    countryFlag.text = "🇺🇸"
+    
+    arrowImage.image = UIImage(named: "Polygon", in: AmaniUI.sharedInstance.getBundle(), with: .none)
+    arrowImage.contentMode = .scaleAspectFit
+    arrowImage.clipsToBounds = true
+    arrowImage.tintAdjustmentMode = .normal
+
+      // Gesture Recognizer for Country Selection
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(selectCountryButtonTapped))
+    selectCountryView.addGestureRecognizer(tapGesture)
+    
+      // Submit Button
+    submitButton = RoundedButton(
+      withTitle: appConfig?.generalconfigs?.continueText ?? "Continue",
+      withColor: UIColor(hexString: appConfig?.generalconfigs?.primaryButtonBackgroundColor ?? "#EA3365")
+    )
+    
+    setConstraints()
+  }
+  
+  private func setConstraints() {
+    selectCountryView.translatesAutoresizingMaskIntoConstraints = false
+    countryFlag.translatesAutoresizingMaskIntoConstraints = false
+    arrowImage.translatesAutoresizingMaskIntoConstraints = false
+   
+      // StackViews
+    phoneInputView.translatesAutoresizingMaskIntoConstraints = false
+    phoneInputView = UIStackView(arrangedSubviews: [entryInputView])
+    phoneInputView.axis = .horizontal
+    phoneInputView.spacing = 4.0
+    phoneInputView.distribution = .fill
+    phoneInputView.alignment = .center
+   
+    
+    formView.translatesAutoresizingMaskIntoConstraints = false
+    formView = UIStackView(arrangedSubviews: [phoneLegend, phoneInputView])
+    formView.axis = .vertical
+    formView.spacing = 6.0
+//    formView.alignment = .fill
+//    formView.distribution = .fillProportionally
+    
     mainStackView.translatesAutoresizingMaskIntoConstraints = false
+    mainStackView = UIStackView(arrangedSubviews: [descriptionText, formView, submitButton])
+    mainStackView.axis = .vertical
+    mainStackView.spacing = 16.0
+    mainStackView.translatesAutoresizingMaskIntoConstraints = false
+    mainStackView.setCustomSpacing(80.0, after: descriptionText)
+    mainStackView.setCustomSpacing(150.0, after: formView)
+
+    formView.translatesAutoresizingMaskIntoConstraints = false
+    phoneInput.translatesAutoresizingMaskIntoConstraints = false
+      // Add subviews
+    
+    selectCountryView.addSubview(countryFlag)
+    selectCountryView.addSubview(arrowImage)
+    phoneInput.addSubview(selectCountryView)
+    entryInputView.addSubview(phoneInput)   
     addSubview(mainStackView)
+  
     NSLayoutConstraint.activate([
+    
+      countryFlag.leadingAnchor.constraint(equalTo: selectCountryView.leadingAnchor, constant: 8),
+      countryFlag.centerYAnchor.constraint(equalTo: selectCountryView.centerYAnchor),
+      
+      arrowImage.leadingAnchor.constraint(equalTo: countryFlag.trailingAnchor, constant: 8),
+      arrowImage.trailingAnchor.constraint(equalTo: selectCountryView.trailingAnchor, constant: -8),
+      arrowImage.centerYAnchor.constraint(equalTo: selectCountryView.centerYAnchor),
+      arrowImage.heightAnchor.constraint(equalToConstant: 24),
+      
+      selectCountryView.leadingAnchor.constraint(equalTo: phoneInput.leadingAnchor),
+      selectCountryView.topAnchor.constraint(equalTo: phoneInput.topAnchor),
+      selectCountryView.bottomAnchor.constraint(equalTo: phoneInput.bottomAnchor),
+      selectCountryView.widthAnchor.constraint(equalToConstant: 66),
+       
+      phoneInput.leadingAnchor.constraint(equalTo: entryInputView.leadingAnchor),
+      phoneInput.trailingAnchor.constraint(equalTo: entryInputView.trailingAnchor),
+      phoneInput.topAnchor.constraint(equalTo: entryInputView.topAnchor),
+      phoneInput.bottomAnchor.constraint(equalTo: entryInputView.bottomAnchor),
+      phoneInput.field.leadingAnchor.constraint(equalTo: entryInputView.leadingAnchor, constant: 70),
+      phoneInput.field.topAnchor.constraint(equalTo: entryInputView.topAnchor),
+      phoneInput.field.bottomAnchor.constraint(equalTo: entryInputView.bottomAnchor),
+      phoneInput.field.trailingAnchor.constraint(equalTo: entryInputView.trailingAnchor),
+      
+  
+      
       mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
       mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
       mainStackView.topAnchor.constraint(equalTo: topAnchor),
-      mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor)
+      mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+  
     ])
   }
   

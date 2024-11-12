@@ -3,41 +3,21 @@ import AmaniSDK
 /**
  This class represents the cell class of KYC step
  */
-@objc(KYCStepTableViewCell)
 class KYCStepTableViewCell: UITableViewCell {
     // MARK: - Properties
-    private var outerView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
-    private var titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 15.0, weight: .bold)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 2
-        label.textAlignment = .left
-        return label
-    }()
-    
-    private lazy var loaderView: UIActivityIndicatorView = {
-       let loader = UIActivityIndicatorView()
-        loader.translatesAutoresizingMaskIntoConstraints = false
-        loader.backgroundColor = .clear
-        loader.color = .white
-      return loader
-    }()
+    private var outerView = UIView()
+    private var titleLabel = UILabel()
+    private var loaderView = UIActivityIndicatorView()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setConstraints()
+        setupUI()
         self.selectionStyle = .none
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        setConstraints()
+        setupUI()
         self.selectionStyle = .none
     
     }
@@ -113,8 +93,18 @@ class KYCStepTableViewCell: UITableViewCell {
 extension KYCStepTableViewCell {
     private func setupUI() {
         self.contentView.backgroundColor = UIColor(hexString: AmaniUI.sharedInstance.config?.generalconfigs?.appBackground ?? "#EEF4FA" )
-    
-        outerView.addShadowWithBorder(
+      
+      self.outerView.translatesAutoresizingMaskIntoConstraints = false
+      self.titleLabel.font = UIFont.systemFont(ofSize: 15.0, weight: .bold)
+      self.titleLabel.translatesAutoresizingMaskIntoConstraints = false
+      self.titleLabel.numberOfLines = 2
+      self.titleLabel.textAlignment = .left
+      
+      self.loaderView.translatesAutoresizingMaskIntoConstraints = false
+      self.loaderView.backgroundColor = .clear
+      self.loaderView.color = .white
+        
+      self.outerView.addShadowWithBorder(
             shadowRadius: 4,
             shadowColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.25),
             shadowOpacity: 1,
@@ -123,8 +113,10 @@ extension KYCStepTableViewCell {
             cornerRadious: CGFloat(AmaniUI.sharedInstance.config?.generalconfigs?.buttonRadius ?? 10)
         )
         if let bordercolor: String = AmaniUI.sharedInstance.config?.generalconfigs?.primaryButtonBorderColor {
-            outerView.addBorder(borderWidth: 2, borderColor: UIColor(hexString: bordercolor).cgColor)
+          self.outerView.addBorder(borderWidth: 2, borderColor: UIColor(hexString: bordercolor).cgColor)
         }
+      
+      setConstraints()
     }
     
     private func setConstraints() {
@@ -151,8 +143,6 @@ extension KYCStepTableViewCell {
             loaderView.widthAnchor.constraint(equalToConstant: 65)
             
         ])
-        
-        setupUI()
     }
     
   

@@ -11,92 +11,18 @@ import AmaniSDK
 typealias ConfirmCallback = () -> Void
 
 class DocConfirmationViewController: BaseViewController {
-    // MARK: Properties
-    
-    private lazy var selfieImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-//        imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
-        
-        return imageView
-    }()
-    
-    private lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    private lazy var imgOuterView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
-    
-    private lazy var lblView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        return view
-    }()
-    
-    private lazy var stackView: UIStackView = {
-        let stack = UIStackView()
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.axis = .horizontal
-        stack.alignment = .fill
-        stack.distribution = .fillEqually
-        stack.spacing = 20
-        return stack
-        
-    }()
-    
-    private lazy var tryAgainBtn: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .regular)
-        return button
-    }()
-    
-    private lazy var confirmBtn: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .regular)
-        return button
-    }()
-    
-    private lazy var physicalContractImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.clipsToBounds = true
-        return imageView
-    }()
-    
-    private lazy var descriptionLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
-        label.numberOfLines = 3
-        label.font = UIFont.systemFont(ofSize: 16.0, weight: .bold)
-        return label
-    }()
-    
-    private lazy var amaniLogo: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "ic_poweredBy", in: AmaniUI.sharedInstance.getBundle(), with: nil)?.withRenderingMode(.alwaysTemplate))
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
-        imageView.clipsToBounds = true
-        imageView.tintAdjustmentMode = .normal
-        
-        return imageView
-    }()
-    
-    private lazy var idImgView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
+  // MARK: Properties
+  private var selfieImageView = UIImageView()
+  private var titleLabel = UILabel()
+  private var imgOuterView = UIImageView()
+  private var lblView = UIView()
+  private var stackView = UIStackView()
+  private var tryAgainBtn = UIButton()
+  private var confirmBtn = UIButton()
+  private var physicalContractImageView = UIImageView()
+  private var descriptionLabel = UILabel()
+  private var amaniLogo = UIImageView()
+  private var idImgView = UIImageView()
     
   private var ovalView: OvalOverlayView!
   let child = AnimationViewDocConfirmation()
@@ -129,29 +55,67 @@ class DocConfirmationViewController: BaseViewController {
   func initialSetup() {
     let appConfig = try! Amani.sharedInstance.appConfig().getApplicationConfig()
     let buttonRadious = CGFloat(appConfig.generalconfigs?.buttonRadius ?? 10)
+    
+    self.selfieImageView.translatesAutoresizingMaskIntoConstraints = false
+    self.selfieImageView.clipsToBounds = true
+    
+    self.idImgView.translatesAutoresizingMaskIntoConstraints = false
+    self.idImgView.contentMode = .scaleAspectFit
+    
+    self.titleLabel.translatesAutoresizingMaskIntoConstraints = false
+    self.imgOuterView.translatesAutoresizingMaskIntoConstraints = false
+    self.lblView.translatesAutoresizingMaskIntoConstraints = false
+    self.stackView.translatesAutoresizingMaskIntoConstraints = false
+    
+    self.stackView.axis = .horizontal
+    self.stackView.alignment = .fill
+    self.stackView.distribution = .fillEqually
+    self.stackView.spacing = 20
+    
+    self.tryAgainBtn.translatesAutoresizingMaskIntoConstraints = false
+    self.tryAgainBtn.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+    
+    self.confirmBtn.translatesAutoresizingMaskIntoConstraints = false
+    self.confirmBtn.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+    
+    self.physicalContractImageView.translatesAutoresizingMaskIntoConstraints = false
+    self.physicalContractImageView.clipsToBounds = true
+    
+    self.descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+    self.descriptionLabel.textAlignment = .center
+    self.descriptionLabel.numberOfLines = 3
+    self.descriptionLabel.font = UIFont.systemFont(ofSize: 16.0, weight: .bold)
+    
+    self.amaniLogo = UIImageView(image: UIImage(named: "ic_poweredBy", in: AmaniUI.sharedInstance.getBundle(), with: nil)?.withRenderingMode(.alwaysTemplate))
+    self.amaniLogo.translatesAutoresizingMaskIntoConstraints = false
+    self.amaniLogo.contentMode = .scaleAspectFit
+    self.amaniLogo.clipsToBounds = true
+    self.amaniLogo.tintAdjustmentMode = .normal
+    
+    
     if !AmaniUI.sharedInstance.isEnabledClientSideMrz {
       Amani.sharedInstance.setMRZDelegate(delegate: self)
     }
     // Setting labels
-    titleLabel.text = documentStep?.confirmationTitle ?? ""
-    descriptionLabel.text = documentStep?.confirmationDescription ?? ""
-    titleLabel.textColor = UIColor(hexString: appConfig.generalconfigs?.appFontColor ?? "ffffff")
-    descriptionLabel.textColor = UIColor(hexString: appConfig.generalconfigs?.appFontColor ?? "ffffff")
+    self.titleLabel.text = documentStep?.confirmationTitle ?? ""
+    self.descriptionLabel.text = documentStep?.confirmationDescription ?? ""
+    self.titleLabel.textColor = UIColor(hexString: appConfig.generalconfigs?.appFontColor ?? "ffffff")
+    self.descriptionLabel.textColor = UIColor(hexString: appConfig.generalconfigs?.appFontColor ?? "ffffff")
     // Buttons corner radious
-    tryAgainBtn.addCornerRadiousWith(radious: buttonRadious)
-    confirmBtn.addCornerRadiousWith(radious: buttonRadious)
+    self.tryAgainBtn.addCornerRadiousWith(radious: buttonRadious)
+    self.confirmBtn.addCornerRadiousWith(radious: buttonRadious)
     // Setting titles
-    tryAgainBtn.setTitle(appConfig.generalconfigs?.tryAgainText, for: .normal)
-    confirmBtn.setTitle(appConfig.generalconfigs?.confirmText, for: .normal)
+    self.tryAgainBtn.setTitle(appConfig.generalconfigs?.tryAgainText, for: .normal)
+    self.confirmBtn.setTitle(appConfig.generalconfigs?.confirmText, for: .normal)
     // Border color for try again button
-    tryAgainBtn.addBorder(borderWidth: 2, borderColor: UIColor(hexString: appConfig.generalconfigs?.secondaryButtonBorderColor ?? ThemeColor.whiteColor.toHexString()).cgColor)
+    self.tryAgainBtn.addBorder(borderWidth: 2, borderColor: UIColor(hexString: appConfig.generalconfigs?.secondaryButtonBorderColor ?? ThemeColor.whiteColor.toHexString()).cgColor)
     // Title Colors
-    tryAgainBtn.setTitleColor(UIColor(hexString: appConfig.generalconfigs?.secondaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
-    confirmBtn.setTitleColor(UIColor(hexString: appConfig.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
+    self.tryAgainBtn.setTitleColor(UIColor(hexString: appConfig.generalconfigs?.secondaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
+    self.confirmBtn.setTitleColor(UIColor(hexString: appConfig.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
     // Background Colors
-    confirmBtn.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonBackgroundColor ?? ThemeColor.primaryColor.toHexString())
+    self.confirmBtn.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonBackgroundColor ?? ThemeColor.primaryColor.toHexString())
     if let color = appConfig.generalconfigs?.secondaryButtonBackgroundColor {
-      tryAgainBtn.backgroundColor = UIColor(hexString: color)
+      self.tryAgainBtn.backgroundColor = UIColor(hexString: color)
     }
     
     // Navigation Bar

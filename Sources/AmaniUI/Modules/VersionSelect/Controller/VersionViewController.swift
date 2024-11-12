@@ -8,41 +8,11 @@ import AmaniSDK
 class VersionViewController: BaseViewController {
     
   // MARK: - Properties
-    private lazy var headerView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .clear
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    private var descriptionLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .left
-        label.numberOfLines = 0
-        label.font = UIFont.systemFont(ofSize: 15.0, weight: .light)
-        return label
-    }()
+    private var headerView = UIView()
+    private var descriptionLabel = UILabel()
     
-    private var versionSelectionTblView: UITableView = {
-        let tableView = UITableView()
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.isScrollEnabled = false
-        tableView.showsVerticalScrollIndicator = false
-        tableView.showsHorizontalScrollIndicator = false
-        tableView.separatorStyle = .none
-        return tableView
-    }()
-    
-    private lazy var amaniLogo: UIImageView = {
-       
-        let imageView = UIImageView(image: UIImage(named: "ic_poweredBy", in: AmaniUI.sharedInstance.getBundle(), with: nil)?.withRenderingMode(.alwaysTemplate))
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
-        imageView.clipsToBounds = true
-        imageView.tintAdjustmentMode = .normal
-       
-        return imageView
-    }()
+    private var versionSelectionTblView = UITableView()
+    private var amaniLogo = UIImageView()
 
   // MARK: - Local properties
   
@@ -61,8 +31,8 @@ class VersionViewController: BaseViewController {
   // MARK: - Life cycle methods
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.initialSetUp()
-    self.setConstraints()
+    self.setupUI()
+    
     self.setTableView()
   }
   
@@ -70,10 +40,27 @@ class VersionViewController: BaseViewController {
   /**
    This method used to set up initial state on view
    */
-  func initialSetUp() {
+  func setupUI() {
     let generalConfigs = try! Amani.sharedInstance.appConfig().getApplicationConfig().generalconfigs
     let navFontColor = generalConfigs?.topBarFontColor ?? "ffffff"
     let textColor =  generalConfigs?.appFontColor ?? "ffffff"
+    
+    self.headerView.backgroundColor = .clear
+    self.headerView.translatesAutoresizingMaskIntoConstraints = false
+    
+    
+    self.descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+    self.descriptionLabel.textAlignment = .left
+    self.descriptionLabel.numberOfLines = 0
+    self.descriptionLabel.font = UIFont.systemFont(ofSize: 15.0, weight: .light)
+    
+    self.amaniLogo = UIImageView(image: UIImage(named: "ic_poweredBy", in: AmaniUI.sharedInstance.getBundle(), with: nil)?.withRenderingMode(.alwaysTemplate))
+    self.amaniLogo.translatesAutoresizingMaskIntoConstraints = false
+    self.amaniLogo.contentMode = .scaleAspectFit
+    self.amaniLogo.clipsToBounds = true
+    self.amaniLogo.tintAdjustmentMode = .normal
+    
+    
      
     self.setNavigationBarWith(title: self.docTitle,textColor: UIColor(hexString: navFontColor))
     self.setNavigationLeftButton(TintColor: navFontColor)
@@ -82,6 +69,9 @@ class VersionViewController: BaseViewController {
     descriptionLabel.textColor = UIColor(hexString: textColor)
     amaniLogo.isHidden = generalConfigs?.hideLogo ?? false
     amaniLogo.tintColor = UIColor(hexString: textColor)
+    
+    
+    setConstraints()
      
   }
   
@@ -129,6 +119,7 @@ extension VersionViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension VersionViewController {
     private func setTableView() {
+        versionSelectionTblView.translatesAutoresizingMaskIntoConstraints = false
         versionSelectionTblView.delegate = self
         versionSelectionTblView.dataSource = self
         versionSelectionTblView.register(VersionSelectTableViewCell.self, forCellReuseIdentifier: String(describing: VersionSelectTableViewCell.self))
@@ -137,40 +128,40 @@ extension VersionViewController {
         versionSelectionTblView.showsHorizontalScrollIndicator = false
         versionSelectionTblView.separatorStyle = .none
         versionSelectionTblView.reloadData()
+
     }
     
     private func setConstraints() {
         
-            self.view.addSubview(headerView)
-            self.view.addSubview(descriptionLabel)
-            self.view.addSubview(versionSelectionTblView)
-            self.view.addSubview(amaniLogo)
-            amaniLogo.tintColor = UIColor(hexString: "#D3D3D3")
-            
-            NSLayoutConstraint.activate([
-                headerView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0),
-                headerView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-                headerView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-                headerView.bottomAnchor.constraint(equalTo: self.descriptionLabel.topAnchor, constant: -40),
-                headerView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.059),
-                
-                descriptionLabel.topAnchor.constraint(equalTo: self.headerView.bottomAnchor, constant: 40),
-                descriptionLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
-                descriptionLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
-                descriptionLabel.bottomAnchor.constraint(equalTo: self.versionSelectionTblView.topAnchor, constant: -40),
-                
-                versionSelectionTblView.topAnchor.constraint(equalTo: self.descriptionLabel.bottomAnchor, constant: 40),
-                versionSelectionTblView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
-                versionSelectionTblView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
-                versionSelectionTblView.bottomAnchor.constraint(equalTo: amaniLogo.topAnchor, constant: -20),
-                
-                amaniLogo.widthAnchor.constraint(equalToConstant: 114),
-                amaniLogo.heightAnchor.constraint(equalToConstant: 13),
-                amaniLogo.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-                amaniLogo.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -30)
-                
-            
-            ])
+        self.view.addSubview(headerView)
+        self.view.addSubview(descriptionLabel)
+        self.view.addSubview(versionSelectionTblView)
+        self.view.addSubview(amaniLogo)
+        amaniLogo.tintColor = UIColor(hexString: "#909090")
         
+        NSLayoutConstraint.activate([
+            headerView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0),
+            headerView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            headerView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            headerView.bottomAnchor.constraint(equalTo: self.descriptionLabel.topAnchor, constant: -40),
+            headerView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.059),
+            
+            descriptionLabel.topAnchor.constraint(equalTo: self.headerView.bottomAnchor, constant: 40),
+            descriptionLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
+            descriptionLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
+            descriptionLabel.bottomAnchor.constraint(equalTo: self.versionSelectionTblView.topAnchor, constant: -40),
+            
+            versionSelectionTblView.topAnchor.constraint(equalTo: self.descriptionLabel.bottomAnchor, constant: 40),
+            versionSelectionTblView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
+            versionSelectionTblView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
+            versionSelectionTblView.bottomAnchor.constraint(equalTo: amaniLogo.topAnchor, constant: -20),
+            
+            amaniLogo.widthAnchor.constraint(equalToConstant: 114),
+            amaniLogo.heightAnchor.constraint(equalToConstant: 13),
+            amaniLogo.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            amaniLogo.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -30)
+            
+        
+        ])
     }
 }

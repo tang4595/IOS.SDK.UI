@@ -23,13 +23,7 @@ class QuestionnaireView: UIView {
         }
     }
   
-  private lazy var tableView: UITableView = {
-    let tableView = UITableView(frame: .zero, style: .grouped)
-    tableView.dataSource = self
-    tableView.delegate = self
-    tableView.register(QuestionViewCell.self, forCellReuseIdentifier: String(describing: QuestionViewCell.self))
-    return tableView
-  }()
+  private var tableView = UITableView()
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -41,8 +35,17 @@ class QuestionnaireView: UIView {
   }
 
   func setupUI() {
-    tableView.backgroundColor = UIColor(hexString: appConfig?.generalconfigs?.appBackground ?? "#EEF4FA")
+    self.tableView = UITableView(frame: .zero, style: .grouped)
+    self.tableView.dataSource = self
+    self.tableView.delegate = self
+    self.tableView.register(QuestionViewCell.self, forCellReuseIdentifier: String(describing: QuestionViewCell.self))
+    self.tableView.backgroundColor = UIColor(hexString: appConfig?.generalconfigs?.appBackground ?? "#EEF4FA")
     backgroundColor = UIColor(hexString: appConfig?.generalconfigs?.appBackground ?? "#EEF4FA")
+    
+    setConstraints()
+  }
+  
+  private func setConstraints() {
     addSubview(tableView)
     tableView.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
