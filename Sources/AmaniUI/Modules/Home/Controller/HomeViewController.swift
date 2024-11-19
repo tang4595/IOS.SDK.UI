@@ -77,13 +77,17 @@ class HomeViewController: BaseViewController {
         customerInfo = customerResp
       }
     }
-    
-    if(stepModels == nil) {
+   
+//    if(stepModels == nil) {
      
      
-    
-      try? generateKYCStepViewModels(from: AmaniUI.sharedInstance.rulesKYC)
-    }
+      do {
+        try generateKYCStepViewModels(from: AmaniUI.sharedInstance.rulesKYC)
+      }catch(let error) {
+        debugPrint(error)
+      }
+      
+//    }
     self.setCustomerInfo(model: customerInfo)
     if (customerInfo.status?.uppercased() == ProfileStatus.PENDING_REVIEW.rawValue || customerInfo.status?.uppercased() == ProfileStatus.APPROVED.rawValue) {
       goToSuccess()
@@ -180,8 +184,10 @@ extension HomeViewController {
   func setCustomerInfo(model: CustomerResponseModel) {
     
     kycStepTblView.showKYCStep(stepModels: stepModels!, onSelectCallback: { kycStepTblViewModel in
+      
       self.kycStepTblView.updateStatus(for: kycStepTblViewModel!, status: .PROCESSING)
       kycStepTblViewModel!.upload { (result,args) in
+        
 //        if result == true {
 //          print("upload success")
 //        } else if let errors = errors {
