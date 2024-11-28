@@ -34,7 +34,7 @@ class DocConfirmationViewController: BaseViewController {
   private var documentVersion: DocumentVersion?
   private var documentStep: DocumentStepModel?
   private var mrzDocumentId: String?
-  private var confimClicked:Bool = false
+  private var confirmClicked:Bool = false
     
   let appConfig = try? Amani.sharedInstance.appConfig().getApplicationConfig()
   
@@ -49,6 +49,7 @@ class DocConfirmationViewController: BaseViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(true)
+    confirmClicked = false
     checkMRZ()
   }
   
@@ -304,7 +305,7 @@ class DocConfirmationViewController: BaseViewController {
     self.documentStep = docStep
     self.stepid = stepid
     self.confirmCallback = callback
-    self.confimClicked = false
+    self.confirmClicked = false
   }
   
     
@@ -314,8 +315,8 @@ class DocConfirmationViewController: BaseViewController {
     }
     
     @objc func confirmAction(_ sender: Any) {
-        if (!confimClicked){
-            confimClicked = true
+        if (!confirmClicked){
+            confirmClicked = true
             if let confirmCallback = confirmCallback {
               confirmCallback()
             }
