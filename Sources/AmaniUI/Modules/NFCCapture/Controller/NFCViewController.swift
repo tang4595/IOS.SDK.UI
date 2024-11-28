@@ -6,65 +6,13 @@ typealias VoidCallback = () -> Void
 @available(iOS 13, *)
 class NFCViewController: BaseViewController {
     // MARK: Properties
-    private var headerLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 22.0, weight: .bold)
-        label.textAlignment = .center
-        label.textColor = .black
-        return label
-    }()
-    
-    private var continueButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitleColor(.white, for: .normal)
-        
-        return button
-    }()
-    
-    private var labelsContainerView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
-    private lazy var desc1Label: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 17.0, weight: .light)
-        label.textAlignment = .center
-        label.textColor = .black
-        return label
-    }()
-    
-    private lazy var desc2Label: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 17.0, weight: .light)
-        label.textAlignment = .center
-        label.textColor = .black
-        return label
-    }()
-    
-    private lazy var desc3Label: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 17.0, weight: .light)
-        label.textAlignment = .center
-        label.textColor = .black
-        return label
-    }()
-    
-    private lazy var amaniLogo: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "ic_poweredBy", in: AmaniUI.sharedInstance.getBundle(), with: nil)?.withRenderingMode(.alwaysTemplate))
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
-        imageView.clipsToBounds = true
-        imageView.tintAdjustmentMode = .normal
-        
-        return imageView
-    }()
+    private var headerLabel = UILabel()
+    private var continueButton = UIButton()
+    private var labelsContainerView = UIView()
+    private  var desc1Label = UILabel()
+    private  var desc2Label = UILabel()
+    private  var desc3Label = UILabel()
+    private  var amaniLogo = UIImageView()
     
     private var documentVersion: DocumentVersion?
     private var onFinishCallback: VoidCallback?
@@ -76,7 +24,7 @@ class NFCViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         Task { @MainActor in
-            setConstraints()
+//            setConstraints()
             await initialSetup()
             
             continueButton.addTarget(self, action: #selector(continueButtonPressed(_:)), for: .touchUpInside)
@@ -91,6 +39,37 @@ class NFCViewController: BaseViewController {
         
         let navFontColor = generalConfigs?.topBarFontColor ?? "ffffff"
         let textColor = generalConfigs?.appFontColor ?? "ffffff"
+      
+      
+      self.headerLabel.translatesAutoresizingMaskIntoConstraints = false
+      self.headerLabel.font = UIFont.systemFont(ofSize: 22.0, weight: .bold)
+      self.headerLabel.textAlignment = .center
+      self.headerLabel.textColor = .black
+      
+      self.continueButton.translatesAutoresizingMaskIntoConstraints = false
+      self.continueButton.setTitleColor(.white, for: .normal)
+      
+      self.labelsContainerView.translatesAutoresizingMaskIntoConstraints = false
+      self.desc1Label.translatesAutoresizingMaskIntoConstraints = false
+      self.desc1Label.font = UIFont.systemFont(ofSize: 17.0, weight: .light)
+      self.desc1Label.textAlignment = .center
+      self.desc1Label.textColor = .black
+      
+      self.desc2Label.translatesAutoresizingMaskIntoConstraints = false
+      self.desc2Label.font = UIFont.systemFont(ofSize: 17.0, weight: .light)
+      self.desc2Label.textAlignment = .center
+      self.desc2Label.textColor = .black
+      
+      self.desc3Label.translatesAutoresizingMaskIntoConstraints = false
+      self.desc3Label.font = UIFont.systemFont(ofSize: 17.0, weight: .light)
+      self.desc3Label.textAlignment = .center
+      self.desc3Label.textColor = .black
+      
+      self.amaniLogo = UIImageView(image: UIImage(named: "ic_poweredBy", in: AmaniUI.sharedInstance.getBundle(), with: nil)?.withRenderingMode(.alwaysTemplate))
+      self.amaniLogo.translatesAutoresizingMaskIntoConstraints = false
+      self.amaniLogo.contentMode = .scaleAspectFit
+      self.amaniLogo.clipsToBounds = true
+      self.amaniLogo.tintAdjustmentMode = .normal
         
         setNavigationBarWith(title: (documentVersion.nfcTitle)!, textColor: UIColor(hexString: navFontColor))
         setNavigationLeftButton(TintColor: navFontColor)
@@ -117,6 +96,9 @@ class NFCViewController: BaseViewController {
         continueButton.backgroundColor = UIColor(hexString: generalConfigs?.primaryButtonBackgroundColor ?? ThemeColor.whiteColor.toHexString())
         continueButton.addCornerRadiousWith(radious: CGFloat(generalConfigs?.buttonRadius ?? 10))
         continueButton.setTitle(generalConfigs?.continueText ?? "Devam", for: .normal)
+      
+        setConstraints()
+      
         await scanNFC()
     }
     

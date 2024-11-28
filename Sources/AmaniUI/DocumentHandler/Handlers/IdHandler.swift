@@ -80,18 +80,23 @@ class IdHandler: DocumentHandler {
       idCaptureModule.setIdHologramDetection(enabled:AmaniUI.sharedInstance.idHologramDetection)
       idCaptureModule.setClientSideMRZ(enabled: AmaniUI.sharedInstance.isEnabledClientSideMrz)
         var workingStep = workingStepIndex
-        // FIXME: remove or increase manualcrop timeout
-        idCaptureModule.setManualCropTimeout(Timeout: 30)
+      
+      idCaptureModule.setManualCropTimeout(Timeout: 30)
 
+      
         do {
             showContainerVC(version: version, workingStep: workingStep) { [weak self] _ in
+
                 // CONFIRM CALLBACK
-                if version.steps!.count > workingStep+1 {
+                if version.steps!.count > workingStep {
                     // Remove the current instance of capture view
                   self?.frontView?.removeFromSuperview()
 
                     // Run the back step
+                  if workingStep != workingStepIndex + 1{
                     workingStep += 1
+                  }
+                  
                     self?.showContainerVC(version: version, workingStep: workingStep) { [weak self] _ in
                       self?.goNextStep(version: version, completion: completion)
                     }

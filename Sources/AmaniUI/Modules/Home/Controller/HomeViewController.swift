@@ -15,30 +15,14 @@ class HomeViewController: BaseViewController {
   
     
     // MARK: - Properties
-    private var descriptionLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-      
-        return label
-    }()
-    
-    private var kycStepTblView: KYCStepTblView! = {
-       let tableView = KYCStepTblView()
-       tableView.translatesAutoresizingMaskIntoConstraints = false
-        
-       return tableView
-    }()
-    
-    private var amaniLogo: UIImageView = {
-       let logo = UIImageView()
-       
-      return logo
-    }()
+    private var descriptionLabel = UILabel()
+  private var kycStepTblView: KYCStepTblView! = KYCStepTblView()
+    private var amaniLogo = UIImageView()
     
  // MARK: - HomeViewController LifeCycle
   override func viewDidLoad() {
     super.viewDidLoad()
-      setConstraints()
+//      setConstraints()
       
   }
   
@@ -54,7 +38,7 @@ class HomeViewController: BaseViewController {
     ), object: nil)
     
     
-    self.initialSetUp()
+    self.setupUI()
   }
   
   override func viewDidAppear(_ animated: Bool) {
@@ -75,20 +59,35 @@ class HomeViewController: BaseViewController {
   
 
   // MARK: - Initial setup methods
-  private func initialSetUp() {
+  private func setupUI() {
+    descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+    kycStepTblView.translatesAutoresizingMaskIntoConstraints = false
+    amaniLogo = UIImageView(image: UIImage(named: "ic_poweredBy", in: AmaniUI.sharedInstance.getBundle(), with: nil)?.withRenderingMode(.alwaysTemplate))
+    amaniLogo.translatesAutoresizingMaskIntoConstraints = false
+    amaniLogo.contentMode = .scaleAspectFit
+    amaniLogo.clipsToBounds = true
+    amaniLogo.tintAdjustmentMode = .normal
+    amaniLogo.tintColor = UIColor(hexString: "#909090")
+    
+    setConstraints()
+    
     var customerInfo = Amani.sharedInstance.customerInfo().getCustomer()
     if (customerInfo.rules != nil && customerInfo.rules!.isEmpty) {
       if let customerResp = self.customerData {
         customerInfo = customerResp
       }
     }
-    
-    if(stepModels == nil) {
+   
+//    if(stepModels == nil) {
      
      
-    
-      try? generateKYCStepViewModels(from: AmaniUI.sharedInstance.rulesKYC)
-    }
+      do {
+        try generateKYCStepViewModels(from: AmaniUI.sharedInstance.rulesKYC)
+      }catch(let error) {
+        debugPrint(error)
+      }
+      
+//    }
     self.setCustomerInfo(model: customerInfo)
     if (customerInfo.status?.uppercased() == ProfileStatus.PENDING_REVIEW.rawValue || customerInfo.status?.uppercased() == ProfileStatus.APPROVED.rawValue) {
       goToSuccess()
@@ -185,8 +184,10 @@ extension HomeViewController {
   func setCustomerInfo(model: CustomerResponseModel) {
     
     kycStepTblView.showKYCStep(stepModels: stepModels!, onSelectCallback: { kycStepTblViewModel in
+      
       self.kycStepTblView.updateStatus(for: kycStepTblViewModel!, status: .PROCESSING)
       kycStepTblViewModel!.upload { (result,args) in
+        
 //        if result == true {
 //          print("upload success")
 //        } else if let errors = errors {
@@ -287,8 +288,12 @@ extension HomeViewController {
               kycStepTblView.bottomAnchor.constraint(equalTo:  view.safeAreaLayoutGuide.bottomAnchor, constant: -40),
 
               // amaniLogo constraints
-              amaniLogo.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -40),
-              amaniLogo.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor)
+//              amaniLogo.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30),
+//              amaniLogo.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor)
+              amaniLogo.widthAnchor.constraint(equalToConstant: 114),
+              amaniLogo.heightAnchor.constraint(equalToConstant: 13),
+              amaniLogo.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+              amaniLogo.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -30)
             ])
         }
      

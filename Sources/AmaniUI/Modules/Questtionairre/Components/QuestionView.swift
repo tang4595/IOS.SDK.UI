@@ -14,6 +14,11 @@ protocol QuestionDelegate {
 }
 
 class QuestionViewCell: UITableViewCell {
+  
+  private var questionTitle = UILabel()
+  private var questionDescription = UILabel()
+  private var stackView = UIStackView()
+  
   public var question: QuestionModel?
   private var delegate: QuestionDelegate?
   public var isConfigured = false
@@ -27,34 +32,7 @@ class QuestionViewCell: UITableViewCell {
         }
     }
   
-  private lazy var questionTitle: UILabel = {
-    let label = UILabel()
-    label.font = UIFont.systemFont(ofSize: 16.0, weight: .regular)
-    label.textColor = .black
-    label.numberOfLines = 0
-    label.text = "Temporary title, please initialize correctly"
-    return label
-  }()
-  
-  private lazy var questionDescription: UILabel = {
-    let label = UILabel()
-    label.font = UIFont.systemFont(ofSize: 13.0, weight: .light)
-    label.textColor = UIColor(hexString: "#465364")
-    label.text = "Temporary title, please initialize correctly"
-    return label
-  }()
-  
-  private lazy var stackView: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [questionTitle])
-    
-    stackView.spacing = 8.0
-    stackView.axis = .vertical
-    stackView.alignment = .fill
-    stackView.distribution = .fillProportionally
-    stackView.layer.masksToBounds = true
-    
-    return stackView
-  }()
+ 
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -128,7 +106,30 @@ class QuestionViewCell: UITableViewCell {
   
   func setupUI() {
     // pin.
+    
+    self.questionTitle.font = UIFont.systemFont(ofSize: 16.0, weight: .regular)
+    self.questionTitle.textColor = .black
+    self.questionTitle.numberOfLines = 0
+    self.questionTitle.text = "Temporary title, please initialize correctly"
+    
+    self.questionDescription.font = UIFont.systemFont(ofSize: 13.0, weight: .light)
+    self.questionDescription.textColor = UIColor(hexString: "#465364")
+    self.questionDescription.text = "Temporary title, please initialize correctly"
+    
+    
+    self.stackView = UIStackView(arrangedSubviews: [questionTitle])
+    self.stackView.spacing = 8.0
+    self.stackView.axis = .vertical
+    self.stackView.alignment = .fill
+    self.stackView.distribution = .fillProportionally
+    self.stackView.layer.masksToBounds = true
+    
     self.backgroundColor = UIColor(hexString: genConfig?.appBackground ?? "#EEF4FA")
+    
+    setConstraints()
+  }
+  
+  private func setConstraints() {
     contentView.addSubview(stackView)
     stackView.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([

@@ -11,31 +11,16 @@ import AmaniSDK
 final class SignatureViewController: BaseViewController {
     
     // MARK: Properties
-    private lazy var clearBtn: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        
-        return button
-    }()
-    
-    private lazy var confirmBtn: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        
-        return button
-    }()
-    
-    
-    let amani:Amani = Amani.sharedInstance
-    var viewContainer:UIView?
+  private var clearBtn = UIButton()
+  private var confirmBtn = UIButton()
+
+  let amani:Amani = Amani.sharedInstance
+  var viewContainer:UIView?
   var stepCount:Int = 0
   var docStep:DocumentStepModel?
   var documentVersion: DocumentVersion?
   var callback:((UIImage)->())?
-    
-//  @IBOutlet weak var clearBtn: UIButton!
-//  @IBOutlet weak var confirmBtn: UIButton!
-  
+
     @objc func confirmAct(_ sender: UIButton) {
         amani.signature().capture()
     }
@@ -43,30 +28,22 @@ final class SignatureViewController: BaseViewController {
     @objc func clearAct(_ sender: Any) {
         amani.signature().clear()
     }
-//  @IBAction func ConfirmAct(_ sender: UIButton) {
-//        amani.signature().capture()
-//  }
-//    
-//  @IBAction func ClearAct() {
-//    amani.signature().clear()
-//  }
-  
+
   func start(docStep: AmaniSDK.DocumentStepModel, version: AmaniSDK.DocumentVersion, completion: ((UIImage)->())?) {
     guard let steps = version.steps else {return}
     stepCount = steps.count
     self.documentVersion = version
     self.docStep = docStep
     self.callback = completion
-    initialSetup()
+//    setupUI()
     
 
   }
    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setConstraints()
-        clearBtn.addTarget(self, action: #selector(clearAct(_:)), for: .touchUpInside)
-        confirmBtn.addTarget(self, action: #selector(confirmAct(_:)), for: .touchUpInside)
+       setupUI()
+       
     }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -109,13 +86,12 @@ final class SignatureViewController: BaseViewController {
   
     override func viewDidAppear(_ animated: Bool) {
     }
- 
-   
-    
+  
 }
+
 // MARK: Initial setup and setting constraints
 extension SignatureViewController {
-   private func initialSetup() {
+   private func setupUI() {
        DispatchQueue.main.async {
            let appConfig = try! Amani.sharedInstance.appConfig().getApplicationConfig()
            let buttonRadious = CGFloat(appConfig.generalconfigs?.buttonRadius ?? 10)
@@ -143,10 +119,14 @@ extension SignatureViewController {
            
            self.clearBtn.translatesAutoresizingMaskIntoConstraints = false
            self.confirmBtn.translatesAutoresizingMaskIntoConstraints = false
+         
+         
+         self.clearBtn.addTarget(self, action: #selector(self.clearAct(_:)), for: .touchUpInside)
+         self.confirmBtn.addTarget(self, action: #selector(self.confirmAct(_:)), for: .touchUpInside)
            
           
        }
-     
+      setConstraints()
         
   //    // For everything else
   //      imgOuterView.isHidden = false

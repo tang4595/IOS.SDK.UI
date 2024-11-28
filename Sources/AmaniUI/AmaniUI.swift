@@ -389,12 +389,6 @@ public class AmaniUI {
     let filteredVMs = viewModels.filter { $0 != nil } as! [KYCStepViewModel]
     self.stepsBeforeKYC = filteredVMs.sorted { $0.sortOrder < $1.sortOrder }
     
-    
-    
-    
-    
-    
-    
   }
   
   func generateRulesKYC(rules: [KYCRuleModel]?) {
@@ -419,7 +413,7 @@ public class AmaniUI {
           
           rulesKYC.remove(at: indexOfRulesKYC)
           indexOfRulesValue = indexOfRulesKYC
-          print("RULES KYC ARRAY FIRST INDEX:  \(rulesKYC[0])")
+//          print("RULES KYC ARRAY FIRST INDEX:  \(rulesKYC[0])")
         }
           if indexOfRulesValue == -1 {
             rulesKYC.append(ruleModel)

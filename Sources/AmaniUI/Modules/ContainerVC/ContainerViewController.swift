@@ -11,31 +11,9 @@ import AmaniSDK
 
 class ContainerViewController: BaseViewController {
     // MARK: Properties
-    private var btnContinue: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        
-        return button
-    }()
-
-    private var animationView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .clear
-        return view
-    }()
-    
-   private lazy var titleDescription: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = stepConfig?.documents?[0].versions?[0].informationScreenDesc1 ?? "\(stepConfig?.documents?[0].versions?[0].steps?[0].captureDescription ?? "Click continue to take a photo within the specified area")"
-        label.font = UIFont.systemFont(ofSize: 16.0, weight: .light)
-        label.numberOfLines = 0
-        label.lineBreakMode = .byWordWrapping
-        label.textColor = UIColor(hexString: "#20202F")
-        return label
-    }()
-    
+  private var btnContinue = UIButton()
+  private var animationView = UIView()
+  private var titleDescription = UILabel()
     
   private var animationName : String?
   private var callback: VoidCallback?
@@ -44,6 +22,7 @@ class ContainerViewController: BaseViewController {
   private var lottieAnimationView:LottieAnimationView?
   private var step:steps = .front
   private var isDissapeared = false
+  
   var stepConfig: StepConfig?
   var docID: DocumentID?
     
@@ -67,7 +46,7 @@ class ContainerViewController: BaseViewController {
   
     override func viewDidLoad() {
       super.viewDidLoad()
-      self.initialSetup()
+      self.setupUI()
      
       self.btnContinue.addTarget(self, action: #selector(actBtnContinue(_ :)), for: .touchUpInside)
     }
@@ -132,12 +111,24 @@ extension ContainerViewController {
     
   }
   
-    func initialSetup() {
+    func setupUI() {
       if AmaniUI.sharedInstance.isEnabledClientSideMrz {
         Amani.sharedInstance.setMRZDelegate(delegate: self)
       }
       let appConfig = try! Amani.sharedInstance.appConfig().getApplicationConfig()
       let buttonRadious = CGFloat(appConfig.generalconfigs?.buttonRadius ?? 10)
+      
+      self.btnContinue.translatesAutoresizingMaskIntoConstraints = false
+      self.titleDescription.translatesAutoresizingMaskIntoConstraints = false
+      self.titleDescription.text = stepConfig?.documents?[0].versions?[0].informationScreenDesc1 ?? "\(stepConfig?.documents?[0].versions?[0].steps?[0].captureDescription ?? "Click continue to take a photo within the specified area")"
+      self.titleDescription.font = UIFont.systemFont(ofSize: 16.0, weight: .light)
+      self.titleDescription.numberOfLines = 0
+      self.titleDescription.lineBreakMode = .byWordWrapping
+      self.titleDescription.textColor = UIColor(hexString: "#20202F")
+      
+      self.animationView.translatesAutoresizingMaskIntoConstraints = false
+      self.animationView.backgroundColor = .clear
+      
         if animationName == nil {
             self.btnContinue.isHidden = true
             self.titleDescription.isHidden = true

@@ -11,6 +11,14 @@ import Combine
 import AmaniSDK
 
 class EmailOTPView: UIView {
+  //MARK: Properties
+  private var descriptionText = UILabel()
+  private var emailLegend = UILabel()
+  private var emailInput = RoundedTextInput()
+  private var submitButton = RoundedButton()
+  private var formView = UIStackView()
+  private var mainStackView = UIStackView()
+  
   
   private var cancellables = Set<AnyCancellable>()
   private var viewModel: EmailOTPViewModel!
@@ -24,74 +32,7 @@ class EmailOTPView: UIView {
           }
       }
 
-  private lazy var descriptionText: UILabel = {
-    let label = UILabel()
-    label.text = "We will send you a ‘one time PIN’ to reset your password"
-    label.font = UIFont.systemFont(ofSize: 16.0, weight: .light)
-    label.numberOfLines = 2
-    label.textColor = UIColor(hexString: "#20202F")
-    
-    return label
-  }()
-  
-  private lazy var emailLegend: UILabel = {
-    let label = UILabel()
-    label.text = "Email Adress"
-    label.textColor = UIColor(hexString: "#20202F")
-    label.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
-    label.numberOfLines = 1
-    label.setContentCompressionResistancePriority(.required, for: .vertical)
-    return label
-  }()
-  
-  private lazy var emailInput: RoundedTextInput = {
-    let input = RoundedTextInput(
-      placeholderText: "Enter your email address here",
-      borderColor: UIColor(hexString: "#515166"),
-      placeholderColor: UIColor(hexString: "#C0C0C0"),
-      isPasswordToggleEnabled: false,
-      keyboardType: .emailAddress
-    )
-    return input
-  }()
-  
-  private lazy var submitButton: RoundedButton = {
-    let button = RoundedButton(
-    withTitle: appConfig?.generalconfigs?.continueText ?? "Continue",
-    withColor: UIColor(hexString: appConfig?.generalconfigs?.primaryButtonBackgroundColor ?? "#EA3365")
-    )
-    return button
-  }()
-  
-  private lazy var formView: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [
-      emailLegend, emailInput
-    ])
-    
-    stackView.axis = .vertical
-    stackView.distribution = .fill
-    stackView.spacing = 6.0
-    return stackView
-  }()
-  
-  private lazy var mainStackView: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [
-      descriptionText,
-      formView,
-      submitButton,
-    ])
-    
-    stackView.axis = .vertical
-    stackView.distribution = .fill
-    stackView.spacing = 0.0
-    
-    stackView.setCustomSpacing(80.0, after: descriptionText)
-    stackView.setCustomSpacing(150.0, after: formView)
-    
-    
-    return stackView
-  }()
-  
+ 
   override init(frame: CGRect) {
     super.init(frame: frame)
   }
@@ -109,6 +50,58 @@ class EmailOTPView: UIView {
   }
   
   func setupUI() {
+    
+    self.descriptionText.text = "We will send you a ‘one time PIN’ to reset your password"
+    self.descriptionText.font = UIFont.systemFont(ofSize: 16.0, weight: .light)
+    self.descriptionText.numberOfLines = 2
+    self.descriptionText.textColor = UIColor(hexString: "#20202F")
+    
+    
+    self.emailLegend.text = "Email Adress"
+    self.emailLegend.textColor = UIColor(hexString: "#20202F")
+    self.emailLegend.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
+    self.emailLegend.numberOfLines = 1
+    self.emailLegend.setContentCompressionResistancePriority(.required, for: .vertical)
+    
+    self.emailInput = RoundedTextInput(
+      placeholderText: "Enter your email address here",
+      borderColor: UIColor(hexString: "#515166"),
+      placeholderColor: UIColor(hexString: "#C0C0C0"),
+      isPasswordToggleEnabled: false,
+      keyboardType: .emailAddress
+    )
+    
+    self.submitButton = RoundedButton(
+      withTitle: appConfig?.generalconfigs?.continueText ?? "Continue",
+      withColor: UIColor(hexString: appConfig?.generalconfigs?.primaryButtonBackgroundColor ?? "#EA3365")
+    )
+    
+    self.formView = UIStackView(arrangedSubviews: [
+      emailLegend, emailInput
+    ])
+    
+    self.formView.axis = .vertical
+    self.formView.distribution = .fill
+    self.formView.spacing = 6.0
+    
+    self.mainStackView = UIStackView(arrangedSubviews: [
+      descriptionText,
+      formView,
+      submitButton,
+    ])
+    
+    self.mainStackView.axis = .vertical
+    self.mainStackView.distribution = .fill
+    self.mainStackView.spacing = 0.0
+    
+    self.mainStackView.setCustomSpacing(80.0, after: descriptionText)
+    self.mainStackView.setCustomSpacing(150.0, after: formView)
+    
+    
+    setConstraints()
+  }
+  
+  private func setConstraints() {
     mainStackView.translatesAutoresizingMaskIntoConstraints = false
     addSubview(mainStackView)
     NSLayoutConstraint.activate([
@@ -117,8 +110,8 @@ class EmailOTPView: UIView {
       mainStackView.topAnchor.constraint(equalTo: topAnchor),
       mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor)
     ])
-      
- 
+    
+    
   }
   
   func bind(
