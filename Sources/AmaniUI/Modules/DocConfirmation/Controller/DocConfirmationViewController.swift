@@ -120,7 +120,7 @@ class DocConfirmationViewController: BaseViewController {
     }
     
     // Navigation Bar
-    self.setNavigationBarWith(title: documentStep?.confirmationTitle ?? "", textColor: UIColor(hexString: appConfig.generalconfigs?.topBarFontColor ?? "ffffff"))
+    self.setNavigationBarWith(title: documentVersion?.contractConfirmText ?? "", textColor: UIColor(hexString: appConfig.generalconfigs?.topBarFontColor ?? "ffffff"))
     self.setNavigationLeftButton(TintColor: appConfig.generalconfigs?.topBarFontColor ?? "ffffff")
     
     // labels and powered by image
@@ -179,7 +179,7 @@ class DocConfirmationViewController: BaseViewController {
           imgOuterView.isHidden = false
           self.idImgView.image = image
           self.idImgView.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.appBackground ?? "#263B5B")
-          self.view.layoutIfNeeded()
+          
 //          self.setConstraints()
           titleLabel.isHidden = true
           selfieImageView.isHidden = true
@@ -203,7 +203,7 @@ class DocConfirmationViewController: BaseViewController {
             idImgView.trailingAnchor.constraint(equalTo: imgOuterView.trailingAnchor),
             
           ])
-         
+        self.view.layoutIfNeeded()
       }
     // For everything else
     else {

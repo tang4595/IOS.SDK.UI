@@ -42,6 +42,9 @@ extension DocumentsHandler: VNDocumentCameraViewControllerDelegate {
     func startDocumentScanning()  {
         if VNDocumentCameraViewController.isSupported {
             let documentCameraViewController = VNDocumentCameraViewController()
+          documentCameraViewController.navigationItem.backBarButtonItem = .none
+          
+            documentCameraViewController.navigationItem.setHidesBackButton(true, animated: true)
             documentCameraViewController.delegate = self
             addDocumentCameraView(documentCameraViewController)
             
@@ -103,7 +106,8 @@ extension DocumentsHandler: VNDocumentCameraViewControllerDelegate {
     }
     
     func documentCameraViewControllerDidCancel(_ controller: VNDocumentCameraViewController) {
-
+     
+//      self.ContainerVC.dismiss(animated: true)
         ContainerVC.navigationController?.popViewController(animated: true)
 
     }
