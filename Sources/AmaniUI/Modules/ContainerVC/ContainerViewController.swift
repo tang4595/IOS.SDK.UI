@@ -166,7 +166,7 @@ extension ContainerViewController {
   //
     }
     
-      private func lottieInit(name:String = "xx_id_0_front", completion:@escaping(_ finishedAnimation:Int)->()) {
+      private func lottieInit(name:String = "xxx_id_0_front", completion:@escaping(_ finishedAnimation:Int)->()) {
           
           guard let animation = LottieAnimation.named(name, bundle: AmaniUI.sharedInstance.getBundle()) else {
                     print("Lottie animation not found")
