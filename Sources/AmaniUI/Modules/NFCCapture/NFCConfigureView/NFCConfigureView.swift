@@ -290,18 +290,16 @@ extension NFCConfigureView {
     self.mainStackView = UIStackView(arrangedSubviews: [
       
       formView,
-      submitButton,
-     
     ])
     
     self.mainStackView.axis = .vertical
-    self.mainStackView.distribution = .fillProportionally
+    self.mainStackView.distribution = .fill
       //    self.mainStackView.isLayoutMarginsRelativeArrangement = true
     self.mainStackView.spacing = 0.0
     
     
-    self.mainStackView.setCustomSpacing(230.0, after: formView)
-    self.mainStackView.setCustomSpacing(8.0, after: submitButton)
+//    self.mainStackView.setCustomSpacing(230.0, after: formView)
+//    self.mainStackView.setCustomSpacing(8.0, after: submitButton)
     
     self.mainStackView.translatesAutoresizingMaskIntoConstraints = false
     
@@ -315,23 +313,27 @@ extension NFCConfigureView {
   }
   private func setNFCFormUIConstraints() {
     addSubview(mainStackView)
+    addSubview(submitButton)
     addSubview(amaniLogo)
     NSLayoutConstraint.activate([
   
       descriptionLabel.heightAnchor.constraint(equalToConstant: 20),
-      submitButton.heightAnchor.constraint(equalToConstant: 50.0),
-      
-      mainStackView.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor),
+  
       mainStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
       mainStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
       mainStackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 32),
-      mainStackView.bottomAnchor.constraint(equalTo: amaniLogo.topAnchor, constant: -12),
+      mainStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 36),
       
+      submitButton.topAnchor.constraint(greaterThanOrEqualTo: mainStackView.bottomAnchor, constant: 20),
+      submitButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
+      submitButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
+      submitButton.bottomAnchor.constraint(equalTo: amaniLogo.topAnchor, constant: -20),
       
+      submitButton.heightAnchor.constraint(equalToConstant: 50.0),
       amaniLogo.widthAnchor.constraint(equalToConstant: 114),
       amaniLogo.heightAnchor.constraint(equalToConstant: 13),
       amaniLogo.centerXAnchor.constraint(equalTo: centerXAnchor),
-      amaniLogo.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16)
+      amaniLogo.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -30)
     ])
   
     expirydateInput.field.addSubview(expiryDataPicker)
