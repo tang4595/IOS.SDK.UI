@@ -277,8 +277,8 @@ extension NFCConfigureView {
     
     self.formView = UIStackView(arrangedSubviews: [
       descriptionLabel, documentNumbers, documentNoInput,
-      dateOfExpiryDate, expirydateInput,
       birthdateLabel, birthdateInput,
+      dateOfExpiryDate, expirydateInput,
     ])
     
     self.formView.axis = .vertical
@@ -319,18 +319,19 @@ extension NFCConfigureView {
     NSLayoutConstraint.activate([
   
       descriptionLabel.heightAnchor.constraint(equalToConstant: 20),
-  
-      mainStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
-      mainStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
-      mainStackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 32),
-//      mainStackView.bottomAnchor.constraint(equalTo: submitButton.topAnchor, constant: -6),
+      mainStackView.topAnchor.constraint(equalTo: topAnchor, constant: 32),
+      mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+      mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+//      mainStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+//      mainStackView.topAnchor.constraint(equalTo: topAnchor, constant: 32),
       
-      submitButton.topAnchor.constraint(greaterThanOrEqualTo: mainStackView.bottomAnchor, constant: 20),
+//      mainStackView.bottomAnchor.constraint(equalTo: submitButton.topAnchor, constant: -5),
+      
       submitButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
       submitButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
       submitButton.bottomAnchor.constraint(equalTo: amaniLogo.topAnchor, constant: -20),
-      
       submitButton.heightAnchor.constraint(equalToConstant: 50.0),
+      
       amaniLogo.widthAnchor.constraint(equalToConstant: 114),
       amaniLogo.heightAnchor.constraint(equalToConstant: 13),
       amaniLogo.centerXAnchor.constraint(equalTo: centerXAnchor),
