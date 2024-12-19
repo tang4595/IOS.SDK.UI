@@ -40,7 +40,7 @@ class NFCConfigureView: UIView {
     return picker
   }()
   
-  var nviData: NviModel?
+  var newNviData: NviModel?
   var appConfig: AppConfigModel? {
     didSet {
       guard let config = appConfig else { return }
@@ -120,18 +120,26 @@ class NFCConfigureView: UIView {
   
   @objc private func tapSubmitButton(_ sender: UIButton) {
     debugPrint("submit button basıldı")
-    var nvi: NviModel = AmaniUI.sharedInstance.nviData!
-    if newDocumentNo != nil {
-      nvi.documentNo = self.newDocumentNo
+    var docNo = ""
+    var birthDate = ""
+    var expiryDate = ""
+    
+    if newDocumentNo != nil   {
+      docNo = newDocumentNo!
     }
     if newbirthDate != nil {
-      nvi.dateOfBirth = self.newbirthDate
+      birthDate = newbirthDate!
     }
     if newExpiryDate != nil {
-      nvi.dateOfExpire = self.newExpiryDate
+      expiryDate = newExpiryDate!
     }
+    self.newNviData = NviModel(documentNo: docNo, dateOfBirth: birthDate, dateOfExpire: expiryDate)
+    
     Task {
-      await setButtonCb!(nvi)
+      if let nviData = self.newNviData {
+        await setButtonCb!(nviData)
+      }
+     
     }
   }
       
@@ -363,7 +371,10 @@ extension NFCConfigureView: UITextFieldDelegate {
   func textFieldDidChangeSelection(_ textField: UITextField) {
     if textField == documentNoInput.field {
       documentNoInput.field.text = textField.text
-      self.newDocumentNo = documentNoInput.field.text
+      if let text = documentNoInput.field.text {
+        self.newDocumentNo = text
+      }
+     
     }
   }
 

@@ -111,6 +111,19 @@ class ContainerViewController: BaseViewController {
     
   override func viewWillDisappear(_ animated: Bool) {
     // remove the sdk view on exiting by calling the callback
+      #if canImport(AmaniVoiceAssistantSDK)
+      
+          Task { @MainActor in
+            do {
+              try? await AmaniUI.sharedInstance.voiceAssistant?.stop()
+            }catch(let error) {
+              debugPrint("\(error)")
+            }
+            
+          }
+        
+        
+      #endif
     print("Container View disappear")
     if let disappearCb = self.disappearCallback {
       disappearCb()

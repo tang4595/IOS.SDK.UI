@@ -94,13 +94,15 @@ class IdHandler: DocumentHandler {
       
         do {
             showContainerVC(version: version, workingStep: workingStep) { [weak self] _ in
-
+              workingStep = workingStepIndex
                 // CONFIRM CALLBACK
-                if version.steps!.count > workingStep + 1 {
+             
+                if (version.steps!.count-1) > workingStep {
                     // Remove the current instance of capture view
                   self?.frontView?.removeFromSuperview()
 
                     // Run the back step
+                  
                   if workingStep != workingStepIndex + 1{
                     workingStep += 1
                   }

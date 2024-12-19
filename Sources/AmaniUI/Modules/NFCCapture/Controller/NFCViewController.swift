@@ -51,6 +51,17 @@ class NFCViewController: BaseViewController {
         
     }
   
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    Task { @MainActor in
+      do {
+        try? await AmaniUI.sharedInstance.voiceAssistant?.stop()
+      }catch(let err) {
+        debugPrint("\(err)")
+      }
+    }
+  }
+  
     func initialSetup() async {
         guard let documentVersion = documentVersion else { return }
         
@@ -195,16 +206,20 @@ class NFCViewController: BaseViewController {
       
     ])
     
-    nfcFormView.setButtonCb = { [weak self] nvi in
+    nfcFormView.setButtonCb = { [weak self] newNvi in
       guard let self = self else { return }
       nfcFormView.removeFromSuperview()
-      debugPrint("nfc configure ekranından dönen nvi data : \(nvi)")
+      debugPrint("nfc configure ekranından dönen nvi data : \(newNvi)")
 
-      let isDone = await idCaptureModule.startNFC(nvi: nvi)
+      let isDone = await idCaptureModule.startNFC(nvi: newNvi)
       if isDone {
         self.doNext(done: isDone)
       } else {
-        await animateWithNFCFormUI(nvi: nvi)
+        if newNvi.dateOfBirth == "" || newNvi.dateOfExpire == "" || newNvi.documentNo == "" {
+          await animateWithNFCFormUI(nvi: nvi)
+        } else {
+          await animateWithNFCFormUI(nvi: newNvi)
+        }
       }
     }
   }
