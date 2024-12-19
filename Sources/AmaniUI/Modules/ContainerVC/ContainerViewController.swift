@@ -8,6 +8,9 @@
 import Lottie
 import UIKit
 import AmaniSDK
+#if canImport(AmaniVoiceAssistantSDK)
+import AmaniVoiceAssistantSDK
+#endif
 
 class ContainerViewController: BaseViewController {
     // MARK: Properties
@@ -74,6 +77,20 @@ class ContainerViewController: BaseViewController {
       if ((AmaniUI.sharedInstance.getBundle().url(forResource: name, withExtension: "json")?.isFileURL) == nil) {
         name = "xxx_id_0_\(side)"
       }
+      
+      #if canImport(AmaniVoiceAssistantSDK)
+          if let docID = self.docID {
+            Task { @MainActor in
+              do {
+                try? await AmaniUI.sharedInstance.voiceAssistant?.play(key: "VOICE_\(docID.getDocumentType())\(self.step.rawValue)")
+              }catch(let error) {
+                debugPrint("\(error)")
+              }
+              
+            }
+          }
+          
+      #endif
         DispatchQueue.main.async {
             self.lottieInit(name: name) {[weak self] _ in
         //      print(finishedAnimation)

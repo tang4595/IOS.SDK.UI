@@ -8,6 +8,9 @@
 import AmaniSDK
 import UIKit
 import CoreNFC
+#if canImport(AmaniVoiceAssistant)
+import AmaniVoiceAssistant
+#endif
 
 class IdHandler: DocumentHandler {
     var stepView: UIView?
@@ -38,7 +41,9 @@ class IdHandler: DocumentHandler {
     }
 
     func showContainerVC(version: DocumentVersion, workingStep: Int, completion: @escaping StepCompletionCallback) {
+      
         let containerVC = ContainerViewController()
+        containerVC.docID = self.docID
 //        let containerVC = ContainerViewController(
 //            nibName: String(describing: ContainerViewController.self),
 //            bundle:  AmaniUI.sharedInstance.getBundle()
@@ -49,8 +54,11 @@ class IdHandler: DocumentHandler {
         containerVC.setDisappearCallback {
           self.frontView?.removeFromSuperview()
         }
-
+       
+      
+      
         containerVC.bind(animationName: version.type!, docStep: version.steps![workingStep], step: steps(rawValue: workingStep) ?? steps.front) {
+          
             print("Animation ended")
             self.frontView = try? self.idCaptureModule.start(stepId: workingStep)  { [weak self] image in
                 DispatchQueue.main.async {
@@ -88,7 +96,7 @@ class IdHandler: DocumentHandler {
             showContainerVC(version: version, workingStep: workingStep) { [weak self] _ in
 
                 // CONFIRM CALLBACK
-                if version.steps!.count > workingStep {
+                if version.steps!.count > workingStep + 1 {
                     // Remove the current instance of capture view
                   self?.frontView?.removeFromSuperview()
 
@@ -119,6 +127,7 @@ class IdHandler: DocumentHandler {
 
     private func startNFCCapture(docVer: DocumentVersion, completion: @escaping StepCompletionCallback) {
         let nfcCaptureView = NFCViewController()
+        nfcCaptureView.docID = "NFC"
 //        let nfcCaptureView = NFCViewController(
 //            nibName: String(describing: NFCViewController.self),
 //            bundle: AmaniUI.sharedInstance.getBundle()
@@ -134,4 +143,5 @@ class IdHandler: DocumentHandler {
             self.topVC.navigationController?.pushViewController(nfcCaptureView, animated: true)
         }
     }
+  
 }

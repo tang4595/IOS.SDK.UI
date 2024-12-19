@@ -8,6 +8,9 @@
 import AmaniSDK
 import UIKit
 import CoreLocation
+#if canImport(AmaniVoiceAssistantSDK)
+import AmaniVoiceAssistantSDK
+#endif
 private class AmaniBundleLocator {}
 
 public class AmaniUI {
@@ -25,6 +28,9 @@ public class AmaniUI {
   
     // MARK: - Internal configurations
   internal var config: AppConfigModel?
+#if canImport(AmaniVoiceAssistantSDK)
+  internal var voiceAssistant: AmaniVoiceAssistant?
+#endif
   internal let sharedSDKInstance = Amani.sharedInstance
   
   
@@ -215,8 +221,18 @@ public class AmaniUI {
       // set the delegate regardless of init method
     self.sharedSDKInstance.setDelegate(delegate: self)
     
-  
+//    MARK: Initialize AmaniVoiceAssistant
+#if canImport(AmaniVoiceAssistantSDK)
+    Task { @MainActor in
+      do {
+        self.voiceAssistant = try await AmaniVoiceAssistant.init(url: "https://gist.githubusercontent.com/munir-amani/70bbb480b1ea8b761169397004a37a4d/raw/44aed46c7635100d3e99ec0baf8562e87a2a173d/ttsVoices.json")
+        
+      }catch(let error) {
+        debugPrint("can't init voice assistant \(error)")
+      }
+    }
     
+#endif
     if let customer = customer {
       if (userName != nil && password != nil) {
         sharedSDKInstance.initAmani(server: server!, userName: self.userName!, password: self.password!, sharedSecret: sharedSecret, customer: customer, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in

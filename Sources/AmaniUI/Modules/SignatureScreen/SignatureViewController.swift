@@ -8,9 +8,12 @@
 import UIKit
 import AmaniSDK
 import Lottie
+#if canImport(AmaniVoiceAssistantSDK)
+import AmaniVoiceAssistantSDK
+#endif
 
 final class SignatureViewController: BaseViewController {
-    
+
     // MARK: Properties
   private let signature = Amani.sharedInstance.signature()
   private var clearBtn = UIButton()
