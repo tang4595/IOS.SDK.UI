@@ -287,6 +287,7 @@ extension NFCConfigureView {
     
     self.formView.setCustomSpacing(100, after: descriptionLabel)
     
+    
     self.mainStackView = UIStackView(arrangedSubviews: [
       
       formView,
@@ -322,7 +323,7 @@ extension NFCConfigureView {
       mainStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
       mainStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
       mainStackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 32),
-      mainStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 36),
+//      mainStackView.bottomAnchor.constraint(equalTo: submitButton.topAnchor, constant: -6),
       
       submitButton.topAnchor.constraint(greaterThanOrEqualTo: mainStackView.bottomAnchor, constant: 20),
       submitButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
