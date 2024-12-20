@@ -120,19 +120,16 @@ class NFCConfigureView: UIView {
   
   @objc private func tapSubmitButton(_ sender: UIButton) {
     debugPrint("submit button basıldı")
-    var docNo = ""
+//    var docNo = ""
     var birthDate = ""
     var expiryDate = ""
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyMMdd"
+    expiryDate = dateFormatter.string(from: expiryDataPicker.date)
+    birthDate = dateFormatter.string(from: birthDatePicker.date)
     
-    if newDocumentNo != nil   {
-      docNo = newDocumentNo!
-    }
-    if newbirthDate != nil {
-      birthDate = newbirthDate!
-    }
-    if newExpiryDate != nil {
-      expiryDate = newExpiryDate!
-    }
+    guard let docNo = documentNoInput.field.text else { return }
+    
     self.newNviData = NviModel(documentNo: docNo, dateOfBirth: birthDate, dateOfExpire: expiryDate)
     
     Task {
