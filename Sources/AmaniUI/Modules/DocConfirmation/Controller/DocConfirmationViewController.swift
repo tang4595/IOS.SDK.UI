@@ -292,9 +292,7 @@ class DocConfirmationViewController: BaseViewController {
                 createAnimationView()
                 Amani.sharedInstance.IdCapture().getMrz { mrzDocumentId in
                   self.mrzDocumentId = mrzDocumentId
-                  if let confirmCallback = self.confirmCallback {
-                    confirmCallback()
-                  }
+                  
                 }
             }
         } else {
@@ -374,6 +372,9 @@ extension DocConfirmationViewController: mrzInfoDelegate {
                 if !AmaniUI.sharedInstance.isEnabledClientSideMrz {
                     dismissAnimationView()
                 }
+              if let confirmCallback = self.confirmCallback {
+                confirmCallback()
+              }
                 
             }
         } else {

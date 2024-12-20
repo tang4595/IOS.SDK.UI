@@ -34,16 +34,7 @@ class NFCViewController: BaseViewController {
         super.viewWillAppear(true)
         Task { @MainActor in
 //            setConstraints()
-          #if canImport(AmaniVoiceAssistantSDK)
-                  if let docID = self.docID {
-                      do {
-                        try? await AmaniUI.sharedInstance.voiceAssistant?.play(key: "VOICE_\(docID)")
-                      }catch(let error) {
-                        debugPrint("\(error)")
-                      }
-                  }
-                  
-          #endif
+         
             await initialSetup()
             
             continueButton.addTarget(self, action: #selector(continueButtonPressed(_:)), for: .touchUpInside)
@@ -140,6 +131,16 @@ class NFCViewController: BaseViewController {
     
     @objc func continueButtonPressed(_ sender: Any) {
         Task { @MainActor in
+          #if canImport(AmaniVoiceAssistantSDK)
+                if let docID = self.docID {
+                  do {
+                    try? await AmaniUI.sharedInstance.voiceAssistant?.play(key: "VOICE_\(docID)")
+                  }catch(let error) {
+                    debugPrint("\(error)")
+                  }
+                }
+                
+          #endif
             await scanNFC()
         }
     }
