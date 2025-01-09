@@ -233,21 +233,40 @@ public class AmaniUI {
     }
     
 #endif
-    if let customer = customer {
-      if (userName != nil && password != nil) {
-        sharedSDKInstance.initAmani(server: server!, userName: self.userName!, password: self.password!, sharedSecret: sharedSecret, customer: customer, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
+    
+    if (token != nil){
+     
+      sharedSDKInstance.initAmani(server: server!, token: token!, sharedSecret: sharedSecret, customer: customer, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
           self?.getConfig(customerModel: customerModel, error: error, completion: completion)
         
-        }
       }
     } else {
-      if (token != nil){
-        sharedSDKInstance.initAmani(server: server!, token: token!, sharedSecret: sharedSecret, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
-          self?.getConfig(customerModel: customerModel, error: error, completion: completion)
-        
+      
+      if (userName != nil && password != nil) {
+        if let customer = customer {
+          sharedSDKInstance.initAmani(server: server!, userName: self.userName!, password: self.password!, sharedSecret: sharedSecret, customer: customer, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
+            self?.getConfig(customerModel: customerModel, error: error, completion: completion)
+          }
         }
       }
     }
+    
+//    
+//    if let customer = customer {
+//      if (userName != nil && password != nil) {
+//        sharedSDKInstance.initAmani(server: server!, userName: self.userName!, password: self.password!, sharedSecret: sharedSecret, customer: customer, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
+//          self?.getConfig(customerModel: customerModel, error: error, completion: completion)
+//        
+//        }
+//      }
+//    } else {
+//      if (token != nil){
+//        sharedSDKInstance.initAmani(server: server!, token: token!, sharedSecret: sharedSecret, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
+//          self?.getConfig(customerModel: customerModel, error: error, completion: completion)
+//        
+//        }
+//      }
+//    }
     
   }
   
