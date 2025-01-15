@@ -215,23 +215,41 @@ public class AmaniUI {
       // set the delegate regardless of init method
     self.sharedSDKInstance.setDelegate(delegate: self)
     
-  
     
-    if let customer = customer {
-      if (userName != nil && password != nil) {
-        sharedSDKInstance.initAmani(server: server!, userName: self.userName!, password: self.password!, sharedSecret: sharedSecret, customer: customer, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
-          self?.getConfig(customerModel: customerModel, error: error, completion: completion)
+    if (token != nil){
+      
+      sharedSDKInstance.initAmani(server: server!, token: token!, sharedSecret: sharedSecret, customer: customer, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
+        self?.getConfig(customerModel: customerModel, error: error, completion: completion)
         
-        }
       }
     } else {
-      if (token != nil){
-        sharedSDKInstance.initAmani(server: server!, token: token!, sharedSecret: sharedSecret, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
-          self?.getConfig(customerModel: customerModel, error: error, completion: completion)
-        
+      
+      if (userName != nil && password != nil) {
+        if let customer = customer {
+          sharedSDKInstance.initAmani(server: server!, userName: self.userName!, password: self.password!, sharedSecret: sharedSecret, customer: customer, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
+            self?.getConfig(customerModel: customerModel, error: error, completion: completion)
+          }
         }
       }
     }
+    
+      //    if let customer = customer {
+      //      if (userName != nil && password != nil) {
+      //        sharedSDKInstance.initAmani(server: server!, userName: self.userName!, password: self.password!, sharedSecret: sharedSecret, customer: customer, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
+      //          self?.getConfig(customerModel: customerModel, error: error, completion: completion)
+      //
+      //        }
+      //      }
+      //    } else {
+      //      if (token != nil){
+      //        sharedSDKInstance.initAmani(server: server!, token: token!, sharedSecret: sharedSecret, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
+      //          self?.getConfig(customerModel: customerModel, error: error, completion: completion)
+      //
+      //        }
+      //      }
+      //    }
+    
+    
     
   }
   
@@ -399,35 +417,35 @@ public class AmaniUI {
     guard let rules = rules else {
       return
     }
-   
+    
     
     for stepModel in stepConfig {
       if let ruleModel = rules.first(where: { $0.id == stepModel.id }) {
           // Remove the OT as this SDK doesn't have to do anything with it
-       
+        
           // Add only if the identifer equals to kyc
         if (stepModel.identifier == "kyc"||stepModel.identifier == nil ) {
           var indexOfRulesValue: Int = -1
           
-        if let indexOfRulesKYC = self.rulesKYC.firstIndex(where: {$0.id == ruleModel.id}) {
-          
-          rulesKYC.remove(at: indexOfRulesKYC)
-          indexOfRulesValue = indexOfRulesKYC
-//          print("RULES KYC ARRAY FIRST INDEX:  \(rulesKYC[0])")
-        }
+          if let indexOfRulesKYC = self.rulesKYC.firstIndex(where: {$0.id == ruleModel.id}) {
+            
+            rulesKYC.remove(at: indexOfRulesKYC)
+            indexOfRulesValue = indexOfRulesKYC
+              //          print("RULES KYC ARRAY FIRST INDEX:  \(rulesKYC[0])")
+          }
           if indexOfRulesValue == -1 {
             rulesKYC.append(ruleModel)
           } else {
             rulesKYC.insert(ruleModel, at: indexOfRulesValue)
           }
-  
+          
         }
         
         
       } else {
         print("Config issue relate with rule model id ")
       }
-     
+      
     }
     
   }
@@ -447,12 +465,12 @@ extension AmaniUI: AmaniDelegate {
   
   public func onStepModel(customerId: String, rules: [AmaniSDK.KYCRuleModel]?) {
     let object: [Any?] = [customerId, rules]
-
+    
     generateRulesKYC(rules: rules)
     NotificationCenter.default.post(
       name: NSNotification.Name(AppConstants.AmaniDelegateNotifications.onStepModel.rawValue),
       object: object)
-   
+    
   }
   
   public func onError(type: String, error: [AmaniSDK.AmaniError]) {
