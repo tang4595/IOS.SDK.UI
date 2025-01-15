@@ -187,7 +187,7 @@ class NonKYCStepManager {
   }
 
   public func hasPostSteps() -> Bool {
-    let approvedPostStepCount = postSteps.filter { $0.status == DocumentStatus.APPROVED }
+    let approvedPostStepCount = postSteps.filter { $0.status != DocumentStatus.APPROVED }.filter({$0.status != DocumentStatus.PENDING_REVIEW})
     return approvedPostStepCount.count > 0
   }
 }
