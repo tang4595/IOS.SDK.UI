@@ -71,9 +71,6 @@ class ContainerViewController: BaseViewController {
       }
       var name = "\((animationName.lowercased()))_\(side)"
       
-      if ((AmaniUI.sharedInstance.getBundle().url(forResource: name, withExtension: "json")?.isFileURL) == nil) {
-        name = "xxx_id_0_\(side)"
-      }
         DispatchQueue.main.async {
             self.lottieInit(name: name) {[weak self] _ in
         //      print(finishedAnimation)
@@ -166,12 +163,12 @@ extension ContainerViewController {
   //
     }
     
-      private func lottieInit(name:String = "xx_id_0_front", completion:@escaping(_ finishedAnimation:Int)->()) {
-          
-          guard let animation = LottieAnimation.named(name, bundle: AmaniUI.sharedInstance.getBundle()) else {
-                    print("Lottie animation not found")
-                    return
-                }
+      private func lottieInit(name:String, completion:@escaping(_ finishedAnimation:Int)->()) {
+        
+        guard let animation = LottieAnimation.named(name, bundle: AmaniUI.sharedInstance.getBundle()) else {
+          print("Lottie animation not found")
+          return
+        }
 
         self.lottieAnimationView = LottieAnimationView(animation: animation)
         guard let lottieAnimationView = self.lottieAnimationView else {
