@@ -10,23 +10,20 @@ import AmaniSDK
 
 typealias ConfirmCallback = () -> Void
 
-
-
 class DocConfirmationViewController: BaseViewController {
-  
-  @IBOutlet weak var lblView: UIView!
-  @IBOutlet weak var imgOuterView: UIImageView!
-  @IBOutlet weak var stackView: UIStackView!
-  @IBOutlet weak var physicalContractImageView: UIImageView!
-  @IBOutlet weak var previewHeightConstraints: NSLayoutConstraint!
-  @IBOutlet weak var titleLabel: UILabel!
-  @IBOutlet weak var descriptionLabel: UILabel!
-  @IBOutlet weak var tryAgainBtn: UIButton!
-  @IBOutlet weak var confirmBtn: UIButton!
-  @IBOutlet weak var selfieImageView: UIImageView!
-  @IBOutlet weak var poweredByImg: UIImageView!
-  
-  @IBOutlet weak var idImgView: UIImageView!
+  // MARK: Properties
+  private var selfieImageView = UIImageView()
+  private var titleLabel = UILabel()
+  private var imgOuterView = UIImageView()
+  private var lblView = UIView()
+  private var stackView = UIStackView()
+  private var tryAgainBtn = UIButton()
+  private var confirmBtn = UIButton()
+  private var physicalContractImageView = UIImageView()
+  private var descriptionLabel = UILabel()
+  private var amaniLogo = UIImageView()
+  private var idImgView = UIImageView()
+    
   private var ovalView: OvalOverlayView!
   let child = AnimationViewDocConfirmation()
   var stepid:Int = 0
@@ -37,7 +34,7 @@ class DocConfirmationViewController: BaseViewController {
   private var documentVersion: DocumentVersion?
   private var documentStep: DocumentStepModel?
   private var mrzDocumentId: String?
-  private var confimClicked:Bool = false
+  private var confirmClicked:Bool = false
     
   let appConfig = try? Amani.sharedInstance.appConfig().getApplicationConfig()
   
@@ -45,50 +42,90 @@ class DocConfirmationViewController: BaseViewController {
     super.viewDidLoad()
       let appBackground = appConfig?.generalconfigs?.appBackground
     ovalView = OvalOverlayView(bgColor: UIColor(hexString: appBackground ?? "253C59"), strokeColor: UIColor(hexString: "ffffff engine='xlsxwrite"), screenBounds: UIScreen.main.bounds)
-    
+    self.confirmBtn.addTarget(self, action: #selector(confirmAction(_:)), for: .touchUpInside)
+    self.tryAgainBtn.addTarget(self, action: #selector(tryAgainAction(_:)), for: .touchUpInside)
     self.initialSetup()
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(true)
+    confirmClicked = false
     checkMRZ()
   }
   
   func initialSetup() {
     let appConfig = try! Amani.sharedInstance.appConfig().getApplicationConfig()
     let buttonRadious = CGFloat(appConfig.generalconfigs?.buttonRadius ?? 10)
+    
+    self.selfieImageView.translatesAutoresizingMaskIntoConstraints = false
+    self.selfieImageView.clipsToBounds = true
+    
+    self.idImgView.translatesAutoresizingMaskIntoConstraints = false
+    self.idImgView.contentMode = .scaleAspectFit
+    
+    self.titleLabel.translatesAutoresizingMaskIntoConstraints = false
+    self.imgOuterView.translatesAutoresizingMaskIntoConstraints = false
+    self.lblView.translatesAutoresizingMaskIntoConstraints = false
+    self.stackView.translatesAutoresizingMaskIntoConstraints = false
+    
+    self.stackView.axis = .horizontal
+    self.stackView.alignment = .fill
+    self.stackView.distribution = .fillEqually
+    self.stackView.spacing = 20
+    
+    self.tryAgainBtn.translatesAutoresizingMaskIntoConstraints = false
+    self.tryAgainBtn.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+    
+    self.confirmBtn.translatesAutoresizingMaskIntoConstraints = false
+    self.confirmBtn.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+    
+    self.physicalContractImageView.translatesAutoresizingMaskIntoConstraints = false
+    self.physicalContractImageView.clipsToBounds = true
+    
+    self.descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+    self.descriptionLabel.textAlignment = .center
+    self.descriptionLabel.numberOfLines = 3
+    self.descriptionLabel.font = UIFont.systemFont(ofSize: 16.0, weight: .bold)
+    
+    self.amaniLogo = UIImageView(image: UIImage(named: "ic_poweredBy", in: AmaniUI.sharedInstance.getBundle(), with: nil)?.withRenderingMode(.alwaysTemplate))
+    self.amaniLogo.translatesAutoresizingMaskIntoConstraints = false
+    self.amaniLogo.contentMode = .scaleAspectFit
+    self.amaniLogo.clipsToBounds = true
+    self.amaniLogo.tintAdjustmentMode = .normal
+    
+    
     if !AmaniUI.sharedInstance.isEnabledClientSideMrz {
       Amani.sharedInstance.setMRZDelegate(delegate: self)
     }
     // Setting labels
-    titleLabel.text = documentStep?.confirmationTitle ?? ""
-    descriptionLabel.text = documentStep?.confirmationDescription ?? ""
-    titleLabel.textColor = UIColor(hexString: appConfig.generalconfigs?.appFontColor ?? "ffffff")
-    descriptionLabel.textColor = UIColor(hexString: appConfig.generalconfigs?.appFontColor ?? "ffffff")
+    self.titleLabel.text = documentStep?.confirmationTitle ?? ""
+    self.descriptionLabel.text = documentStep?.confirmationDescription ?? ""
+    self.titleLabel.textColor = UIColor(hexString: appConfig.generalconfigs?.appFontColor ?? "ffffff")
+    self.descriptionLabel.textColor = UIColor(hexString: appConfig.generalconfigs?.appFontColor ?? "ffffff")
     // Buttons corner radious
-    tryAgainBtn.addCornerRadiousWith(radious: buttonRadious)
-    confirmBtn.addCornerRadiousWith(radious: buttonRadious)
+    self.tryAgainBtn.addCornerRadiousWith(radious: buttonRadious)
+    self.confirmBtn.addCornerRadiousWith(radious: buttonRadious)
     // Setting titles
-    tryAgainBtn.setTitle(appConfig.generalconfigs?.tryAgainText, for: .normal)
-    confirmBtn.setTitle(appConfig.generalconfigs?.confirmText, for: .normal)
+    self.tryAgainBtn.setTitle(appConfig.generalconfigs?.tryAgainText, for: .normal)
+    self.confirmBtn.setTitle(appConfig.generalconfigs?.confirmText, for: .normal)
     // Border color for try again button
-    tryAgainBtn.addBorder(borderWidth: 2, borderColor: UIColor(hexString: appConfig.generalconfigs?.secondaryButtonBorderColor ?? ThemeColor.whiteColor.toHexString()).cgColor)
+    self.tryAgainBtn.addBorder(borderWidth: 2, borderColor: UIColor(hexString: appConfig.generalconfigs?.secondaryButtonBorderColor ?? ThemeColor.whiteColor.toHexString()).cgColor)
     // Title Colors
-    tryAgainBtn.setTitleColor(UIColor(hexString: appConfig.generalconfigs?.secondaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
-    confirmBtn.setTitleColor(UIColor(hexString: appConfig.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
+    self.tryAgainBtn.setTitleColor(UIColor(hexString: appConfig.generalconfigs?.secondaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
+    self.confirmBtn.setTitleColor(UIColor(hexString: appConfig.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
     // Background Colors
-    confirmBtn.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonBackgroundColor ?? ThemeColor.primaryColor.toHexString())
+    self.confirmBtn.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonBackgroundColor ?? ThemeColor.primaryColor.toHexString())
     if let color = appConfig.generalconfigs?.secondaryButtonBackgroundColor {
-      tryAgainBtn.backgroundColor = UIColor(hexString: color)
+      self.tryAgainBtn.backgroundColor = UIColor(hexString: color)
     }
     
     // Navigation Bar
-    self.setNavigationBarWith(title: documentStep?.confirmationTitle ?? "", textColor: UIColor(hexString: appConfig.generalconfigs?.topBarFontColor ?? "ffffff"))
+    self.setNavigationBarWith(title: documentVersion?.contractConfirmText ?? "", textColor: UIColor(hexString: appConfig.generalconfigs?.topBarFontColor ?? "ffffff"))
     self.setNavigationLeftButton(TintColor: appConfig.generalconfigs?.topBarFontColor ?? "ffffff")
     
     // labels and powered by image
-    poweredByImg.tintColor = UIColor(hexString: appConfig.generalconfigs?.appFontColor ?? "ffffff")
-    poweredByImg.isHidden = appConfig.generalconfigs?.hideLogo ?? false
+      amaniLogo.tintColor = UIColor(hexString: appConfig.generalconfigs?.appFontColor ?? "ffffff")
+      amaniLogo.isHidden = appConfig.generalconfigs?.hideLogo ?? false
     
     // Document spesific settings
     // Selfie
@@ -105,33 +142,45 @@ class DocConfirmationViewController: BaseViewController {
         strokeColor: UIColor(hexString: "ffffff"),
         screenBounds: UIScreen.main.bounds
       )
+        self.view.addSubview(selfieImageView)
+        self.view.addSubview(lblView)
+        self.lblView.addSubview(descriptionLabel)
+        self.setDefaultConstraints()
         selfieImageView.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
-//                selfieImageView.topAnchor.constraint(equalTo: lblView.bottomAnchor, constant: 20),
-                selfieImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -220)
+                selfieImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                selfieImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+                selfieImageView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+                selfieImageView.bottomAnchor.constraint(equalTo: lblView.bottomAnchor, constant: -63),
+                
+                lblView.topAnchor.constraint(equalTo: selfieImageView.bottomAnchor, constant: 63),
+                lblView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+                lblView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+                lblView.bottomAnchor.constraint(equalTo: stackView.topAnchor, constant: -17.5),
+                
+                descriptionLabel.leadingAnchor.constraint(equalTo: lblView.leadingAnchor),
+                descriptionLabel.trailingAnchor.constraint(equalTo: lblView.trailingAnchor),
+                descriptionLabel.bottomAnchor.constraint(equalTo: lblView.bottomAnchor, constant: -10),
             ])
       
-      self.view.bringSubviewToFront(selfieImageView)
-//      self.view.addSubview(ovalView)
-//      self.view.bringSubviewToFront(ovalView)
-      self.view.bringSubviewToFront(stackView)
-      self.view.bringSubviewToFront(poweredByImg)
-      self.view.bringSubviewToFront(lblView)
     }
     // Contract or Utility Bill
-    else if documentID == DocumentID.CO || documentID == DocumentID.UB||documentID == DocumentID.IB {
+      else if documentID == DocumentID.CO.self || documentID == DocumentID.UB||documentID == DocumentID.IB {
       imgOuterView.isHidden = true
       self.setNavigationBarWith(title: (self.documentStep?.confirmationTitle)!)
       self.physicalContractImageView.image = image
       physicalContractImageView.isHidden = false
       titleLabel.isHidden = true
       selfieImageView.isHidden = true
+      self.setDefaultConstraints()
+//      self.setConstraints()
     }
       else if documentID == DocumentID.SG{
           imgOuterView.isHidden = false
           self.idImgView.image = image
           self.idImgView.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.appBackground ?? "#263B5B")
-          self.view.layoutIfNeeded()
+          
+//          self.setConstraints()
           titleLabel.isHidden = true
           selfieImageView.isHidden = true
           physicalContractImageView.isHidden = true
@@ -139,32 +188,71 @@ class DocConfirmationViewController: BaseViewController {
           idImgView.translatesAutoresizingMaskIntoConstraints = false
           idImgView.backgroundColor = .white
           descriptionLabel.removeFromSuperview()
+          view.addSubview(imgOuterView)
+          imgOuterView.addSubview(idImgView)
+          self.setDefaultConstraints()
           NSLayoutConstraint.activate([
-            idImgView.topAnchor.constraint(equalTo: view.topAnchor, constant: 80),
-            idImgView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -240),
-            idImgView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            idImgView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+            imgOuterView.topAnchor.constraint(equalTo: view.topAnchor),
+            imgOuterView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            imgOuterView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            imgOuterView.bottomAnchor.constraint(equalTo: stackView.topAnchor, constant: -30),
+
+            idImgView.topAnchor.constraint(equalTo: imgOuterView.topAnchor),
+            idImgView.bottomAnchor.constraint(equalTo: imgOuterView.bottomAnchor),
+            idImgView.leadingAnchor.constraint(equalTo: imgOuterView.leadingAnchor),
+            idImgView.trailingAnchor.constraint(equalTo: imgOuterView.trailingAnchor),
+            
           ])
+        self.view.layoutIfNeeded()
       }
     // For everything else
     else {
       imgOuterView.isHidden = false
       self.idImgView.image = image
       self.idImgView.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.appBackground ?? "#263B5B")
-//      self.previewHeightConstraints.constant = (UIScreen.main.bounds.width - 46) * CGFloat((documentVersion?.aspectRatio!)!)
-//      self.previewHeightConstraints.isActive = true
       self.view.layoutIfNeeded()
-      titleLabel.isHidden = false
+      titleLabel.isHidden = true
       selfieImageView.isHidden = true
       physicalContractImageView.isHidden = true
         descriptionLabel.backgroundColor = .clear
+        view.addSubview(titleLabel)
+        view.addSubview(imgOuterView)
+        imgOuterView.addSubview(idImgView)
+        view.addSubview(lblView)
+        lblView.addSubview(descriptionLabel)
+        self.setDefaultConstraints()
         idImgView.translatesAutoresizingMaskIntoConstraints = false
+        
             NSLayoutConstraint.activate([
-                idImgView.topAnchor.constraint(equalTo: view.topAnchor, constant: 80),
-                idImgView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -240),
-                idImgView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                idImgView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+                
+                titleLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 23),
+                titleLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -23),
+                titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
+                titleLabel.heightAnchor.constraint(equalToConstant: 30),
+                titleLabel.bottomAnchor.constraint(greaterThanOrEqualToSystemSpacingBelow: imgOuterView.topAnchor, multiplier: -58.5),
+                
+                imgOuterView.topAnchor.constraint(greaterThanOrEqualToSystemSpacingBelow: titleLabel.bottomAnchor, multiplier: 58.5),
+                imgOuterView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+                imgOuterView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+                imgOuterView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: -40),
+                imgOuterView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -260),
+    
+                idImgView.topAnchor.constraint(equalTo: imgOuterView.topAnchor),
+                idImgView.bottomAnchor.constraint(equalTo: imgOuterView.bottomAnchor),
+                idImgView.leadingAnchor.constraint(equalTo: imgOuterView.leadingAnchor),
+                idImgView.trailingAnchor.constraint(equalTo: imgOuterView.trailingAnchor),
+                
+                lblView.topAnchor.constraint(equalTo: imgOuterView.bottomAnchor, constant: 63),
+                lblView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+                lblView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+                lblView.bottomAnchor.constraint(equalTo: stackView.topAnchor, constant: -17.5),
+                
+                descriptionLabel.leadingAnchor.constraint(equalTo: lblView.leadingAnchor),
+                descriptionLabel.trailingAnchor.constraint(equalTo: lblView.trailingAnchor),
+                descriptionLabel.bottomAnchor.constraint(equalTo: lblView.bottomAnchor, constant: -10),
+
             ])
+       
     }
       
    
@@ -217,24 +305,24 @@ class DocConfirmationViewController: BaseViewController {
     self.documentStep = docStep
     self.stepid = stepid
     self.confirmCallback = callback
-    self.confimClicked = false
+    self.confirmClicked = false
   }
   
-  
-  @IBAction func tryAgainAction(_ sender: Any) {
-    self.navigationController?.popViewController(animated: true)
-  }
-  
-  
-  @IBAction func confirmAction(_ sender: Any) {
-    if (!confimClicked){
-      confimClicked = true
-      if let confirmCallback = confirmCallback {
-        confirmCallback()
-      }
+    
+    // MARK: Button actions
+    @objc func tryAgainAction(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
     }
-  }
-  
+    
+    @objc func confirmAction(_ sender: Any) {
+        if (!confirmClicked){
+            confirmClicked = true
+            if let confirmCallback = confirmCallback {
+              confirmCallback()
+            }
+          }
+    }
+    
     func createAnimationView() {
         // add the spinner view controller
         DispatchQueue.main.async {
@@ -304,5 +392,30 @@ extension DocConfirmationViewController: mrzInfoDelegate {
             //
             //            }
         }
+    }
+}
+
+extension DocConfirmationViewController {
+    private func setDefaultConstraints() {
+            view.addSubview(stackView)
+            stackView.addArrangedSubviews(tryAgainBtn, confirmBtn)
+            view.addSubview(amaniLogo)
+            
+            NSLayoutConstraint.activate([
+             
+                stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+                stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+                stackView.bottomAnchor.constraint(equalTo: amaniLogo.topAnchor, constant: -16),
+                stackView.heightAnchor.constraint(equalToConstant: 50),
+                
+                amaniLogo.widthAnchor.constraint(equalToConstant: 114),
+                amaniLogo.heightAnchor.constraint(equalToConstant: 13),
+                amaniLogo.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                amaniLogo.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30)
+                
+            
+            ])
+            
+        
     }
 }

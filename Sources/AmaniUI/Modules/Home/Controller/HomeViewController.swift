@@ -6,27 +6,29 @@ import CoreNFC
  The HomeViewController class is used to provide a user interface for home/main screen.
  */
 class HomeViewController: BaseViewController {
+    let appConfig = try? Amani.sharedInstance.appConfig().getApplicationConfig()
+    var viewAppeared:Bool = false
+    
+    var stepModels: [KYCStepViewModel]?
+    var customerData: CustomerResponseModel? = nil
+    var nonKYCStepManager: NonKYCStepManager? = nil
   
-  var viewAppeared:Bool = false
-  @IBOutlet private weak var kycStepTblView: KYCStepTblView!
-  @IBOutlet weak var amaniLogo:UIImageView!
-  
-  @IBOutlet weak var descriptionLabel: UILabel!
-  var stepModels: [KYCStepViewModel]?
-  var customerData: CustomerResponseModel? = nil
-  
-  let appConfig = try? Amani.sharedInstance.appConfig().getApplicationConfig()
-  
-  var nonKYCStepManager: NonKYCStepManager? = nil
+    
+    // MARK: - Properties
+    private var descriptionLabel = UILabel()
+  private var kycStepTblView: KYCStepTblView! = KYCStepTblView()
+    private var amaniLogo = UIImageView()
+    
+ // MARK: - HomeViewController LifeCycle
   override func viewDidLoad() {
     super.viewDidLoad()
-    // main description text
-    self.descriptionLabel.text = appConfig?.generalconfigs?.mainDescriptionText
-    self.descriptionLabel.textColor = UIColor(hexString: (appConfig?.generalconfigs?.topBarFontColor)!)
+//      setConstraints()
+      
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(true)
+    
     NotificationCenter.default.addObserver(self, selector: #selector(didReceiveStepModel), name: Notification.Name(
       AppConstants.AmaniDelegateNotifications.onStepModel.rawValue
     ), object: nil)
@@ -34,12 +36,17 @@ class HomeViewController: BaseViewController {
     NotificationCenter.default.addObserver(self, selector: #selector(didReceiveProfileStatus), name: NSNotification.Name(
       AppConstants.AmaniDelegateNotifications.onProfileStatus.rawValue
     ), object: nil)
+    
+    
+    self.setupUI()
   }
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(true)
-    self.initialSetUp()
+//    self.initialSetUp()
+   
     viewAppeared = true
+   
   }
   
   override func viewDidDisappear(_ animated: Bool) {
@@ -50,21 +57,37 @@ class HomeViewController: BaseViewController {
 //    }
   }
   
+
   // MARK: - Initial setup methods
-  private func initialSetUp() {
+  private func setupUI() {
+    descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+    kycStepTblView.translatesAutoresizingMaskIntoConstraints = false
+    amaniLogo = UIImageView(image: UIImage(named: "ic_poweredBy", in: AmaniUI.sharedInstance.getBundle(), with: nil)?.withRenderingMode(.alwaysTemplate))
+    amaniLogo.translatesAutoresizingMaskIntoConstraints = false
+    amaniLogo.contentMode = .scaleAspectFit
+    amaniLogo.clipsToBounds = true
+    amaniLogo.tintAdjustmentMode = .normal
+    amaniLogo.tintColor = UIColor(hexString: "#909090")
+    
+    setConstraints()
+    
     var customerInfo = Amani.sharedInstance.customerInfo().getCustomer()
     if (customerInfo.rules != nil && customerInfo.rules!.isEmpty) {
       if let customerResp = self.customerData {
         customerInfo = customerResp
       }
     }
-    if(stepModels == nil) {
-      guard let rules = customerInfo.rules else {
-        return
+   
+//    if(stepModels == nil) {
+     
+     
+      do {
+        try generateKYCStepViewModels(from: AmaniUI.sharedInstance.rulesKYC)
+      }catch(let error) {
+        debugPrint(error)
       }
       
-      try? generateKYCStepViewModels(from: rules)
-    }
+//    }
     self.setCustomerInfo(model: customerInfo)
     if (customerInfo.status?.uppercased() == ProfileStatus.PENDING_REVIEW.rawValue || customerInfo.status?.uppercased() == ProfileStatus.APPROVED.rawValue) {
       goToSuccess()
@@ -122,9 +145,13 @@ class HomeViewController: BaseViewController {
       stepModels = filteredViewModels.sorted { $0.sortOrder < $1.sortOrder }
     } else {
       rules.forEach { ruleModel in
+//        print("HOME EKRANINDA DELEGATEN GELEN RULE MODEL \(ruleModel)")
         if let stepModel = stepConfig.first(where: { $0.id == ruleModel.id }) {
           if let stepID = stepModels?.firstIndex(where: {$0.id == ruleModel.id}) {
+              // FIXME: index out of range hatası socketten cevap gelmeyince app crash oluyor.
             stepModels?.remove(at: stepID)
+//            print("STEP MODELDEN REMOVE EDILEN STEP ID \(stepID)")
+         
             stepModels?.append(KYCStepViewModel(from: stepModel, initialRule: ruleModel, topController: self))
           }
         }
@@ -143,6 +170,7 @@ class HomeViewController: BaseViewController {
   public func bind(customerData: CustomerResponseModel, nonKYCManager: NonKYCStepManager? = nil) {
     self.customerData = customerData
     self.nonKYCStepManager = nonKYCManager
+   
   }
   
 }
@@ -156,8 +184,10 @@ extension HomeViewController {
   func setCustomerInfo(model: CustomerResponseModel) {
     
     kycStepTblView.showKYCStep(stepModels: stepModels!, onSelectCallback: { kycStepTblViewModel in
+      
       self.kycStepTblView.updateStatus(for: kycStepTblViewModel!, status: .PROCESSING)
       kycStepTblViewModel!.upload { (result,args) in
+        
 //        if result == true {
 //          print("upload success")
 //        } else if let errors = errors {
@@ -173,13 +203,15 @@ extension HomeViewController {
     if let nonKYCManager = self.nonKYCStepManager, nonKYCManager.hasPostSteps() {
         nonKYCManager.startFlow(forPreSteps: false) {_ in
           DispatchQueue.main.async {
-            let successVC = SuccessViewController(nibName: String(describing: SuccessViewController.self), bundle: Bundle(for: SuccessViewController.self))
+            let successVC = SuccessViewController()
+//            let successVC = SuccessViewController(nibName: String(describing: SuccessViewController.self), bundle: AmaniUI.sharedInstance.getBundle())
             self.navigationController?.pushViewController(successVC, animated: true)
           }
         }
     } else {
       DispatchQueue.main.async {
-        let successVC = SuccessViewController(nibName: String(describing: SuccessViewController.self), bundle: Bundle(for: SuccessViewController.self))
+          let successVC = SuccessViewController()
+//        let successVC = SuccessViewController(nibName: String(describing: SuccessViewController.self), bundle: AmaniUI.sharedInstance.getBundle())
         self.navigationController?.pushViewController(successVC, animated: false)
       }  
     }
@@ -215,23 +247,55 @@ extension HomeViewController {
   func onStepModel(rules: [AmaniSDK.KYCRuleModel]?) {
     // CHECK RULES AND OPEN SUCCESS SCREEN
     // Reload customer when upload is complete
-    print("on stepmodel \(rules)")
+    print("on stepmodel \(AmaniUI.sharedInstance.rulesKYC)")
     if viewAppeared{
       guard let kycStepTblView = kycStepTblView else {return}
-      guard let rules = rules else {
-        return
-      }
-      print(rules)
+//      guard let rules = rules else {
+//        return
+//      }
+      print(AmaniUI.sharedInstance.rulesKYC)
       
-      try? self.generateKYCStepViewModels(from: rules)
+      try? self.generateKYCStepViewModels(from:  AmaniUI.sharedInstance.rulesKYC)
       guard let stepModels = stepModels else {return}
 //        for stepModel in stepModels {
-//            
+          self.kycStepTblView.updateDataAndReload(stepModels: stepModels)
 //            self.kycStepTblView.updateStatus(for: stepModel, status: stepModel.status)
 //        }
         
-      self.kycStepTblView.updateDataAndReload(stepModels: stepModels)
+      
     }
   }
   
+}
+extension HomeViewController {
+    private func setConstraints() {
+        DispatchQueue.main.async { [self] in
+            view.addSubview(descriptionLabel)
+            view.addSubview(kycStepTblView)
+            view.addSubview(amaniLogo)
+            
+//            self.view.addSubviews(self.kycStepTblView, self.descriptionLabel, amaniLogo)
+            
+            NSLayoutConstraint.activate([
+              descriptionLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
+              descriptionLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+              descriptionLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+              descriptionLabel.bottomAnchor.constraint(equalTo: kycStepTblView.topAnchor, constant: -40),
+              // kycStepTblView constraints
+              kycStepTblView.topAnchor.constraint(equalTo:  descriptionLabel.bottomAnchor, constant: 40),
+              kycStepTblView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+              kycStepTblView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+              kycStepTblView.bottomAnchor.constraint(equalTo:  view.safeAreaLayoutGuide.bottomAnchor, constant: -40),
+
+              // amaniLogo constraints
+//              amaniLogo.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30),
+//              amaniLogo.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor)
+              amaniLogo.widthAnchor.constraint(equalToConstant: 114),
+              amaniLogo.heightAnchor.constraint(equalToConstant: 13),
+              amaniLogo.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+              amaniLogo.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -30)
+            ])
+        }
+     
+    }
 }

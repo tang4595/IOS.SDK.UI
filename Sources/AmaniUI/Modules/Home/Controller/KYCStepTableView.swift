@@ -3,6 +3,7 @@ import AmaniSDK
 /**
  This class represents the KYC step list view
  */
+@objc(KYCStepTblView)
 class KYCStepTblView: UITableView {
 
     // MARK: - Local properties
@@ -14,7 +15,21 @@ class KYCStepTblView: UITableView {
     fileprivate var kycSteps: [KYCStepViewModel] = []
 
     // MARK: - Life cycle methods
-    override func awakeFromNib() {
+//    override func awakeFromNib() {
+//        self.delegate = self
+//        self.dataSource = self
+//        self.backgroundColor = .clear
+//    }
+    
+    override init(frame: CGRect, style: UITableView.Style) {
+        super.init(frame: frame, style: style)
+        self.delegate = self
+        self.dataSource = self
+        self.backgroundColor = .clear
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
         self.delegate = self
         self.dataSource = self
         self.backgroundColor = .clear
@@ -31,8 +46,14 @@ class KYCStepTblView: UITableView {
     
     self.callback = onSelectCallback
     DispatchQueue.main.async {
-      self.register(UINib(nibName: String(describing: KYCStepTableViewCell.self), bundle: Bundle(for: KYCStepTableViewCell.self)), forCellReuseIdentifier: String(describing: KYCStepTableViewCell.self))
-      self.reloadData()
+//      self.register(UINib(nibName: String(describing: KYCStepTableViewCell.self), bundle: AmaniUI.sharedInstance.getBundle()), forCellReuseIdentifier: String(describing: KYCStepTableViewCell.self))
+//      self.reloadData()
+        self.register(KYCStepTableViewCell.self, forCellReuseIdentifier: String(describing: KYCStepTableViewCell.self))
+        self.isScrollEnabled = false
+        self.showsVerticalScrollIndicator = false
+        self.showsHorizontalScrollIndicator = false
+        self.separatorStyle = .none
+        self.reloadData()
     }
     
   }
@@ -62,21 +83,32 @@ extension KYCStepTblView: UITableViewDelegate, UITableViewDataSource {
     }
   
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-      
-      guard let cell: KYCStepTableViewCell = tableView.dequeueReusableCell(withIdentifier: String(describing: KYCStepTableViewCell.self), for: indexPath) as? KYCStepTableViewCell else {
-        return UITableViewCell()
-      }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "KYCStepTableViewCell", for: indexPath) as? KYCStepTableViewCell else {
+            return UITableViewCell()
+        }
+//      guard let cell: KYCStepTableViewCell = tableView.dequeueReusableCell(withIdentifier: String(describing: KYCStepTableViewCell.self), for: indexPath) as? KYCStepTableViewCell else {
+//        return UITableViewCell()
+//      }
       
       let stepViewModel = self.kycSteps[indexPath.row]
+      
       if !stepViewModel.isEnabled() {
-        cell.bind(model: stepViewModel, alpha: 1)
+        cell.bind(model: stepViewModel, alpha: 1, isEnabled: false)
       } else {
-        cell.bind(model: stepViewModel)
+        cell.bind(model: stepViewModel, isEnabled: true)
       }
       
      return cell
     }
-
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 73
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 73
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
       let step = self.kycSteps[indexPath.row]
       guard let callback = callback else { return }

@@ -38,10 +38,11 @@ class IdHandler: DocumentHandler {
     }
 
     func showContainerVC(version: DocumentVersion, workingStep: Int, completion: @escaping StepCompletionCallback) {
-        let containerVC = ContainerViewController(
-            nibName: String(describing: ContainerViewController.self),
-            bundle: Bundle(for: ContainerViewController.self)
-        )
+        let containerVC = ContainerViewController()
+//        let containerVC = ContainerViewController(
+//            nibName: String(describing: ContainerViewController.self),
+//            bundle:  AmaniUI.sharedInstance.getBundle()
+//        )
         containerVC.stepConfig = stepViewModel.stepConfig
         // NOTE(ddnzcn): For future refactor consider removing this logic as this
         // leads to repetition
@@ -79,18 +80,23 @@ class IdHandler: DocumentHandler {
       idCaptureModule.setIdHologramDetection(enabled:AmaniUI.sharedInstance.idHologramDetection)
       idCaptureModule.setClientSideMRZ(enabled: AmaniUI.sharedInstance.isEnabledClientSideMrz)
         var workingStep = workingStepIndex
-        // FIXME: remove or increase manualcrop timeout
-        idCaptureModule.setManualCropTimeout(Timeout: 30)
+      
+      idCaptureModule.setManualCropTimeout(Timeout: 30)
 
+      
         do {
             showContainerVC(version: version, workingStep: workingStep) { [weak self] _ in
+
                 // CONFIRM CALLBACK
-                if version.steps!.count > workingStep+1 {
+                if version.steps!.count > workingStep {
                     // Remove the current instance of capture view
                   self?.frontView?.removeFromSuperview()
 
                     // Run the back step
+                  if workingStep != workingStepIndex + 1{
                     workingStep += 1
+                  }
+                  
                     self?.showContainerVC(version: version, workingStep: workingStep) { [weak self] _ in
                       self?.goNextStep(version: version, completion: completion)
                     }
@@ -112,10 +118,11 @@ class IdHandler: DocumentHandler {
     }
 
     private func startNFCCapture(docVer: DocumentVersion, completion: @escaping StepCompletionCallback) {
-        let nfcCaptureView = NFCViewController(
-            nibName: String(describing: NFCViewController.self),
-            bundle: Bundle(for: NFCViewController.self)
-        )
+        let nfcCaptureView = NFCViewController()
+//        let nfcCaptureView = NFCViewController(
+//            nibName: String(describing: NFCViewController.self),
+//            bundle: AmaniUI.sharedInstance.getBundle()
+//        )
         DispatchQueue.main.async {
             nfcCaptureView.bind(documentVersion: docVer) {
                 // ID is captured return to home!

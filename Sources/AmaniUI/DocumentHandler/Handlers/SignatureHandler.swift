@@ -24,43 +24,46 @@ class SignatureHandler: DocumentHandler {
   
   func start(docStep: AmaniSDK.DocumentStepModel, version: AmaniSDK.DocumentVersion, workingStepIndex: Int, completion: @escaping StepCompletionCallback) {
     DispatchQueue.main.async {
-      
-      let SignatureVC = SignatureViewController(
-        nibName: String(describing: SignatureViewController.self),
-        bundle: Bundle(for: SignatureViewController.self)
-      )
-      
-      SignatureVC.start( docStep: version.steps![steps.front.rawValue], version: version) { [weak self] previewImage in
+      let signatureVC = SignatureViewController()
+      signatureVC.setNavigationLeftButton(TintColor: "#20202F")
+      signatureVC.setNavigationBarWith(title: docStep.captureTitle ?? "", textColor: UIColor(hexString: "#20202F"))
+//      signatureVC.setNavigationLeftButtonPDF(text: "", tintColor: "")
+//      let SignatureVC = SignatureViewController(
+//        nibName: String(describing: SignatureViewController.self),
+//        bundle: AmaniUI.sharedInstance.getBundle()
+//      )
+     
+        signatureVC.start( docStep: version.steps![steps.front.rawValue], version: version) { [weak self] previewImage in
         self?.startConfirmVC(image: previewImage, docStep: docStep, docVer: version) { [weak self] () in
           completion(.success(self!.stepViewModel))
           self?.topVC.navigationController?.popToViewController(ofClass: HomeViewController.self)
         }
-        //      var selfieView:UIView = UIView()
-        //      // Manual Selfie
-        //      if selfieType == -1 {
-        //        selfieView = self.runManualSelfie(
-        //          step: docStep,
-        //          version: version,
-        //          completion: completion
-        //        )!
-        //      }
-        //      else if selfieType == 0 {
-        //        selfieView = self.runAutoSelfie(
-        //          step: docStep,
-        //          version: version,
-        //          completion: completion
-        //        )!
-        //      } else if selfieType >= 1 {
-        //        selfieView = self.runPoseEstimation(
-        //          step: docStep,
-        //          version: version,
-        //          completion: completion
-        //        )!
-        //      }
-        //      SignatureVC.view.addSubview(selfieView)
-        //      SignatureVC.view.bringSubviewToFront(selfieView)
+//        //      var selfieView:UIView = UIView()
+//        //      // Manual Selfie
+//        //      if selfieType == -1 {
+//        //        selfieView = self.runManualSelfie(
+//        //          step: docStep,
+//        //          version: version,
+//        //          completion: completion
+//        //        )!
+//        //      }
+//        //      else if selfieType == 0 {
+//        //        selfieView = self.runAutoSelfie(
+//        //          step: docStep,
+//        //          version: version,
+//        //          completion: completion
+//        //        )!
+//        //      } else if selfieType >= 1 {
+//        //        selfieView = self.runPoseEstimation(
+//        //          step: docStep,
+//        //          version: version,
+//        //          completion: completion
+//        //        )!
+//        //      }
+//        //      SignatureVC.view.addSubview(selfieView)
+//        //      SignatureVC.view.bringSubviewToFront(selfieView)
       }
-      self.topVC.navigationController?.pushViewController(SignatureVC, animated: true)
+      self.topVC.navigationController?.pushViewController(signatureVC, animated: true)
 
     }
   }

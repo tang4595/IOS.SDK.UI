@@ -11,6 +11,26 @@ import Combine
 import AmaniSDK
 
 class CheckSMSView: UIView {
+  
+    // MARK: Info Section
+  private var titleDescription = UILabel()
+  private var titleStackView = UIStackView()
+  
+    // MARK: Form Area
+  private var otpLegend = UILabel()
+  private var otpLegendRow = UIStackView()
+  private var otpInput = RoundedTextInput()
+  
+    // MARK: OTP Timer
+  private var timerButton = UIButton()
+  private var timerLabel = UILabel()
+  private var timerRow = UIStackView()
+  private var formStackView = UIStackView()
+  
+    // MARK: Form Buttons
+  private var submitButton = RoundedButton()
+  private var mainStackView = UIStackView()
+  
   private var viewModel: CheckSMSViewModel!
   private var cancellables = Set<AnyCancellable>()
   private var completionHandler: (() -> Void)!
@@ -27,122 +47,6 @@ class CheckSMSView: UIView {
               setupErrorHandling()
           }
       }
-  
-  // MARK: Info Section
-  private lazy var titleDescription: UILabel = {
-    let label = UILabel()
-    label.font = UIFont.systemFont(ofSize: 16.0, weight: .light)
-    label.text = "Please check your SMS messages and enter the OTP (One Time PIN) you received"
-    label.numberOfLines = 2
-    label.lineBreakMode = .byTruncatingMiddle
-    label.textColor = UIColor(hexString: "#20202F")
-    return label
-  }()
-  
-  private lazy var titleStackView: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [
-      titleDescription,
-    ])
-    stackView.axis = .vertical
-    stackView.alignment = .leading
-    stackView.distribution = .equalSpacing
-    stackView.spacing = 16.0
-    return stackView
-  }()
-  
-  // MARK: Form Area
-  private lazy var otpLegend: UILabel = {
-    let label = UILabel()
-      if appConfig?.generalconfigs?.language != "ar" {
-          let captureDescriptionText = appConfig?.stepConfig?[1].documents?[0].versions?[0].steps?[0].captureDescription
-          let otpLangauge = captureDescriptionText?.extractTextWithinSingleQuotes()
-        label.text = "OTP (\(otpLangauge ?? "One time PIN"))"
-      } else {
-          label.text = "OTP (دبوس مرة واحدة)"
-      }
-    label.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
-    label.textColor = UIColor(hexString: "#20202F")   
-    return label
-  }()
-  
-  private lazy var otpLegendRow: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [otpLegend])
-    return stackView
-  }()
-
-  private lazy var otpInput: RoundedTextInput = {
-    let input = RoundedTextInput(
-      placeholderText: "OTP Code",
-      borderColor: UIColor(hexString: "#515166"),
-      placeholderColor: UIColor(hexString: "#C0C0C0"),
-      isPasswordToggleEnabled: false,
-      keyboardType: .numberPad
-    )
-    return input
-  }()
-  
-  // MARK: OTP Timer
-  
-  private lazy var timerButton: UIButton = {
-    let button = UIButton()
-    button.isEnabled = false
-    return button
-  }()
-  
-  private lazy var timerLabel: UILabel = {
-    let label = UILabel()
-    label.text = "02:00"
-    label.font = .systemFont(ofSize: 15.0, weight: .regular)
-    return label
-  }()
-  
-  private lazy var timerRow: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [timerButton, timerLabel])
-    stackView.axis = .horizontal
-    stackView.alignment = .center
-    stackView.distribution = .fillProportionally
-    stackView.spacing = 6.0
-    return stackView
-  }()
-  
-  private lazy var formStackView: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [
-      otpLegendRow,
-      otpInput,
-      timerRow,
-    ])
-    
-    stackView.axis = .vertical
-    stackView.spacing = 6.0
-    stackView.alignment = .center
-    stackView.setCustomSpacing(32.0, after: otpInput)
-    return stackView
-  }()
-  
-  // MARK: Form Buttons
-  
-  private lazy var submitButton: RoundedButton = {
-     
-    let button = RoundedButton(
-      withTitle:  appConfig?.stepConfig?[2].documents?[0].versions?[0].steps?[0].captureTitle ?? "Verify Phone",
-      withColor: UIColor(hexString: appConfig?.generalconfigs?.primaryButtonBackgroundColor ?? "#EA3365")
-    )
-    return button
-  }()
-  
-  private lazy var mainStackView: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [
-      titleStackView,
-      formStackView,
-      submitButton,
-    ])
-    stackView.axis = .vertical
-    stackView.spacing = 0.0
-    stackView.distribution = .fill
-    stackView.setCustomSpacing(80.0, after: titleStackView)
-    stackView.setCustomSpacing(84.0, after: formStackView)
-    return stackView
-  }()
   
   override init(frame: CGRect) {
     retryTime = retrySeconds
@@ -166,13 +70,90 @@ class CheckSMSView: UIView {
     }
   
   func setupUI() {
+    self.titleDescription.font = UIFont.systemFont(ofSize: 16.0, weight: .light)
+    self.titleDescription.text = "Please check your SMS messages and enter the OTP (One Time PIN) you received"
+    self.titleDescription.numberOfLines = 2
+    self.titleDescription.lineBreakMode = .byTruncatingMiddle
+    self.titleDescription.textColor = UIColor(hexString: "#20202F")
+    
+    self.titleStackView = UIStackView(arrangedSubviews: [
+      titleDescription,
+    ])
+    self.titleStackView.axis = .vertical
+    self.titleStackView.alignment = .leading
+    self.titleStackView.distribution = .equalSpacing
+    self.titleStackView.spacing = 16.0
+    
+    if appConfig?.generalconfigs?.language != "ar" {
+      let captureDescriptionText = appConfig?.stepConfig?[1].documents?[0].versions?[0].steps?[0].captureDescription
+      let otpLangauge = captureDescriptionText?.extractTextWithinSingleQuotes()
+      self.otpLegend.text = "OTP (\(otpLangauge ?? "One time PIN"))"
+    } else {
+      self.otpLegend.text = "OTP (دبوس مرة واحدة)"
+    }
+    
+    self.otpLegend.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
+    self.otpLegend.textColor = UIColor(hexString: "#20202F")
+    
+    self.otpLegendRow = UIStackView(arrangedSubviews: [otpLegend])
+    
+    self.otpInput = RoundedTextInput(
+      placeholderText: "OTP Code",
+      borderColor: UIColor(hexString: "#515166"),
+      placeholderColor: UIColor(hexString: "#C0C0C0"),
+      isPasswordToggleEnabled: false,
+      keyboardType: .numberPad
+    )
+    
+    self.timerButton.isEnabled = false
+    
+    self.timerLabel.text = "03:00"
+    self.timerLabel.font = .systemFont(ofSize: 15.0, weight: .regular)
+    
+    self.timerRow = UIStackView(arrangedSubviews: [timerButton, timerLabel])
+    self.timerRow.axis = .horizontal
+    self.timerRow.alignment = .center
+    self.timerRow.distribution = .fillProportionally
+    self.timerRow.spacing = 6.0
+    
+    self.formStackView = UIStackView(arrangedSubviews: [
+      otpLegendRow,
+      otpInput,
+      timerRow,
+    ])
+    
+    self.formStackView.axis = .vertical
+    self.formStackView.alignment = .center
+    self.formStackView.spacing = 6.0
+    self.formStackView.setCustomSpacing(32.0, after: otpInput)
+    
+    self.submitButton = RoundedButton(
+      withTitle:  appConfig?.stepConfig?[2].documents?[0].versions?[0].steps?[0].captureTitle ?? "Verify Phone",
+            withColor: UIColor(hexString: appConfig?.generalconfigs?.primaryButtonBackgroundColor ?? "#EA3365")
+    )
+    
+    self.mainStackView = UIStackView(arrangedSubviews: [
+      titleStackView,
+      formStackView,
+      submitButton,
+    ])
+    self.mainStackView.axis = .vertical
+    self.mainStackView.spacing = 0.0
+    self.mainStackView.distribution = .fill
+    self.mainStackView.setCustomSpacing(80.0, after: titleStackView)
+    self.mainStackView.setCustomSpacing(84.0, after: formStackView)
+    
+   setConsraints()
+  }
+  
+  private func setConsraints() {
     addSubview(mainStackView)
     mainStackView.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
-    otpLegend.leadingAnchor.constraint(equalTo: otpInput.leadingAnchor),
-    otpInput.leadingAnchor.constraint(equalTo: formStackView.leadingAnchor, constant: 4),
-    otpInput.trailingAnchor.constraint(equalTo: formStackView.trailingAnchor, constant: -4),
-        
+      otpLegend.leadingAnchor.constraint(equalTo: otpInput.leadingAnchor),
+      otpInput.leadingAnchor.constraint(equalTo: formStackView.leadingAnchor, constant: 4),
+      otpInput.trailingAnchor.constraint(equalTo: formStackView.trailingAnchor, constant: -4),
+      
       mainStackView.topAnchor.constraint(equalTo: topAnchor),
       mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
       mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor),

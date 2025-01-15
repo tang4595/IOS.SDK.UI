@@ -10,17 +10,22 @@ import UIKit
 import AmaniSDK
 
 class ContainerViewController: BaseViewController {
+    // MARK: Properties
+  private var btnContinue = UIButton()
+  private var animationView = UIView()
+  private var titleDescription = UILabel()
+    
   private var animationName : String?
   private var callback: VoidCallback?
   private var disappearCallback: VoidCallback?
   private var docStep:DocumentStepModel?
   private var lottieAnimationView:LottieAnimationView?
   private var step:steps = .front
-    private var isDissapeared = false
-    var stepConfig: StepConfig?
-
-  @IBOutlet weak var btnContinue: UIButton!
-  @IBOutlet weak var animationView: UIView!
+  private var isDissapeared = false
+  
+  var stepConfig: StepConfig?
+  var docID: DocumentID?
+    
   func bind(animationName:String?,
             docStep:DocumentStepModel,
             step:steps,
@@ -31,24 +36,21 @@ class ContainerViewController: BaseViewController {
     self.docStep = docStep
   }
     
-    lazy var titleDescription: UILabel = {
-        let label = UILabel()
-        label.text = stepConfig?.documents?[0].versions?[0].informationScreenDesc1 ?? "\(stepConfig?.documents?[0].versions?[0].steps?[0].captureDescription ?? "Click continue to take a photo within the specified area")"
-        label.font = UIFont.systemFont(ofSize: 16.0, weight: .light)
-        label.numberOfLines = 0
-        label.lineBreakMode = .byWordWrapping
-        label.textColor = UIColor(hexString: "#20202F")
-        return label
-    }()
+   
     
   func setDisappearCallback(_ callback: @escaping VoidCallback) {
     self.disappearCallback = callback
   }
+    
+ 
   
-  @IBAction func ActBtnContinue(_ sender: Any) {
-      self.lottieAnimationView?.stop()
-  }
-  
+    override func viewDidLoad() {
+      super.viewDidLoad()
+      self.setupUI()
+     
+      self.btnContinue.addTarget(self, action: #selector(actBtnContinue(_ :)), for: .touchUpInside)
+    }
+    
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
       
@@ -69,36 +71,23 @@ class ContainerViewController: BaseViewController {
       }
       var name = "\((animationName.lowercased()))_\(side)"
       
-      if ((AmaniUI.sharedInstance.getBundle().url(forResource: name, withExtension: "json")?.isFileURL) == nil) {
-        name = "xx_id_0_\(side)"
-      }
-      lottieInit(name: name) {[weak self] _ in
-  //      print(finishedAnimation)
-        self?.callback!()
-      }
+        DispatchQueue.main.async {
+            self.lottieInit(name: name) {[weak self] _ in
+        //      print(finishedAnimation)
+              self?.callback!()
+            }
+        }
+        self.setConstraints()
     } else {
+   
       lottieAnimationView?.removeFromSuperview()
       self.callback!()
-
+        
     }
 
   }
   
-  override func viewDidLoad() {
-    super.viewDidLoad()
 
-      view.addSubview(titleDescription)
-      titleDescription.translatesAutoresizingMaskIntoConstraints = false
-      NSLayoutConstraint.activate([
-        titleDescription.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
-        titleDescription.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-        titleDescription.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-      ])
-      
-    let appBackground = try? Amani.sharedInstance.appConfig().getApplicationConfig().generalconfigs?.appBackground
-    
-    self.initialSetup()
-  }
     
   override func viewWillDisappear(_ animated: Bool) {
     // remove the sdk view on exiting by calling the callback
@@ -109,63 +98,136 @@ class ContainerViewController: BaseViewController {
       isDissapeared = true
     super.viewWillDisappear(animated)
   }
-  
-  func initialSetup() {
-    if AmaniUI.sharedInstance.isEnabledClientSideMrz {
-      Amani.sharedInstance.setMRZDelegate(delegate: self)
-    }
-    let appConfig = try! Amani.sharedInstance.appConfig().getApplicationConfig()
-    let buttonRadious = CGFloat(appConfig.generalconfigs?.buttonRadius ?? 10)
 
-    // Navigation Bar
-    self.setNavigationBarWith(title: docStep?.captureTitle ?? "", textColor: UIColor(hexString: appConfig.generalconfigs?.topBarFontColor ?? "ffffff"))
-    self.setNavigationLeftButton(TintColor: appConfig.generalconfigs?.topBarFontColor ?? "ffffff")
-    self.view.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.appBackground ?? "#263B5B")
-    btnContinue.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonBackgroundColor ?? ThemeColor.primaryColor.toHexString())
-    btnContinue.layer.borderColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonBorderColor ?? "#263B5B").cgColor
-    btnContinue.setTitle(appConfig.generalconfigs?.continueText, for: .normal)
-    btnContinue.setTitleColor(UIColor(hexString: appConfig.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
-    btnContinue.tintColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString())
-    btnContinue.addCornerRadiousWith(radious: buttonRadious)
-    
-//    // For everything else
-//      imgOuterView.isHidden = false
-//      self.idImgView.image = image
-
-//      self.previewHeightConstraints.constant = (UIScreen.main.bounds.width - 46) * CGFloat((documentVersion?.aspectRatio!)!)
-//      self.previewHeightConstraints.isActive = true
-//      self.view.layoutIfNeeded()
-//      titleLabel.isHidden = false
-//      selfieImageView.isHidden = true
-//      physicalContractImageView.isHidden = true
-//
-//
-  }
-    private func lottieInit(name:String = "xx_id_0_front", completion:@escaping(_ finishedAnimation:Int)->()) {
-        lottieAnimationView = .init(name: name,bundle: AmaniUI.sharedInstance.getBundle())
-        //    lottieAnimationView!.frame = animationView.bounds
-        lottieAnimationView!.backgroundColor = .clear
-        lottieAnimationView!.contentMode = .scaleAspectFit
-        lottieAnimationView!.translatesAutoresizingMaskIntoConstraints = false
-        animationView.addSubview(lottieAnimationView!)
-        NSLayoutConstraint.activate([
-            lottieAnimationView!.centerXAnchor.constraint(equalTo: animationView.centerXAnchor),
-            lottieAnimationView!.centerYAnchor.constraint(equalTo: animationView.centerYAnchor),
-            lottieAnimationView!.widthAnchor.constraint(equalTo: animationView.widthAnchor),
-            lottieAnimationView!.heightAnchor.constraint(equalTo: animationView.heightAnchor),
-        ])
-        
-        lottieAnimationView?.bringSubviewToFront(view)
-        lottieAnimationView!.play {[weak self] (_) in
-            self?.lottieAnimationView!.removeFromSuperview()
-            if let isdp = self?.isDissapeared, !isdp{
-                completion(steps.front.rawValue)
-            }
-        }
-        
-    }
-  
 }
+extension ContainerViewController {
+   
+  @objc func actBtnContinue(_ sender: UIButton) {
+    print("LOTTIE ANIMATION DURDURULDU.")
+    self.lottieAnimationView?.stop()
+    
+  }
+  
+    func setupUI() {
+      if AmaniUI.sharedInstance.isEnabledClientSideMrz {
+        Amani.sharedInstance.setMRZDelegate(delegate: self)
+      }
+      let appConfig = try! Amani.sharedInstance.appConfig().getApplicationConfig()
+      let buttonRadious = CGFloat(appConfig.generalconfigs?.buttonRadius ?? 10)
+      
+      self.btnContinue.translatesAutoresizingMaskIntoConstraints = false
+      self.titleDescription.translatesAutoresizingMaskIntoConstraints = false
+      self.titleDescription.text = stepConfig?.documents?[0].versions?[0].informationScreenDesc1 ?? "\(stepConfig?.documents?[0].versions?[0].steps?[0].captureDescription ?? "Click continue to take a photo within the specified area")"
+      self.titleDescription.font = UIFont.systemFont(ofSize: 16.0, weight: .light)
+      self.titleDescription.numberOfLines = 0
+      self.titleDescription.lineBreakMode = .byWordWrapping
+      self.titleDescription.textColor = UIColor(hexString: "#20202F")
+      
+      self.animationView.translatesAutoresizingMaskIntoConstraints = false
+      self.animationView.backgroundColor = .clear
+      
+        if animationName == nil {
+            self.btnContinue.isHidden = true
+            self.titleDescription.isHidden = true
+            self.setNavigationLeftButtonPDF(text: appConfig.generalconfigs?.uploadPdf ?? "Upload PDF" ,tintColor: appConfig.generalconfigs?.topBarFontColor)
+        } else {
+            self.btnContinue.isHidden = false
+            self.titleDescription.isHidden = false
+            self.setNavigationLeftButton(TintColor: appConfig.generalconfigs?.topBarFontColor ?? "#ffffff")
+            btnContinue.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonBackgroundColor ?? ThemeColor.primaryColor.toHexString())
+            btnContinue.layer.borderColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonBorderColor ?? "#263B5B").cgColor
+            btnContinue.setTitle(appConfig.generalconfigs?.continueText, for: .normal)
+            btnContinue.setTitleColor(UIColor(hexString: appConfig.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
+            btnContinue.tintColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString())
+            btnContinue.addCornerRadiousWith(radious: buttonRadious)
+            
+        }
+
+      // Navigation Bar
+      self.setNavigationBarWith(title: docStep?.captureTitle ?? "", textColor: UIColor(hexString: appConfig.generalconfigs?.topBarFontColor ?? "ffffff"))
+
+      self.view.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.appBackground ?? "#263B5B")
+      
+      
+  //    // For everything else
+  //      imgOuterView.isHidden = false
+  //      self.idImgView.image = image
+
+  //      self.previewHeightConstraints.constant = (UIScreen.main.bounds.width - 46) * CGFloat((documentVersion?.aspectRatio!)!)
+  //      self.previewHeightConstraints.isActive = true
+  //      self.view.layoutIfNeeded()
+  //      titleLabel.isHidden = false
+  //      selfieImageView.isHidden = true
+  //      physicalContractImageView.isHidden = true
+  //
+  //
+    }
+    
+      private func lottieInit(name:String, completion:@escaping(_ finishedAnimation:Int)->()) {
+        
+        guard let animation = LottieAnimation.named(name, bundle: AmaniUI.sharedInstance.getBundle()) else {
+          print("Lottie animation not found")
+          return
+        }
+
+        self.lottieAnimationView = LottieAnimationView(animation: animation)
+        guard let lottieAnimationView = self.lottieAnimationView else {
+            print("Failed to create Lottie animation view")
+            return
+        }
+
+          lottieAnimationView.frame = animationView.bounds
+          lottieAnimationView.backgroundColor = .clear
+          lottieAnimationView.contentMode = .scaleAspectFit
+          lottieAnimationView.translatesAutoresizingMaskIntoConstraints = false
+          DispatchQueue.main.async { [self] in
+              view.addSubview(animationView)
+              animationView.addSubview(lottieAnimationView)
+              NSLayoutConstraint.activate([
+               animationView.centerXAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerXAnchor),
+                animationView.centerYAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerYAnchor),
+                animationView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
+                animationView.heightAnchor.constraint(equalTo: self.view.heightAnchor),
+                
+                lottieAnimationView.leadingAnchor.constraint(equalTo: animationView.leadingAnchor),
+                lottieAnimationView.trailingAnchor.constraint(equalTo: animationView.trailingAnchor),
+                lottieAnimationView.topAnchor.constraint(equalTo: animationView.topAnchor),
+                lottieAnimationView.bottomAnchor.constraint(equalTo: animationView.bottomAnchor)
+              ])
+              
+              animationView.bringSubviewToFront(view)
+              lottieAnimationView.play {[weak self] (_) in
+                  lottieAnimationView.removeFromSuperview()
+                  if let isdp = self?.isDissapeared, !isdp{
+                      completion(steps.front.rawValue)
+                  }
+              }
+          }
+      }
+    
+    private func setConstraints() {
+        DispatchQueue.main.async { [self] in
+            view.addSubview(titleDescription)
+            view.addSubview(btnContinue)
+            
+            NSLayoutConstraint.activate([
+                titleDescription.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
+                titleDescription.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+                titleDescription.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+                
+                btnContinue.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+                btnContinue.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+                btnContinue.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+                btnContinue.heightAnchor.constraint(equalToConstant: 50),
+
+            ])
+        }
+      
+    }
+}
+
+
+
 extension ContainerViewController: mrzInfoDelegate {
   func mrzInfo(_ mrz: AmaniSDK.MrzModel?, documentId: String?) {
     print("MRZ INFO DELEGATE'E GELDI")
