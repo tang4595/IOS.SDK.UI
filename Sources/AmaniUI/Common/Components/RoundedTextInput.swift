@@ -88,6 +88,8 @@ class RoundedTextInput: UIView {
     field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: insets.left, height: frame.height))
     field.leftViewMode = .never
     field.keyboardType = keyboardType
+    field.returnKeyType = .done
+    field.delegate = self
 
     if isPasswordToggleEnabled {
       field.isSecureTextEntry = true
@@ -176,5 +178,12 @@ class RoundedTextInput: UIView {
 
   func setDelegate(delegate: UITextFieldDelegate) {
     field.delegate = delegate
+  }
+}
+
+extension RoundedTextInput: UITextFieldDelegate {
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    textField.resignFirstResponder() // Dismiss the keyboard
+    return true
   }
 }

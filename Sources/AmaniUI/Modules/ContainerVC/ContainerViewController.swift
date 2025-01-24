@@ -71,6 +71,13 @@ class ContainerViewController: BaseViewController {
       }
       var name = "\((animationName.lowercased()))_\(side)"
       
+      var animation = LottieAnimation.named(name, bundle: AmaniUI.sharedInstance.getBundle())
+      
+      if animation == nil {
+        print("\(name) not found")
+        name = "xxx_id_\(side)"
+      }
+      
         DispatchQueue.main.async {
             self.lottieInit(name: name) {[weak self] _ in
         //      print(finishedAnimation)
@@ -162,48 +169,49 @@ extension ContainerViewController {
   //
   //
     }
+  
+  private func lottieInit(name: String, completion: @escaping (_ finishedAnimation: Int) -> ()) {
+//    var animation = LottieAnimation.named(name, bundle: AmaniUI.sharedInstance.getBundle())
     
-      private func lottieInit(name:String, completion:@escaping(_ finishedAnimation:Int)->()) {
+    guard let animation = LottieAnimation.named(name, bundle: AmaniUI.sharedInstance.getBundle()) else{
+      print("Animation not found")
+      return
+    }
+    
+    self.lottieAnimationView = LottieAnimationView(animation: animation)
+    guard let lottieAnimationView = self.lottieAnimationView else {
+      print("Failed to create Lottie animation view")
+      return
+    }
+    
+    lottieAnimationView.frame = animationView.bounds
+    lottieAnimationView.backgroundColor = .clear
+    lottieAnimationView.contentMode = .scaleAspectFit
+    lottieAnimationView.translatesAutoresizingMaskIntoConstraints = false
+    DispatchQueue.main.async { [self] in
+      view.addSubview(animationView)
+      animationView.addSubview(lottieAnimationView)
+      NSLayoutConstraint.activate([
+        animationView.centerXAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerXAnchor),
+        animationView.centerYAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerYAnchor),
+        animationView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
+        animationView.heightAnchor.constraint(equalTo: self.view.heightAnchor),
         
-        guard let animation = LottieAnimation.named(name, bundle: AmaniUI.sharedInstance.getBundle()) else {
-          print("Lottie animation not found")
-          return
+        lottieAnimationView.leadingAnchor.constraint(equalTo: animationView.leadingAnchor),
+        lottieAnimationView.trailingAnchor.constraint(equalTo: animationView.trailingAnchor),
+        lottieAnimationView.topAnchor.constraint(equalTo: animationView.topAnchor),
+        lottieAnimationView.bottomAnchor.constraint(equalTo: animationView.bottomAnchor)
+      ])
+      
+      animationView.bringSubviewToFront(view)
+      lottieAnimationView.play { [weak self] (_) in
+        lottieAnimationView.removeFromSuperview()
+        if let isdp = self?.isDissapeared, !isdp {
+          completion(steps.front.rawValue)
         }
-
-        self.lottieAnimationView = LottieAnimationView(animation: animation)
-        guard let lottieAnimationView = self.lottieAnimationView else {
-            print("Failed to create Lottie animation view")
-            return
-        }
-
-          lottieAnimationView.frame = animationView.bounds
-          lottieAnimationView.backgroundColor = .clear
-          lottieAnimationView.contentMode = .scaleAspectFit
-          lottieAnimationView.translatesAutoresizingMaskIntoConstraints = false
-          DispatchQueue.main.async { [self] in
-              view.addSubview(animationView)
-              animationView.addSubview(lottieAnimationView)
-              NSLayoutConstraint.activate([
-               animationView.centerXAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerXAnchor),
-                animationView.centerYAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerYAnchor),
-                animationView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
-                animationView.heightAnchor.constraint(equalTo: self.view.heightAnchor),
-                
-                lottieAnimationView.leadingAnchor.constraint(equalTo: animationView.leadingAnchor),
-                lottieAnimationView.trailingAnchor.constraint(equalTo: animationView.trailingAnchor),
-                lottieAnimationView.topAnchor.constraint(equalTo: animationView.topAnchor),
-                lottieAnimationView.bottomAnchor.constraint(equalTo: animationView.bottomAnchor)
-              ])
-              
-              animationView.bringSubviewToFront(view)
-              lottieAnimationView.play {[weak self] (_) in
-                  lottieAnimationView.removeFromSuperview()
-                  if let isdp = self?.isDissapeared, !isdp{
-                      completion(steps.front.rawValue)
-                  }
-              }
-          }
       }
+    }
+  }
     
     private func setConstraints() {
         DispatchQueue.main.async { [self] in
