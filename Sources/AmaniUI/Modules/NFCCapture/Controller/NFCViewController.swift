@@ -5,40 +5,61 @@ typealias VoidCallback = () -> Void
 
 @available(iOS 13, *)
 class NFCViewController: BaseViewController {
+
+  var nfcFormView: NFCConfigureView!
     // MARK: Properties
-    private var headerLabel = UILabel()
-    private var continueButton = UIButton()
-    private var labelsContainerView = UIView()
-    private  var desc1Label = UILabel()
-    private  var desc2Label = UILabel()
-    private  var desc3Label = UILabel()
-    private  var amaniLogo = UIImageView()
+  private var headerLabel = UILabel()
+  private var continueButton = UIButton()
+  private var labelsContainerView = UIView()
+  private var desc1Label = UILabel()
+  private var desc2Label = UILabel()
+  private var desc3Label = UILabel()
+  private var amaniLogo = UIImageView()
+  var docID: String?
+  private var documentVersion: DocumentVersion?
+  private var onFinishCallback: VoidCallback?
     
-    private var documentVersion: DocumentVersion?
-    private var onFinishCallback: VoidCallback?
-    
-    let idCaptureModule =  Amani.sharedInstance.IdCapture()
-    let amani:Amani = Amani.sharedInstance
-    var isDone: Bool = false
-    
+  let idCaptureModule =  Amani.sharedInstance.IdCapture()
+  let amani:Amani = Amani.sharedInstance
+  var isDone: Bool = false
+  
+  var appConfig: AppConfigModel?  {
+          didSet {
+            guard let config = appConfig else { return }
+      
+      }
+  }
+  
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         Task { @MainActor in
 //            setConstraints()
+         
             await initialSetup()
             
             continueButton.addTarget(self, action: #selector(continueButtonPressed(_:)), for: .touchUpInside)
         }
         
     }
-    
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    Task { @MainActor in
+      do {
+        try? await AmaniUI.sharedInstance.voiceAssistant?.stop()
+      }catch(let err) {
+        debugPrint("\(err)")
+      }
+    }
+  }
+  
     func initialSetup() async {
         guard let documentVersion = documentVersion else { return }
         
-        let generalConfigs = try? amani.appConfig().getApplicationConfig().generalconfigs
+      self.appConfig = try? amani.appConfig().getApplicationConfig()
         
-        let navFontColor = generalConfigs?.topBarFontColor ?? "ffffff"
-        let textColor = generalConfigs?.appFontColor ?? "ffffff"
+      let navFontColor = appConfig?.generalconfigs?.topBarFontColor ?? "ffffff"
+      let textColor = appConfig?.generalconfigs?.appFontColor ?? "ffffff"
       
       
       self.headerLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -73,7 +94,7 @@ class NFCViewController: BaseViewController {
         
         setNavigationBarWith(title: (documentVersion.nfcTitle)!, textColor: UIColor(hexString: navFontColor))
         setNavigationLeftButton(TintColor: navFontColor)
-        amaniLogo.isHidden = generalConfigs?.hideLogo ?? false
+        amaniLogo.isHidden = appConfig?.generalconfigs?.hideLogo ?? false
         amaniLogo.tintColor = UIColor(hexString: textColor)
         desc1Label.textColor = UIColor(hexString: textColor)
         desc2Label.textColor = UIColor(hexString: textColor)
@@ -92,14 +113,14 @@ class NFCViewController: BaseViewController {
         
         continueButton.alpha = 1
         continueButton.isEnabled = true
-        continueButton.setTitleColor(UIColor(hexString: generalConfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
-        continueButton.backgroundColor = UIColor(hexString: generalConfigs?.primaryButtonBackgroundColor ?? ThemeColor.whiteColor.toHexString())
-        continueButton.addCornerRadiousWith(radious: CGFloat(generalConfigs?.buttonRadius ?? 10))
-        continueButton.setTitle(generalConfigs?.continueText ?? "Devam", for: .normal)
+        continueButton.setTitleColor(UIColor(hexString: appConfig?.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
+        continueButton.backgroundColor = UIColor(hexString: appConfig?.generalconfigs?.primaryButtonBackgroundColor ?? ThemeColor.whiteColor.toHexString())
+        continueButton.addCornerRadiousWith(radious: CGFloat(appConfig?.generalconfigs?.buttonRadius ?? 10))
+        continueButton.setTitle(appConfig?.generalconfigs?.continueText ?? "Devam", for: .normal)
       
         setConstraints()
       
-        await scanNFC()
+       
     }
     
     func bind(documentVersion: DocumentVersion, callback: @escaping VoidCallback) {
@@ -110,6 +131,16 @@ class NFCViewController: BaseViewController {
     
     @objc func continueButtonPressed(_ sender: Any) {
         Task { @MainActor in
+          #if canImport(AmaniVoiceAssistantSDK)
+                if let docID = self.docID {
+                  do {
+                    try? await AmaniUI.sharedInstance.voiceAssistant?.play(key: "VOICE_\(docID)")
+                  }catch(let error) {
+                    debugPrint("\(error)")
+                  }
+                }
+                
+          #endif
             await scanNFC()
         }
     }
@@ -133,13 +164,15 @@ class NFCViewController: BaseViewController {
         //    guard let nvi = AmaniUI.sharedInstance.nviData else { return }
         //    let isDone = await idCaptureModule.startNFC(nvi: nvi)
         //    self.doNext(done: isDone)
-        if let nvi:NviModel = AmaniUI.sharedInstance.nviData {
+      if let nvi:NviModel = AmaniUI.sharedInstance.nviData {
             print(nvi)
             let isDone = await idCaptureModule.startNFC(nvi: nvi)
+          if isDone {
             self.doNext(done: isDone)
-            
+          } else {
+            await animateWithNFCFormUI(nvi: nvi)
+          }
         }
-        
     }
     
     func doNext(done:Bool) {
@@ -158,7 +191,54 @@ class NFCViewController: BaseViewController {
             }
         }
     }
+  
+  private func setNFCFormUIView(nvi: NviModel) async {
+    nfcFormView = NFCConfigureView()
+    nfcFormView.appConfig = appConfig
+    nfcFormView.setTextsFrom(nvi: nvi)
+    self.view.addSubview(nfcFormView)
+
+    nfcFormView.translatesAutoresizingMaskIntoConstraints = false
+    NSLayoutConstraint.activate([
+      nfcFormView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+      nfcFormView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+      nfcFormView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+      nfcFormView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+      
+    ])
     
+    nfcFormView.setButtonCb = { [weak self] newNvi in
+      guard let self = self else { return }
+      nfcFormView.removeFromSuperview()
+      debugPrint("nfc configure ekranından dönen nvi data : \(newNvi)")
+
+      let isDone = await idCaptureModule.startNFC(nvi: newNvi)
+      if isDone {
+        self.doNext(done: isDone)
+      } else {
+        if newNvi.dateOfBirth == "" || newNvi.dateOfExpire == "" || newNvi.documentNo == "" {
+          await animateWithNFCFormUI(nvi: nvi)
+        } else {
+          await animateWithNFCFormUI(nvi: newNvi)
+        }
+      }
+    }
+  }
+  private func animateWithNFCFormUI(nvi: NviModel) async {
+    await animateAsync(withDuration: 0.3) {
+      Task {
+        await self.setNFCFormUIView(nvi: nvi)
+      }
+    }
+  }
+  
+ private func animateAsync(withDuration duration: TimeInterval, animations: @escaping () -> Void) async {
+    await withCheckedContinuation { continuation in
+      UIView.animate(withDuration: duration, animations: animations) { _ in
+        continuation.resume()
+      }
+    }
+  }
 }
 
 extension NFCViewController {
@@ -196,7 +276,9 @@ extension NFCViewController {
             desc3Label.trailingAnchor.constraint(equalTo:labelsContainerView.trailingAnchor),
             desc3Label.centerXAnchor.constraint(equalTo:labelsContainerView.centerXAnchor),
             
-            continueButton.widthAnchor.constraint(equalToConstant: 333),
+//            continueButton.widthAnchor.constraint(equalToConstant: 333),
+            continueButton.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            continueButton.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             continueButton.heightAnchor.constraint(equalToConstant: 50),
             continueButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             continueButton.bottomAnchor.constraint(equalTo: amaniLogo.topAnchor, constant: -20),

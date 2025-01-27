@@ -8,6 +8,9 @@
 import AmaniSDK
 import UIKit
 import CoreLocation
+#if canImport(AmaniVoiceAssistantSDK)
+import AmaniVoiceAssistantSDK
+#endif
 private class AmaniBundleLocator {}
 
 public class AmaniUI {
@@ -25,6 +28,9 @@ public class AmaniUI {
   
     // MARK: - Internal configurations
   internal var config: AppConfigModel?
+#if canImport(AmaniVoiceAssistantSDK)
+  internal var voiceAssistant: AmaniVoiceAssistant?
+#endif
   internal let sharedSDKInstance = Amani.sharedInstance
   
   
@@ -215,11 +221,23 @@ public class AmaniUI {
       // set the delegate regardless of init method
     self.sharedSDKInstance.setDelegate(delegate: self)
     
+//    MARK: Initialize AmaniVoiceAssistant
+#if canImport(AmaniVoiceAssistantSDK)
+    Task { @MainActor in
+      do {
+        self.voiceAssistant = try await AmaniVoiceAssistant.init(url: "https://gist.githubusercontent.com/munir-amani/70bbb480b1ea8b761169397004a37a4d/raw/9ad200113d016db661905de94dd822f9609c9623/ttsVoices.json")
+        
+      }catch(let error) {
+        debugPrint("can't init voice assistant \(error)")
+      }
+    }
+    
+#endif
     
     if (token != nil){
-      
+     
       sharedSDKInstance.initAmani(server: server!, token: token!, sharedSecret: sharedSecret, customer: customer, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
-        self?.getConfig(customerModel: customerModel, error: error, completion: completion)
+          self?.getConfig(customerModel: customerModel, error: error, completion: completion)
         
       }
     } else {
@@ -250,6 +268,22 @@ public class AmaniUI {
       //    }
     
     
+//    
+//    if let customer = customer {
+//      if (userName != nil && password != nil) {
+//        sharedSDKInstance.initAmani(server: server!, userName: self.userName!, password: self.password!, sharedSecret: sharedSecret, customer: customer, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
+//          self?.getConfig(customerModel: customerModel, error: error, completion: completion)
+//        
+//        }
+//      }
+//    } else {
+//      if (token != nil){
+//        sharedSDKInstance.initAmani(server: server!, token: token!, sharedSecret: sharedSecret, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
+//          self?.getConfig(customerModel: customerModel, error: error, completion: completion)
+//        
+//        }
+//      }
+//    }
     
   }
   

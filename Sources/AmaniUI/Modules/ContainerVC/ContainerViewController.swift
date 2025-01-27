@@ -8,6 +8,9 @@
 import Lottie
 import UIKit
 import AmaniSDK
+#if canImport(AmaniVoiceAssistantSDK)
+import AmaniVoiceAssistantSDK
+#endif
 
 class ContainerViewController: BaseViewController {
     // MARK: Properties
@@ -78,6 +81,19 @@ class ContainerViewController: BaseViewController {
         name = "xxx_id_\(side)"
       }
       
+      #if canImport(AmaniVoiceAssistantSDK)
+          if let docID = self.docID {
+            Task { @MainActor in
+              do {
+                try? await AmaniUI.sharedInstance.voiceAssistant?.play(key: "VOICE_\(docID.getDocumentType())\(self.step.rawValue)")
+              }catch(let error) {
+                debugPrint("\(error)")
+              }
+              
+            }
+          }
+          
+      #endif
         DispatchQueue.main.async {
             self.lottieInit(name: name) {[weak self] _ in
         //      print(finishedAnimation)
@@ -98,6 +114,19 @@ class ContainerViewController: BaseViewController {
     
   override func viewWillDisappear(_ animated: Bool) {
     // remove the sdk view on exiting by calling the callback
+      #if canImport(AmaniVoiceAssistantSDK)
+      
+          Task { @MainActor in
+            do {
+              try? await AmaniUI.sharedInstance.voiceAssistant?.stop()
+            }catch(let error) {
+              debugPrint("\(error)")
+            }
+            
+          }
+        
+        
+      #endif
     print("Container View disappear")
     if let disappearCb = self.disappearCallback {
       disappearCb()
