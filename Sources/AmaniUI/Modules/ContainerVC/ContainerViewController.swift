@@ -128,6 +128,7 @@ class ContainerViewController: BaseViewController {
         
       #endif
     print("Container View disappear")
+//    cleanupViews()
     if let disappearCb = self.disappearCallback {
       disappearCb()
     }
@@ -139,11 +140,10 @@ class ContainerViewController: BaseViewController {
 extension ContainerViewController {
    
   @objc func actBtnContinue(_ sender: UIButton) {
-    print("LOTTIE ANIMATION DURDURULDU.")
+    print("LOTTIE ANIMATION STOPPED")
     self.lottieAnimationView?.stop()
-    
   }
-  
+
     func setupUI() {
       if AmaniUI.sharedInstance.isEnabledClientSideMrz {
         Amani.sharedInstance.setMRZDelegate(delegate: self)
@@ -221,10 +221,10 @@ extension ContainerViewController {
       view.addSubview(animationView)
       animationView.addSubview(lottieAnimationView)
       NSLayoutConstraint.activate([
-        animationView.centerXAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerXAnchor),
-        animationView.centerYAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerYAnchor),
-        animationView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
-        animationView.heightAnchor.constraint(equalTo: self.view.heightAnchor),
+        animationView.topAnchor.constraint(equalTo: self.titleDescription.bottomAnchor, constant: 8),
+        animationView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+        animationView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+        animationView.bottomAnchor.constraint(equalTo: self.btnContinue.topAnchor, constant: -8),
         
         lottieAnimationView.leadingAnchor.constraint(equalTo: animationView.leadingAnchor),
         lottieAnimationView.trailingAnchor.constraint(equalTo: animationView.trailingAnchor),
