@@ -361,7 +361,7 @@ public class AmaniUI {
           //        self.sdkNavigationController?.setupNavigationBarShadow()
           // Show the SDK!
         self.setAppTheme(model: self.config?.generalconfigs!, onVC: self.initialVC!)
-        self.parentVC?.present(self.sdkNavigationController!, animated: true)
+        
       } else {
           // Using this method will also clear the backstack making the homevc
           // is the first controller again.
@@ -369,8 +369,10 @@ public class AmaniUI {
         self.sdkNavigationController?.setViewControllers(
           [self.initialVC!],
           animated: true
+          
         )
       }
+      self.parentVC?.present(self.sdkNavigationController!, animated: true)
     }
   }
   
