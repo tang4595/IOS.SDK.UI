@@ -202,17 +202,18 @@ class NFCConfigureView: UIView {
 
 extension NFCConfigureView {
   private func setNFCFormUI() {
+    guard let stepConfig = self.appConfig?.stepConfig else { return }
     backgroundColor =  UIColor(hexString: appConfig?.generalconfigs?.appBackground ?? "#EEF4FA")
     self.submitButton.addTarget(self, action: #selector(tapSubmitButton(_:)), for: .touchUpInside)
-    
-    self.descriptionLabel.text = "Please check your information and re-edit if needed"
+//    appConfig?.stepConfig?[1].documents?[0].versions?[0].steps?[0].captureDescription
+    self.descriptionLabel.text = stepConfig[4].documents?[0].versions?[0].nfcConfigureTitle
     self.descriptionLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
     self.descriptionLabel.numberOfLines = 1
     self.descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
     self.descriptionLabel.textAlignment = .center
     
     
-    self.documentNumbers.text = "Document Numbers"
+    self.documentNumbers.text = stepConfig[4].documents?[0].versions?[0].documentNoTitle
     self.documentNumbers.textColor = UIColor(hexString: "#2020F")
     self.documentNumbers.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
     self.documentNumbers.numberOfLines = 1
@@ -226,7 +227,7 @@ extension NFCConfigureView {
       keyboardType: .default
     )
     
-    self.dateOfExpiryDate.text = "Date of Expiry"
+    self.dateOfExpiryDate.text = stepConfig[4].documents?[0].versions?[0].documentDateOfExpiry
     self.dateOfExpiryDate.textColor = UIColor(hexString: "#2020F")
     self.dateOfExpiryDate.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
     self.dateOfExpiryDate.numberOfLines = 1
@@ -240,7 +241,7 @@ extension NFCConfigureView {
       keyboardType: .numberPad
     )
     
-    self.birthdateLabel.text = "Date of Birth"
+    self.birthdateLabel.text = stepConfig[4].documents?[0].versions?[0].documentDateOfBirth
     self.birthdateLabel.textColor = UIColor(hexString: "#2020F")
     self.birthdateLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
     self.birthdateLabel.numberOfLines = 1
