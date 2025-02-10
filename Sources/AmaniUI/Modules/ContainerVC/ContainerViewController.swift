@@ -209,6 +209,7 @@ extension ContainerViewController {
             print("Failed to create Lottie animation view")
             return
         }
+       
 
           lottieAnimationView.frame = animationView.bounds
           lottieAnimationView.backgroundColor = .clear
@@ -220,8 +221,10 @@ extension ContainerViewController {
               NSLayoutConstraint.activate([
                animationView.centerXAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerXAnchor),
                 animationView.centerYAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerYAnchor),
+               animationView.topAnchor.constraint(equalTo: self.titleDescription.bottomAnchor, constant: 16),
+              
                 animationView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
-                animationView.heightAnchor.constraint(equalTo: self.view.heightAnchor),
+               animationView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.5),
                 
                 lottieAnimationView.leadingAnchor.constraint(equalTo: animationView.leadingAnchor),
                 lottieAnimationView.trailingAnchor.constraint(equalTo: animationView.trailingAnchor),
@@ -251,7 +254,7 @@ extension ContainerViewController {
                 
                 btnContinue.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
                 btnContinue.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-                btnContinue.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+                btnContinue.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
                 btnContinue.heightAnchor.constraint(equalToConstant: 50),
 
             ])
