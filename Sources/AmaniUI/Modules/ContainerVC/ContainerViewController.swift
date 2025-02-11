@@ -165,7 +165,8 @@ extension ContainerViewController {
         if animationName == nil {
             self.btnContinue.isHidden = true
             self.titleDescription.isHidden = true
-            self.setNavigationLeftButtonPDF(text: appConfig.generalconfigs?.uploadPdf ?? "Upload PDF" ,tintColor: appConfig.generalconfigs?.topBarFontColor)
+            self.setNavigationLeftButtonPDF(text: appConfig.generalconfigs?.uploadPdf ?? "Upload PDF" ,tintColor: appConfig.generalconfigs?.topBarFontColor ?? "20202F")
+          self.setNavigationLeftButton(TintColor: appConfig.generalconfigs?.topBarFontColor ?? "#ffffff")
         } else {
             self.btnContinue.isHidden = false
             self.titleDescription.isHidden = false
@@ -238,6 +239,36 @@ extension ContainerViewController {
         if let isdp = self?.isDissapeared, !isdp {
           completion(steps.front.rawValue)
         }
+
+          lottieAnimationView.frame = animationView.bounds
+          lottieAnimationView.backgroundColor = .clear
+          lottieAnimationView.contentMode = .scaleAspectFit
+          lottieAnimationView.translatesAutoresizingMaskIntoConstraints = false
+          DispatchQueue.main.async { [self] in
+              view.addSubview(animationView)
+              animationView.addSubview(lottieAnimationView)
+              NSLayoutConstraint.activate([
+               animationView.centerXAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerXAnchor),
+                animationView.centerYAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerYAnchor),
+               animationView.topAnchor.constraint(equalTo: self.titleDescription.bottomAnchor, constant: 16),
+              
+                animationView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
+               animationView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.5),
+                
+                lottieAnimationView.leadingAnchor.constraint(equalTo: animationView.leadingAnchor),
+                lottieAnimationView.trailingAnchor.constraint(equalTo: animationView.trailingAnchor),
+                lottieAnimationView.topAnchor.constraint(equalTo: animationView.topAnchor),
+                lottieAnimationView.bottomAnchor.constraint(equalTo: animationView.bottomAnchor)
+              ])
+              
+              animationView.bringSubviewToFront(view)
+              lottieAnimationView.play {[weak self] (_) in
+                  lottieAnimationView.removeFromSuperview()
+                  if let isdp = self?.isDissapeared, !isdp{
+                      completion(steps.front.rawValue)
+                  }
+              }
+          }
       }
     }
   }
@@ -254,7 +285,7 @@ extension ContainerViewController {
                 
                 btnContinue.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
                 btnContinue.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-                btnContinue.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+                btnContinue.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
                 btnContinue.heightAnchor.constraint(equalToConstant: 50),
 
             ])

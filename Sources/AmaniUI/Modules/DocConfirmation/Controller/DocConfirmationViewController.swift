@@ -182,6 +182,7 @@ class DocConfirmationViewController: BaseViewController {
           self.idImgView.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.appBackground ?? "#263B5B")
           
 //          self.setConstraints()
+        self.setNavigationBarWith(title: (self.documentStep?.captureTitle)!)
           titleLabel.isHidden = true
           selfieImageView.isHidden = true
           physicalContractImageView.isHidden = true
@@ -321,10 +322,16 @@ class DocConfirmationViewController: BaseViewController {
     
     @objc func confirmAction(_ sender: Any) {
         if (!confirmClicked){
-            confirmClicked = true
+          
+          confirmClicked = true
+          if documentID == DocumentID.ID {
             checkMRZ()
-            
+          } else {
+            if let confirmCallback = confirmCallback {
+              confirmCallback()
+            }
           }
+        }
     }
     
     func createAnimationView() {
