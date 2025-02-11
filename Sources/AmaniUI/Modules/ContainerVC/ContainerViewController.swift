@@ -214,31 +214,7 @@ extension ContainerViewController {
       return
     }
     
-    lottieAnimationView.frame = animationView.bounds
-    lottieAnimationView.backgroundColor = .clear
-    lottieAnimationView.contentMode = .scaleAspectFit
-    lottieAnimationView.translatesAutoresizingMaskIntoConstraints = false
-    DispatchQueue.main.async { [self] in
-      view.addSubview(animationView)
-      animationView.addSubview(lottieAnimationView)
-      NSLayoutConstraint.activate([
-        animationView.topAnchor.constraint(equalTo: self.titleDescription.bottomAnchor, constant: 8),
-        animationView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-        animationView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-        animationView.bottomAnchor.constraint(equalTo: self.btnContinue.topAnchor, constant: -8),
-        
-        lottieAnimationView.leadingAnchor.constraint(equalTo: animationView.leadingAnchor),
-        lottieAnimationView.trailingAnchor.constraint(equalTo: animationView.trailingAnchor),
-        lottieAnimationView.topAnchor.constraint(equalTo: animationView.topAnchor),
-        lottieAnimationView.bottomAnchor.constraint(equalTo: animationView.bottomAnchor)
-      ])
-      
-      animationView.bringSubviewToFront(view)
-      lottieAnimationView.play { [weak self] (_) in
-        lottieAnimationView.removeFromSuperview()
-        if let isdp = self?.isDissapeared, !isdp {
-          completion(steps.front.rawValue)
-        }
+  
 
           lottieAnimationView.frame = animationView.bounds
           lottieAnimationView.backgroundColor = .clear
@@ -270,8 +246,8 @@ extension ContainerViewController {
               }
           }
       }
-    }
-  }
+    
+
     
     private func setConstraints() {
         DispatchQueue.main.async { [self] in

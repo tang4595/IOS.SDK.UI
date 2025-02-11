@@ -36,7 +36,6 @@ class NFCViewController: BaseViewController {
 //            setConstraints()
          
             await initialSetup()
-            
             continueButton.addTarget(self, action: #selector(continueButtonPressed(_:)), for: .touchUpInside)
         }
         
@@ -170,6 +169,7 @@ class NFCViewController: BaseViewController {
           if isDone {
             self.doNext(done: isDone)
           } else {
+            continueButton.isEnabled = true
             await animateWithNFCFormUI(nvi: nvi)
           }
         }
@@ -194,6 +194,7 @@ class NFCViewController: BaseViewController {
   
   private func setNFCFormUIView(nvi: NviModel) async {
     nfcFormView = NFCConfigureView()
+    self.nfcConfigureView = nfcFormView
     nfcFormView.appConfig = appConfig
     nfcFormView.setTextsFrom(nvi: nvi)
     self.view.addSubview(nfcFormView)
@@ -227,6 +228,7 @@ class NFCViewController: BaseViewController {
   private func animateWithNFCFormUI(nvi: NviModel) async {
     await animateAsync(withDuration: 0.3) {
       Task {
+        try? await AmaniUI.sharedInstance.voiceAssistant?.stop()
         await self.setNFCFormUIView(nvi: nvi)
       }
     }

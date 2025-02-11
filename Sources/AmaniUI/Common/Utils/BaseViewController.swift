@@ -19,6 +19,7 @@ class BaseViewController: UIViewController {
     var navBarFontColor: String = "#000000"
     var navbarRightButtonAction:VoidCallback? = nil
     var navbarLeftButtonAction: VoidCallback? = nil
+    var nfcConfigureView: UIView?
     
     override open var shouldAutorotate: Bool {
         return true
@@ -118,9 +119,14 @@ class BaseViewController: UIViewController {
         // Either find the ancient curse that is laid upon here, or remove the
         // setFirstPop method correctly.
         if(self.navigationController?.viewControllers.count == 1) {
-            self.navigationController?.dismiss(animated: true)
+          navigationController?.popViewController(animated: true)
+           
         } else {
-            self.navigationController?.popViewController(animated: true)
+          if let customView = nfcConfigureView, !customView.isHidden {
+            hideCustomView()
+          } else {
+            navigationController?.popViewController(animated: true) 
+          }
         }
     }
     
@@ -177,9 +183,19 @@ class BaseViewController: UIViewController {
     // this function allows customer to quit the process
     func setupFirstPop() {
         if (self.navigationController?.viewControllers.count == 1) {
+          
             self.setPopButton()
         }
     }
+  
+  
+
+
+      func hideCustomView() {
+      nfcConfigureView?.removeFromSuperview()
+      nfcConfigureView = nil
+      
+      }
     
     /**
      This method set up the theme color

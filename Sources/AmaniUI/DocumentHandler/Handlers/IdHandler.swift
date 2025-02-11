@@ -141,7 +141,7 @@ class IdHandler: DocumentHandler {
                 // Run the completion
                 completion(.success(self.stepViewModel))
             }
-
+            nfcCaptureView.setNavigationLeftButton()
             self.topVC.navigationController?.pushViewController(nfcCaptureView, animated: true)
         }
     }
