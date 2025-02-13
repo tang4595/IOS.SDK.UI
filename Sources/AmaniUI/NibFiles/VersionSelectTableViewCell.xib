@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="VersionSelectTableViewCell" rowHeight="72" id="sd6-5o-9cz" customClass="VersionSelectTableViewCell" customModule="AmaniUI" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="347" height="73"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="sd6-5o-9cz" id="JLs-4c-u2A">
+                <rect key="frame" x="0.0" y="0.0" width="347" height="73"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dT3-Wn-I5L">
+                        <rect key="frame" x="0.0" y="10" width="347" height="53"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CrI-X2-WPF">
+                                <rect key="frame" x="20" y="0.0" width="262" height="53"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="53" id="Z0x-oM-Ugb"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="CrI-X2-WPF" firstAttribute="top" secondItem="dT3-Wn-I5L" secondAttribute="top" id="bnF-I4-Yfc"/>
+                            <constraint firstAttribute="trailing" secondItem="CrI-X2-WPF" secondAttribute="trailing" constant="65" id="de1-Zj-dmH"/>
+                            <constraint firstItem="CrI-X2-WPF" firstAttribute="leading" secondItem="dT3-Wn-I5L" secondAttribute="leading" constant="20" id="i7J-Ul-HgV"/>
+                            <constraint firstAttribute="bottom" secondItem="CrI-X2-WPF" secondAttribute="bottom" id="uwT-oT-Tmt"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstItem="dT3-Wn-I5L" firstAttribute="leading" secondItem="JLs-4c-u2A" secondAttribute="leading" id="Pzp-PA-Gm1"/>
+                    <constraint firstItem="dT3-Wn-I5L" firstAttribute="top" secondItem="JLs-4c-u2A" secondAttribute="top" constant="10" id="m7c-z2-zWb"/>
+                    <constraint firstAttribute="trailing" secondItem="dT3-Wn-I5L" secondAttribute="trailing" id="nSI-iq-gzT"/>
+                    <constraint firstAttribute="bottom" secondItem="dT3-Wn-I5L" secondAttribute="bottom" constant="10" id="qK7-2c-LVU"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="outerView" destination="dT3-Wn-I5L" id="MWT-23-cqa"/>
+                <outlet property="titleLabel" destination="CrI-X2-WPF" id="isl-S1-Q6f"/>
+            </connections>
+            <point key="canvasLocation" x="157.24637681159422" y="113.50446428571428"/>
+        </tableViewCell>
+    </objects>
+</document>

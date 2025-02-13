@@ -1,7 +1,7 @@
 // swift-tools-version:5.3
 import PackageDescription
 
-let UIVersion = "1.2.0"
+let UIVersion = "1.2.1"
 
 let package = Package(
     name: "AmaniUI",
@@ -12,6 +12,7 @@ let package = Package(
     products: [
         .library(
             name: "AmaniUI",
+            type: .dynamic,
             targets: ["AmaniUI"]
         )
     ],
@@ -36,6 +37,7 @@ let package = Package(
                 ],
             resources: [
               .process("Assets"),
+              .process("NibFiles"),
               .process("PrivacyInfo.xcprivacy")
             ],
             linkerSettings:[
