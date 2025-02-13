@@ -43,6 +43,7 @@ class NFCViewController: BaseViewController {
   
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
+#if canImport(AmaniVoiceAssistantSDK)
     Task { @MainActor in
       do {
         try? await AmaniUI.sharedInstance.voiceAssistant?.stop()
@@ -50,6 +51,7 @@ class NFCViewController: BaseViewController {
         debugPrint("\(err)")
       }
     }
+#endif
   }
   
     func initialSetup() async {
@@ -228,7 +230,9 @@ class NFCViewController: BaseViewController {
   private func animateWithNFCFormUI(nvi: NviModel) async {
     await animateAsync(withDuration: 0.3) {
       Task {
+#if canImport(AmaniVoiceAssistantSDK)
         try? await AmaniUI.sharedInstance.voiceAssistant?.stop()
+#endif
         await self.setNFCFormUIView(nvi: nvi)
       }
     }
