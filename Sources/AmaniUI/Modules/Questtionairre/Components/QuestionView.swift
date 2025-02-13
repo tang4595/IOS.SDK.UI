@@ -18,6 +18,7 @@ class QuestionViewCell: UITableViewCell {
   private var questionTitle = UILabel()
   private var questionDescription = UILabel()
   private var stackView = UIStackView()
+  private var textInputView: QuestionTextInputView?
   
   public var question: QuestionModel?
   private var delegate: QuestionDelegate?
@@ -60,11 +61,34 @@ class QuestionViewCell: UITableViewCell {
     questionTitle.text = question.title
     selectionStyle = .none
     
-    if question.answers.count > 1 {
-      configureDropDown(question: question, selectedAnswers: selectedAnswers)
-    } else {
-      configureSingleButton(question: question, selectedAnswers: selectedAnswers)
+    if question.answerType == "text"{
+      configureTextInput(question: question, selectedAnswers: selectedAnswers)
+    }else{
+      if question.answers.count > 1 {
+        configureDropDown(question: question, selectedAnswers: selectedAnswers)
+      } else {
+        configureSingleButton(question: question, selectedAnswers: selectedAnswers)
+      }
     }
+  }
+  
+  func configureTextInput(question: QuestionModel, selectedAnswers: QuestionAnswerRequestModel? = nil) {
+    if textInputView == nil {
+      textInputView = QuestionTextInputView()
+      textInputView!.translatesAutoresizingMaskIntoConstraints = false
+      
+      if let textAnswer = selectedAnswers?.typedAnswer {
+        textInputView?.setText(textAnswer)
+      }
+      
+      textInputView!.bind { [weak self] text in
+        self?.delegate?.didTapAnswer(questionID: question.id, answerID: text, questionType: question.answerType)
+      }
+    }
+    
+    stackView.addArrangedSubview(textInputView!)
+    isConfigured = true
+    textInputView!.layoutIfNeeded()
   }
   
   func configureSingleButton(question: QuestionModel, selectedAnswers: QuestionAnswerRequestModel? = nil) {
@@ -138,5 +162,60 @@ class QuestionViewCell: UITableViewCell {
       stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -30.0),
       stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20.0),
     ])
+  }
+}
+
+
+class QuestionTextInputView: UIView {
+  private var textChangedCallback: ((String) -> Void)?
+  
+  private lazy var textField: UITextField = {
+    let field = UITextField()
+    field.borderStyle = .roundedRect
+    field.placeholder = "Enter your answer"
+    field.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+    field.delegate = self
+    return field
+  }()
+  
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    setupUI()
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+  private func setupUI() {
+    addSubview(textField)
+    textField.translatesAutoresizingMaskIntoConstraints = false
+    
+    NSLayoutConstraint.activate([
+      textField.topAnchor.constraint(equalTo: topAnchor),
+      textField.leadingAnchor.constraint(equalTo: leadingAnchor),
+      textField.trailingAnchor.constraint(equalTo: trailingAnchor),
+      textField.bottomAnchor.constraint(equalTo: bottomAnchor),
+      textField.heightAnchor.constraint(equalToConstant: 44)
+    ])
+  }
+  
+  func bind(_ callback: @escaping (String) -> Void) {
+    textChangedCallback = callback
+  }
+  
+  func setText(_ text: String) {
+    textField.text = text
+  }
+  
+  @objc private func textFieldDidChange() {
+    textChangedCallback?(textField.text ?? "")
+  }
+}
+
+extension QuestionTextInputView: UITextFieldDelegate{
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    textField.resignFirstResponder()
+    return true
   }
 }

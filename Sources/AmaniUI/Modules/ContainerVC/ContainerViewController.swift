@@ -8,6 +8,9 @@
 import Lottie
 import UIKit
 import AmaniSDK
+#if canImport(AmaniVoiceAssistantSDK)
+import AmaniVoiceAssistantSDK
+#endif
 
 class ContainerViewController: BaseViewController {
     // MARK: Properties
@@ -71,6 +74,26 @@ class ContainerViewController: BaseViewController {
       }
       var name = "\((animationName.lowercased()))_\(side)"
       
+      var animation = LottieAnimation.named(name, bundle: AmaniUI.sharedInstance.getBundle())
+      
+      if animation == nil {
+        print("\(name) not found")
+        name = "xxx_id_\(side)"
+      }
+      
+      #if canImport(AmaniVoiceAssistantSDK)
+          if let docID = self.docID {
+            Task { @MainActor in
+              do {
+                try? await AmaniUI.sharedInstance.voiceAssistant?.play(key: "VOICE_\(docID.getDocumentType())\(self.step.rawValue)")
+              }catch(let error) {
+                debugPrint("\(error)")
+              }
+              
+            }
+          }
+          
+      #endif
         DispatchQueue.main.async {
             self.lottieInit(name: name) {[weak self] _ in
         //      print(finishedAnimation)
@@ -91,7 +114,21 @@ class ContainerViewController: BaseViewController {
     
   override func viewWillDisappear(_ animated: Bool) {
     // remove the sdk view on exiting by calling the callback
+      #if canImport(AmaniVoiceAssistantSDK)
+      
+          Task { @MainActor in
+            do {
+              try? await AmaniUI.sharedInstance.voiceAssistant?.stop()
+            }catch(let error) {
+              debugPrint("\(error)")
+            }
+            
+          }
+        
+        
+      #endif
     print("Container View disappear")
+//    cleanupViews()
     if let disappearCb = self.disappearCallback {
       disappearCb()
     }
@@ -103,11 +140,10 @@ class ContainerViewController: BaseViewController {
 extension ContainerViewController {
    
   @objc func actBtnContinue(_ sender: UIButton) {
-    print("LOTTIE ANIMATION DURDURULDU.")
+    print("LOTTIE ANIMATION STOPPED")
     self.lottieAnimationView?.stop()
-    
   }
-  
+
     func setupUI() {
       if AmaniUI.sharedInstance.isEnabledClientSideMrz {
         Amani.sharedInstance.setMRZDelegate(delegate: self)
@@ -129,7 +165,8 @@ extension ContainerViewController {
         if animationName == nil {
             self.btnContinue.isHidden = true
             self.titleDescription.isHidden = true
-            self.setNavigationLeftButtonPDF(text: appConfig.generalconfigs?.uploadPdf ?? "Upload PDF" ,tintColor: appConfig.generalconfigs?.topBarFontColor)
+            self.setNavigationLeftButtonPDF(text: appConfig.generalconfigs?.uploadPdf ?? "Upload PDF" ,tintColor: appConfig.generalconfigs?.topBarFontColor ?? "20202F")
+          self.setNavigationLeftButton(TintColor: appConfig.generalconfigs?.topBarFontColor ?? "#ffffff")
         } else {
             self.btnContinue.isHidden = false
             self.titleDescription.isHidden = false
@@ -162,19 +199,22 @@ extension ContainerViewController {
   //
   //
     }
+  
+  private func lottieInit(name: String, completion: @escaping (_ finishedAnimation: Int) -> ()) {
+//    var animation = LottieAnimation.named(name, bundle: AmaniUI.sharedInstance.getBundle())
     
-      private func lottieInit(name:String, completion:@escaping(_ finishedAnimation:Int)->()) {
-        
-        guard let animation = LottieAnimation.named(name, bundle: AmaniUI.sharedInstance.getBundle()) else {
-          print("Lottie animation not found")
-          return
-        }
-
-        self.lottieAnimationView = LottieAnimationView(animation: animation)
-        guard let lottieAnimationView = self.lottieAnimationView else {
-            print("Failed to create Lottie animation view")
-            return
-        }
+    guard let animation = LottieAnimation.named(name, bundle: AmaniUI.sharedInstance.getBundle()) else{
+      print("Animation not found")
+      return
+    }
+    
+    self.lottieAnimationView = LottieAnimationView(animation: animation)
+    guard let lottieAnimationView = self.lottieAnimationView else {
+      print("Failed to create Lottie animation view")
+      return
+    }
+    
+  
 
           lottieAnimationView.frame = animationView.bounds
           lottieAnimationView.backgroundColor = .clear
@@ -184,10 +224,16 @@ extension ContainerViewController {
               view.addSubview(animationView)
               animationView.addSubview(lottieAnimationView)
               NSLayoutConstraint.activate([
-               animationView.centerXAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerXAnchor),
-                animationView.centerYAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerYAnchor),
-                animationView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
-                animationView.heightAnchor.constraint(equalTo: self.view.heightAnchor),
+//               animationView.centerXAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerXAnchor),
+//                animationView.centerYAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerYAnchor),
+//               animationView.topAnchor.constraint(equalTo: self.titleDescription.bottomAnchor, constant: 16),
+//              
+//                animationView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
+//               animationView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.5),
+                animationView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 64),
+                animationView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+                animationView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+                animationView.bottomAnchor.constraint(equalTo: btnContinue.topAnchor, constant: -32),
                 
                 lottieAnimationView.leadingAnchor.constraint(equalTo: animationView.leadingAnchor),
                 lottieAnimationView.trailingAnchor.constraint(equalTo: animationView.trailingAnchor),
@@ -204,6 +250,8 @@ extension ContainerViewController {
               }
           }
       }
+    
+
     
     private func setConstraints() {
         DispatchQueue.main.async { [self] in

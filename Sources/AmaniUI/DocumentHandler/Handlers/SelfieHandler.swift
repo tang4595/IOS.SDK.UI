@@ -29,6 +29,7 @@ class SelfieHandler: DocumentHandler {
       return
     }
     let animationVC = ContainerViewController()
+    animationVC.docID = self.docID
 //    let animationVC = ContainerViewController(
 //      nibName: String(describing: ContainerViewController.self),
 //      bundle: AmaniUI.sharedInstance.getBundle()

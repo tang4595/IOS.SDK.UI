@@ -17,6 +17,24 @@ class SuccessViewController: BaseViewController {
     
   }
   
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(true)
+
+     
+#if canImport(AmaniVoiceAssistantSDK)
+    
+        Task { @MainActor in
+          do {
+            try? await AmaniUI.sharedInstance.voiceAssistant?.play(key: "VOICE_SUCCESS")
+          }catch(let error) {
+            debugPrint("\(error)")
+          }
+          
+        }
+#endif
+
+  }
+  
   override func popViewController() {
     navigationController?.dismiss(animated: true, completion: nil)
   }
