@@ -206,7 +206,7 @@ extension NFCConfigureView {
     backgroundColor =  UIColor(hexString: appConfig?.generalconfigs?.appBackground ?? "#EEF4FA")
     self.submitButton.addTarget(self, action: #selector(tapSubmitButton(_:)), for: .touchUpInside)
     var nfcConfigStep = stepConfig.first(where: { $0.title == "Identification"})
-    self.descriptionLabel.text = nfcConfigStep?.documents?[0].versions?[0].nfcConfigureTitle
+    self.descriptionLabel.text = nfcConfigStep?.documents?[0].versions?[0].nfcConfigureTitle ?? "Please check your informations."
     self.descriptionLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
     self.descriptionLabel.numberOfLines = 1
     self.descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
