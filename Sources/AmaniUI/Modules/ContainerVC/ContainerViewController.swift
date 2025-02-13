@@ -224,12 +224,16 @@ extension ContainerViewController {
               view.addSubview(animationView)
               animationView.addSubview(lottieAnimationView)
               NSLayoutConstraint.activate([
-               animationView.centerXAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerXAnchor),
-                animationView.centerYAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerYAnchor),
-               animationView.topAnchor.constraint(equalTo: self.titleDescription.bottomAnchor, constant: 16),
-              
-                animationView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
-               animationView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.5),
+//               animationView.centerXAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerXAnchor),
+//                animationView.centerYAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerYAnchor),
+//               animationView.topAnchor.constraint(equalTo: self.titleDescription.bottomAnchor, constant: 16),
+//              
+//                animationView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
+//               animationView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.5),
+                animationView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 64),
+                animationView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+                animationView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+                animationView.bottomAnchor.constraint(equalTo: btnContinue.topAnchor, constant: -32),
                 
                 lottieAnimationView.leadingAnchor.constraint(equalTo: animationView.leadingAnchor),
                 lottieAnimationView.trailingAnchor.constraint(equalTo: animationView.trailingAnchor),
@@ -261,7 +265,7 @@ extension ContainerViewController {
                 
                 btnContinue.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
                 btnContinue.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-                btnContinue.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+                btnContinue.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -40),
                 btnContinue.heightAnchor.constraint(equalToConstant: 50),
 
             ])
