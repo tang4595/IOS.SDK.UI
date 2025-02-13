@@ -205,15 +205,15 @@ extension NFCConfigureView {
     guard let stepConfig = self.appConfig?.stepConfig else { return }
     backgroundColor =  UIColor(hexString: appConfig?.generalconfigs?.appBackground ?? "#EEF4FA")
     self.submitButton.addTarget(self, action: #selector(tapSubmitButton(_:)), for: .touchUpInside)
-//    appConfig?.stepConfig?[1].documents?[0].versions?[0].steps?[0].captureDescription
-    self.descriptionLabel.text = stepConfig[4].documents?[0].versions?[0].nfcConfigureTitle
+    var nfcConfigStep = stepConfig.first(where: { $0.title == "Identification"})
+    self.descriptionLabel.text = nfcConfigStep?.documents?[0].versions?[0].nfcConfigureTitle
     self.descriptionLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
     self.descriptionLabel.numberOfLines = 1
     self.descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
     self.descriptionLabel.textAlignment = .center
     
     
-    self.documentNumbers.text = stepConfig[4].documents?[0].versions?[0].documentNoTitle
+    self.documentNumbers.text = nfcConfigStep?.documents?[0].versions?[0].documentNoTitle ?? "Document Numbers"
     self.documentNumbers.textColor = UIColor(hexString: "#2020F")
     self.documentNumbers.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
     self.documentNumbers.numberOfLines = 1
@@ -227,7 +227,7 @@ extension NFCConfigureView {
       keyboardType: .default
     )
     
-    self.dateOfExpiryDate.text = stepConfig[4].documents?[0].versions?[0].documentDateOfExpiry
+    self.dateOfExpiryDate.text = nfcConfigStep?.documents?[0].versions?[0].documentDateOfExpiry ?? "Date of Expiry"
     self.dateOfExpiryDate.textColor = UIColor(hexString: "#2020F")
     self.dateOfExpiryDate.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
     self.dateOfExpiryDate.numberOfLines = 1
@@ -241,7 +241,7 @@ extension NFCConfigureView {
       keyboardType: .numberPad
     )
     
-    self.birthdateLabel.text = stepConfig[4].documents?[0].versions?[0].documentDateOfBirth
+    self.birthdateLabel.text = nfcConfigStep?.documents?[0].versions?[0].documentDateOfBirth ?? "Date of Birth"
     self.birthdateLabel.textColor = UIColor(hexString: "#2020F")
     self.birthdateLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
     self.birthdateLabel.numberOfLines = 1
