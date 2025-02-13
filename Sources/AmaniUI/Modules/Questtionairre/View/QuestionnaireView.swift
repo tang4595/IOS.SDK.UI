@@ -143,11 +143,16 @@ extension QuestionnaireView: UITableViewDelegate {
 extension QuestionnaireView: QuestionDelegate {
   func didTapAnswer(questionID: String, answerID: String, questionType: String) {
     guard let viewModel = viewModel else { return }
-
-    if questionType == "multiple_choice" {
+    
+    switch questionType {
+    case "multiple_choice":
       viewModel.addMultipleAnswer(for: questionID, answerID: answerID)
-    } else if questionType == "single_choice" {
+    case "single_choice":
       viewModel.addSingleAnswer(for: questionID, answerID: answerID)
+    case "text":
+      viewModel.addTextAnswer(for: questionID, text: answerID)
+    default:
+      break
     }
   }
 }

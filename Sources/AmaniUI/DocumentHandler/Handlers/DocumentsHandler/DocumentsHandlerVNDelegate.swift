@@ -96,9 +96,10 @@ extension DocumentsHandler: VNDocumentCameraViewControllerDelegate {
         for pageNumber in 0..<scan.pageCount {
             print("pageNumber değeri \(pageNumber)")
             let image = scan.imageOfPage(at: pageNumber)
-            if scannedImages.count <= 3 {
-                scannedImages.append(image)
-            }
+            scannedImages.append(image)
+//            if scannedImages.count <= 3 {
+//                scannedImages.append(image)
+//            }
             
         }
         startUploadSession(scannedImages)

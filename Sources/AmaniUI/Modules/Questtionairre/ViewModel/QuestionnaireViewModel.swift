@@ -68,6 +68,12 @@ class QuestionnaireViewModel {
       }
     }
   }
+  
+  func addTextAnswer(for questionID: String, text: String) {
+    if let index = answers.firstIndex(where: { $0.question == questionID }) {
+      answers[index].typedAnswer = text
+    }
+  }
 
 
   func submitAnswers() {
@@ -94,13 +100,12 @@ class QuestionnaireViewModel {
     for (_, answer) in answers.enumerated() {
       if let questionIndex = questions.firstIndex(where: { $0.id == answer.question }) {
         let question = questions[questionIndex]
-        // Check if required and not answered
         if !question.optional {
           if let multipleOptionAnswer = answer.multipleOptionAnswer, !multipleOptionAnswer.isEmpty {
-            // Check if multipleOptionAnswer has one or more strings
             answeredIndices.insert(questionIndex)
           } else if let singleOptionId = answer.singleOptionAnswer, !singleOptionId.isEmpty {
-            // Check if singleOptionAnswer is not nil or an empty string
+            answeredIndices.insert(questionIndex)
+          } else if let textAnswer = answer.typedAnswer, !textAnswer.isEmpty {
             answeredIndices.insert(questionIndex)
           }
         }

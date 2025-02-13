@@ -24,6 +24,17 @@
 		18E7B2CB2BD271370073C268 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 18E7B2CA2BD271370073C268 /* PrivacyInfo.xcprivacy */; };
 		48100B972A55658A007DA156 /* AmaniSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4830904228900A3800B75529 /* AmaniSDK.xcframework */; };
 		48100B9A2A55658F007DA156 /* Lottie.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48B4720E27B147870089D42E /* Lottie.xcframework */; };
+		483D72BD296C8D28004AF421 /* tur_pa_0_front.json in Resources */ = {isa = PBXBuildFile; fileRef = C5B07D76290048E300243A5B /* tur_pa_0_front.json */; };
+		483D72BE296C8D28004AF421 /* tur_id_1_back.json in Resources */ = {isa = PBXBuildFile; fileRef = C5B07D7A290048E300243A5B /* tur_id_1_back.json */; };
+		483D72BF296C8D28004AF421 /* tur_id_1_front.json in Resources */ = {isa = PBXBuildFile; fileRef = C5B07D71290048E300243A5B /* tur_id_1_front.json */; };
+		483D72C0296C8D28004AF421 /* xxx_se_0_front.json in Resources */ = {isa = PBXBuildFile; fileRef = C5B07D73290048E300243A5B /* xxx_se_0_front.json */; };
+		483D72C2296C8D28004AF421 /* face-recognition.json in Resources */ = {isa = PBXBuildFile; fileRef = C5B07D70290048E300243A5B /* face-recognition.json */; };
+		483D72C3296C8D28004AF421 /* tur_id_0_back.json in Resources */ = {isa = PBXBuildFile; fileRef = C5B07D75290048E300243A5B /* tur_id_0_back.json */; };
+		483D72C5296C8D28004AF421 /* tur_dl_0_front.json in Resources */ = {isa = PBXBuildFile; fileRef = C5B07D6F290048E300243A5B /* tur_dl_0_front.json */; };
+		483D72C6296C8D28004AF421 /* animation_second_selfie_instruction.json in Resources */ = {isa = PBXBuildFile; fileRef = C5B07D74290048E300243A5B /* animation_second_selfie_instruction.json */; };
+		483D72C7296C8D28004AF421 /* tur_id_0_front.json in Resources */ = {isa = PBXBuildFile; fileRef = C5B07D79290048E300243A5B /* tur_id_0_front.json */; };
+		483D72C8296C8D28004AF421 /* tur_dl_0_back.json in Resources */ = {isa = PBXBuildFile; fileRef = C5B07D72290048E300243A5B /* tur_dl_0_back.json */; };
+		483D72C9296C8D28004AF421 /* signature.json in Resources */ = {isa = PBXBuildFile; fileRef = C5B07D78290048E300243A5B /* signature.json */; };
 		4842810E29D0F7DB00D48925 /* DocumentsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4842810D29D0F7DB00D48925 /* DocumentsHandler.swift */; };
 		484E26F8295A3DC700839E54 /* AmaniUIDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484E26F7295A3DC700839E54 /* AmaniUIDelegate.swift */; };
 		4856111E29DC91CE00E70D77 /* DocumentsHandlerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4856111D29DC91CE00E70D77 /* DocumentsHandlerDelegate.swift */; };
@@ -33,6 +44,9 @@
 		48E081172C7F662400EAD39B /* AnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E081152C7F662400EAD39B /* AnimationView.swift */; };
 		48EAA84D29E37C98001A2A35 /* SignatureViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48B909FF29A264B700508E63 /* SignatureViewController.xib */; };
 		48EAA84E29E37C9B001A2A35 /* SignatureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B90A0129A2656100508E63 /* SignatureViewController.swift */; };
+		9164D6462D08C12500338782 /* AmaniVoiceAssistant in Frameworks */ = {isa = PBXBuildFile; productRef = 9164D6452D08C12500338782 /* AmaniVoiceAssistant */; };
+		918DDBF12D08B44E0046BA1F /* xxx_id_0_back.json in Resources */ = {isa = PBXBuildFile; fileRef = 918DDBEF2D08B44E0046BA1F /* xxx_id_0_back.json */; };
+		918DDBF22D08B44E0046BA1F /* xxx_id_0_front.json in Resources */ = {isa = PBXBuildFile; fileRef = 918DDBF02D08B44E0046BA1F /* xxx_id_0_front.json */; };
 		C523DEF72B3A740B00F68E32 /* CheckSMSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C523DEF62B3A740B00F68E32 /* CheckSMSViewController.swift */; };
 		C523DEFA2B3A745F00F68E32 /* CheckSMSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C523DEF92B3A745F00F68E32 /* CheckSMSView.swift */; };
 		C523DEFD2B3A747100F68E32 /* CheckSMSViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C523DEFC2B3A747100F68E32 /* CheckSMSViewModel.swift */; };
@@ -129,6 +143,8 @@
 		48DF760D29699A81000D519A /* ContainerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContainerViewController.xib; sourceTree = "<group>"; };
 		48DF760F29699A8F000D519A /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		48E081152C7F662400EAD39B /* AnimationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationView.swift; sourceTree = "<group>"; };
+		918DDBEF2D08B44E0046BA1F /* xxx_id_0_back.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = xxx_id_0_back.json; sourceTree = "<group>"; };
+		918DDBF02D08B44E0046BA1F /* xxx_id_0_front.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = xxx_id_0_front.json; sourceTree = "<group>"; };
 		C523DEF62B3A740B00F68E32 /* CheckSMSViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckSMSViewController.swift; sourceTree = "<group>"; };
 		C523DEF92B3A745F00F68E32 /* CheckSMSView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckSMSView.swift; sourceTree = "<group>"; };
 		C523DEFC2B3A747100F68E32 /* CheckSMSViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckSMSViewModel.swift; sourceTree = "<group>"; };
@@ -185,6 +201,17 @@
 		C5A4506E2B3A338F0064AAA7 /* PhoneOTPView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneOTPView.swift; sourceTree = "<group>"; };
 		C5A450712B3A33AB0064AAA7 /* PhoneOTPViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneOTPViewModel.swift; sourceTree = "<group>"; };
 		C5B07D6D290048E300243A5B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C5B07D6F290048E300243A5B /* tur_dl_0_front.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tur_dl_0_front.json; sourceTree = "<group>"; };
+		C5B07D70290048E300243A5B /* face-recognition.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "face-recognition.json"; sourceTree = "<group>"; };
+		C5B07D71290048E300243A5B /* tur_id_1_front.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tur_id_1_front.json; sourceTree = "<group>"; };
+		C5B07D72290048E300243A5B /* tur_dl_0_back.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tur_dl_0_back.json; sourceTree = "<group>"; };
+		C5B07D73290048E300243A5B /* xxx_se_0_front.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = xxx_se_0_front.json; sourceTree = "<group>"; };
+		C5B07D74290048E300243A5B /* animation_second_selfie_instruction.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = animation_second_selfie_instruction.json; sourceTree = "<group>"; };
+		C5B07D75290048E300243A5B /* tur_id_0_back.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tur_id_0_back.json; sourceTree = "<group>"; };
+		C5B07D76290048E300243A5B /* tur_pa_0_front.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tur_pa_0_front.json; sourceTree = "<group>"; };
+		C5B07D78290048E300243A5B /* signature.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = signature.json; sourceTree = "<group>"; };
+		C5B07D79290048E300243A5B /* tur_id_0_front.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tur_id_0_front.json; sourceTree = "<group>"; };
+		C5B07D7A290048E300243A5B /* tur_id_1_back.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tur_id_1_back.json; sourceTree = "<group>"; };
 		C5BA62A32914006B004108B4 /* NFHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFHandler.swift; sourceTree = "<group>"; };
 		C5D3B93F2A9355B00023B66E /* OpenSSL.xcframework */ = {isa = PBXFileReference; expectedSignature = "AppleDeveloperProgram:67RAULRX93:Marcin Krzyzanowski"; lastKnownFileType = wrapper.xcframework; name = OpenSSL.xcframework; path = Carthage/Build/OpenSSL.xcframework; sourceTree = SOURCE_ROOT; };
 		C5FD14962B7FC78E00E02F95 /* KeyboardAvoidenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardAvoidenceViewController.swift; sourceTree = "<group>"; };
@@ -207,6 +234,7 @@
 				C5D3B9402A9355B00023B66E /* OpenSSL.xcframework in Frameworks */,
 				C5319C9528C63C0200153D50 /* CryptoTokenKit.framework in Frameworks */,
 				C5319C9328C63BEB00153D50 /* CoreNFC.framework in Frameworks */,
+				9164D6462D08C12500338782 /* AmaniVoiceAssistant in Frameworks */,
 				48100B9A2A55658F007DA156 /* Lottie.xcframework in Frameworks */,
 				C5319C9428C63C0200153D50 /* CryptoKit.framework in Frameworks */,
 				48100B972A55658A007DA156 /* AmaniSDK.xcframework in Frameworks */,
@@ -628,6 +656,26 @@
 			path = Assets;
 			sourceTree = "<group>";
 		};
+		C5B07D6E290048E300243A5B /* Animations */ = {
+			isa = PBXGroup;
+			children = (
+				C5B07D6F290048E300243A5B /* tur_dl_0_front.json */,
+				C5B07D72290048E300243A5B /* tur_dl_0_back.json */,
+				C5B07D70290048E300243A5B /* face-recognition.json */,
+				C5B07D71290048E300243A5B /* tur_id_1_front.json */,
+				C5B07D7A290048E300243A5B /* tur_id_1_back.json */,
+				C5B07D73290048E300243A5B /* xxx_se_0_front.json */,
+				C5B07D74290048E300243A5B /* animation_second_selfie_instruction.json */,
+				C5B07D79290048E300243A5B /* tur_id_0_front.json */,
+				C5B07D75290048E300243A5B /* tur_id_0_back.json */,
+				C5B07D76290048E300243A5B /* tur_pa_0_front.json */,
+				C5B07D78290048E300243A5B /* signature.json */,
+				918DDBEF2D08B44E0046BA1F /* xxx_id_0_back.json */,
+				918DDBF02D08B44E0046BA1F /* xxx_id_0_front.json */,
+			);
+			path = Animations;
+			sourceTree = "<group>";
+		};
 		C5FD512F2B39BCA30057DB87 /* OTPScreens */ = {
 			isa = PBXGroup;
 			children = (
@@ -756,6 +804,9 @@
 				Base,
 			);
 			mainGroup = 489D406426BBE5DD0009AB39;
+			packageReferences = (
+				9164D6442D08C12500338782 /* XCLocalSwiftPackageReference "../../AmaniVoiceAssistant" */,
+			);
 			productRefGroup = 489D406E26BBE5DD0009AB39 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -778,9 +829,16 @@
 				C52A985E28F5954300D43ABF /* DocConfirmationViewController.xib in Resources */,
 				18E5114A2D3682C9002FE3DE /* countries.json in Resources */,
 				C54B58AA28C75279005DBAA9 /* HomeViewController.xib in Resources */,
+				483D72C2296C8D28004AF421 /* face-recognition.json in Resources */,
+				483D72BF296C8D28004AF421 /* tur_id_1_front.json in Resources */,
+				483D72BE296C8D28004AF421 /* tur_id_1_back.json in Resources */,
 				C5B07D7C290048E300243A5B /* Assets.xcassets in Resources */,
 				18E7B2CB2BD271370073C268 /* PrivacyInfo.xcprivacy in Resources */,
 				C52F145828F9819100D7A5A6 /* NFCViewController.xib in Resources */,
+				483D72C5296C8D28004AF421 /* tur_dl_0_front.json in Resources */,
+				483D72C8296C8D28004AF421 /* tur_dl_0_back.json in Resources */,
+				918DDBF12D08B44E0046BA1F /* xxx_id_0_back.json in Resources */,
+				918DDBF22D08B44E0046BA1F /* xxx_id_0_front.json in Resources */,
 				C54B58AD28C75279005DBAA9 /* KYCStepTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1087,6 +1145,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		9164D6442D08C12500338782 /* XCLocalSwiftPackageReference "../../AmaniVoiceAssistant" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../AmaniVoiceAssistant;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9164D6452D08C12500338782 /* AmaniVoiceAssistant */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AmaniVoiceAssistant;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 489D406526BBE5DD0009AB39 /* Project object */;
 }
