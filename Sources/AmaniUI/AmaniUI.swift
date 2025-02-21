@@ -23,8 +23,7 @@ public class AmaniUI {
   private var initialVC: HomeViewController?
   private var parentVC: UIViewController?
   
-    /// Internal navigation controller.
-  private var sdkNavigationController: UINavigationController?
+  var sdkNavigationController: UINavigationController?
   
     // MARK: - Internal configurations
   internal var config: AppConfigModel?
@@ -251,40 +250,6 @@ public class AmaniUI {
       }
     }
     
-      //    if let customer = customer {
-      //      if (userName != nil && password != nil) {
-      //        sharedSDKInstance.initAmani(server: server!, userName: self.userName!, password: self.password!, sharedSecret: sharedSecret, customer: customer, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
-      //          self?.getConfig(customerModel: customerModel, error: error, completion: completion)
-      //
-      //        }
-      //      }
-      //    } else {
-      //      if (token != nil){
-      //        sharedSDKInstance.initAmani(server: server!, token: token!, sharedSecret: sharedSecret, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
-      //          self?.getConfig(customerModel: customerModel, error: error, completion: completion)
-      //
-      //        }
-      //      }
-      //    }
-    
-    
-//    
-//    if let customer = customer {
-//      if (userName != nil && password != nil) {
-//        sharedSDKInstance.initAmani(server: server!, userName: self.userName!, password: self.password!, sharedSecret: sharedSecret, customer: customer, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
-//          self?.getConfig(customerModel: customerModel, error: error, completion: completion)
-//        
-//        }
-//      }
-//    } else {
-//      if (token != nil){
-//        sharedSDKInstance.initAmani(server: server!, token: token!, sharedSecret: sharedSecret, language: language, apiVersion: apiVersion) {[weak self] (customerModel, error) in
-//          self?.getConfig(customerModel: customerModel, error: error, completion: completion)
-//        
-//        }
-//      }
-//    }
-    
   }
   
   
@@ -324,14 +289,13 @@ public class AmaniUI {
           
           generateRulesKYC(rules: rules )
           
-          
+          setAppTheme(model: self.config?.generalconfigs! )
+
           if apiVersion == .v2 {
               // launch the steps before kyc flow
-            self.nonKYCStepManager = NonKYCStepManager(for: (config?.stepConfig!)!, customer: customerRespData!, vc: self.parentVC!)
-            self.nonKYCStepManager!.startFlow(forPreSteps: true) {[weak self] navController in
-              self?.sdkNavigationController = navController
-                // This method also checks the existence of nav controller and
-                // since both types are optional no need to check it here
+            self.nonKYCStepManager = NonKYCStepManager(for: (config?.stepConfig!)!, customer: customerRespData!, navigationController: sdkNavigationController!, vc: self.parentVC!)
+            self.nonKYCStepManager!.startFlow(forPreSteps: true) {[weak self] () in
+
               self?.startKYCHome()
             }
           } else {
@@ -350,28 +314,14 @@ public class AmaniUI {
   private func startKYCHome() {
     DispatchQueue.main.async {
       self.initialVC = HomeViewController()
-        //      self.initialVC = HomeViewController(nibName: String(describing: HomeViewController.self), bundle: self.getBundle())
+
       self.initialVC!.bind(customerData: self.customerRespData!, nonKYCManager: self.nonKYCStepManager)
-      
-        // Check if sdk navigation controller in pre kyc steps
-      if self.sdkNavigationController == nil {
-        self.sdkNavigationController = UINavigationController(rootViewController: self.initialVC!)
-        self.sdkNavigationController?.modalPresentationStyle = .fullScreen
-          // Adding shadow to NavigationBar
-          //        self.sdkNavigationController?.setupNavigationBarShadow()
-          // Show the SDK!
-        self.setAppTheme(model: self.config?.generalconfigs!, onVC: self.initialVC!)
-        
-      } else {
-          // Using this method will also clear the backstack making the homevc
-          // is the first controller again.
-        self.setAppTheme(model: self.config?.generalconfigs!, onVC: self.initialVC!)
+    
         self.sdkNavigationController?.setViewControllers(
           [self.initialVC!],
           animated: true
-          
         )
-      }
+      
       self.parentVC?.present(self.sdkNavigationController!, animated: true)
     }
   }
@@ -379,37 +329,30 @@ public class AmaniUI {
   /**
    This method set up the app theme color
    */
-  internal func setAppTheme(model: GeneralConfig?, onVC: HomeViewController) {
+  internal func setAppTheme(model: GeneralConfig?) {
     guard let model = model else {
       return
     }
-    
-    guard let navigationController = sdkNavigationController else {
-      return
+    if sdkNavigationController == nil {
+      sdkNavigationController = UINavigationController()
     }
-    
+    self.sdkNavigationController?.modalPresentationStyle = .fullScreen
+      // Adding shadow to NavigationBar
+      //        self.sdkNavigationController?.setupNavigationBarShadow()
     DispatchQueue.main.async {
       if #available(iOS 13.0, *) {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = UIColor(hexString: model.topBarBackground ?? "0F2435")
         appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(hexString: model.topBarFontColor ?? "000000")]
-        navigationController.navigationBar.standardAppearance = appearance;
-        navigationController.navigationBar.scrollEdgeAppearance = appearance
+        self.sdkNavigationController!.navigationBar.standardAppearance = appearance;
+        self.sdkNavigationController!.navigationBar.scrollEdgeAppearance = appearance
       } else {
-        navigationController.navigationBar.backgroundColor = UIColor(hexString: (model.topBarBackground ?? "000000"))
-        navigationController.navigationBar.barTintColor = UIColor(hexString: model.topBarBackground ?? "0F2435")
-        navigationController.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(hexString: model.topBarFontColor ?? "000000")]
+        self.sdkNavigationController!.navigationBar.backgroundColor = UIColor(hexString: (model.topBarBackground ?? "000000"))
+        self.sdkNavigationController!.navigationBar.barTintColor = UIColor(hexString: model.topBarBackground ?? "0F2435")
+        self.sdkNavigationController!.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(hexString: model.topBarFontColor ?? "000000")]
       }
-      
-      onVC.view.backgroundColor = UIColor(hexString: model.appBackground ?? "253C59")
-      
-      onVC.setNavigationLeftButton(TintColor: model.topBarFontColor ?? "000000")
-      
-      onVC.setNavigationBarWith(title: model.mainTitleText!, textColor: UIColor(hexString: model.topBarFontColor ?? "000000"))
-        //      onVC.headView.layer.cornerRadius = 25
-        //      onVC.headView.backgroundColor = UIColor(hexString: model.appBackground ?? "0F2435")
-      onVC.setBackgroundColorOfTableView(color: UIColor(hexString: model.appBackground ?? "253C59"))
+  
     }
   }
   
