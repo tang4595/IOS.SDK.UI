@@ -333,25 +333,21 @@ public class AmaniUI {
     guard let model = model else {
       return
     }
-    if sdkNavigationController == nil {
-      sdkNavigationController = UINavigationController()
-    }
-    self.sdkNavigationController?.modalPresentationStyle = .fullScreen
+
       // Adding shadow to NavigationBar
       //        self.sdkNavigationController?.setupNavigationBarShadow()
     DispatchQueue.main.async {
-      if #available(iOS 13.0, *) {
+      if self.sdkNavigationController == nil {
+        self.sdkNavigationController = UINavigationController()
+      }
+      self.sdkNavigationController?.modalPresentationStyle = .fullScreen
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = UIColor(hexString: model.topBarBackground ?? "0F2435")
         appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(hexString: model.topBarFontColor ?? "000000")]
         self.sdkNavigationController!.navigationBar.standardAppearance = appearance;
         self.sdkNavigationController!.navigationBar.scrollEdgeAppearance = appearance
-      } else {
-        self.sdkNavigationController!.navigationBar.backgroundColor = UIColor(hexString: (model.topBarBackground ?? "000000"))
-        self.sdkNavigationController!.navigationBar.barTintColor = UIColor(hexString: model.topBarBackground ?? "0F2435")
-        self.sdkNavigationController!.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(hexString: model.topBarFontColor ?? "000000")]
-      }
+     
   
     }
   }
