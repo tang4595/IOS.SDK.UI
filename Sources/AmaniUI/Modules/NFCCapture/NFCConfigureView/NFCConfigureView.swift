@@ -23,7 +23,7 @@ class NFCConfigureView: UIView {
   private var mainStackView = UIStackView()
   private var amaniLogo = UIImageView()
   var setButtonCb: ((NviModel) async -> Void)?
-  
+  weak var delegate: AlertDelegate?
   private var newDocumentNo: String?
   private var newbirthDate: String?
   private var newExpiryDate: String?
@@ -175,28 +175,43 @@ class NFCConfigureView: UIView {
       }
     }
   }
-  
-  private func dateFormatter(dateString: String) -> Date? {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "yyMMdd"
-    return dateFormatter.date(from: dateString)!
+ 
+  func triggerAlert() {
+    delegate?.showAlert(
+      title: "Caution!",
+      message: "The dates are not valid. Please set correct dates format",
+      actions: [("Ok", .default)]
+    ) { index in
+    
+    }
   }
   
-//  private func toggleTextInputs(isEnabled: Bool = true) {
-//    DispatchQueue.main.async {
-//      self.documentNoInput.field.isEnabled = isEnabled
-//      self.expirydateInput.field.isEnabled = isEnabled
-//      self.birthdateInput.field.isEnabled = isEnabled
-//    }
-//  }
-//  
-//  private func clearTextInputs() {
-//    DispatchQueue.main.async {
-//      self.documentNoInput.field.text = ""
-//      self.expirydateInput.field.text = ""
-//      self.birthdateInput.field.text = ""
-//    }
-//  }
+  private func dateFormatter(dateString: String?) -> Date? {
+    guard let dateString = dateString, isValidDateFormat(dateString) else {
+      print("Invalid date format: \(dateString ?? "nil")")
+      self.triggerAlert()
+      return nil
+    }
+    
+    let formats = ["yyMMdd", "yyyyMMdd"]
+    let dateFormatter = DateFormatter()
+    dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+    
+    for format in formats {
+      dateFormatter.dateFormat = format
+      if let date = dateFormatter.date(from: dateString) {
+        return date
+      }
+    }
+    self.triggerAlert()
+    return nil
+  }
+  
+  private func isValidDateFormat(_ dateString: String) -> Bool {
+    let validLengths = [6, 8]
+    return validLengths.contains(dateString.count) && dateString.range(of: "^[0-9]+$", options: .regularExpression) != nil
+  }
+
   
 }
 

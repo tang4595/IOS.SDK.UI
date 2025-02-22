@@ -197,6 +197,7 @@ class NFCViewController: BaseViewController {
     self.nfcConfigureView = nfcFormView
     nfcFormView.appConfig = appConfig
     nfcFormView.setTextsFrom(nvi: nvi)
+    nfcFormView.delegate = self
     self.view.addSubview(nfcFormView)
 
     nfcFormView.translatesAutoresizingMaskIntoConstraints = false
@@ -243,6 +244,23 @@ class NFCViewController: BaseViewController {
       }
     }
   }
+}
+
+extension NFCViewController: AlertDelegate {
+  func showAlert(title: String, message: String, actions: [(String, UIAlertAction.Style)], completion: ((Int) -> Void)?) {
+    let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+    
+    for (index, action) in actions.enumerated() {
+      let alertAction = UIAlertAction(title: action.0, style: action.1) { _ in
+        completion?(index)
+      }
+      alert.addAction(alertAction)
+    }
+    
+    self.present(alert, animated: true)
+  }
+  
+  
 }
 
 extension NFCViewController {
