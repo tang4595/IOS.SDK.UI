@@ -300,6 +300,10 @@ class DocConfirmationViewController: BaseViewController {
             confirmCallback()
           }
         }
+      } else {
+        if let confirmCallback = confirmCallback {
+          confirmCallback()
+        }
       }
     }
   

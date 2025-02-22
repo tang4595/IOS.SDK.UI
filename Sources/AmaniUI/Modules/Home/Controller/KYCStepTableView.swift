@@ -123,13 +123,13 @@ extension KYCStepTblView: UITableViewDelegate, UITableViewDataSource {
         parentViewController.present(documentPicker, animated: true)
       }
     } else {
-      guard let callback = callback else { return }
       if (step.status != DocumentStatus.APPROVED && step.status != DocumentStatus.PROCESSING && step.isEnabled()) {
-        step.onStepPressed { result in
+        step.onStepPressed { [weak self] result in
           switch result {
           case .failure(let error):
             print(error)
           case .success(let model):
+            guard let callback = self?.callback else { return }
             callback(model)
           }
         }

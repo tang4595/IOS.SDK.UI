@@ -69,8 +69,7 @@ extension DocumentsHandler {
             }
             
             ContainerVC.bind(animationName:nil, docStep: version.steps![steps.front.rawValue], step:steps.front) { [weak self] () in
-              guard let self else {return}
-              self.stepView = self.runDocumentsScan(
+              self?.stepView = self?.runDocumentsScan(
                 step: docStep,
                 version: version,
                 completion: completion

@@ -23,7 +23,7 @@ public class AmaniUI {
   private var initialVC: HomeViewController?
   private var parentVC: UIViewController?
   
-  var sdkNavigationController: UINavigationController?
+  var sdkNavigationController: UINavigationController
   
     // MARK: - Internal configurations
   internal var config: AppConfigModel?
@@ -68,6 +68,7 @@ public class AmaniUI {
   }
   
   public init() {
+    self.sdkNavigationController = UINavigationController()
     setBundle()
   }
   
@@ -207,7 +208,7 @@ public class AmaniUI {
     }
     
     if let comp = completion {
-      updateConfig()
+      updateConfig(config: self.config!)
       comp(customerModel, error)
       
     }
@@ -268,44 +269,36 @@ public class AmaniUI {
     }
     
     DispatchQueue.main.async {
-      self.sdkNavigationController!.dismiss(animated: true)
+      self.sdkNavigationController.dismiss(animated: true)
     }
     
   }
   
-    // MARK: - internal methods
-  internal func updateConfig() {
-    sharedSDKInstance.appConfig().fetchAppConfig {[weak self] (newConfig, error) in
-      if let newConfig = newConfig {
-        if let self = self {
-          self.config = newConfig
+  internal func updateConfig(config: AppConfigModel) {
           guard let rules = self.customerRespData?.rules else {
             return
           }
+    DispatchQueue.main.async {
+
+      self.generateRulesKYC(rules: rules )
           
-          generateRulesKYC(rules: rules )
-          
-          setAppTheme(model: self.config?.generalconfigs! )
-          DispatchQueue.main.async {
-            if self.apiVersion == .v2 {
-                // launch the steps before kyc flow
-              self.nonKYCStepManager = NonKYCStepManager(for: (self.config?.stepConfig!)!, customer: self.customerRespData!, navigationController: self.sdkNavigationController!, vc: self.parentVC!)
-              self.nonKYCStepManager!.startFlow(forPreSteps: true) {[weak self] () in
-                
-                self?.startKYCHome()
-              }
-            } else {
-                // It doesn't matter for api v1
-              self.startKYCHome()
-            }
-          }
+      self.setAppTheme(model: self.config?.generalconfigs! )
+    if self.apiVersion == .v2 {
+        // launch the steps before kyc flow
+        
+      self.nonKYCStepManager = NonKYCStepManager(for: config.stepConfig!, customer: self.customerRespData!, navigationController: self.sdkNavigationController, vc: self.parentVC!)
+        self.nonKYCStepManager!.startFlow(forPreSteps: true) {[weak self] () in
+          self?.startKYCHome()
         }
+        
       } else {
-        if let error = error {
-          print("Failed to update the application configuration. Reason: \(String(describing: error.error_code)): \(String(describing: error.error_message))")
-        }
+          // It doesn't matter for api v1
+        self.startKYCHome()
       }
     }
+        
+      
+    
   }
   
   private func startKYCHome() {
@@ -314,12 +307,12 @@ public class AmaniUI {
 
       self.initialVC!.bind(customerData: self.customerRespData!, nonKYCManager: self.nonKYCStepManager)
     
-        self.sdkNavigationController?.setViewControllers(
+      self.sdkNavigationController.setViewControllers(
           [self.initialVC!],
           animated: true
         )
       
-      self.parentVC?.present(self.sdkNavigationController!, animated: true)
+      self.parentVC?.present(self.sdkNavigationController, animated: true)
     }
   }
   
@@ -333,20 +326,18 @@ public class AmaniUI {
 
       // Adding shadow to NavigationBar
       //        self.sdkNavigationController?.setupNavigationBarShadow()
-    DispatchQueue.main.async {
-      if self.sdkNavigationController == nil {
-        self.sdkNavigationController = UINavigationController()
-      }
-      self.sdkNavigationController?.modalPresentationStyle = .fullScreen
+
+      
+      self.sdkNavigationController.modalPresentationStyle = .fullScreen
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = hextoUIColor(hexString: model.topBarBackground ?? "0F2435")
         appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: hextoUIColor(hexString: model.topBarFontColor ?? "000000")]
-        self.sdkNavigationController!.navigationBar.standardAppearance = appearance;
-        self.sdkNavigationController!.navigationBar.scrollEdgeAppearance = appearance
+      self.sdkNavigationController.navigationBar.standardAppearance = appearance;
+      self.sdkNavigationController.navigationBar.scrollEdgeAppearance = appearance
      
   
-    }
+    
   }
   
   internal func generateStepsBeforeKYCOld() {
