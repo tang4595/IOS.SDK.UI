@@ -20,7 +20,7 @@ class QuestionnaireHeaderView: UIStackView {
   private lazy var descriptionLabel: UILabel = {
     let descriptionLabel = UILabel()
     descriptionLabel.text = "Please answer the following simple questions to help us serve you better."
-    descriptionLabel.textColor = UIColor(hexString: "#20202F")
+    descriptionLabel.textColor = hextoUIColor(hexString: "#20202F")
     descriptionLabel.font = UIFont.systemFont(ofSize: 20, weight: .light)
     descriptionLabel.numberOfLines = 0
     return descriptionLabel
@@ -41,7 +41,7 @@ class QuestionnaireHeaderView: UIStackView {
     self.spacing = 12
     
     self.addArrangedSubview(descriptionLabel)
-    self.backgroundColor = UIColor(hexString: genConfig?.appBackground ?? "#EEF4FA")
+    self.backgroundColor = hextoUIColor(hexString: genConfig?.appBackground ?? "#EEF4FA")
     
     self.layoutMargins = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
     self.isLayoutMarginsRelativeArrangement = true

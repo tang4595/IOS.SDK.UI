@@ -43,7 +43,7 @@ class AnswerButton: UIButton {
 
     let attributes: [NSAttributedString.Key: Any] = [
       .font: UIFont.systemFont(ofSize: 15.0, weight: .light),
-      .foregroundColor: UIColor(hexString: "#565656"),
+      .foregroundColor: hextoUIColor(hexString: "#565656"),
     ]
 
     let attributedString = NSAttributedString(
@@ -58,7 +58,7 @@ class AnswerButton: UIButton {
 
     titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .light)
 
-    layer.borderColor = UIColor(hexString: "#C0C0C0").cgColor
+    layer.borderColor = hextoUIColor(hexString: "#C0C0C0").cgColor
     layer.borderWidth = 1.0
 
     if type == .multiple {

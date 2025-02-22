@@ -62,13 +62,13 @@ class VersionViewController: BaseViewController {
     
     
      
-    self.setNavigationBarWith(title: self.docTitle,textColor: UIColor(hexString: navFontColor))
+    self.setNavigationBarWith(title: self.docTitle,textColor: hextoUIColor(hexString: navFontColor))
     self.setNavigationLeftButton(TintColor: navFontColor)
     self.descriptionLabel.text = docDescription
-    self.versionSelectionTblView.backgroundColor = UIColor(hexString: generalConfigs?.appBackground ?? "#EEF4FA")
-    descriptionLabel.textColor = UIColor(hexString: textColor)
+    self.versionSelectionTblView.backgroundColor = hextoUIColor(hexString: generalConfigs?.appBackground ?? "#EEF4FA")
+    descriptionLabel.textColor = hextoUIColor(hexString: textColor)
     amaniLogo.isHidden = generalConfigs?.hideLogo ?? false
-    amaniLogo.tintColor = UIColor(hexString: textColor)
+    amaniLogo.tintColor = hextoUIColor(hexString: textColor)
     
     
     setConstraints()
@@ -137,7 +137,7 @@ extension VersionViewController {
         self.view.addSubview(descriptionLabel)
         self.view.addSubview(versionSelectionTblView)
         self.view.addSubview(amaniLogo)
-        amaniLogo.tintColor = UIColor(hexString: "#909090")
+        amaniLogo.tintColor = hextoUIColor(hexString: "#909090")
         
         NSLayoutConstraint.activate([
             headerView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0),

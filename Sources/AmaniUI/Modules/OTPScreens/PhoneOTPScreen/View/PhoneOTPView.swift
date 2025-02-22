@@ -65,18 +65,18 @@ class PhoneOTPView: UIView {
     descriptionText.text = "We will send a ‘one time PIN’ to your phone number for verification"
     descriptionText.font = UIFont.systemFont(ofSize: 16.0, weight: .light)
     descriptionText.numberOfLines = 2
-    descriptionText.textColor = UIColor(hexString: "#20202F")
+    descriptionText.textColor = hextoUIColor(hexString: "#20202F")
     
       // Phone Legend
     phoneLegend.text = "Phone Number"
     phoneLegend.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
-    phoneLegend.textColor = UIColor(hexString: "#20202F")
+    phoneLegend.textColor = hextoUIColor(hexString: "#20202F")
     
       // Phone Input
     phoneInput = RoundedTextInput(
       placeholderText: "Enter your phone here",
-      borderColor: UIColor(hexString: "#515166"),
-      placeholderColor: UIColor(hexString: "#C0C0C0"),
+      borderColor: hextoUIColor(hexString: "#515166"),
+      placeholderColor: hextoUIColor(hexString: "#C0C0C0"),
       isPasswordToggleEnabled: false,
       keyboardType: .phonePad
     )
@@ -86,7 +86,7 @@ class PhoneOTPView: UIView {
     
       // Select Country View
   
-    selectCountryView.backgroundColor = UIColor(hexString: "#D9D9D9")
+    selectCountryView.backgroundColor = hextoUIColor(hexString: "#D9D9D9")
     selectCountryView.layer.cornerRadius = 25
     selectCountryView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
     
@@ -105,7 +105,7 @@ class PhoneOTPView: UIView {
       // Submit Button
     submitButton = RoundedButton(
       withTitle: appConfig?.generalconfigs?.continueText ?? "Continue",
-      withColor: UIColor(hexString: appConfig?.generalconfigs?.primaryButtonBackgroundColor ?? "#EA3365")
+      withColor: hextoUIColor(hexString: appConfig?.generalconfigs?.primaryButtonBackgroundColor ?? "#EA3365")
     )
     
     setConstraints()

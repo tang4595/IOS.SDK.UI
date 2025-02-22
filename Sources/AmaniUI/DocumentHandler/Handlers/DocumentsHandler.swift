@@ -17,7 +17,7 @@ class DocumentsHandler: NSObject, DocumentHandler{
   var stepView: UIView?
   var files:[FileWithType]?
   var ContainerVC: ContainerViewController
-  var callback:StepCompletionCallback?
+  var callback:((Result<KYCStepViewModel, KYCStepError>) -> Void)?
   var scannedImages: [UIImage] = []
     
   let cameraContainerView = UIView()
@@ -43,7 +43,7 @@ class DocumentsHandler: NSObject, DocumentHandler{
 }
 //MARK: Documents Handler Logics
 extension DocumentsHandler {
-    func start(docStep: AmaniSDK.DocumentStepModel, version: AmaniSDK.DocumentVersion, workingStepIndex: Int,completion: @escaping StepCompletionCallback) {
+    func start(docStep: AmaniSDK.DocumentStepModel, version: AmaniSDK.DocumentVersion, workingStepIndex: Int,completion: @escaping (Result<KYCStepViewModel, KYCStepError>) -> Void) {
       callback = completion
         
       guard let appConfig = try? Amani.sharedInstance.appConfig().getApplicationConfig().generalconfigs else {
@@ -69,8 +69,7 @@ extension DocumentsHandler {
             }
             
             ContainerVC.bind(animationName:nil, docStep: version.steps![steps.front.rawValue], step:steps.front) { [weak self] () in
-              guard let self else {return}
-              self.stepView = self.runDocumentsScan(
+              self?.stepView = self?.runDocumentsScan(
                 step: docStep,
                 version: version,
                 completion: completion
@@ -86,7 +85,7 @@ extension DocumentsHandler {
      
     }
     
-    func upload(completion: @escaping StepUploadCallback) {
+    func upload(completion: @escaping ((Bool?, [String : Any]?) -> Void)) {
       guard let documentsModule = documentsModule else { return }
       if let files = files {
         documentsModule.upload(
@@ -105,7 +104,7 @@ extension DocumentsHandler {
     }
 
     
-    private func runDocumentsScan(step: DocumentStepModel, version: DocumentVersion, completion: @escaping StepCompletionCallback) -> UIView?{
+    private func runDocumentsScan(step: DocumentStepModel, version: DocumentVersion, completion: @escaping (Result<KYCStepViewModel, KYCStepError>) -> Void) -> UIView?{
       documentsModule = Amani.sharedInstance.document()
       do {
         guard let type = version.type else {

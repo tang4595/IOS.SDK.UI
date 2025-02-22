@@ -28,7 +28,7 @@ class IdHandler: DocumentHandler {
         self.docID = docID
     }
 
-    fileprivate func goNextStep(version: DocumentVersion, completion: @escaping StepCompletionCallback) {
+    fileprivate func goNextStep(version: DocumentVersion, completion: @escaping (Result<KYCStepViewModel, KYCStepError>) -> Void) {
         // Start the NFC Screen
         DispatchQueue.main.async {
           if version.nfc == true && NFCNDEFReaderSession.readingAvailable {
@@ -40,7 +40,7 @@ class IdHandler: DocumentHandler {
         }
     }
 
-    func showContainerVC(version: DocumentVersion, workingStep: Int, completion: @escaping StepCompletionCallback) {
+    func showContainerVC(version: DocumentVersion, workingStep: Int, completion: @escaping (Result<KYCStepViewModel, KYCStepError>) -> Void) {
       
         let containerVC = ContainerViewController()
         containerVC.docID = self.docID
@@ -82,7 +82,7 @@ class IdHandler: DocumentHandler {
         topVC.navigationController?.pushViewController(containerVC, animated: true)
     }
 
-    public func start(docStep: DocumentStepModel, version: DocumentVersion, workingStepIndex: Int = 0, completion: @escaping StepCompletionCallback) {
+    public func start(docStep: DocumentStepModel, version: DocumentVersion, workingStepIndex: Int = 0, completion: @escaping (Result<KYCStepViewModel, KYCStepError>) -> Void) {
       idCaptureModule.setType(type: version.type!)
       idCaptureModule.setVideoRecording(enabled: AmaniUI.sharedInstance.idVideoRecord)
       idCaptureModule.setIdHologramDetection(enabled:AmaniUI.sharedInstance.idHologramDetection)
@@ -121,13 +121,13 @@ class IdHandler: DocumentHandler {
         }
     }
 
-    func upload(completion: @escaping StepUploadCallback) {
+    func upload(completion: @escaping ((Bool?, [String : Any]?) -> Void)) {
       idCaptureModule.upload(location: AmaniUI.sharedInstance.location){ [weak self]  result in
         completion(result,nil)
       }
     }
 
-    private func startNFCCapture(docVer: DocumentVersion, completion: @escaping StepCompletionCallback) {
+    private func startNFCCapture(docVer: DocumentVersion, completion: @escaping (Result<KYCStepViewModel, KYCStepError>) -> Void) {
         let nfcCaptureView = NFCViewController()
         nfcCaptureView.docID = "NFC"
 //        let nfcCaptureView = NFCViewController(

@@ -39,8 +39,8 @@ class QuestionnaireView: UIView {
     self.tableView.dataSource = self
     self.tableView.delegate = self
     self.tableView.register(QuestionViewCell.self, forCellReuseIdentifier: String(describing: QuestionViewCell.self))
-    self.tableView.backgroundColor = UIColor(hexString: appConfig?.generalconfigs?.appBackground ?? "#EEF4FA")
-    backgroundColor = UIColor(hexString: appConfig?.generalconfigs?.appBackground ?? "#EEF4FA")
+    self.tableView.backgroundColor = hextoUIColor(hexString: appConfig?.generalconfigs?.appBackground ?? "#EEF4FA")
+    backgroundColor = hextoUIColor(hexString: appConfig?.generalconfigs?.appBackground ?? "#EEF4FA")
     
     setConstraints()
   }

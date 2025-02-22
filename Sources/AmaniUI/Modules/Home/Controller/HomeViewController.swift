@@ -67,8 +67,16 @@ class HomeViewController: BaseViewController {
     amaniLogo.contentMode = .scaleAspectFit
     amaniLogo.clipsToBounds = true
     amaniLogo.tintAdjustmentMode = .normal
-    amaniLogo.tintColor = UIColor(hexString: "#909090")
+    amaniLogo.tintColor = hextoUIColor(hexString: "#909090")
+    guard let appConfig = appConfig else {return}
+    self.view.backgroundColor = hextoUIColor(hexString: appConfig.generalconfigs?.appBackground ?? "253C59")
     
+    self.setPopButton(TintColor: appConfig.generalconfigs?.topBarFontColor ?? "000000")
+    
+    self.setNavigationBarWith(title: (appConfig.generalconfigs?.mainTitleText!)!, textColor: hextoUIColor(hexString: appConfig.generalconfigs?.topBarFontColor ?? "000000"))
+      //      onVC.headView.layer.cornerRadius = 25
+      //      onVC.headView.backgroundColor = hextoUIColor(hexString: model.appBackground ?? "0F2435")
+    self.setBackgroundColorOfTableView(color: hextoUIColor(hexString: appConfig.generalconfigs?.appBackground ?? "253C59"))
     setConstraints()
     
     var customerInfo = Amani.sharedInstance.customerInfo().getCustomer()
@@ -201,11 +209,11 @@ extension HomeViewController {
   func goToSuccess() {
     
     if let nonKYCManager = self.nonKYCStepManager, nonKYCManager.hasPostSteps() {
-        nonKYCManager.startFlow(forPreSteps: false) {_ in
+        nonKYCManager.startFlow(forPreSteps: false) {[weak self] () in
           DispatchQueue.main.async {
             let successVC = SuccessViewController()
 //            let successVC = SuccessViewController(nibName: String(describing: SuccessViewController.self), bundle: AmaniUI.sharedInstance.getBundle())
-            self.navigationController?.pushViewController(successVC, animated: true)
+            self?.navigationController?.pushViewController(successVC, animated: true)
           }
         }
     } else {

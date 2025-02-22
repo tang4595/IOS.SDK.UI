@@ -23,7 +23,7 @@ class NFCConfigureView: UIView {
   private var mainStackView = UIStackView()
   private var amaniLogo = UIImageView()
   var setButtonCb: ((NviModel) async -> Void)?
-  
+  weak var delegate: AlertDelegate?
   private var newDocumentNo: String?
   private var newbirthDate: String?
   private var newExpiryDate: String?
@@ -175,35 +175,50 @@ class NFCConfigureView: UIView {
       }
     }
   }
-  
-  private func dateFormatter(dateString: String) -> Date? {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "yyMMdd"
-    return dateFormatter.date(from: dateString)!
+ 
+  func triggerAlert() {
+    delegate?.showAlert(
+      title: "Caution!",
+      message: "The dates are not valid. Please set correct dates format",
+      actions: [("Ok", .default)]
+    ) { index in
+    
+    }
   }
   
-//  private func toggleTextInputs(isEnabled: Bool = true) {
-//    DispatchQueue.main.async {
-//      self.documentNoInput.field.isEnabled = isEnabled
-//      self.expirydateInput.field.isEnabled = isEnabled
-//      self.birthdateInput.field.isEnabled = isEnabled
-//    }
-//  }
-//  
-//  private func clearTextInputs() {
-//    DispatchQueue.main.async {
-//      self.documentNoInput.field.text = ""
-//      self.expirydateInput.field.text = ""
-//      self.birthdateInput.field.text = ""
-//    }
-//  }
+  private func dateFormatter(dateString: String?) -> Date? {
+    guard let dateString = dateString, isValidDateFormat(dateString) else {
+      print("Invalid date format: \(dateString ?? "nil")")
+      self.triggerAlert()
+      return nil
+    }
+    
+    let formats = ["yyMMdd", "yyyyMMdd"]
+    let dateFormatter = DateFormatter()
+    dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+    
+    for format in formats {
+      dateFormatter.dateFormat = format
+      if let date = dateFormatter.date(from: dateString) {
+        return date
+      }
+    }
+    self.triggerAlert()
+    return nil
+  }
+  
+  private func isValidDateFormat(_ dateString: String) -> Bool {
+    let validLengths = [6, 8]
+    return validLengths.contains(dateString.count) && dateString.range(of: "^[0-9]+$", options: .regularExpression) != nil
+  }
+
   
 }
 
 extension NFCConfigureView {
   private func setNFCFormUI() {
     guard let stepConfig = self.appConfig?.stepConfig else { return }
-    backgroundColor =  UIColor(hexString: appConfig?.generalconfigs?.appBackground ?? "#EEF4FA")
+    backgroundColor =  hextoUIColor(hexString: appConfig?.generalconfigs?.appBackground ?? "#EEF4FA")
     self.submitButton.addTarget(self, action: #selector(tapSubmitButton(_:)), for: .touchUpInside)
     var nfcConfigStep = stepConfig.first(where: { $0.title == "Identification"})
     self.descriptionLabel.text = nfcConfigStep?.documents?[0].versions?[0].nfcConfigureTitle ?? "Please check your informations."
@@ -214,53 +229,53 @@ extension NFCConfigureView {
     
     
     self.documentNumbers.text = nfcConfigStep?.documents?[0].versions?[0].documentNoTitle ?? "Document Numbers"
-    self.documentNumbers.textColor = UIColor(hexString: "#2020F")
+    self.documentNumbers.textColor = hextoUIColor(hexString: "#2020F")
     self.documentNumbers.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
     self.documentNumbers.numberOfLines = 1
     self.documentNumbers.setContentCompressionResistancePriority(.required, for: .vertical)
     
     self.documentNoInput = RoundedTextInput(
       placeholderText: "",
-      borderColor: UIColor(hexString: "#515166"),
-      placeholderColor: UIColor(hexString: "#C0C0C0"),
+      borderColor: hextoUIColor(hexString: "#515166"),
+      placeholderColor: hextoUIColor(hexString: "#C0C0C0"),
       isPasswordToggleEnabled: false,
       keyboardType: .default
     )
     
     self.dateOfExpiryDate.text = nfcConfigStep?.documents?[0].versions?[0].documentDateOfExpiry ?? "Date of Expiry"
-    self.dateOfExpiryDate.textColor = UIColor(hexString: "#2020F")
+    self.dateOfExpiryDate.textColor = hextoUIColor(hexString: "#2020F")
     self.dateOfExpiryDate.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
     self.dateOfExpiryDate.numberOfLines = 1
     self.dateOfExpiryDate.setContentCompressionResistancePriority(.required, for: .vertical)
     
     self.expirydateInput = RoundedTextInput(
       placeholderText: "",
-      borderColor: UIColor(hexString: "#515166"),
-      placeholderColor: UIColor(hexString: "#C0C0C0"),
+      borderColor: hextoUIColor(hexString: "#515166"),
+      placeholderColor: hextoUIColor(hexString: "#C0C0C0"),
       isPasswordToggleEnabled: false,
       keyboardType: .numberPad
     )
     
     self.birthdateLabel.text = nfcConfigStep?.documents?[0].versions?[0].documentDateOfBirth ?? "Date of Birth"
-    self.birthdateLabel.textColor = UIColor(hexString: "#2020F")
+    self.birthdateLabel.textColor = hextoUIColor(hexString: "#2020F")
     self.birthdateLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
     self.birthdateLabel.numberOfLines = 1
     self.birthdateLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     
     self.birthdateInput = RoundedTextInput(
       placeholderText: "",
-      borderColor: UIColor(hexString: "#515166"),
-      placeholderColor: UIColor(hexString: "#C0C0C0"),
+      borderColor: hextoUIColor(hexString: "#515166"),
+      placeholderColor: hextoUIColor(hexString: "#C0C0C0"),
       isPasswordToggleEnabled: false,
       keyboardType: .numberPad
     )
     self.submitButton.translatesAutoresizingMaskIntoConstraints = false
     
-    submitButton.setTitleColor(UIColor(hexString: appConfig?.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
-    submitButton.backgroundColor = UIColor(hexString: appConfig?.generalconfigs?.primaryButtonBackgroundColor ?? ThemeColor.whiteColor.toHexString())
+    submitButton.setTitleColor(hextoUIColor(hexString: appConfig?.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
+    submitButton.backgroundColor = hextoUIColor(hexString: appConfig?.generalconfigs?.primaryButtonBackgroundColor ?? ThemeColor.whiteColor.toHexString())
     submitButton.addCornerRadiousWith(radious: CGFloat(appConfig?.generalconfigs?.buttonRadius ?? 10))
     submitButton.setTitle(appConfig?.generalconfigs?.continueText ?? "Devam", for: .normal)
-//    let color = UIColor(hexString: appConfig?.generalconfigs?.primaryButtonBackgroundColor ?? "#EA3365")
+//    let color = hextoUIColor(hexString: appConfig?.generalconfigs?.primaryButtonBackgroundColor ?? "#EA3365")
   
 //    
 //    self.submitButton.setTitle(appConfig?.generalconfigs?.continueText ?? "Continue", for: .normal)
@@ -278,7 +293,7 @@ extension NFCConfigureView {
     self.amaniLogo.contentMode = .scaleAspectFit
     self.amaniLogo.clipsToBounds = true
     self.amaniLogo.tintAdjustmentMode = .normal
-    self.amaniLogo.tintColor = UIColor(hexString: textColor)
+    self.amaniLogo.tintColor = hextoUIColor(hexString: textColor)
     
     
     self.formView = UIStackView(arrangedSubviews: [

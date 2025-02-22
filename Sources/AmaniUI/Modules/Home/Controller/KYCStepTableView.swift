@@ -113,7 +113,7 @@ extension KYCStepTblView: UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let step = self.kycSteps[indexPath.row]
     
-    if self.kycSteps[indexPath.row].getRuleModel().documentClasses!.first == "IB" && !(self.kycSteps[indexPath.row].getRuleModel().status == "APPROVED")  {
+    if self.kycSteps[indexPath.row].getRuleModel().documentClasses!.first == "IB" && !((self.kycSteps[indexPath.row].getRuleModel().status == DocumentStatus.APPROVED.rawValue) || (self.kycSteps[indexPath.row].getRuleModel().status == DocumentStatus.PENDING_REVIEW.rawValue))  {
         // Specify only PDF type
       let documentPicker = UIDocumentPickerViewController(documentTypes: [kUTTypePDF as String], in: .import)
       documentPicker.delegate = self
@@ -123,13 +123,13 @@ extension KYCStepTblView: UITableViewDelegate, UITableViewDataSource {
         parentViewController.present(documentPicker, animated: true)
       }
     } else {
-      guard let callback = callback else { return }
       if (step.status != DocumentStatus.APPROVED && step.status != DocumentStatus.PROCESSING && step.isEnabled()) {
-        step.onStepPressed { result in
+        step.onStepPressed { [weak self] result in
           switch result {
           case .failure(let error):
             print(error)
           case .success(let model):
+            guard let callback = self?.callback else { return }
             callback(model)
           }
         }

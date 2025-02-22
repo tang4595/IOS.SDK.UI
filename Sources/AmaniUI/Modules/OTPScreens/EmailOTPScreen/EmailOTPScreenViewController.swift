@@ -50,7 +50,7 @@ class EmailOTPScreenViewController: KeyboardAvoidanceViewController {
       )
     }
     
-    view.backgroundColor = UIColor(hexString: "#EEF4FA")
+    view.backgroundColor = hextoUIColor(hexString: "#EEF4FA")
     addPoweredByIcon()
     
     contentView.addSubview(emailOTPView)

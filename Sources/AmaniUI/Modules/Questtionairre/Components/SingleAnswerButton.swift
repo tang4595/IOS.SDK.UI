@@ -39,7 +39,7 @@ class SingleAnswerButton: UIButton {
     
     let attributes: [NSAttributedString.Key: Any] = [
       .font: UIFont.systemFont(ofSize: 15.0, weight: .light),
-      .foregroundColor: UIColor(hexString: "#565656"),
+      .foregroundColor: hextoUIColor(hexString: "#565656"),
     ]
     
     let attributedString = NSAttributedString(

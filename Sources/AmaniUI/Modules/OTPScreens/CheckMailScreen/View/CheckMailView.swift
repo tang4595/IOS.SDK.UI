@@ -82,7 +82,7 @@ class CheckMailView: UIView {
     self.titleDescription.text = "Please check your e-mail inbox and enter the OTP (One Time PIN) you received"
     self.titleDescription.numberOfLines = 2
     self.titleDescription.lineBreakMode = .byTruncatingMiddle
-    self.titleDescription.textColor = UIColor(hexString: "#20202F")
+    self.titleDescription.textColor = hextoUIColor(hexString: "#20202F")
     
     self.titleStackView = UIStackView(arrangedSubviews: [
       titleDescription,
@@ -101,14 +101,14 @@ class CheckMailView: UIView {
     }
     
     self.otpLegend.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
-    self.otpLegend.textColor = UIColor(hexString: "#20202F")
+    self.otpLegend.textColor = hextoUIColor(hexString: "#20202F")
     
     self.otpLegendRow = UIStackView(arrangedSubviews: [otpLegend])
     
     self.otpInput = RoundedTextInput(
       placeholderText: "",
-      borderColor: UIColor(hexString: "#515166"),
-      placeholderColor: UIColor(hexString: "#C0C0C0"),
+      borderColor: hextoUIColor(hexString: "#515166"),
+      placeholderColor: hextoUIColor(hexString: "#C0C0C0"),
       isPasswordToggleEnabled: false,
       keyboardType: .numberPad
     )
@@ -137,7 +137,7 @@ class CheckMailView: UIView {
     
     self.submitButton = RoundedButton(
       withTitle: appConfig?.stepConfig?[1].documents?[0].versions?[0].steps?[0].captureTitle ?? "Verify E-mail",
-      withColor: UIColor(hexString: appConfig?.generalconfigs?.primaryButtonBackgroundColor ?? "#EA3365")
+      withColor: hextoUIColor(hexString: appConfig?.generalconfigs?.primaryButtonBackgroundColor ?? "#EA3365")
     )
     
     self.mainStackView = UIStackView(arrangedSubviews: [
@@ -184,9 +184,9 @@ class CheckMailView: UIView {
       timerButton.isEnabled = true
       let attr: [NSAttributedString.Key: Any] = [
         .font: UIFont.systemFont(ofSize: 15.0, weight: .bold),
-        .foregroundColor: UIColor(hexString: "#20202F"),
+        .foregroundColor: hextoUIColor(hexString: "#20202F"),
         .underlineStyle: NSUnderlineStyle.single.rawValue,
-        .underlineColor: UIColor(hexString: "#20202F"),
+        .underlineColor: hextoUIColor(hexString: "#20202F"),
       ]
       timerButton.setAttributedTitle(
         NSAttributedString(string: "Resend OTP", attributes: attr), for: .normal)
@@ -258,7 +258,7 @@ class CheckMailView: UIView {
     
     let attributes: [NSAttributedString.Key: Any] = [
       .font: UIFont.systemFont(ofSize: 15.0),
-      .foregroundColor: UIColor(hexString: "#20202F", alpha: 0.5),
+      .foregroundColor: hextoUIColor(hexString: "#20202F", alpha: 0.5),
     ]
     
     timerButton.setAttributedTitle(

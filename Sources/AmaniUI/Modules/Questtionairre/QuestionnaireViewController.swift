@@ -33,7 +33,7 @@ class QuestionnaireViewController: BaseViewController {
     questionnaireView.appConfig = appConfig
     view.addSubview(questionnaireView)
     questionnaireView.translatesAutoresizingMaskIntoConstraints = false
-      view.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.appBackground ?? "#EEF4FA")
+      view.backgroundColor = hextoUIColor(hexString: appConfig.generalconfigs?.appBackground ?? "#EEF4FA")
     questionnaireView.bind(with: questionnaireViewModel, completionHandler: handler!)
     NSLayoutConstraint.activate([
       questionnaireView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -41,7 +41,7 @@ class QuestionnaireViewController: BaseViewController {
       questionnaireView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
       questionnaireView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
     ])
-    self.navigationItem.titleView?.tintColor = UIColor(hexString: "#20202F")
+    self.navigationItem.titleView?.tintColor = hextoUIColor(hexString: "#20202F")
   }
   
   func setCompletionHandler(_ handler: @escaping (() -> Void)) {

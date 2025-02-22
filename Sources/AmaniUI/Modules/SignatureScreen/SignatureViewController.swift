@@ -28,7 +28,7 @@ final class SignatureViewController: BaseViewController {
   var documentVersion: DocumentVersion?
   var callback:((UIImage)->())?
   private var isDissapeared = false
-  private var disappearCallback: VoidCallback?
+  private var disappearCallback: (() -> Void)?
   private var step:steps = .front
 
     @objc func confirmAct(_ sender: UIButton) {
@@ -49,7 +49,7 @@ final class SignatureViewController: BaseViewController {
     self.playLottieAnimation()
   }
   
-  func setDisappearCallback(_ callback: @escaping VoidCallback) {
+  func setDisappearCallback(_ callback: @escaping (() -> Void)) {
     self.disappearCallback = callback
   }
    
@@ -150,23 +150,23 @@ extension SignatureViewController {
            
            
            // Navigation Bar
-           self.setNavigationBarWith(title: self.docStep?.captureTitle ?? "", textColor: UIColor(hexString: appConfig.generalconfigs?.topBarFontColor ?? "ffffff"))
+           self.setNavigationBarWith(title: self.docStep?.captureTitle ?? "", textColor: hextoUIColor(hexString: appConfig.generalconfigs?.topBarFontColor ?? "ffffff"))
            self.setNavigationLeftButton(TintColor: appConfig.generalconfigs?.topBarFontColor ?? "ffffff")
-           self.view.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.appBackground ?? "#263B5B")
-           self.confirmBtn.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonBackgroundColor ?? ThemeColor.primaryColor.toHexString())
-           self.confirmBtn.layer.borderColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonBorderColor ?? "#263B5B").cgColor
+           self.view.backgroundColor = hextoUIColor(hexString: appConfig.generalconfigs?.appBackground ?? "#263B5B")
+           self.confirmBtn.backgroundColor = hextoUIColor(hexString: appConfig.generalconfigs?.primaryButtonBackgroundColor ?? ThemeColor.primaryColor.toHexString())
+           self.confirmBtn.layer.borderColor = hextoUIColor(hexString: appConfig.generalconfigs?.primaryButtonBorderColor ?? "#263B5B").cgColor
            self.confirmBtn.setTitle(appConfig.generalconfigs?.confirmText, for: .normal)
-           self.confirmBtn.setTitleColor(UIColor(hexString: appConfig.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
-           self.confirmBtn.tintColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString())
+           self.confirmBtn.setTitleColor(hextoUIColor(hexString: appConfig.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
+           self.confirmBtn.tintColor = hextoUIColor(hexString: appConfig.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString())
            self.confirmBtn.addCornerRadiousWith(radious: buttonRadious)
            
-           let secondaryBackgroundColor:UIColor = appConfig.generalconfigs?.secondaryButtonBackgroundColor == nil ? UIColor.clear :UIColor(hexString: (appConfig.generalconfigs?.secondaryButtonBackgroundColor)!)
+           let secondaryBackgroundColor:UIColor = appConfig.generalconfigs?.secondaryButtonBackgroundColor == nil ? UIColor.clear :hextoUIColor(hexString: (appConfig.generalconfigs?.secondaryButtonBackgroundColor)!)
 
            self.clearBtn.backgroundColor = secondaryBackgroundColor
-           self.clearBtn.addBorder(borderWidth: 1, borderColor: UIColor(hexString: appConfig.generalconfigs?.secondaryButtonBorderColor ?? "#263B5B").cgColor)
+           self.clearBtn.addBorder(borderWidth: 1, borderColor: hextoUIColor(hexString: appConfig.generalconfigs?.secondaryButtonBorderColor ?? "#263B5B").cgColor)
            self.clearBtn.setTitle(self.documentVersion?.clearText ?? "Temizle", for: .normal)
-           self.clearBtn.setTitleColor(UIColor(hexString: appConfig.generalconfigs?.secondaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
-           self.clearBtn.tintColor = UIColor(hexString: appConfig.generalconfigs?.secondaryButtonTextColor ?? ThemeColor.whiteColor.toHexString())
+           self.clearBtn.setTitleColor(hextoUIColor(hexString: appConfig.generalconfigs?.secondaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
+           self.clearBtn.tintColor = hextoUIColor(hexString: appConfig.generalconfigs?.secondaryButtonTextColor ?? ThemeColor.whiteColor.toHexString())
            self.clearBtn.addCornerRadiousWith(radious: buttonRadious)
            
            self.clearBtn.translatesAutoresizingMaskIntoConstraints = false

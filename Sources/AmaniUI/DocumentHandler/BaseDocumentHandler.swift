@@ -16,15 +16,15 @@ protocol DocumentHandler {
   
   init(topVC: UIViewController, stepVM: KYCStepViewModel, docID: DocumentID)
   
-  func start(docStep: DocumentStepModel, version: DocumentVersion, workingStepIndex:Int, completion: @escaping StepCompletionCallback)
+  func start(docStep: DocumentStepModel, version: DocumentVersion, workingStepIndex:Int, completion: @escaping (Result<KYCStepViewModel, KYCStepError>) -> Void)
   
-  func upload(completion: @escaping StepUploadCallback)
+  func upload(completion: @escaping ((Bool?, [String : Any]?) -> Void))
  
   
 }
 
 extension DocumentHandler {
-  func startConfirmVC(image: UIImage, docStep: DocumentStepModel, docVer: DocumentVersion,stepId:Int = 0, completion: @escaping ConfirmCallback) {
+  func startConfirmVC(image: UIImage, docStep: DocumentStepModel, docVer: DocumentVersion,stepId:Int = 0, completion: @escaping () -> Void) {
     let confirmVC = DocConfirmationViewController()
 //    let confirmVC = DocConfirmationViewController(
 //      nibName: String(describing: DocConfirmationViewController.self),

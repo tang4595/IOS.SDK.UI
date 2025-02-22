@@ -17,27 +17,47 @@ class DocumentHandlerHelper {
   private var currentDocumentVersion: DocumentVersion?
 
   private var currentDocumentHandler: DocumentHandler?
-  private var completion: StepCompletionCallback?
+  private var completion: ((Result<KYCStepViewModel, KYCStepError>) -> Void)?
 
   init(for documents: [DocumentModel], of stepVM: KYCStepViewModel) {
     stepViewModel = stepVM
     versionList = []
     for eachDoc in documents {
       if var docVersions = eachDoc.versions, !docVersions.isEmpty {
-        docVersions = docVersions.map { model -> DocumentVersion in
+        docVersions = docVersions.compactMap { model in
           var obj = model
           obj.docID = eachDoc.id ?? ""
+          if obj.isHidden == true {
+            return nil
+          }
           return obj
         }
-        docVersions = docVersions.filter {
-          $0.isHidden == false || $0.isHidden == nil
-        }
+
         versionList.append(contentsOf: docVersions)
       }
     }
   }
+  
+//  init(for documents: [DocumentModel], of stepVM: KYCStepViewModel) {
+//    stepViewModel = stepVM
+//    versionList = []
+//    for eachDoc in documents {
+//      if var docVersions = eachDoc.versions, !docVersions.isEmpty {
+//        docVersions = docVersions.map { model -> DocumentVersion in
+//          var obj = model
+//          obj.docID = eachDoc.id ?? ""
+//          return obj
+//        }
+//        docVersions = docVersions.filter {
+//          $0.isHidden == false || $0.isHidden == nil
+//        }
+//        versionList.append(contentsOf: docVersions)
+//      }
+//    }
+//  }
 
-  func bind(topVC: UIViewController, callback: @escaping StepCompletionCallback) {
+
+  func bind(topVC: UIViewController, callback: @escaping (Result<KYCStepViewModel, KYCStepError>) -> Void) {
     completion = callback
     topViewController = topVC
   }
@@ -93,17 +113,15 @@ class DocumentHandlerHelper {
       currentDocumentHandler = SignatureHandler(topVC: topViewController, stepVM: stepViewModel, docID: DocumentID(rawValue: docID)!)
       currentDocumentHandler?.start(docStep: step, version: currentDocumentVersion, workingStepIndex: 0, completion: completion)
     default:
-        currentDocumentHandler = DocumentsHandler(topVC: topViewController, stepVM: stepViewModel, docID: .OD(docID))
+      currentDocumentHandler = DocumentsHandler(topVC: topViewController, stepVM: stepViewModel, docID: .OD(docID))
       currentDocumentHandler?.start(docStep: step, version: currentDocumentVersion, workingStepIndex: 1, completion: completion)
 
       return
     }
-      
-      //Farklı gelen type'lar için direkt co ıb ub gibi document handler'a gitmesi sağlanmalı
-      
+            
   }
 
-  func upload(completion: @escaping StepUploadCallback) {
+  func upload(completion: @escaping ((Bool?, [String : Any]?) -> Void)) {
     currentDocumentHandler?.upload(completion: completion)
   }
 }

@@ -7,10 +7,17 @@
 import UIKit
 /**
  This file represents the native alerts utility as a Singleton instance
+ 
+ 
  */
+
+protocol AlertDelegate: AnyObject {
+  func showAlert(title: String, message: String, actions: [(String, UIAlertAction.Style)], completion: ((Int) -> Void)?)
+}
+
 class AlertDialogueUtility {
   // MARK: - Local properties
-
+  
   /// This property represents theshared instance of AlertDialogueUtility
   static var shared: AlertDialogueUtility = AlertDialogueUtility()
 

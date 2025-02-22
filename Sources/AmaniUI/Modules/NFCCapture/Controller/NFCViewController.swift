@@ -1,8 +1,6 @@
 import AmaniSDK
 import UIKit
 
-typealias VoidCallback = () -> Void
-
 @available(iOS 13, *)
 class NFCViewController: BaseViewController {
 
@@ -17,7 +15,7 @@ class NFCViewController: BaseViewController {
   private var amaniLogo = UIImageView()
   var docID: String?
   private var documentVersion: DocumentVersion?
-  private var onFinishCallback: VoidCallback?
+  private var onFinishCallback: (() -> Void)?
     
   let idCaptureModule =  Amani.sharedInstance.IdCapture()
   let amani:Amani = Amani.sharedInstance
@@ -93,14 +91,14 @@ class NFCViewController: BaseViewController {
       self.amaniLogo.clipsToBounds = true
       self.amaniLogo.tintAdjustmentMode = .normal
         
-        setNavigationBarWith(title: (documentVersion.nfcTitle)!, textColor: UIColor(hexString: navFontColor))
+        setNavigationBarWith(title: (documentVersion.nfcTitle)!, textColor: hextoUIColor(hexString: navFontColor))
         setNavigationLeftButton(TintColor: navFontColor)
         amaniLogo.isHidden = appConfig?.generalconfigs?.hideLogo ?? false
-        amaniLogo.tintColor = UIColor(hexString: textColor)
-        desc1Label.textColor = UIColor(hexString: textColor)
-        desc2Label.textColor = UIColor(hexString: textColor)
-        desc3Label.textColor = UIColor(hexString: textColor)
-        headerLabel.textColor = UIColor(hexString: textColor)
+        amaniLogo.tintColor = hextoUIColor(hexString: textColor)
+        desc1Label.textColor = hextoUIColor(hexString: textColor)
+        desc2Label.textColor = hextoUIColor(hexString: textColor)
+        desc3Label.textColor = hextoUIColor(hexString: textColor)
+        headerLabel.textColor = hextoUIColor(hexString: textColor)
         headerLabel.text = documentVersion.nfcTitle
         desc1Label.text = documentVersion.nfcDescription1
         desc2Label.text = documentVersion.nfcDescription2
@@ -114,8 +112,8 @@ class NFCViewController: BaseViewController {
         
         continueButton.alpha = 1
         continueButton.isEnabled = true
-        continueButton.setTitleColor(UIColor(hexString: appConfig?.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
-        continueButton.backgroundColor = UIColor(hexString: appConfig?.generalconfigs?.primaryButtonBackgroundColor ?? ThemeColor.whiteColor.toHexString())
+        continueButton.setTitleColor(hextoUIColor(hexString: appConfig?.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
+        continueButton.backgroundColor = hextoUIColor(hexString: appConfig?.generalconfigs?.primaryButtonBackgroundColor ?? ThemeColor.whiteColor.toHexString())
         continueButton.addCornerRadiousWith(radious: CGFloat(appConfig?.generalconfigs?.buttonRadius ?? 10))
         continueButton.setTitle(appConfig?.generalconfigs?.continueText ?? "Devam", for: .normal)
       
@@ -124,7 +122,7 @@ class NFCViewController: BaseViewController {
        
     }
     
-    func bind(documentVersion: DocumentVersion, callback: @escaping VoidCallback) {
+    func bind(documentVersion: DocumentVersion, callback: @escaping (() -> Void)) {
         self.documentVersion = documentVersion
         self.onFinishCallback = callback
     }
@@ -199,6 +197,7 @@ class NFCViewController: BaseViewController {
     self.nfcConfigureView = nfcFormView
     nfcFormView.appConfig = appConfig
     nfcFormView.setTextsFrom(nvi: nvi)
+    nfcFormView.delegate = self
     self.view.addSubview(nfcFormView)
 
     nfcFormView.translatesAutoresizingMaskIntoConstraints = false
@@ -245,6 +244,23 @@ class NFCViewController: BaseViewController {
       }
     }
   }
+}
+
+extension NFCViewController: AlertDelegate {
+  func showAlert(title: String, message: String, actions: [(String, UIAlertAction.Style)], completion: ((Int) -> Void)?) {
+    let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+    
+    for (index, action) in actions.enumerated() {
+      let alertAction = UIAlertAction(title: action.0, style: action.1) { _ in
+        completion?(index)
+      }
+      alert.addAction(alertAction)
+    }
+    
+    self.present(alert, animated: true)
+  }
+  
+  
 }
 
 extension NFCViewController {
