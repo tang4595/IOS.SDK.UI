@@ -22,11 +22,11 @@ class SignatureHandler: DocumentHandler {
     self.docID = docID
   }
   
-  func start(docStep: AmaniSDK.DocumentStepModel, version: AmaniSDK.DocumentVersion, workingStepIndex: Int, completion: @escaping StepCompletionCallback) {
+  func start(docStep: AmaniSDK.DocumentStepModel, version: AmaniSDK.DocumentVersion, workingStepIndex: Int, completion: @escaping (Result<KYCStepViewModel, KYCStepError>) -> Void) {
     DispatchQueue.main.async {
       let signatureVC = SignatureViewController()
       signatureVC.setNavigationLeftButton(TintColor: "#20202F")
-      signatureVC.setNavigationBarWith(title: docStep.captureTitle ?? "", textColor: UIColor(hexString: "#20202F"))
+      signatureVC.setNavigationBarWith(title: docStep.captureTitle ?? "", textColor: hextoUIColor(hexString: "#20202F"))
 //      signatureVC.setNavigationLeftButtonPDF(text: "", tintColor: "")
 //      let SignatureVC = SignatureViewController(
 //        nibName: String(describing: SignatureViewController.self),
@@ -68,7 +68,7 @@ class SignatureHandler: DocumentHandler {
     }
   }
   
-  func upload(completion: @escaping StepUploadCallback) {
+  func upload(completion: @escaping ((Bool?, [String : Any]?) -> Void)) {
     SignatureModule.upload(location: AmaniUI.sharedInstance.location){ [weak self] result in
       completion(result,nil)
     }
@@ -78,7 +78,7 @@ class SignatureHandler: DocumentHandler {
     step: DocumentStepModel,
     version: DocumentVersion,
     workingStepIndex:Int = 0,
-    completion: @escaping StepCompletionCallback) -> UIView?{
+    completion: @escaping (Result<KYCStepViewModel, KYCStepError>) -> Void) -> UIView?{
       
     SignatureModule = Amani.sharedInstance.signature()
     var workingStep = workingStepIndex

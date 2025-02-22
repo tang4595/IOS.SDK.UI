@@ -67,16 +67,16 @@ class HomeViewController: BaseViewController {
     amaniLogo.contentMode = .scaleAspectFit
     amaniLogo.clipsToBounds = true
     amaniLogo.tintAdjustmentMode = .normal
-    amaniLogo.tintColor = UIColor(hexString: "#909090")
+    amaniLogo.tintColor = hextoUIColor(hexString: "#909090")
     guard let appConfig = appConfig else {return}
-    self.view.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.appBackground ?? "253C59")
+    self.view.backgroundColor = hextoUIColor(hexString: appConfig.generalconfigs?.appBackground ?? "253C59")
     
     self.setNavigationLeftButton(TintColor: appConfig.generalconfigs?.topBarFontColor ?? "000000")
     
-    self.setNavigationBarWith(title: (appConfig.generalconfigs?.mainTitleText!)!, textColor: UIColor(hexString: appConfig.generalconfigs?.topBarFontColor ?? "000000"))
+    self.setNavigationBarWith(title: (appConfig.generalconfigs?.mainTitleText!)!, textColor: hextoUIColor(hexString: appConfig.generalconfigs?.topBarFontColor ?? "000000"))
       //      onVC.headView.layer.cornerRadius = 25
-      //      onVC.headView.backgroundColor = UIColor(hexString: model.appBackground ?? "0F2435")
-    self.setBackgroundColorOfTableView(color: UIColor(hexString: appConfig.generalconfigs?.appBackground ?? "253C59"))
+      //      onVC.headView.backgroundColor = hextoUIColor(hexString: model.appBackground ?? "0F2435")
+    self.setBackgroundColorOfTableView(color: hextoUIColor(hexString: appConfig.generalconfigs?.appBackground ?? "253C59"))
     setConstraints()
     
     var customerInfo = Amani.sharedInstance.customerInfo().getCustomer()

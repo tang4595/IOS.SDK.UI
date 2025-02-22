@@ -54,26 +54,26 @@ class EmailOTPView: UIView {
     self.descriptionText.text = "We will send you a ‘one time PIN’ to reset your password"
     self.descriptionText.font = UIFont.systemFont(ofSize: 16.0, weight: .light)
     self.descriptionText.numberOfLines = 2
-    self.descriptionText.textColor = UIColor(hexString: "#20202F")
+    self.descriptionText.textColor = hextoUIColor(hexString: "#20202F")
     
     
     self.emailLegend.text = "Email Adress"
-    self.emailLegend.textColor = UIColor(hexString: "#20202F")
+    self.emailLegend.textColor = hextoUIColor(hexString: "#20202F")
     self.emailLegend.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
     self.emailLegend.numberOfLines = 1
     self.emailLegend.setContentCompressionResistancePriority(.required, for: .vertical)
     
     self.emailInput = RoundedTextInput(
       placeholderText: "Enter your email address here",
-      borderColor: UIColor(hexString: "#515166"),
-      placeholderColor: UIColor(hexString: "#C0C0C0"),
+      borderColor: hextoUIColor(hexString: "#515166"),
+      placeholderColor: hextoUIColor(hexString: "#C0C0C0"),
       isPasswordToggleEnabled: false,
       keyboardType: .emailAddress
     )
     
     self.submitButton = RoundedButton(
       withTitle: appConfig?.generalconfigs?.continueText ?? "Continue",
-      withColor: UIColor(hexString: appConfig?.generalconfigs?.primaryButtonBackgroundColor ?? "#EA3365")
+      withColor: hextoUIColor(hexString: appConfig?.generalconfigs?.primaryButtonBackgroundColor ?? "#EA3365")
     )
     
     self.formView = UIStackView(arrangedSubviews: [
@@ -174,7 +174,7 @@ class EmailOTPView: UIView {
       // FIXME: Button titles DOES NOT EXISTS in the configuration
       self.descriptionText.text = step.captureDescription
       self.emailLegend.text = document.emailTitle!
-      self.emailInput.updatePlaceHolder(text: document.emailHint!, color: UIColor(hexString: "#C0C0C0"))
+      self.emailInput.updatePlaceHolder(text: document.emailHint!, color: hextoUIColor(hexString: "#C0C0C0"))
     }
     
   }

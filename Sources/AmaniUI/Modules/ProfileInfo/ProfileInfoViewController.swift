@@ -33,13 +33,13 @@ class ProfileInfoViewController: KeyboardAvoidanceViewController {
       profileInfoView.appConfig = appConfig
       profileInfoView.bind(withViewModel: profileInfoViewModel, withDocument: docVersion)
     
-    profileInfoView.setCompletion { [weak self] in
+      profileInfoView.setCompletion { [weak self] in
       if let handler = self?.handler {
         handler()
       }
     }
     
-    view.backgroundColor = UIColor(hexString: "#EEF4FA")
+    view.backgroundColor = hextoUIColor(hexString: "#EEF4FA")
     
     contentView.addSubview(profileInfoView)
     addPoweredByIcon()

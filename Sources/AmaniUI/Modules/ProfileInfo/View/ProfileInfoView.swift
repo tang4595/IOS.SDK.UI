@@ -70,50 +70,50 @@ class ProfileInfoView: UIView {
     func setupUI() {
       
       self.nameLegend.text = "Name"
-      self.nameLegend.textColor = UIColor(hexString: "#2020F")
+      self.nameLegend.textColor = hextoUIColor(hexString: "#2020F")
       self.nameLegend.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
       self.nameLegend.numberOfLines = 1
       self.nameLegend.setContentCompressionResistancePriority(.required, for: .vertical)
       
       self.nameInput = RoundedTextInput(
         placeholderText: "Enter your name",
-        borderColor: UIColor(hexString: "#515166"),
-        placeholderColor: UIColor(hexString: "#C0C0C0"),
+        borderColor: hextoUIColor(hexString: "#515166"),
+        placeholderColor: hextoUIColor(hexString: "#C0C0C0"),
         isPasswordToggleEnabled: false,
         keyboardType: .default
       )
       
       self.surnameLegend.text = "Surname"
-      self.surnameLegend.textColor = UIColor(hexString: "#2020F")
+      self.surnameLegend.textColor = hextoUIColor(hexString: "#2020F")
       self.surnameLegend.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
       self.surnameLegend.numberOfLines = 1
       self.surnameLegend.setContentCompressionResistancePriority(.required, for: .vertical)
       
       self.surnameInput = RoundedTextInput(
         placeholderText: "Enter your surname",
-        borderColor: UIColor(hexString: "#515166"),
-        placeholderColor: UIColor(hexString: "#C0C0C0"),
+        borderColor: hextoUIColor(hexString: "#515166"),
+        placeholderColor: hextoUIColor(hexString: "#C0C0C0"),
         isPasswordToggleEnabled: false,
         keyboardType: .default
       )
       
       self.birthdateLabel.text = "Date of Birth"
-      self.birthdateLabel.textColor = UIColor(hexString: "#2020F")
+      self.birthdateLabel.textColor = hextoUIColor(hexString: "#2020F")
       self.birthdateLabel.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
       self.birthdateLabel.numberOfLines = 1
       self.birthdateLabel.setContentCompressionResistancePriority(.required, for: .vertical)
       
       self.birthdateInput = RoundedTextInput(
         placeholderText: "",
-        borderColor: UIColor(hexString: "#515166"),
-        placeholderColor: UIColor(hexString: "#C0C0C0"),
+        borderColor: hextoUIColor(hexString: "#515166"),
+        placeholderColor: hextoUIColor(hexString: "#C0C0C0"),
         isPasswordToggleEnabled: false,
         keyboardType: .numberPad
       )
       
       self.submitButton = RoundedButton(
         withTitle: appConfig?.generalconfigs?.continueText ?? "Continue",
-        withColor: UIColor(hexString: appConfig?.generalconfigs?.primaryButtonBackgroundColor ?? "#EA3365")
+        withColor: hextoUIColor(hexString: appConfig?.generalconfigs?.primaryButtonBackgroundColor ?? "#EA3365")
       )
       
       self.formView = UIStackView(arrangedSubviews: [

@@ -35,7 +35,7 @@ class VersionSelectTableViewCell: UITableViewCell {
 extension VersionSelectTableViewCell {
     private func setupUI() {
         let generalconfigs = try? Amani.sharedInstance.appConfig().getApplicationConfig().generalconfigs
-        contentView.backgroundColor = UIColor(hexString: generalconfigs?.appBackground ?? "#EEF4FA")
+        contentView.backgroundColor = hextoUIColor(hexString: generalconfigs?.appBackground ?? "#EEF4FA")
       
       self.outerView.translatesAutoresizingMaskIntoConstraints = false
       
@@ -49,10 +49,10 @@ extension VersionSelectTableViewCell {
                                       shadowOpacity: 1, borderColor: .clear, borderWidth: 0,
                                       cornerRadious: CGFloat(generalconfigs?.buttonRadius ?? 10))
         
-      self.titleLabel.textColor = UIColor( hexString: generalconfigs?.primaryButtonTextColor ?? "000000")
-      self.outerView.backgroundColor = UIColor( hexString: generalconfigs?.primaryButtonBackgroundColor ?? "ffffff")
+      self.titleLabel.textColor = hextoUIColor( hexString: generalconfigs?.primaryButtonTextColor ?? "000000")
+      self.outerView.backgroundColor = hextoUIColor( hexString: generalconfigs?.primaryButtonBackgroundColor ?? "ffffff")
            if let bordercolor:String = generalconfigs?.primaryButtonBorderColor {
-             self.outerView.addBorder(borderWidth: 2, borderColor: UIColor(hexString: bordercolor).cgColor)
+             self.outerView.addBorder(borderWidth: 2, borderColor: hextoUIColor(hexString: bordercolor).cgColor)
            }
         
         setConstraints()

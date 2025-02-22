@@ -9,9 +9,6 @@ import UIKit
 import AmaniSDK
 import Foundation
 
-typealias StepCompletionCallback = (Result<KYCStepViewModel, KYCStepError>) -> Void
-typealias StepUploadCallback = (Bool?, [String : Any]?) -> Void
-
 class KYCStepViewModel {
   var id: String
   var title: String
@@ -94,7 +91,7 @@ class KYCStepViewModel {
     return false
   }
   
-  func onStepPressed(completion: @escaping StepCompletionCallback) {
+  func onStepPressed(completion: @escaping (Result<KYCStepViewModel, KYCStepError>) -> Void) {
     // Return early if document status is Processing
     if status == .PROCESSING {
       print("Cannot start the process while document is processing.")
@@ -150,7 +147,7 @@ class KYCStepViewModel {
     return status.rawValue
   }
   
-  func upload(completion: @escaping StepUploadCallback) {
+  func upload(completion: @escaping ((Bool?, [String : Any]?) -> Void)) {
     documentHandler?.upload(completion: completion)
   }
   
@@ -159,17 +156,17 @@ class KYCStepViewModel {
     let defaultBlackHex = ThemeColor.blackColor.toHexString()
     switch status {
     case .NOT_UPLOADED:
-      return (UIColor(hexString: stepConfig.buttonColor?.notUploaded ?? defaultWhiteHex), UIColor(hexString: stepConfig.buttonTextColor?.notUploaded ?? defaultBlackHex))
+      return (hextoUIColor(hexString: stepConfig.buttonColor?.notUploaded ?? defaultWhiteHex), hextoUIColor(hexString: stepConfig.buttonTextColor?.notUploaded ?? defaultBlackHex))
     case .PENDING_REVIEW:
-      return (UIColor(hexString: stepConfig.buttonColor?.pendingReview ?? defaultWhiteHex), UIColor(hexString: stepConfig.buttonTextColor?.pendingReview ?? defaultBlackHex))
+      return (hextoUIColor(hexString: stepConfig.buttonColor?.pendingReview ?? defaultWhiteHex), hextoUIColor(hexString: stepConfig.buttonTextColor?.pendingReview ?? defaultBlackHex))
     case .PROCESSING:
-      return (UIColor(hexString: stepConfig.buttonColor?.processing ?? defaultWhiteHex), UIColor(hexString: stepConfig.buttonTextColor?.processing ?? defaultBlackHex))
+      return (hextoUIColor(hexString: stepConfig.buttonColor?.processing ?? defaultWhiteHex), hextoUIColor(hexString: stepConfig.buttonTextColor?.processing ?? defaultBlackHex))
     case .REJECTED:
-      return (UIColor(hexString: stepConfig.buttonColor?.rejected ?? defaultWhiteHex), UIColor(hexString: stepConfig.buttonTextColor?.rejected ?? defaultBlackHex))
+      return (hextoUIColor(hexString: stepConfig.buttonColor?.rejected ?? defaultWhiteHex), hextoUIColor(hexString: stepConfig.buttonTextColor?.rejected ?? defaultBlackHex))
     case .AUTOMATICALLY_REJECTED:
-      return (UIColor(hexString: stepConfig.buttonColor?.autoRejected ?? defaultWhiteHex), UIColor(hexString: stepConfig.buttonTextColor?.autoRejected ?? defaultBlackHex))
+      return (hextoUIColor(hexString: stepConfig.buttonColor?.autoRejected ?? defaultWhiteHex), hextoUIColor(hexString: stepConfig.buttonTextColor?.autoRejected ?? defaultBlackHex))
     case .APPROVED:
-      return (UIColor(hexString: stepConfig.buttonColor?.approved ?? defaultWhiteHex), UIColor(hexString: stepConfig.buttonTextColor?.approved ?? defaultBlackHex))
+      return (hextoUIColor(hexString: stepConfig.buttonColor?.approved ?? defaultWhiteHex), hextoUIColor(hexString: stepConfig.buttonTextColor?.approved ?? defaultBlackHex))
     @unknown default:
       return (ThemeColor.whiteColor, ThemeColor.blackColor)
     }

@@ -23,7 +23,7 @@ class SelfieHandler: DocumentHandler {
     self.docID = docID
   }
   
-  func start(docStep: AmaniSDK.DocumentStepModel, version: AmaniSDK.DocumentVersion, workingStepIndex: Int,completion: @escaping StepCompletionCallback) {
+  func start(docStep: AmaniSDK.DocumentStepModel, version: AmaniSDK.DocumentVersion, workingStepIndex: Int,completion: @escaping (Result<KYCStepViewModel, KYCStepError>) -> Void) {
     guard let selfieType = version.selfieType else {
       completion(.failure(.configError))
       return
@@ -71,7 +71,7 @@ class SelfieHandler: DocumentHandler {
     }
   }
   
-  func upload(completion: @escaping StepUploadCallback) {
+  func upload(completion: @escaping ((Bool?, [String : Any]?) -> Void)) {
     guard let selfieModule = selfieModule else { return }
     
     if (selfieModule is Selfie) {
@@ -90,7 +90,7 @@ class SelfieHandler: DocumentHandler {
     
   }
   
-  private func runManualSelfie(step: DocumentStepModel, version: DocumentVersion, completion: @escaping StepCompletionCallback) -> UIView?{
+  private func runManualSelfie(step: DocumentStepModel, version: DocumentVersion, completion: @escaping (Result<KYCStepViewModel, KYCStepError>) -> Void) -> UIView?{
     selfieModule = Amani.sharedInstance.selfie()
     guard let currentSelfieModule = selfieModule as? Selfie else {
       print("cant return")
@@ -117,7 +117,7 @@ class SelfieHandler: DocumentHandler {
   }
   
   
-  private func runAutoSelfie(step: DocumentStepModel, version: DocumentVersion, completion: @escaping StepCompletionCallback)-> UIView? {
+  private func runAutoSelfie(step: DocumentStepModel, version: DocumentVersion, completion: @escaping (Result<KYCStepViewModel, KYCStepError>) -> Void)-> UIView? {
     selfieModule = Amani.sharedInstance.autoSelfie()
     
     guard let currentSelfieModule = selfieModule as? AutoSelfie else {
@@ -160,7 +160,7 @@ class SelfieHandler: DocumentHandler {
     }
   }
   
-  private func runPoseEstimation(step: DocumentStepModel, version: DocumentVersion, completion: @escaping StepCompletionCallback)->UIView? {
+  private func runPoseEstimation(step: DocumentStepModel, version: DocumentVersion, completion: @escaping (Result<KYCStepViewModel, KYCStepError>) -> Void)->UIView? {
     let poseCount = version.selfieType!
     
     selfieModule = Amani.sharedInstance.poseEstimation()

@@ -23,18 +23,17 @@
 		1899046D2D5E4A7600CA2F60 /* DocumentsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189904692D5E4A7600CA2F60 /* DocumentsHandler.swift */; };
 		1899046E2D5E4A7600CA2F60 /* DocumentsHandlerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1899046A2D5E4A7600CA2F60 /* DocumentsHandlerDelegate.swift */; };
 		1899046F2D5E4A7600CA2F60 /* DocumentsHandlerVNDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1899046B2D5E4A7600CA2F60 /* DocumentsHandlerVNDelegate.swift */; };
-		18E5114A2D3682C9002FE3DE /* countries.json in Resources */ = {isa = PBXBuildFile; fileRef = 18E511492D3682C9002FE3DE /* countries.json */; };
 		18E7B2CB2BD271370073C268 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 18E7B2CA2BD271370073C268 /* PrivacyInfo.xcprivacy */; };
-		48100B972A55658A007DA156 /* AmaniSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4830904228900A3800B75529 /* AmaniSDK.xcframework */; };
-		48100B9A2A55658F007DA156 /* Lottie.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48B4720E27B147870089D42E /* Lottie.xcframework */; };
 		484E26F8295A3DC700839E54 /* AmaniUIDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484E26F7295A3DC700839E54 /* AmaniUIDelegate.swift */; };
+		488B08D52D68906800935C5D /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 488B08D42D68906800935C5D /* Lottie */; };
+		488B08D82D68907400935C5D /* AmaniSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 488B08D72D68907400935C5D /* AmaniSDK */; };
+		488B08DA2D68924000935C5D /* AmaniVoiceAssistantSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 488B08D92D68924000935C5D /* AmaniVoiceAssistantSDK */; };
+		488B08DD2D6892C100935C5D /* NFCConfigureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488B08DB2D6892C100935C5D /* NFCConfigureView.swift */; };
+		488B08DF2D68B4EA00935C5D /* hextoUIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488B08DE2D68B4E900935C5D /* hextoUIColor.swift */; };
 		48B90A0429A278E700508E63 /* SignatureHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B90A0329A278E700508E63 /* SignatureHandler.swift */; };
-		48DF760E29699A81000D519A /* ContainerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48DF760D29699A81000D519A /* ContainerViewController.xib */; };
 		48DF761029699A8F000D519A /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DF760F29699A8F000D519A /* ContainerViewController.swift */; };
 		48E081172C7F662400EAD39B /* AnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E081152C7F662400EAD39B /* AnimationView.swift */; };
-		48EAA84D29E37C98001A2A35 /* SignatureViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48B909FF29A264B700508E63 /* SignatureViewController.xib */; };
 		48EAA84E29E37C9B001A2A35 /* SignatureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B90A0129A2656100508E63 /* SignatureViewController.swift */; };
-		9164D6462D08C12500338782 /* AmaniVoiceAssistant in Frameworks */ = {isa = PBXBuildFile; productRef = 9164D6452D08C12500338782 /* AmaniVoiceAssistant */; };
 		C523DEF72B3A740B00F68E32 /* CheckSMSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C523DEF62B3A740B00F68E32 /* CheckSMSViewController.swift */; };
 		C523DEFA2B3A745F00F68E32 /* CheckSMSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C523DEF92B3A745F00F68E32 /* CheckSMSView.swift */; };
 		C523DEFD2B3A747100F68E32 /* CheckSMSViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C523DEFC2B3A747100F68E32 /* CheckSMSViewModel.swift */; };
@@ -47,7 +46,6 @@
 		C5319C9428C63C0200153D50 /* CryptoKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C544FF0528C5E2EB00C0B406 /* CryptoKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		C5319C9528C63C0200153D50 /* CryptoTokenKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C544FF0628C5E2EB00C0B406 /* CryptoTokenKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		C539A5C329093DB4003386F8 /* AlertDialougeUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = C539A5C229093DB4003386F8 /* AlertDialougeUtility.swift */; };
-		C539A5C8290FE9F9003386F8 /* SuccessViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C539A5C6290FE9F9003386F8 /* SuccessViewController.xib */; };
 		C539A5C9290FE9F9003386F8 /* SuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C539A5C7290FE9F9003386F8 /* SuccessViewController.swift */; };
 		C53C474F28C7718300FA10B6 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53C474E28C7718300FA10B6 /* UIViewExtensions.swift */; };
 		C53C475128C7B39800FA10B6 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53C475028C7B39800FA10B6 /* Constants.swift */; };
@@ -86,7 +84,6 @@
 		C5A450722B3A33AB0064AAA7 /* PhoneOTPViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A450712B3A33AB0064AAA7 /* PhoneOTPViewModel.swift */; };
 		C5B07D7C290048E300243A5B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5B07D6D290048E300243A5B /* Assets.xcassets */; };
 		C5BA62A42914006B004108B4 /* NFHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BA62A32914006B004108B4 /* NFHandler.swift */; };
-		C5D3B9402A9355B00023B66E /* OpenSSL.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5D3B93F2A9355B00023B66E /* OpenSSL.xcframework */; };
 		C5FD14972B7FC78E00E02F95 /* KeyboardAvoidenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FD14962B7FC78E00E02F95 /* KeyboardAvoidenceViewController.swift */; };
 		C5FD51342B39BD2D0057DB87 /* RoundedTextInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FD51312B39BD2D0057DB87 /* RoundedTextInput.swift */; };
 		C5FD51362B39BD2D0057DB87 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FD51332B39BD2D0057DB87 /* RoundedButton.swift */; };
@@ -115,15 +112,14 @@
 		189904692D5E4A7600CA2F60 /* DocumentsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentsHandler.swift; sourceTree = "<group>"; };
 		1899046A2D5E4A7600CA2F60 /* DocumentsHandlerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentsHandlerDelegate.swift; sourceTree = "<group>"; };
 		1899046B2D5E4A7600CA2F60 /* DocumentsHandlerVNDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentsHandlerVNDelegate.swift; sourceTree = "<group>"; };
-		18E511492D3682C9002FE3DE /* countries.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = countries.json; sourceTree = "<group>"; };
 		18E7B2CA2BD271370073C268 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		4830904228900A3800B75529 /* AmaniSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AmaniSDK.xcframework; path = Carthage/Build/AmaniSDK.xcframework; sourceTree = SOURCE_ROOT; };
 		484E26F7295A3DC700839E54 /* AmaniUIDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmaniUIDelegate.swift; sourceTree = "<group>"; };
+		488B08DB2D6892C100935C5D /* NFCConfigureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFCConfigureView.swift; sourceTree = "<group>"; };
+		488B08DE2D68B4E900935C5D /* hextoUIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = hextoUIColor.swift; sourceTree = "<group>"; };
 		48B4720E27B147870089D42E /* Lottie.xcframework */ = {isa = PBXFileReference; expectedSignature = "SelfSigned:892F1B43047B50538F2F46EAD92900DD3D4811F3582178C061A5FB20F111CB26"; lastKnownFileType = wrapper.xcframework; name = Lottie.xcframework; path = Carthage/Build/Lottie.xcframework; sourceTree = SOURCE_ROOT; };
-		48B909FF29A264B700508E63 /* SignatureViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SignatureViewController.xib; sourceTree = "<group>"; };
 		48B90A0129A2656100508E63 /* SignatureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureViewController.swift; sourceTree = "<group>"; };
 		48B90A0329A278E700508E63 /* SignatureHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureHandler.swift; sourceTree = "<group>"; };
-		48DF760D29699A81000D519A /* ContainerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContainerViewController.xib; sourceTree = "<group>"; };
 		48DF760F29699A8F000D519A /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		48E081152C7F662400EAD39B /* AnimationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationView.swift; sourceTree = "<group>"; };
 		C523DEF62B3A740B00F68E32 /* CheckSMSViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckSMSViewController.swift; sourceTree = "<group>"; };
@@ -135,7 +131,6 @@
 		C52F145128F5B70400D7A5A6 /* DocumentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentHandler.swift; sourceTree = "<group>"; };
 		C52F145728F9819100D7A5A6 /* NFCViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFCViewController.swift; sourceTree = "<group>"; };
 		C539A5C229093DB4003386F8 /* AlertDialougeUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertDialougeUtility.swift; sourceTree = "<group>"; };
-		C539A5C6290FE9F9003386F8 /* SuccessViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SuccessViewController.xib; sourceTree = "<group>"; };
 		C539A5C7290FE9F9003386F8 /* SuccessViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuccessViewController.swift; sourceTree = "<group>"; };
 		C53C474E28C7718300FA10B6 /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 		C53C475028C7B39800FA10B6 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -195,13 +190,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C5D3B9402A9355B00023B66E /* OpenSSL.xcframework in Frameworks */,
+				488B08DA2D68924000935C5D /* AmaniVoiceAssistantSDK in Frameworks */,
 				C5319C9528C63C0200153D50 /* CryptoTokenKit.framework in Frameworks */,
+				488B08D82D68907400935C5D /* AmaniSDK in Frameworks */,
 				C5319C9328C63BEB00153D50 /* CoreNFC.framework in Frameworks */,
-				9164D6462D08C12500338782 /* AmaniVoiceAssistant in Frameworks */,
-				48100B9A2A55658F007DA156 /* Lottie.xcframework in Frameworks */,
 				C5319C9428C63C0200153D50 /* CryptoKit.framework in Frameworks */,
-				48100B972A55658A007DA156 /* AmaniSDK.xcframework in Frameworks */,
+				488B08D52D68906800935C5D /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -236,16 +230,13 @@
 			path = CountryPicker;
 			sourceTree = "<group>";
 		};
-		1899046C2D5E4A7600CA2F60 /* DocumentsHandler */ = {
+		488B08DC2D6892C100935C5D /* NFCConfigureView */ = {
 			isa = PBXGroup;
 			children = (
-				189904692D5E4A7600CA2F60 /* DocumentsHandler.swift */,
-				1899046A2D5E4A7600CA2F60 /* DocumentsHandlerDelegate.swift */,
-				1899046B2D5E4A7600CA2F60 /* DocumentsHandlerVNDelegate.swift */,
+				488B08DB2D6892C100935C5D /* NFCConfigureView.swift */,
 			);
-			name = DocumentsHandler;
-			path = AmaniUI/DocumentHandler/Handlers/DocumentsHandler;
-			sourceTree = SOURCE_ROOT;
+			path = NFCConfigureView;
+			sourceTree = "<group>";
 		};
 		489D406426BBE5DD0009AB39 = {
 			isa = PBXGroup;
@@ -280,7 +271,6 @@
 		48B909FE29A2647900508E63 /* SignatureScreen */ = {
 			isa = PBXGroup;
 			children = (
-				48B909FF29A264B700508E63 /* SignatureViewController.xib */,
 				48B90A0129A2656100508E63 /* SignatureViewController.swift */,
 			);
 			path = SignatureScreen;
@@ -289,7 +279,6 @@
 		48DF760C29699A22000D519A /* ContainerVC */ = {
 			isa = PBXGroup;
 			children = (
-				48DF760D29699A81000D519A /* ContainerViewController.xib */,
 				48DF760F29699A8F000D519A /* ContainerViewController.swift */,
 			);
 			path = ContainerVC;
@@ -350,6 +339,7 @@
 			isa = PBXGroup;
 			children = (
 				C52F145528F9816700D7A5A6 /* Controller */,
+				488B08DC2D6892C100935C5D /* NFCConfigureView */,
 			);
 			path = NFCCapture;
 			sourceTree = "<group>";
@@ -390,7 +380,6 @@
 		C539A5C5290FE9F9003386F8 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				C539A5C6290FE9F9003386F8 /* SuccessViewController.xib */,
 				C539A5C7290FE9F9003386F8 /* SuccessViewController.swift */,
 			);
 			path = Controller;
@@ -470,6 +459,7 @@
 		C54B58AF28C76148005DBAA9 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				488B08DE2D68B4E900935C5D /* hextoUIColor.swift */,
 				C5FD14962B7FC78E00E02F95 /* KeyboardAvoidenceViewController.swift */,
 				C54B58B028C76160005DBAA9 /* BaseViewController.swift */,
 				C53C475028C7B39800FA10B6 /* Constants.swift */,
@@ -580,11 +570,13 @@
 		C5A06F7029127C28009520AF /* Handlers */ = {
 			isa = PBXGroup;
 			children = (
-				1899046C2D5E4A7600CA2F60 /* DocumentsHandler */,
 				C5A06F7129127C47009520AF /* IdHandler.swift */,
 				C5A06F752913ED9E009520AF /* SelfieHandler.swift */,
 				48B90A0329A278E700508E63 /* SignatureHandler.swift */,
 				C5BA62A32914006B004108B4 /* NFHandler.swift */,
+				189904692D5E4A7600CA2F60 /* DocumentsHandler.swift */,
+				1899046A2D5E4A7600CA2F60 /* DocumentsHandlerDelegate.swift */,
+				1899046B2D5E4A7600CA2F60 /* DocumentsHandlerVNDelegate.swift */,
 			);
 			path = Handlers;
 			sourceTree = "<group>";
@@ -618,7 +610,6 @@
 		C5B07D6C290048E300243A5B /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				18E511492D3682C9002FE3DE /* countries.json */,
 				C5B07D6D290048E300243A5B /* Assets.xcassets */,
 			);
 			path = Assets;
@@ -753,7 +744,9 @@
 			);
 			mainGroup = 489D406426BBE5DD0009AB39;
 			packageReferences = (
-				9164D6442D08C12500338782 /* XCLocalSwiftPackageReference "../../AmaniVoiceAssistant" */,
+				488B08D22D68905B00935C5D /* XCRemoteSwiftPackageReference "AmaniVoiceAssistantSDK" */,
+				488B08D32D68906800935C5D /* XCRemoteSwiftPackageReference "lottie-spm" */,
+				488B08D62D68907400935C5D /* XCRemoteSwiftPackageReference "Mobile_SDK_Repo" */,
 			);
 			productRefGroup = 489D406E26BBE5DD0009AB39 /* Products */;
 			projectDirPath = "";
@@ -769,10 +762,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				48EAA84D29E37C98001A2A35 /* SignatureViewController.xib in Resources */,
-				48DF760E29699A81000D519A /* ContainerViewController.xib in Resources */,
-				C539A5C8290FE9F9003386F8 /* SuccessViewController.xib in Resources */,
-				18E5114A2D3682C9002FE3DE /* countries.json in Resources */,
 				C5B07D7C290048E300243A5B /* Assets.xcassets in Resources */,
 				18E7B2CB2BD271370073C268 /* PrivacyInfo.xcprivacy in Resources */,
 			);
@@ -836,6 +825,7 @@
 				C5FD514A2B39BF240057DB87 /* CheckMailViewModel.swift in Sources */,
 				C56169512B84CEB600050A8D /* String+Extensions.swift in Sources */,
 				C523DEF72B3A740B00F68E32 /* CheckSMSViewController.swift in Sources */,
+				488B08DF2D68B4EA00935C5D /* hextoUIColor.swift in Sources */,
 				C53C475128C7B39800FA10B6 /* Constants.swift in Sources */,
 				185A2BFF2BBD64AE00855F77 /* Country.swift in Sources */,
 				C561694E2B84CDE200050A8D /* ProfileInfoViewController.swift in Sources */,
@@ -858,6 +848,7 @@
 				C5FD513D2B39BD970057DB87 /* EmailOTPViewModel.swift in Sources */,
 				185A2C022BBD64AE00855F77 /* CountryPickerViewController.swift in Sources */,
 				C5FD51492B39BF240057DB87 /* CheckMailViewController.swift in Sources */,
+				488B08DD2D6892C100935C5D /* NFCConfigureView.swift in Sources */,
 				185A2C052BBD64AE00855F77 /* SeperatorAppearance.swift in Sources */,
 				C5FD513E2B39BD970057DB87 /* EmailOTPScreenViewController.swift in Sources */,
 			);
@@ -1082,17 +1073,48 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		9164D6442D08C12500338782 /* XCLocalSwiftPackageReference "../../AmaniVoiceAssistant" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../AmaniVoiceAssistant;
+/* Begin XCRemoteSwiftPackageReference section */
+		488B08D22D68905B00935C5D /* XCRemoteSwiftPackageReference "AmaniVoiceAssistantSDK" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/munir-amani/AmaniVoiceAssistantSDK";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.1;
+			};
 		};
-/* End XCLocalSwiftPackageReference section */
+		488B08D32D68906800935C5D /* XCRemoteSwiftPackageReference "lottie-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-spm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.1;
+			};
+		};
+		488B08D62D68907400935C5D /* XCRemoteSwiftPackageReference "Mobile_SDK_Repo" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AmaniTechnologiesLtd/Mobile_SDK_Repo.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		9164D6452D08C12500338782 /* AmaniVoiceAssistant */ = {
+		488B08D42D68906800935C5D /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = AmaniVoiceAssistant;
+			package = 488B08D32D68906800935C5D /* XCRemoteSwiftPackageReference "lottie-spm" */;
+			productName = Lottie;
+		};
+		488B08D72D68907400935C5D /* AmaniSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 488B08D62D68907400935C5D /* XCRemoteSwiftPackageReference "Mobile_SDK_Repo" */;
+			productName = AmaniSDK;
+		};
+		488B08D92D68924000935C5D /* AmaniVoiceAssistantSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 488B08D22D68905B00935C5D /* XCRemoteSwiftPackageReference "AmaniVoiceAssistantSDK" */;
+			productName = AmaniVoiceAssistantSDK;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

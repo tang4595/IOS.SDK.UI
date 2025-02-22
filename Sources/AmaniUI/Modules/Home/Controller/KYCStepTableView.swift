@@ -113,7 +113,7 @@ extension KYCStepTblView: UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let step = self.kycSteps[indexPath.row]
     
-    if self.kycSteps[indexPath.row].getRuleModel().documentClasses!.first == "IB" && !(self.kycSteps[indexPath.row].getRuleModel().status == "APPROVED")  {
+    if self.kycSteps[indexPath.row].getRuleModel().documentClasses!.first == "IB" && !((self.kycSteps[indexPath.row].getRuleModel().status == DocumentStatus.APPROVED.rawValue) || (self.kycSteps[indexPath.row].getRuleModel().status == DocumentStatus.PENDING_REVIEW.rawValue))  {
         // Specify only PDF type
       let documentPicker = UIDocumentPickerViewController(documentTypes: [kUTTypePDF as String], in: .import)
       documentPicker.delegate = self

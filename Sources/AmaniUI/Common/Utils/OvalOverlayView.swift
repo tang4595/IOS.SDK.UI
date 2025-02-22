@@ -16,8 +16,7 @@ internal class OvalOverlayView: UIView {
   let ovalLayer = CAShapeLayer()
   var heightofbuttom:CGFloat = 0
   var color:UIColor = .green
-  fileprivate typealias animationType = ()->()
-  fileprivate var animationEndCB:animationType? = nil
+  var animationEndCB:(()->())? = nil
   
   
   internal init(bgColor: UIColor,strokeColor:UIColor, bottomOuterViewHeight: CGFloat = 0, screenBounds:CGRect) {

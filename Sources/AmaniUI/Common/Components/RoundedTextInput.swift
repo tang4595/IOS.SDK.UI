@@ -38,7 +38,7 @@ class RoundedTextInput: UIView {
 
   private let errorLabel: UILabel = {
     let label = UILabel()
-    label.textColor = UIColor(hexString: "#FF0000")
+    label.textColor = hextoUIColor(hexString: "#FF0000")
     label.text = "Default Error Message"
     label.font = UIFont.systemFont(ofSize: 12.0, weight: .bold)
     return label
@@ -82,7 +82,7 @@ class RoundedTextInput: UIView {
     layer.cornerRadius = 24
     layer.cornerCurve = .continuous
     layer.borderWidth = 1
-    layer.borderColor = UIColor(hexString: "#C0C0C0").cgColor
+    layer.borderColor = hextoUIColor(hexString: "#C0C0C0").cgColor
 
     let insets = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
     field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: insets.left, height: frame.height))
@@ -143,13 +143,13 @@ class RoundedTextInput: UIView {
   func showError(message: String) {
     errorLabel.text = message
     errorLabel.isHidden = false
-    layer.borderColor = UIColor(hexString: "#FF0000").cgColor
+    layer.borderColor = hextoUIColor(hexString: "#FF0000").cgColor
   }
 
   func hideError() {
     errorLabel.isHidden = true
     // TODO: Add special case for focused
-    layer.borderColor = UIColor(hexString: "#C0C0C0").cgColor
+    layer.borderColor = hextoUIColor(hexString: "#C0C0C0").cgColor
   }
 
   func updatePlaceHolder(text: String, color: UIColor = .lightGray) {
@@ -169,9 +169,9 @@ class RoundedTextInput: UIView {
   func setFocusBorderColors(isFocused: Bool) {
     hasRenderedInitial = true
     if isFocused {
-      layer.borderColor = UIColor(hexString: "#515166").cgColor
+      layer.borderColor = hextoUIColor(hexString: "#515166").cgColor
     } else {
-      layer.borderColor = UIColor(hexString: "#C0C0C0").cgColor
+      layer.borderColor = hextoUIColor(hexString: "#C0C0C0").cgColor
     }
     setNeedsDisplay()
   }

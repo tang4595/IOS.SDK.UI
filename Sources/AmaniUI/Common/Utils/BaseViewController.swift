@@ -17,8 +17,8 @@ class BaseViewController: UIViewController {
     
     //  let orientation: UIInterfaceOrientationMask = .portrait
     var navBarFontColor: String = "#000000"
-    var navbarRightButtonAction:VoidCallback? = nil
-    var navbarLeftButtonAction: VoidCallback? = nil
+    var navbarRightButtonAction:(() -> Void)? = nil
+    var navbarLeftButtonAction: (() -> Void)? = nil
     var nfcConfigureView: UIView?
     
     override open var shouldAutorotate: Bool {
@@ -74,12 +74,12 @@ class BaseViewController: UIViewController {
         let leftButton: UIButton = UIButton(type: .custom)
        
         leftButton.setTitle(text, for: .normal)
-//        leftButton.tintColor = UIColor(hexString: tintColor ?? navBarFontColor)
+//        leftButton.tintColor = hextoUIColor(hexString: tintColor ?? navBarFontColor)
         leftButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
         leftButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
         leftButton.backgroundColor = .clear
-//        leftButton.tintColor = UIColor(hexString: tintColor ?? navBarFontColor)
-        leftButton.setTitleColor(UIColor(hexString: tintColor ?? "#20202F"), for: .normal)
+//        leftButton.tintColor = hextoUIColor(hexString: tintColor ?? navBarFontColor)
+        leftButton.setTitleColor(hextoUIColor(hexString: tintColor ?? "#20202F"), for: .normal)
         leftButton.addTarget(self, action: #selector(selectorFunc), for: .touchUpInside)
 //        leftButton.addTarget(self, action: #selector(popViewController), for: .touchUpInside)
         let backBarButtonItem: UIBarButtonItem = UIBarButtonItem(customView: leftButton)
@@ -90,7 +90,7 @@ class BaseViewController: UIViewController {
         let leftButton: UIButton = UIButton(type: .custom)
 
         leftButton.setImage(UIImage(named: "ic_backArrow", in: AmaniUI.sharedInstance.getBundle(), compatibleWith: nil), for: .normal)
-        leftButton.tintColor = UIColor(hexString: TintColor ?? navBarFontColor)
+        leftButton.tintColor = hextoUIColor(hexString: TintColor ?? navBarFontColor)
         leftButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
         leftButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
         leftButton.backgroundColor = .clear
@@ -103,7 +103,7 @@ class BaseViewController: UIViewController {
     func setPopButton(TintColor:String? = nil) {
         let leftButton: UIButton = UIButton(type: .custom)
         leftButton.setImage(UIImage(named: "ic_backArrow", in: AmaniUI.sharedInstance.getBundle(), compatibleWith: nil), for: .normal)
-        leftButton.tintColor = UIColor(hexString: TintColor ?? navBarFontColor)
+        leftButton.tintColor = hextoUIColor(hexString: TintColor ?? navBarFontColor)
         leftButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
         leftButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
         leftButton.backgroundColor = .clear
@@ -113,14 +113,8 @@ class BaseViewController: UIViewController {
     }
     
     @objc func popViewController() {
-        // FIXME: ATTENTION: This is an hotfix. Since some screens are actually calling
-        // setNavigationLeftButton directly, and it stupidly calls this method,
-        // we need to double check it here.
-        // Either find the ancient curse that is laid upon here, or remove the
-        // setFirstPop method correctly.
         if(self.navigationController?.viewControllers.count == 1) {
           navigationController?.popViewController(animated: true)
-           
         } else {
           if let customView = nfcConfigureView, !customView.isHidden {
             hideCustomView()
@@ -139,17 +133,17 @@ class BaseViewController: UIViewController {
     }
     
     
-    func setRightNavBarButtonAction(cb:@escaping VoidCallback) {
+    func setRightNavBarButtonAction(cb:@escaping (() -> Void)) {
         navbarRightButtonAction = cb
     }
-    func setLeftNavBarButtonAction(cb:@escaping VoidCallback) {
+    func setLeftNavBarButtonAction(cb:@escaping (() -> Void)) {
         navbarLeftButtonAction = cb
     }
     
     func setNavigationRightButton(text:String = "Elle Kırp", TintColor:String? = nil) {
         let rightButton: UIButton = UIButton(type: .custom)
         rightButton.setTitle(text,for: .normal)
-        rightButton.setTitleColor(UIColor(hexString: TintColor ?? navBarFontColor), for: .normal)
+        rightButton.setTitleColor(hextoUIColor(hexString: TintColor ?? navBarFontColor), for: .normal)
         //        rightButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
         //        rightButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
         rightButton.backgroundColor = .clear
@@ -170,12 +164,12 @@ class BaseViewController: UIViewController {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
             appearance.backgroundColor = self.navigationController?.navigationBar.standardAppearance.backgroundColor
-            appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: textColor ?? UIColor(hexString: navBarFontColor)]
+            appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: textColor ?? hextoUIColor(hexString: navBarFontColor)]
             self.navigationController?.navigationBar.standardAppearance = appearance;
             self.navigationController?.navigationBar.scrollEdgeAppearance =  self.navigationController?.navigationBar.standardAppearance
             
         } else {
-            self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: textColor ?? UIColor(hexString: navBarFontColor)]
+            self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: textColor ?? hextoUIColor(hexString: navBarFontColor)]
         }
     }
     
@@ -187,9 +181,6 @@ class BaseViewController: UIViewController {
             self.setPopButton()
         }
     }
-  
-  
-
 
       func hideCustomView() {
       nfcConfigureView?.removeFromSuperview()
@@ -207,14 +198,14 @@ class BaseViewController: UIViewController {
         navBarFontColor = config?.generalconfigs?.topBarFontColor ?? "000000"
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = UIColor(hexString: config?.generalconfigs?.topBarBackground ?? "0F2435")
-        appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(hexString: navBarFontColor)]
+        appearance.backgroundColor = hextoUIColor(hexString: config?.generalconfigs?.topBarBackground ?? "0F2435")
+        appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: hextoUIColor(hexString: navBarFontColor)]
         appearance.shadowColor = .clear
         self.navigationController?.navigationBar.standardAppearance = appearance
         self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
         self.navigationController?.navigationBar.isTranslucent = true
-        self.view.backgroundColor = UIColor(hexString: config?.generalconfigs?.appBackground ?? "253C59")
-        self.navigationController?.navigationBar.backgroundColor = UIColor(hexString: config?.generalconfigs?.topBarBackground ?? "0F2435")
+        self.view.backgroundColor = hextoUIColor(hexString: config?.generalconfigs?.appBackground ?? "253C59")
+        self.navigationController?.navigationBar.backgroundColor = hextoUIColor(hexString: config?.generalconfigs?.topBarBackground ?? "0F2435")
         
         // Setup bottom line
         
@@ -228,7 +219,7 @@ class BaseViewController: UIViewController {
                 
                 
                 let lineView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 1))
-                lineView.backgroundColor = UIColor(hexString: "#CACFD6")
+                lineView.backgroundColor = hextoUIColor(hexString: "#CACFD6")
                 lineView.tag = 1001
                 
                 navigationBar.addSubview(lineView)

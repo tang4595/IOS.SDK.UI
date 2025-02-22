@@ -9,7 +9,7 @@ import AmaniSDK
 import UIKit
 
 class NFHandler: DocumentHandler {
-    func start(docStep: AmaniSDK.DocumentStepModel, version: AmaniSDK.DocumentVersion, workingStepIndex: Int, completion: @escaping StepCompletionCallback) {
+    func start(docStep: AmaniSDK.DocumentStepModel, version: AmaniSDK.DocumentVersion, workingStepIndex: Int, completion: @escaping (Result<KYCStepViewModel, KYCStepError>) -> Void) {
         print("bu metod kullanımdan kaldırıldı.")
     }
     
@@ -26,7 +26,7 @@ class NFHandler: DocumentHandler {
     self.docID = docID
   }
   
-    func start(docStep: AmaniSDK.DocumentStepModel, version: AmaniSDK.DocumentVersion, workingStepIndex: Int = 0,completion: @escaping StepCompletionCallback) async {
+    func start(docStep: AmaniSDK.DocumentStepModel, version: AmaniSDK.DocumentVersion, workingStepIndex: Int = 0,completion: @escaping (Result<KYCStepViewModel, KYCStepError>) -> Void) async {
     // FIXME: Add correct id type to nf document on configuration
     nfcCaptureModule.setType(type: DocumentTypes.TurkishIdNew.rawValue)
 
@@ -46,7 +46,7 @@ class NFHandler: DocumentHandler {
 
   }
   
-  func upload(completion: @escaping StepUploadCallback) {
+  func upload(completion: @escaping ((Bool?, [String : Any]?) -> Void)) {
     nfcCaptureModule.upload(location: AmaniUI.sharedInstance.location){[weak self] result in
       completion(result,nil)
     }

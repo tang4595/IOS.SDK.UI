@@ -39,7 +39,7 @@ class CheckSMSViewController: KeyboardAvoidanceViewController {
     checkSMSView.appConfig = appConfig
     checkSMSView.bind(withViewModel: checkSMSViewModel, withDocument: docVersion)
     addPoweredByIcon()
-    view.backgroundColor = UIColor(hexString: "#EEF4FA")
+    view.backgroundColor = hextoUIColor(hexString: "#EEF4FA")
     contentView.addSubview(checkSMSView)
     checkSMSView.translatesAutoresizingMaskIntoConstraints = false
     

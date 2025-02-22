@@ -8,7 +8,6 @@
 import UIKit
 import AmaniSDK
 
-typealias ConfirmCallback = () -> Void
 
 class DocConfirmationViewController: BaseViewController {
   // MARK: Properties
@@ -28,7 +27,7 @@ class DocConfirmationViewController: BaseViewController {
   let child = AnimationViewDocConfirmation()
   var stepid:Int = 0
   private var image: UIImage?
-  private var confirmCallback: ConfirmCallback?
+  private var confirmCallback: (() -> Void)?
   
   private var documentID: DocumentID?
   private var documentVersion: DocumentVersion?
@@ -41,7 +40,7 @@ class DocConfirmationViewController: BaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
       let appBackground = appConfig?.generalconfigs?.appBackground
-    ovalView = OvalOverlayView(bgColor: UIColor(hexString: appBackground ?? "253C59"), strokeColor: UIColor(hexString: "ffffff engine='xlsxwrite"), screenBounds: UIScreen.main.bounds)
+    ovalView = OvalOverlayView(bgColor: hextoUIColor(hexString: appBackground ?? "253C59"), strokeColor: hextoUIColor(hexString: "ffffff engine='xlsxwrite"), screenBounds: UIScreen.main.bounds)
     self.confirmBtn.addTarget(self, action: #selector(confirmAction(_:)), for: .touchUpInside)
     self.tryAgainBtn.addTarget(self, action: #selector(tryAgainAction(_:)), for: .touchUpInside)
     self.initialSetup()
@@ -100,8 +99,8 @@ class DocConfirmationViewController: BaseViewController {
    
     self.titleLabel.text = documentStep?.confirmationTitle ?? ""
     self.descriptionLabel.text = documentStep?.confirmationDescription ?? ""
-    self.titleLabel.textColor = UIColor(hexString: appConfig.generalconfigs?.appFontColor ?? "ffffff")
-    self.descriptionLabel.textColor = UIColor(hexString: appConfig.generalconfigs?.appFontColor ?? "ffffff")
+    self.titleLabel.textColor = hextoUIColor(hexString: appConfig.generalconfigs?.appFontColor ?? "ffffff")
+    self.descriptionLabel.textColor = hextoUIColor(hexString: appConfig.generalconfigs?.appFontColor ?? "ffffff")
     // Buttons corner radious
     self.tryAgainBtn.addCornerRadiousWith(radious: buttonRadious)
     self.confirmBtn.addCornerRadiousWith(radious: buttonRadious)
@@ -109,23 +108,23 @@ class DocConfirmationViewController: BaseViewController {
     self.tryAgainBtn.setTitle(appConfig.generalconfigs?.tryAgainText, for: .normal)
     self.confirmBtn.setTitle(appConfig.generalconfigs?.confirmText, for: .normal)
     // Border color for try again button
-    self.tryAgainBtn.addBorder(borderWidth: 2, borderColor: UIColor(hexString: appConfig.generalconfigs?.secondaryButtonBorderColor ?? ThemeColor.whiteColor.toHexString()).cgColor)
+    self.tryAgainBtn.addBorder(borderWidth: 2, borderColor: hextoUIColor(hexString: appConfig.generalconfigs?.secondaryButtonBorderColor ?? ThemeColor.whiteColor.toHexString()).cgColor)
     // Title Colors
-    self.tryAgainBtn.setTitleColor(UIColor(hexString: appConfig.generalconfigs?.secondaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
-    self.confirmBtn.setTitleColor(UIColor(hexString: appConfig.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
+    self.tryAgainBtn.setTitleColor(hextoUIColor(hexString: appConfig.generalconfigs?.secondaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
+    self.confirmBtn.setTitleColor(hextoUIColor(hexString: appConfig.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
     // Background Colors
-    self.confirmBtn.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonBackgroundColor ?? ThemeColor.primaryColor.toHexString())
+    self.confirmBtn.backgroundColor = hextoUIColor(hexString: appConfig.generalconfigs?.primaryButtonBackgroundColor ?? ThemeColor.primaryColor.toHexString())
     if let color = appConfig.generalconfigs?.secondaryButtonBackgroundColor {
-      self.tryAgainBtn.backgroundColor = UIColor(hexString: color)
+      self.tryAgainBtn.backgroundColor = hextoUIColor(hexString: color)
     }
     
     // Navigation Bar
     
-    self.setNavigationBarWith(title: documentStep?.confirmationTitle ?? "", textColor: UIColor(hexString: appConfig.generalconfigs?.appFontColor ?? "ffffff"))
+    self.setNavigationBarWith(title: documentStep?.confirmationTitle ?? "", textColor: hextoUIColor(hexString: appConfig.generalconfigs?.appFontColor ?? "ffffff"))
     self.setNavigationLeftButton(TintColor: appConfig.generalconfigs?.topBarFontColor ?? "ffffff")
     
     // labels and powered by image
-      amaniLogo.tintColor = UIColor(hexString: appConfig.generalconfigs?.appFontColor ?? "ffffff")
+      amaniLogo.tintColor = hextoUIColor(hexString: appConfig.generalconfigs?.appFontColor ?? "ffffff")
       amaniLogo.isHidden = appConfig.generalconfigs?.hideLogo ?? false
     
     // Document spesific settings
@@ -139,8 +138,8 @@ class DocConfirmationViewController: BaseViewController {
       selfieImageView.isHidden = false
       selfieImageView.contentMode = .scaleAspectFill
       let ovalView = OvalOverlayView(
-        bgColor: UIColor(hexString: appConfig.generalconfigs?.appBackground ?? "", alpha: 1),
-        strokeColor: UIColor(hexString: "ffffff"),
+        bgColor: hextoUIColor(hexString: appConfig.generalconfigs?.appBackground ?? "", alpha: 1),
+        strokeColor: hextoUIColor(hexString: "ffffff"),
         screenBounds: UIScreen.main.bounds
       )
         self.view.addSubview(selfieImageView)
@@ -179,7 +178,7 @@ class DocConfirmationViewController: BaseViewController {
       else if documentID == DocumentID.SG{
           imgOuterView.isHidden = false
           self.idImgView.image = image
-          self.idImgView.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.appBackground ?? "#263B5B")
+          self.idImgView.backgroundColor = hextoUIColor(hexString: appConfig.generalconfigs?.appBackground ?? "#263B5B")
           
 //          self.setConstraints()
         self.setNavigationBarWith(title: (self.documentStep?.captureTitle)!)
@@ -211,7 +210,7 @@ class DocConfirmationViewController: BaseViewController {
     else {
       imgOuterView.isHidden = false
       self.idImgView.image = image
-      self.idImgView.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.appBackground ?? "#263B5B")
+      self.idImgView.backgroundColor = hextoUIColor(hexString: appConfig.generalconfigs?.appBackground ?? "#263B5B")
       self.view.layoutIfNeeded()
       titleLabel.isHidden = true
       selfieImageView.isHidden = true
@@ -304,7 +303,7 @@ class DocConfirmationViewController: BaseViewController {
       }
     }
   
-  func bind(image: UIImage, documentID: DocumentID, docVer: DocumentVersion, docStep: DocumentStepModel, stepid:Int ,callback: @escaping ConfirmCallback) {
+  func bind(image: UIImage, documentID: DocumentID, docVer: DocumentVersion, docStep: DocumentStepModel, stepid:Int ,callback: @escaping () -> Void) {
     self.image = image
     self.documentID = documentID
     self.documentVersion = docVer

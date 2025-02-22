@@ -68,7 +68,7 @@ extension SuccessViewController {
       self.approveImage.contentMode = .scaleAspectFit
       self.approveImage.clipsToBounds = true
       self.approveImage.tintAdjustmentMode = .normal
-      self.approveImage.tintColor = UIColor(hexString: "#6FF7D1")
+      self.approveImage.tintColor = hextoUIColor(hexString: "#6FF7D1")
       
       
       self.headerLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -97,19 +97,19 @@ extension SuccessViewController {
       self.amaniLogo.clipsToBounds = true
       self.amaniLogo.tintAdjustmentMode = .normal
       
-      setNavigationBarWith(title: generalConfig?.successTitle ?? "Adımları Tamamladınız", textColor: UIColor(hexString: textColor))
+      setNavigationBarWith(title: generalConfig?.successTitle ?? "Adımları Tamamladınız", textColor: hextoUIColor(hexString: textColor))
       setNavigationLeftButton(TintColor: textColor)
-      continueButton.setTitleColor(UIColor(hexString: generalConfig?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
-      continueButton.backgroundColor = UIColor(hexString: generalConfig?.primaryButtonBackgroundColor ?? ThemeColor.whiteColor.toHexString())
+      continueButton.setTitleColor(hextoUIColor(hexString: generalConfig?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
+      continueButton.backgroundColor = hextoUIColor(hexString: generalConfig?.primaryButtonBackgroundColor ?? ThemeColor.whiteColor.toHexString())
       continueButton.addCornerRadiousWith(radious: CGFloat(generalConfig?.buttonRadius ?? 10))
       amaniLogo.isHidden = generalConfig?.hideLogo ?? false
-      amaniLogo.tintColor = UIColor(hexString: textColor)
+      amaniLogo.tintColor = hextoUIColor(hexString: textColor)
       continueButton.setTitle(generalConfig?.continueText, for: .normal)
-        continueButton.backgroundColor = UIColor(hexString: generalConfig?.primaryButtonBackgroundColor ?? "#EA3365")
+        continueButton.backgroundColor = hextoUIColor(hexString: generalConfig?.primaryButtonBackgroundColor ?? "#EA3365")
         continueButton.layer.cornerRadius = 25
-      headerLabel.textColor = UIColor(hexString: textColor)
-      info1TextLabel.textColor = UIColor(hexString: textColor)
-      info2TextLabel.textColor = UIColor(hexString: textColor)
+      headerLabel.textColor = hextoUIColor(hexString: textColor)
+      info1TextLabel.textColor = hextoUIColor(hexString: textColor)
+      info2TextLabel.textColor = hextoUIColor(hexString: textColor)
       headerLabel.text = generalConfig?.successHeaderText ?? "Tebrikler"
       info1TextLabel.text = generalConfig?.successInfo1Text ?? "Bütün adımları tamamladınız."
       info2TextLabel.text = generalConfig?.successInfo2Text ?? "Evraklarınızı kontrol edip başvurunuzu değerlendireceğiz."

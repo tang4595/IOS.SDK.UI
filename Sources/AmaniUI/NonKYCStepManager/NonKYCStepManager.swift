@@ -148,22 +148,21 @@ class NonKYCStepManager {
   }
   
   private func generate(for steps: [AmaniSDK.StepConfig], rules: [AmaniSDK.KYCRuleModel]) {
-    let allStepModels: [KYCStepViewModel?] = rules.map { ruleModel in
+    let allStepModels: [KYCStepViewModel] = rules.compactMap { ruleModel in
       if let stepModel = steps.first(where: { $0.id == ruleModel.id }) {
         return KYCStepViewModel(from: stepModel, initialRule: ruleModel, topController: customerVC)
       }
       return nil
     }
     
-    let filtered = allStepModels.filter { $0 != nil } as! [KYCStepViewModel]
     
-    if filtered.isEmpty {
+    if allStepModels.isEmpty {
       self.preSteps = []
       self.postSteps = []
       return
     }
     
-    let sorted = filtered.sorted { $0.sortOrder < $1.sortOrder }
+    let sorted = allStepModels.sorted { $0.sortOrder < $1.sortOrder }
     
     let firstKYCIndex = sorted.firstIndex(where: { $0.identifier == "kyc" })
     let lastKYCIndex = sorted.lastIndex(where: { $0.identifier == "kyc" })

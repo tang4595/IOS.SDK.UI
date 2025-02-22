@@ -137,7 +137,7 @@ class QuestionViewCell: UITableViewCell {
     self.questionTitle.text = "Temporary title, please initialize correctly"
     
     self.questionDescription.font = UIFont.systemFont(ofSize: 13.0, weight: .light)
-    self.questionDescription.textColor = UIColor(hexString: "#465364")
+    self.questionDescription.textColor = hextoUIColor(hexString: "#465364")
     self.questionDescription.text = "Temporary title, please initialize correctly"
     
     
@@ -148,7 +148,7 @@ class QuestionViewCell: UITableViewCell {
     self.stackView.distribution = .fillProportionally
     self.stackView.layer.masksToBounds = true
     
-    self.backgroundColor = UIColor(hexString: genConfig?.appBackground ?? "#EEF4FA")
+    self.backgroundColor = hextoUIColor(hexString: genConfig?.appBackground ?? "#EEF4FA")
     
     setConstraints()
   }

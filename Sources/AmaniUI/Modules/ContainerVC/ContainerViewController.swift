@@ -19,8 +19,8 @@ class ContainerViewController: BaseViewController {
   private var titleDescription = UILabel()
     
   private var animationName : String?
-  private var callback: VoidCallback?
-  private var disappearCallback: VoidCallback?
+  private var callback: (() -> Void)?
+  private var disappearCallback: (() -> Void)?
   private var docStep:DocumentStepModel?
   private var lottieAnimationView:LottieAnimationView?
   private var step:steps = .front
@@ -32,7 +32,7 @@ class ContainerViewController: BaseViewController {
   func bind(animationName:String?,
             docStep:DocumentStepModel,
             step:steps,
-            callback: @escaping VoidCallback) {
+            callback: @escaping (() -> Void)) {
     self.animationName = animationName
     self.callback = callback
     self.step = step
@@ -41,7 +41,7 @@ class ContainerViewController: BaseViewController {
     
    
     
-  func setDisappearCallback(_ callback: @escaping VoidCallback) {
+  func setDisappearCallback(_ callback: @escaping (() -> Void)) {
     self.disappearCallback = callback
   }
     
@@ -157,7 +157,7 @@ extension ContainerViewController {
       self.titleDescription.font = UIFont.systemFont(ofSize: 16.0, weight: .light)
       self.titleDescription.numberOfLines = 0
       self.titleDescription.lineBreakMode = .byWordWrapping
-      self.titleDescription.textColor = UIColor(hexString: "#20202F")
+      self.titleDescription.textColor = hextoUIColor(hexString: "#20202F")
       
       self.animationView.translatesAutoresizingMaskIntoConstraints = false
       self.animationView.backgroundColor = .clear
@@ -171,19 +171,19 @@ extension ContainerViewController {
             self.btnContinue.isHidden = false
             self.titleDescription.isHidden = false
             self.setNavigationLeftButton(TintColor: appConfig.generalconfigs?.topBarFontColor ?? "#ffffff")
-            btnContinue.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonBackgroundColor ?? ThemeColor.primaryColor.toHexString())
-            btnContinue.layer.borderColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonBorderColor ?? "#263B5B").cgColor
+            btnContinue.backgroundColor = hextoUIColor(hexString: appConfig.generalconfigs?.primaryButtonBackgroundColor ?? ThemeColor.primaryColor.toHexString())
+            btnContinue.layer.borderColor = hextoUIColor(hexString: appConfig.generalconfigs?.primaryButtonBorderColor ?? "#263B5B").cgColor
             btnContinue.setTitle(appConfig.generalconfigs?.continueText, for: .normal)
-            btnContinue.setTitleColor(UIColor(hexString: appConfig.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
-            btnContinue.tintColor = UIColor(hexString: appConfig.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString())
+            btnContinue.setTitleColor(hextoUIColor(hexString: appConfig.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString()), for: .normal)
+            btnContinue.tintColor = hextoUIColor(hexString: appConfig.generalconfigs?.primaryButtonTextColor ?? ThemeColor.whiteColor.toHexString())
             btnContinue.addCornerRadiousWith(radious: buttonRadious)
             
         }
 
       // Navigation Bar
-      self.setNavigationBarWith(title: docStep?.captureTitle ?? "", textColor: UIColor(hexString: appConfig.generalconfigs?.topBarFontColor ?? "ffffff"))
+      self.setNavigationBarWith(title: docStep?.captureTitle ?? "", textColor: hextoUIColor(hexString: appConfig.generalconfigs?.topBarFontColor ?? "ffffff"))
 
-      self.view.backgroundColor = UIColor(hexString: appConfig.generalconfigs?.appBackground ?? "#263B5B")
+      self.view.backgroundColor = hextoUIColor(hexString: appConfig.generalconfigs?.appBackground ?? "#263B5B")
       
       
   //    // For everything else

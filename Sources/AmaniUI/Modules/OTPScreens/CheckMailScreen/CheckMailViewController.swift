@@ -42,7 +42,7 @@ class CheckMailViewController: KeyboardAvoidanceViewController {
       withDocument: self.docVersion
     )
     addPoweredByIcon()
-    view.backgroundColor = UIColor(hexString: "#EEF4FA")
+    view.backgroundColor = hextoUIColor(hexString: "#EEF4FA")
     contentView.addSubview(checkMailView)
     checkMailView.translatesAutoresizingMaskIntoConstraints = false
     

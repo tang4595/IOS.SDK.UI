@@ -92,7 +92,7 @@ class KYCStepTableViewCell: UITableViewCell {
 // MARK: Setting the constraints
 extension KYCStepTableViewCell {
     private func setupUI() {
-        self.contentView.backgroundColor = UIColor(hexString: AmaniUI.sharedInstance.config?.generalconfigs?.appBackground ?? "#EEF4FA" )
+        self.contentView.backgroundColor = hextoUIColor(hexString: AmaniUI.sharedInstance.config?.generalconfigs?.appBackground ?? "#EEF4FA" )
       
       self.outerView.translatesAutoresizingMaskIntoConstraints = false
       self.titleLabel.font = UIFont.systemFont(ofSize: 15.0, weight: .bold)
@@ -113,7 +113,7 @@ extension KYCStepTableViewCell {
             cornerRadious: CGFloat(AmaniUI.sharedInstance.config?.generalconfigs?.buttonRadius ?? 10)
         )
         if let bordercolor: String = AmaniUI.sharedInstance.config?.generalconfigs?.primaryButtonBorderColor {
-          self.outerView.addBorder(borderWidth: 2, borderColor: UIColor(hexString: bordercolor).cgColor)
+          self.outerView.addBorder(borderWidth: 2, borderColor: hextoUIColor(hexString: bordercolor).cgColor)
         }
       
       setConstraints()

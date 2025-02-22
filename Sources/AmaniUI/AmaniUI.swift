@@ -267,14 +267,10 @@ public class AmaniUI {
       self.delegate?.onKYCFailed(CustomerId: customerId, Rules: missingRules)
     }
     
-    
-    if let sdkNavigationController = sdkNavigationController {
-      sdkNavigationController.dismiss(animated: true)
-    } else {
-      if let navcontroller = nonKYCStepManager?.navigationController {
-        navcontroller.dismiss(animated: true)
-      }
+    DispatchQueue.main.async {
+      self.sdkNavigationController!.dismiss(animated: true)
     }
+    
   }
   
     // MARK: - internal methods
@@ -290,17 +286,18 @@ public class AmaniUI {
           generateRulesKYC(rules: rules )
           
           setAppTheme(model: self.config?.generalconfigs! )
-
-          if apiVersion == .v2 {
-              // launch the steps before kyc flow
-            self.nonKYCStepManager = NonKYCStepManager(for: (config?.stepConfig!)!, customer: customerRespData!, navigationController: sdkNavigationController!, vc: self.parentVC!)
-            self.nonKYCStepManager!.startFlow(forPreSteps: true) {[weak self] () in
-
-              self?.startKYCHome()
+          DispatchQueue.main.async {
+            if self.apiVersion == .v2 {
+                // launch the steps before kyc flow
+              self.nonKYCStepManager = NonKYCStepManager(for: (self.config?.stepConfig!)!, customer: self.customerRespData!, navigationController: self.sdkNavigationController!, vc: self.parentVC!)
+              self.nonKYCStepManager!.startFlow(forPreSteps: true) {[weak self] () in
+                
+                self?.startKYCHome()
+              }
+            } else {
+                // It doesn't matter for api v1
+              self.startKYCHome()
             }
-          } else {
-              // It doesn't matter for api v1
-            self.startKYCHome()
           }
         }
       } else {
@@ -343,8 +340,8 @@ public class AmaniUI {
       self.sdkNavigationController?.modalPresentationStyle = .fullScreen
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = UIColor(hexString: model.topBarBackground ?? "0F2435")
-        appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(hexString: model.topBarFontColor ?? "000000")]
+        appearance.backgroundColor = hextoUIColor(hexString: model.topBarBackground ?? "0F2435")
+        appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: hextoUIColor(hexString: model.topBarFontColor ?? "000000")]
         self.sdkNavigationController!.navigationBar.standardAppearance = appearance;
         self.sdkNavigationController!.navigationBar.scrollEdgeAppearance = appearance
      
