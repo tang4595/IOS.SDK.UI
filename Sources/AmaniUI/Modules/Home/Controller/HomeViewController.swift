@@ -71,7 +71,7 @@ class HomeViewController: BaseViewController {
     guard let appConfig = appConfig else {return}
     self.view.backgroundColor = hextoUIColor(hexString: appConfig.generalconfigs?.appBackground ?? "253C59")
     
-    self.setNavigationLeftButton(TintColor: appConfig.generalconfigs?.topBarFontColor ?? "000000")
+    self.setPopButton(TintColor: appConfig.generalconfigs?.topBarFontColor ?? "000000")
     
     self.setNavigationBarWith(title: (appConfig.generalconfigs?.mainTitleText!)!, textColor: hextoUIColor(hexString: appConfig.generalconfigs?.topBarFontColor ?? "000000"))
       //      onVC.headView.layer.cornerRadius = 25
