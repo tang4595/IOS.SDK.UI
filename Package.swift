@@ -1,7 +1,7 @@
 // swift-tools-version:5.3
 import PackageDescription
 
-let UIVersion = "1.2.2"
+let UIVersion = "1.2.3"
 
 let package = Package(
     name: "AmaniUI",
