@@ -9,6 +9,7 @@ Pod::Spec.new do |s|
   s.summary      = "Amani-SDK v3 interface looks like v1."
   s.description  = "The Amani Software Development kit (SDK) provides you complete steps to perform eKYC. This package gives you a UI for v1 on v3 SDK."
   s.source       = { :path => "." }
+  s.static_framework = true
   s.resource_bundles ={ 'AmaniUI' => ['Sources/AmaniUI/*/*.{xib,storyboard,xcassets,xcprivacy}'] }
   s.source_files = "Sources/AmaniUI/**/*.{h,m,swift,xib}"
   s.documentation_url = "https://documentation.amani.ai"
